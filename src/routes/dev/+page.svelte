@@ -23,8 +23,12 @@
     <p>Need to use node 22 in github actions</p>
 </details>
 <details>
-    <summary>TODO: Talk about </summary>
-    <p></p>
+    <summary>TODO: Talk about <a href="https://www.conductor.com/academy/robotstxt/">Copyright and Robots.txt</a></summary>
+    <p>add LICENSE.TXT with copyright notice and explicit antiscrap policy</p>
+    <p>add robots.txt with 
+        `User-agent: *
+        Disallow: /`</p>
+        <p>add <meta name="robots" content="noindex"></p>
 </details>
 <details>
     <summary></summary>

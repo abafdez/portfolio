@@ -1,3 +1,2 @@
-# allow crawling everything by default
-User-agent: *
-Disallow:
+User-agent: * #Applies to all robots and crawlers
+Disallow: / # Applies to all the content
