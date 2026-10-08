@@ -23,7 +23,7 @@ export default defineConfig({
 			paths: {
 				// This tells SvelteKit to use /portfolio as the base URL when deployed, 
 				// but stay on localhost (empty string) when developing locally.
-				base: process.argv.includes('dev') ? '' : '/portfolio'
+				base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 			}
 		})
 	]
