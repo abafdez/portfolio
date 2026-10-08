@@ -41,6 +41,7 @@ jobs:
         uses: actions/upload-artifact@v7.0.2
         with:
           # this should match the `pages` option in your adapter-static options
+          name: github-pages
           path: 'build/'
 
   deploy:
