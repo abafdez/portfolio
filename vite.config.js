@@ -13,10 +13,18 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 
-			// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-			// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
 			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-			adapter: adapter()
+			adapter: adapter({
+				pages: 'build',
+				assets: 'build',
+				fallback: '404.html',
+				strict: true
+			}),
+			paths: {
+				// This tells SvelteKit to use /portfolio as the base URL when deployed, 
+				// but stay on localhost (empty string) when developing locally.
+				base: process.argv.includes('dev') ? '' : '/portfolio'
+			}
 		})
 	]
 });

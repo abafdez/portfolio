@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
@@ -35,14 +35,16 @@ jobs:
           runtime: node@22
 
       - name: Build
+        env:
+          BASE_PATH: "/${{ github.event.repository.name }}"
         run: pnpm run build
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v7.0.2
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v5.0.0
         with:
           # this should match the `pages` option in your adapter-static options
           name: github-pages
-          path: 'build/'
+          path: "build/"
 
   deploy:
     needs: build
