@@ -1,4 +1,4 @@
-<h1> Bitacora</h1>
+<h1> Devblog</h1>
 
 
 
@@ -8,7 +8,8 @@
 </details>
 <details>
     <summary>TODO: Talk about <a href="https://docs.github.com/en/pages">github pages</a></summary>
-    <p></p>
+    <p>There is an issue with SK3, it needs node 22 and most available action to deploy on github pages are incompatible with sveltekit or aren't set t owork with node 22. I've made a custom action to solve the problem.</p>
+    <p>After finish the fix in my CI, I'm starting to use <a href="https://gitmoji.dev/">Gitmoji</a></p>
 </details>
 <details>
     <summary>TODO: Talk about <a href="https://open-props.style/>open-props">OpenProps</a></summary>
@@ -30,7 +31,4 @@
         Disallow: /`</p>
         <p>add <meta name="robots" content="noindex"></p>
 </details>
-<details>
-    <summary></summary>
-    <p></p>
-</details>
+

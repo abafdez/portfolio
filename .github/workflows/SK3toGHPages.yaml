@@ -1,7 +1,7 @@
 name: Deploy SK3 to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
+  # Trigger the workflow every time you push and accept PR to the `main` branch
   push:
     branches: [main]
   pull_request:
@@ -17,7 +17,6 @@ permissions:
   id-token: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -26,21 +25,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Gets the code from the repo to be executed
       - name: Checkout
         uses: actions/checkout@v7
 
+        # Install Node & PNPM and install dependencies in the same step
       - name: Setup pnpm with runtime
         uses: pnpm/setup@v3.0.0
         with:
           cache: true
           runtime: node@22
 
+        # Sets basic configuration for paths and trailing slashs for sveltekit
       - name: Prepare project for github pages
         uses: actions/configure-pages@v6
 
+        # Builds the application
       - name: Build
         run: pnpm run build
 
+        #Prepares the files for deployment
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
