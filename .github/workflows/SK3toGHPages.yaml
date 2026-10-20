@@ -1,59 +1,61 @@
 name: Deploy SK3 to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push and accept PR to the `main` branch
+  # Push to `main` (a merged PR is a push) → check, build and deploy
+  # Pull request to `main` → check and build only
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
-  workflow_dispatch:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab on GitHub.
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: read # clone the repo
+  pages: write # create a Pages deployment
+  id-token: write # get an OIDC token so deploy-pages can prove who it is
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Gets the code from the repo to be executed
-      - name: Checkout
+      - name: Checkout # Gets the code from the repo to be executed
         uses: actions/checkout@v7
 
-        # Install Node & PNPM and install dependencies in the same step
-      - name: Setup pnpm with runtime
+      - name: Setup pnpm with runtime # Install Node & PNPM and install dependencies in the same step
         uses: pnpm/setup@v3.0.0
         with:
           cache: true
           runtime: node@22
+      # Separate steps so the Actions UI shows exactly which one failed
+      - name: Type check
+        run: pnpm check
 
-        # Sets basic configuration for paths and trailing slashs for sveltekit
-      - name: Prepare project for github pages
-        uses: actions/configure-pages@v6
+      - name: Lint
+        run: pnpm lint
 
-        # Builds the application
       - name: Build
         run: pnpm run build
 
-        #Prepares the files for deployment
-      - name: Upload GitHub Pages artifact
+      - name: Upload GitHub Pages artifact # Prepares the files for deployment
+        # Only upload when we're going to deploy (see the deploy job's `if`)
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v5
         with:
-          name: github-pages
-          path: "build/"
+          path: 'build/'
 
   deploy:
     needs: build
+    # github.ref is `refs/heads/main` on a push to main or a manual run from main.
+    # On a pull request it's `refs/pull/<number>/merge`, so PRs skip this job.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+
+    # Only one deployment at a time; PR checks above never wait on this.
+    concurrency:
+      group: 'pages'
+      cancel-in-progress: false
 
     environment:
       name: github-pages
