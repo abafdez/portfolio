@@ -1,4 +1,6 @@
+<svelte:head><title>Bitacora · AB</title></svelte:head>
 <h1>Devblog</h1>
+<h3>Here we will share a development journal</h3>
 
 <details>
 	<summary
