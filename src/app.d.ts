@@ -3,10 +3,10 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
-		// interface PageData {}
-		// interface PageState {}
-		// interface Platform {}
+		// interface Locals {}       // Data passed from hooks (e.g., event.locals.user)
+		// interface PageData {}     // Common data shared across route load functions
+		// interface PageState {}    // Shallow routing state
+		// interface Platform {}     // Platform-specific objects (e.g., Cloudflare Workers env/bindings)
 	}
 }
 
