@@ -9,3 +9,9 @@
 	</a>
 	<Nav />
 </header>
+
+<style>
+	header {
+		padding: var(--size-2);
+	}
+</style>

@@ -127,6 +127,12 @@ importers:
       node:
         specifier: runtime:^22.17.1
         version: runtime:22.23.4
+      open-props:
+        specifier: ^1.7.23
+        version: 1.7.23
+      postcss-jit-props:
+        specifier: ^1.0.16
+        version: 1.0.16(postcss@8.5.29)
       prettier:
         specifier: ^3.8.3
         version: 3.9.9
@@ -561,6 +567,12 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
+  globalyzer@0.1.0:
+    resolution: {integrity: sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==}
+
+  globrex@0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+
   imagetools-core@12.0.0:
     resolution: {integrity: sha512-9u1nEZrA6qd/dv1okXT/i1bLOnL9YAAg7k5BqnBJe5PxYYRecZ/GNyGxUXG5x6ybyvCa25zlx5XX++nSEAkjQw==}
     engines: {node: '>=22.0.0'}
@@ -792,6 +804,28 @@ packages:
           targets:
             - cpu: x86
               os: win32
+        - resolution:
+            archive: tarball
+            bin:
+              node: bin/node
+            integrity: sha256-eKy//tHUCV6LTbVeuLQ66Siy1B0UqyrenuRqHKbmd98=
+            type: binary
+            url: https://unofficial-builds.nodejs.org/download/release/v22.23.4/node-v22.23.4-linux-arm64-musl.tar.gz
+          targets:
+            - cpu: arm64
+              os: linux
+              libc: musl
+        - resolution:
+            archive: tarball
+            bin:
+              node: bin/node
+            integrity: sha256-EX6uOKOeRdU08aGMIhdwncCwmDX2FomvSQE33iMetCw=
+            type: binary
+            url: https://unofficial-builds.nodejs.org/download/release/v22.23.4/node-v22.23.4-linux-x64-musl.tar.gz
+          targets:
+            - cpu: x64
+              os: linux
+              libc: musl
     version: 22.23.4
     hasBin: true
 
@@ -799,12 +833,21 @@ packages:
     resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
     engines: {node: '>=12.20.0'}
 
+  open-props@1.7.23:
+    resolution: {integrity: sha512-+xyrJmxV9QUBFbSwPROYhOg/FLXry+uuPr4R+B5EaE4556Oc18/8ZC/fL5A+/lbRSwNvA0Alh+C0KpyFWLmLZg==}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
   picomatch@4.0.7:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
+
+  postcss-jit-props@1.0.16:
+    resolution: {integrity: sha512-EXHA65umJ3+BiMnd6kOCargYe+QXS72hGrkW9nqaCdt6aeOp4fT3Nme6qn6yIDBmzv19mx3zeVU0PdiqJBCwoA==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      postcss: ^8.2.8
 
   postcss@8.5.29:
     resolution: {integrity: sha512-49cGhUbXj8Qenv0iTMxA1cFBzxXoctpC9Ujd77t1WcbJIr6nF/eI7g/8MgxrYldFRuAXvja7xQRwavoW7kgrxQ==}
@@ -868,6 +911,9 @@ packages:
   svelte@5.57.2:
     resolution: {integrity: sha512-1YiPCAXT0Ct6g1vOMmSLa0Nsc3QRMvtDF32ihgglGVrugIuIK38RyDiFNXVDhtQ81TJjSO57NdMw6DyYLqSGDQ==}
     engines: {node: '>=18'}
+
+  tiny-glob@0.2.9:
+    resolution: {integrity: sha512-g/55ssRPUjShh+xkfx9UPDXqhckHEsHr4Vd9zX55oSdGZc/MD0m3sferOkwWtp98bv+kcVfEHtRJgBVJzelrzg==}
 
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
@@ -1228,6 +1274,10 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
+  globalyzer@0.1.0: {}
+
+  globrex@0.1.2: {}
+
   imagetools-core@12.0.0: {}
 
   is-reference@3.0.3:
@@ -1303,9 +1353,16 @@ snapshots:
 
   obug@2.2.1: {}
 
+  open-props@1.7.23: {}
+
   picocolors@1.1.1: {}
 
   picomatch@4.0.7: {}
+
+  postcss-jit-props@1.0.16(postcss@8.5.29):
+    dependencies:
+      postcss: 8.5.29
+      tiny-glob: 0.2.9
 
   postcss@8.5.29:
     dependencies:
@@ -1422,6 +1479,11 @@ snapshots:
       zimmerframe: 1.1.5
     transitivePeerDependencies:
       - '@typescript-eslint/types'
+
+  tiny-glob@0.2.9:
+    dependencies:
+      globalyzer: 0.1.0
+      globrex: 0.1.2
 
   tinyglobby@0.2.17:
     dependencies:

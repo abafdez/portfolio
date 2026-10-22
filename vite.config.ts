@@ -1,7 +1,9 @@
-import { enhancedImages } from '@sveltejs/enhanced-img';
-import adapter from '@sveltejs/adapter-static';
-import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import adapter from '@sveltejs/adapter-static'; //for SSG
+import { enhancedImages } from '@sveltejs/enhanced-img';
+import OpenProps from 'open-props'; //Styling
+import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -28,5 +30,10 @@ export default defineConfig({
 				strict: true
 			})
 		})
-	]
+	],
+	css: {
+		postcss: {
+			plugins: [postcssJitProps(OpenProps)]
+		}
+	}
 });
