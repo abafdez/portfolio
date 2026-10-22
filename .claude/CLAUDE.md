@@ -8,6 +8,7 @@ Alfonso's personal portfolio, built as a **learning project** (Alfonso is a juni
 - Give full solutions only when Alfonso is stuck or explicitly asks.
 - One branch and one PR per phase. A Bitácora entry is written at the end of each phase/session.
 - The learning path (phases 0–9) is in [learning-path.md](learning-path.md). Check which phase is current before suggesting work.
+- **Progress:** Phases 0–2 done (CI split, TypeScript, layout/routing/base path). **Next: Phase 3 (Open Props).** Update this line when a phase is merged. The latest `content/bitacora/` entry has the details.
 - When the work changes something a `draft: true` post in `content/blog/` describes, update that post too. Leave `<!-- TODO -->` placeholders where Alfonso's own code goes rather than writing the solution into the post.
 
 ## Stack & decisions
