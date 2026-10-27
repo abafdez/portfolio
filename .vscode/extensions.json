@@ -2,6 +2,7 @@
 	"recommendations": [
 		"svelte.svelte-vscode",
 		"esbenp.prettier-vscode",
-		"vunguyentuan.vscode-css-variables"
+		"vunguyentuan.vscode-css-variables",
+		"calebpena.open-props-lsp"
 	]
 }

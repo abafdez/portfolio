@@ -26,5 +26,9 @@
 		"typescript",
 		"typescriptreact",
 		"source.css.styled"
-	]
+	],
+	"openProps.fileTypes": ["css", "svelte"],
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
 }
