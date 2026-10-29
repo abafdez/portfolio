@@ -60,6 +60,13 @@
 		font-family: var(--font-heading, var(--font-body));
 	}
 
+	main {
+		max-inline-size: 70rem;
+		margin-inline: auto;
+		padding-inline: var(--size-3);
+		padding-block-end: var(--size-8);
+	}
+
 	code,
 	kbd,
 	pre,
