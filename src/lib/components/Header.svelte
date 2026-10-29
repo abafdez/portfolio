@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Nav from '#lib/components/Nav.svelte';
+	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
 </script>
 
 <header>
@@ -8,6 +9,7 @@
 		<span>Alfonso Baeza</span>
 	</a>
 	<Nav />
+	<ThemeToggle />
 </header>
 
 <style>
