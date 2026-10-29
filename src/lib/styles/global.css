@@ -1,6 +1,6 @@
 /* Layer order: later layers win, regardless of specificity.
    Component <style> blocks are unlayered, so they beat all of these. */
-@layer reset, base, components;
+@layer reset, base, components, utilities;
 
 @layer reset {
 	*,
@@ -45,6 +45,21 @@
 	h3 {
 		overflow-wrap: break-word;
 	}
+
+	/* Safety net: anything that animates (ours or a library's) ends almost instantly
+	   for people who asked for less motion. With !important the layer order is
+	   reversed, so this early layer beats every later layer and unlayered styles too.
+	   0.01ms instead of none so end states and animationend events still happen. */
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+			scroll-behavior: auto !important;
+		}
+	}
 }
 
 @layer base {
@@ -88,5 +103,17 @@
 	a {
 		color: var(--brand);
 		text-underline-offset: 0.2em;
+	}
+}
+
+@layer utilities {
+	/* Entrance animation. Pages decide what enters and when, with --enter-delay. */
+	@media (prefers-reduced-motion: no-preference) {
+		.enter {
+			animation:
+				var(--animation-fade-in) both,
+				var(--animation-slide-in-up) both;
+			animation-delay: var(--enter-delay, 0ms);
+		}
 	}
 }

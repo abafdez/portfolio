@@ -1,15 +1,19 @@
-<script lang="ts">
-	import { resolve } from '$app/paths';
+<script module lang="ts">
 	import type { RouteId } from '$app/types';
 
-	interface Props {
+	// Exported so pages can type their lists: const posts: Teaser[] = [...]
+	export interface Teaser {
 		title: string;
 		description: string;
-		// Optional: placeholder cards have nowhere to link yet.
+		// Optional: a card can exist before its page does.
 		route?: RouteId;
 	}
+</script>
 
-	let { title, description, route }: Props = $props();
+<script lang="ts">
+	import { resolve } from '$app/paths';
+
+	let { title, description, route }: Teaser = $props();
 </script>
 
 <article>

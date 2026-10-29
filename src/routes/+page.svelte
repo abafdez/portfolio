@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Hero from '#lib/components/Hero.svelte';
-	import TeaserCard from '#lib/components/TeaserCard.svelte';
+	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
 	import type { Link } from '#lib/links.ts';
 
@@ -12,29 +12,38 @@
 		// TODO: { label: 'LinkedIn', url: 'https://www.linkedin.com/in/…' }
 	];
 
-	// Placeholders until the blog (Phase 7) and projects (Phase 8) have real content.
-	const placeholder = { title: 'Coming soon', description: 'Nothing here yet.' };
+	// Empty until the blog (Phase 7) and projects (Phase 8) exist. The {:else}
+	// fallbacks below show until then; nothing else changes when real data arrives.
+	const posts: Teaser[] = [];
+	const projects: Teaser[] = [];
 </script>
 
 <svelte:head><title>Alfonso Baeza · Portfolio</title></svelte:head>
 
-<!-- TODO: write the real tagline -->
-<Hero name="Alfonso Baeza" tagline="Web developer." {photo} {links} />
+<!-- The page decides the entrance order: hero, then posts, then projects. -->
+<div class="enter">
+	<!-- TODO: write the real tagline -->
+	<Hero name="Alfonso Baeza" tagline="Web developer." {photo} {links} />
+</div>
 
-<section aria-labelledby="latest-posts">
+<section class="enter" style:--enter-delay="150ms" aria-labelledby="latest-posts">
 	<h2 id="latest-posts">Latest posts</h2>
 	<div class="grid">
-		{#each [1, 2, 3] as n (n)}
-			<TeaserCard {...placeholder} />
+		{#each posts as post (post.title)}
+			<TeaserCard {...post} />
+		{:else}
+			<p class="empty">No posts yet. They'll show up here once the blog is live.</p>
 		{/each}
 	</div>
 </section>
 
-<section aria-labelledby="featured-projects">
+<section class="enter" style:--enter-delay="300ms" aria-labelledby="featured-projects">
 	<h2 id="featured-projects">Featured projects</h2>
 	<div class="grid">
-		{#each [1, 2, 3] as n (n)}
-			<TeaserCard {...placeholder} />
+		{#each projects as project (project.title)}
+			<TeaserCard {...project} />
+		{:else}
+			<p class="empty">No projects yet. Featured work will appear here.</p>
 		{/each}
 	</div>
 </section>
@@ -51,5 +60,9 @@
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
 		gap: var(--size-4);
 		margin-block-start: var(--size-4);
+	}
+
+	.empty {
+		color: var(--text-2);
 	}
 </style>

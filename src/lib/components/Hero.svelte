@@ -4,23 +4,30 @@
 	import type { Link } from '#lib/links.ts';
 
 	interface Props {
+		// Required: a hero without a name or links makes no sense, so forgetting
+		// one should be a type error, not a silent blank.
 		name: string;
-		tagline: string;
-		photo: Picture;
 		links: Link[];
+		// Optional: the hero still works without them.
+		tagline?: string;
+		photo?: Picture;
 	}
 
-	let { name, tagline, photo, links }: Props = $props();
+	let { name, links, tagline, photo }: Props = $props();
 </script>
 
 <!-- The section is the size container; .layout responds to its width. -->
 <section class="hero">
-	<div class="layout">
-		<!-- alt="" because the name right next to it already says who this is. -->
-		<enhanced:img src={photo} alt="" class="photo" />
+	<div class={['layout', photo && 'with-photo']}>
+		{#if photo}
+			<!-- alt="" because the name right next to it already says who this is. -->
+			<enhanced:img src={photo} alt="" class="photo" />
+		{/if}
 		<div class="text">
 			<h1>{name}</h1>
-			<p class="tagline">{tagline}</p>
+			{#if tagline}
+				<p class="tagline">{tagline}</p>
+			{/if}
 			<ul class="links">
 				{#each links as link (link.label)}
 					<li>
@@ -44,20 +51,19 @@
 		align-items: center;
 	}
 
-	@container (min-width: 36rem) {
-		.layout {
-			grid-template-columns: auto 1fr;
-			gap: var(--size-7);
-		}
-	}
-
 	.photo {
 		inline-size: 8rem;
 		block-size: auto;
 		border-radius: var(--radius-round);
 	}
 
+	/* After the base rules: @container adds no specificity, so source order decides. */
 	@container (min-width: 36rem) {
+		.layout.with-photo {
+			grid-template-columns: auto 1fr;
+			gap: var(--size-7);
+		}
+
 		.photo {
 			inline-size: 12rem;
 		}
@@ -94,18 +100,5 @@
 
 	.links a:hover {
 		background: var(--surface-3);
-	}
-
-	/* Motion only for people who haven't asked to reduce it. */
-	@media (prefers-reduced-motion: no-preference) {
-		.layout > * {
-			animation:
-				var(--animation-fade-in) both,
-				var(--animation-slide-in-up) both;
-		}
-
-		.text {
-			animation-delay: 150ms;
-		}
 	}
 </style>
