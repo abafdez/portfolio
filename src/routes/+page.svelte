@@ -16,17 +16,26 @@
 	// fallbacks below show until then; nothing else changes when real data arrives.
 	const posts: Teaser[] = [];
 	const projects: Teaser[] = [];
+
+	// This page's entrance: each part fades and slides up, one after another.
+	// The keyframes are in this page's styles below. Reduced motion is handled by the
+	// safety net in global.css.
+	const enter = (delay: number) => `home-enter 600ms ease-out ${delay}ms both`;
 </script>
 
 <svelte:head><title>Alfonso Baeza · Portfolio</title></svelte:head>
 
-<!-- The page decides the entrance order: hero, then posts, then projects. -->
-<div class="enter">
-	<!-- TODO: write the real tagline -->
-	<Hero name="Alfonso Baeza" tagline="Web developer." {photo} {links} />
-</div>
+<!-- TODO: write the real tagline -->
+<Hero
+	name="Alfonso Baeza"
+	tagline="Web developer."
+	{photo}
+	{links}
+	--photo-animation={enter(0)}
+	--text-animation={enter(150)}
+/>
 
-<section class="enter" style:--enter-delay="150ms" aria-labelledby="latest-posts">
+<section style:animation={enter(300)} aria-labelledby="latest-posts">
 	<h2 id="latest-posts">Latest posts</h2>
 	<div class="grid">
 		{#each posts as post (post.title)}
@@ -37,7 +46,7 @@
 	</div>
 </section>
 
-<section class="enter" style:--enter-delay="300ms" aria-labelledby="featured-projects">
+<section style:animation={enter(450)} aria-labelledby="featured-projects">
 	<h2 id="featured-projects">Featured projects</h2>
 	<div class="grid">
 		{#each projects as project (project.title)}
@@ -64,5 +73,15 @@
 
 	.empty {
 		color: var(--text-2);
+	}
+
+	/* -global- keeps the name as written. Svelte would otherwise rename it to
+	   something like svelte-abc123-home-enter, and the Hero (another component)
+	   couldn't find it by name. The prefix keeps it unique on the site. */
+	@keyframes -global-home-enter {
+		from {
+			opacity: 0;
+			translate: 0 var(--size-3);
+		}
 	}
 </style>

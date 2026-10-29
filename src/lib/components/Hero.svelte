@@ -51,10 +51,17 @@
 		align-items: center;
 	}
 
+	/* Animation hooks: the page passes them as props (<Hero --photo-animation="…" />).
+	   Nothing passed means no animation. */
 	.photo {
 		inline-size: 8rem;
 		block-size: auto;
 		border-radius: var(--radius-round);
+		animation: var(--photo-animation, none);
+	}
+
+	.text {
+		animation: var(--text-animation, none);
 	}
 
 	/* After the base rules: @container adds no specificity, so source order decides. */
