@@ -1,0 +1,27 @@
+/* light-dark(a, b) picks a or b from the element's color-scheme.
+   "light dark" = follow the OS; [data-theme] (set by the toggle) forces one. */
+:root {
+	color-scheme: light dark;
+
+	--brand: light-dark(var(--blue-9), var(--blue-4));
+	--text-1: light-dark(var(--gray-8), var(--gray-1));
+	--text-2: light-dark(var(--gray-6), var(--gray-5));
+	--surface-1: light-dark(var(--gray-0), var(--gray-11));
+	--surface-2: light-dark(var(--gray-1), var(--gray-10));
+	--surface-3: light-dark(var(--gray-3), var(--gray-9));
+
+	/* Sections override these (e.g. the bitácora layout sets --font-body).
+	   No --font-heading: var(--font-body) here. It would be resolved on :root, and a
+	   section's --font-body would never reach it. Headings fall back in global.css instead. */
+	--font-body: var(--font-sans);
+	--font-code: 'Fira Code Variable', var(--font-mono);
+	--font-hand: 'Shantell Sans Variable', var(--font-sans);
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+}
