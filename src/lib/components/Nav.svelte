@@ -31,7 +31,8 @@
 <style>
 	ul {
 		display: flex;
-		gap: 1rem;
+		flex-wrap: wrap;
+		gap: var(--size-2) var(--size-3);
 		list-style: none;
 		padding: 0;
 	}
