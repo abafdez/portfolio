@@ -17,6 +17,7 @@ Alfonso's personal portfolio, built as a **learning project** (Alfonso is a juni
 
 - SvelteKit 3, Svelte 5 (runes forced), adapter-static, deployed to GitHub Pages via `.github/workflows/`.
 - Open Props for design tokens; mdsvex for markdown; migrating JS+JSDoc → **TypeScript** (Phase 1).
+- **Planned: named themes** (Tokyo Night, Dracula…) **and user-generated themes**, both as overrides of our semantic tokens. So components and other CSS use semantic tokens only; color primitives live only in `src/lib/styles/tokens.css`.
 - Package manager: `pnpm`. Checks: `pnpm check`, `pnpm lint`, `pnpm build`.
 
 ## Folders
