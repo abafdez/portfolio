@@ -77,8 +77,16 @@
 		font-family: var(--font-heading, var(--font-body));
 	}
 
+	/* Header, main, footer as three rows; main takes the leftover height, so the
+	   footer sits at the bottom on short pages. (The wrapper div in app.html is
+	   display: contents, so header/main/footer count as the body's own children.) */
+	body {
+		display: grid;
+		grid-template-rows: auto 1fr auto;
+	}
+
 	main {
-		max-inline-size: 70rem;
+		max-inline-size: var(--content-width);
 		margin-inline: auto;
 		padding-inline: var(--size-3);
 		padding-block-end: var(--size-8);

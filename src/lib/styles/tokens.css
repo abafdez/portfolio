@@ -10,6 +10,9 @@
 	--surface-2: light-dark(var(--gray-1), var(--gray-10));
 	--surface-3: light-dark(var(--gray-3), var(--gray-9));
 
+	/* Layout: the header, main and footer share one content width. */
+	--content-width: 70rem;
+
 	/* Sections override these (e.g. the bitácora layout sets --font-body).
 	   No --font-heading: var(--font-body) here. It would be resolved on :root, and a
 	   section's --font-body would never reach it. Headings fall back in global.css instead. */

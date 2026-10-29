@@ -32,8 +32,25 @@
 	ul {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--size-2) var(--size-3);
+		gap: var(--size-2) var(--size-4);
 		list-style: none;
 		padding: 0;
+	}
+
+	a {
+		color: var(--text-2);
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: var(--text-1);
+		text-decoration: underline;
+	}
+
+	/* The current page: brand color plus a thick underline, so it doesn't rely on color alone. */
+	a[aria-current='page'] {
+		color: var(--brand);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
 	}
 </style>
