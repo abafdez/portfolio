@@ -31,8 +31,8 @@ Open Props supplies the primitives, and my `tokens.css` defines the semantic one
 ```css
 :root {
 	--brand: var(--blue-9);
-	--text-1: var(--gray-8);
-	--text-2: var(--gray-6);
+	--text-1: var(--gray-9);
+	--text-2: var(--gray-7);
 	--surface-1: var(--gray-0);
 	--surface-2: var(--gray-1);
 	--surface-3: var(--gray-3);
@@ -45,7 +45,7 @@ Open Props supplies the primitives, and my `tokens.css` defines the semantic one
 
 - **Dark mode.** In dark mode `--text-1` becomes light gray. That's one line in one file, and every component follows. If components used `--gray-8` directly, I'd have to edit every one of them.
 - **Rebranding.** Changing the brand from blue to orange means editing `--brand` once.
-- **Readability.** `var(--text-2)` in a component tells you it's muted text. `var(--gray-6)` doesn't.
+- **Readability.** `var(--text-2)` in a component tells you it's muted text. `var(--gray-7)` doesn't.
 
 ## Naming
 
@@ -63,6 +63,8 @@ My first brand color was `--brown-0`, picked at random. It was almost white on a
 - **3:1** for large text and UI parts such as borders and icons
 
 To check, click a color swatch in DevTools. The picker shows the contrast ratio against the background, and draws a line marking which shades pass.
+
+I got caught by this a second time. I first set `--text-2` to `--gray-6` for muted text. That's only about 3:1 on my light backgrounds. Lighthouse passed anyway, because no page used `--text-2` yet. When the home page got a tagline and cards with muted text, the problem appeared. I moved `--text-2` to `--gray-7` (over 7:1) and `--text-1` to `--gray-9` so the two stay clearly different. **An audit only checks the colors a page actually uses**, so check a new token pair when you define it, not when a page first uses it.
 
 ## Two mistakes I made
 
