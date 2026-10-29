@@ -27,7 +27,13 @@ tags: [svelte, dark-mode, accessibility, localstorage]
   - Lea Verou argues for two visible states (the system theme and its opposite), and later that most sites don't need a toggle at all.
   - Bramus makes the case for showing all three states (system, light, dark).
   - Kilian Valkhof's older post argues the toggle must have a way back to "system".
-- Known limitation: after clicking, my choice overrides the OS until storage is cleared.
+- I went with Lea's model. The button switches between the system theme and its opposite. Clicking back to the theme that matches the OS deletes the override (both `data-theme` and `localStorage`), so the site follows the OS again. One button, and there's still a way back to "system".
+- A `matchMedia` `change` listener keeps the button in sync if the OS theme changes while the page is open.
+
+## Problems & fixes
+
+- My first browser test of the new version showed the old behavior. A preview server from an earlier test was still holding the port and serving the old build. When a test result makes no sense, check what's actually being served.
+- The OS-change test failed at first because the `change` event fires a moment after the switch, and the test read the button too early. It passed after waiting 100 ms.
 
 ## Links
 
