@@ -2,14 +2,13 @@
 	import Hero from '#lib/components/Hero.svelte';
 	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
-	import type { Link } from '#lib/links.ts';
+	import { profiles, type Link } from '#lib/links.ts';
 
 	const links: Link[] = [
 		{ label: 'View my CV', route: '/cv' },
 		{ label: 'See projects', route: '/projects' },
 		{ label: 'Read the blog', route: '/blog' },
-		{ label: 'GitHub', url: 'https://github.com/abafdez' }
-		// TODO: { label: 'LinkedIn', url: 'https://www.linkedin.com/in/…' }
+		...profiles
 	];
 
 	// Empty until the blog (Phase 7) and projects (Phase 8) exist. The {:else}
