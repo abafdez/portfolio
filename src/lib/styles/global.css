@@ -1,0 +1,72 @@
+/* Layer order: later layers win, regardless of specificity.
+   Component <style> blocks are unlayered, so they beat all of these. */
+@layer reset, base, components;
+
+@layer reset {
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	* {
+		margin: 0;
+	}
+
+	html {
+		-webkit-text-size-adjust: none;
+		text-size-adjust: none;
+	}
+
+	body {
+		min-block-size: 100dvh;
+		line-height: 1.5;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	img,
+	picture,
+	svg,
+	video {
+		display: block;
+		max-inline-size: 100%;
+	}
+
+	input,
+	button,
+	textarea,
+	select {
+		font: inherit;
+	}
+
+	p,
+	h1,
+	h2,
+	h3 {
+		overflow-wrap: break-word;
+	}
+}
+
+@layer base {
+	body {
+		font-family: var(--font-sans);
+		color: var(--text-1);
+		background-color: var(--surface-1);
+	}
+
+	h1 {
+		font-size: var(--font-size-6);
+		line-height: var(--font-lineheight-1);
+		color: var(--brand);
+	}
+
+	h2 {
+		font-size: var(--font-size-4);
+		line-height: var(--font-lineheight-1);
+	}
+
+	a {
+		color: var(--brand);
+		text-underline-offset: 0.2em;
+	}
+}
