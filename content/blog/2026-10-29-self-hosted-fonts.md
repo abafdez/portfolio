@@ -38,7 +38,9 @@ import '@fontsource-variable/shantell-sans';
 
 Each import is a CSS file full of `@font-face` rules. Vite copies the `.woff2` files into `build/` with hashed names and rewrites the URLs. npm is only involved at install time. Visitors only ever talk to my site.
 
-It also solves a problem specific to my setup. My site lives under `/portfolio` on GitHub Pages. If I put the fonts in `static/fonts/` and wrote `url('/fonts/x.woff2')`, every font would 404. URLs that go through Vite get the base path handled automatically.
+Why not just download the `.woff2` files into `static/fonts/`? That works too. My site lives under `/portfolio` on GitHub Pages, and I expected `url('/fonts/x.woff2')` to 404 there. I tested it: Vite rewrites every `url()` in the CSS it processes into a relative path (`url("/robots.txt")` became `url(../../../robots.txt)`). Only URLs that Vite never sees, like a hard-coded path in `app.html` or an inline `style` attribute, would break.
+
+What Fontsource adds is convenience: the `unicode-range` subsets are already made, the files get hashed names so browsers can cache them forever, and `pnpm update` handles updates.
 
 ## Fonts only cost something where they're used
 
