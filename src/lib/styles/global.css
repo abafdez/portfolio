@@ -49,9 +49,22 @@
 
 @layer base {
 	body {
-		font-family: var(--font-sans);
+		font-family: var(--font-body);
 		color: var(--text-1);
 		background-color: var(--surface-1);
+	}
+
+	h1,
+	h2,
+	h3 {
+		font-family: var(--font-heading, var(--font-body));
+	}
+
+	code,
+	kbd,
+	pre,
+	samp {
+		font-family: var(--font-code);
 	}
 
 	h1 {

@@ -109,6 +109,12 @@ importers:
 
   .:
     devDependencies:
+      '@fontsource-variable/fira-code':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource-variable/shantell-sans':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@sveltejs/adapter-static':
         specifier: ^4.0.0
         version: 4.0.0(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.2)(vite@8.3.3(@types/node@26.6.5)))(svelte@5.57.2)(typescript@6.0.3)(vite@8.3.3(@types/node@26.6.5)))
@@ -156,6 +162,12 @@ packages:
 
   '@emnapi/runtime@1.11.3':
     resolution: {integrity: sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA==}
+
+  '@fontsource-variable/fira-code@5.3.0':
+    resolution: {integrity: sha512-ZhvHeknlicraKVSJBa1NrJnXDVByUkC407zwgELYfmnx3p9g8vwIPfQCxx8YD3K7dAeCdLuHJOHlpMfRsIcApQ==}
+
+  '@fontsource-variable/shantell-sans@5.3.0':
+    resolution: {integrity: sha512-FPdHvSi6cngE/DMVCm7Xlls70U0b4/NMJLlcAPvVoq6eot1X8tNOZMRc22Rh9KoAfmmBz7yjsSXvpsYmkhXXVQ==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -1000,6 +1012,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
+
+  '@fontsource-variable/fira-code@5.3.0': {}
+
+  '@fontsource-variable/shantell-sans@5.3.0': {}
 
   '@img/colour@1.1.0': {}
 
