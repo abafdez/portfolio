@@ -10,7 +10,7 @@ Alfonso's personal portfolio, built as a **learning project** (Alfonso is a juni
 - One branch and one PR per phase. Write **one Bitácora entry per topic** (not one per phase), and copy each one to the Obsidian vault project `10 Projects/Portfolio/` (use the `obsidian-obsidianai` skill).
 - Write **one `draft: true` blog article per topic** too (e.g. design tokens, cascade layers, dark mode), in `content/blog/`.
 - The learning path (phases 0–9) is in [learning-path.md](learning-path.md). Check which phase is current before suggesting work.
-- **Progress:** Phases 0–2 done (CI split, TypeScript, layout/routing/base path). **Next: Phase 3 (Open Props).** Update this line when a phase is merged. The latest `content/bitacora/` entry has the details.
+- **Progress:** Phases 0–3 done (CI split, TypeScript, layout/routing/base path, Open Props design system). **Phase 4 (Hero landing) is finished on `feat/hero`, waiting for Alfonso to push and open the PR.** The tagline moved to Phase 4.5. Open interview question: why `animation: var(--photo-animation, none)` defaults to `none`. **Phase 4.5 (Identity & motion) in progress on `feat/identity`** (branched from `feat/hero`). Update this line when a phase is merged. The latest `content/bitacora/` entries have the details.
 - When the work changes something a `draft: true` post in `content/blog/` describes, update that post too. Leave `<!-- TODO -->` placeholders where Alfonso's own code goes rather than writing the solution into the post.
 
 ## Stack & decisions
@@ -18,7 +18,15 @@ Alfonso's personal portfolio, built as a **learning project** (Alfonso is a juni
 - SvelteKit 3, Svelte 5 (runes forced), adapter-static, deployed to GitHub Pages via `.github/workflows/`.
 - Open Props for design tokens; mdsvex for markdown; migrating JS+JSDoc → **TypeScript** (Phase 1).
 - **Planned: named themes** (Tokyo Night, Dracula…) **and user-generated themes**, both as overrides of our semantic tokens. So components and other CSS use semantic tokens only; color primitives live only in `src/lib/styles/tokens.css`.
+- **Identity (Phase 4.5):** technical look (terminal, monospace, blueprints, code), animated, with a mascot. **Dark first**: design and polish the dark theme, then adapt light (the site still follows the OS by default). Theme and tokens are shared site-wide; each route varies composition (layout, navigation) and has one signature trick. Every effect is a progressive enhancement and respects reduced motion.
 - Package manager: `pnpm`. Checks: `pnpm check`, `pnpm lint`, `pnpm build`.
+
+## Testing
+
+- Test the production build, not dev: `BASE_PATH=/portfolio pnpm build && BASE_PATH=/portfolio pnpm preview`. Dev has no base path, so path bugs only show here.
+- Restart `pnpm preview` after every rebuild. It reads the file list at startup and can serve stale or missing hashed assets.
+- Check layouts at 320px and desktop width (no horizontal scroll), both themes, and with reduced motion on.
+- Check new token color pairs for contrast when they're defined. Lighthouse only audits colors a page actually uses.
 
 ## Folders
 

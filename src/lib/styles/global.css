@@ -45,6 +45,23 @@
 	h3 {
 		overflow-wrap: break-word;
 	}
+
+	/* Safety net: anything that animates (ours or a library's) ends almost instantly
+	   for people who asked for less motion. With !important the layer order is
+	   reversed, so this early layer beats every later layer and unlayered styles too.
+	   0.01ms instead of none so end states and animationend events still happen. */
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-delay: 0s !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+			transition-delay: 0s !important;
+			scroll-behavior: auto !important;
+		}
+	}
 }
 
 @layer base {
@@ -58,6 +75,21 @@
 	h2,
 	h3 {
 		font-family: var(--font-heading, var(--font-body));
+	}
+
+	/* Header, main, footer as three rows; main takes the leftover height, so the
+	   footer sits at the bottom on short pages. (The wrapper div in app.html is
+	   display: contents, so header/main/footer count as the body's own children.) */
+	body {
+		display: grid;
+		grid-template-rows: auto 1fr auto;
+	}
+
+	main {
+		max-inline-size: var(--content-width);
+		margin-inline: auto;
+		padding-inline: var(--size-3);
+		padding-block-end: var(--size-8);
 	}
 
 	code,
