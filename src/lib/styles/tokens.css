@@ -21,10 +21,25 @@
 	--font-hand: 'Shantell Sans Variable', var(--font-sans);
 }
 
+/* --dark is 1 in the dark theme, 0 in light. light-dark() only works for colors, so
+   anything else that changes with the theme (a transform, an opacity) uses this
+   number in calc(). Same rules as color-scheme: the OS, unless [data-theme] forces one. */
+:root {
+	--dark: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--dark: 1;
+	}
+}
+
 :root[data-theme='light'] {
 	color-scheme: light;
+	--dark: 0;
 }
 
 :root[data-theme='dark'] {
 	color-scheme: dark;
+	--dark: 1;
 }
