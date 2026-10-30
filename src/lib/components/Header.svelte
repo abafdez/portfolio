@@ -8,7 +8,7 @@
 	<div class="inner">
 		<a class="site-name" href={resolve('/')}>Alfonso Baeza</a>
 		<div class="nav"><Nav /></div>
-		<div class="toggle"><ThemeToggle /></div>
+		<div class="toggle"><ThemeToggle duration={500} blur={50} /></div>
 	</div>
 </header>
 

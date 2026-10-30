@@ -3,6 +3,15 @@
 
 	type Theme = 'light' | 'dark';
 
+	interface Props {
+		// How long the circle takes to cover the screen, in milliseconds.
+		duration?: number;
+		// How soft the circle's edge is, in pixels. 0 is a sharp edge.
+		blur?: number;
+	}
+
+	let { duration = 600, blur = 0 }: Props = $props();
+
 	// Unknown until mounted: the prerendered HTML can't know the visitor's theme.
 	let theme = $state<Theme>();
 
@@ -59,6 +68,10 @@
 		root.style.setProperty('--reveal-x', `${x}px`);
 		root.style.setProperty('--reveal-y', `${y}px`);
 		root.style.setProperty('--reveal-r', `${radius}px`);
+		// The props go on :root too: the transition's pseudo-elements hang off :root,
+		// outside this component, so it's the only place their CSS can read them.
+		root.style.setProperty('--reveal-duration', `${duration}ms`);
+		root.style.setProperty('--reveal-blur', `${blur}px`);
 
 		// flushSync: the browser takes its "after" picture when update() returns, so Svelte
 		// must apply aria-pressed now instead of in its next batch.
@@ -149,7 +162,7 @@
 
 	/* The circular reveal. During a "theme" view transition the browser shows two
 	   screenshots: the old page (::view-transition-old) under the new one. The old one
-	   stays still; the new one is clipped to a circle that grows from the button.
+	   stays still; the new one is masked to a circle that grows from the button.
 	   mix-blend-mode: by default the two are blended for a cross-fade, which would
 	   brighten the inside of the circle. */
 	:global(:root:active-view-transition-type(theme)::view-transition-old(root)) {
@@ -157,17 +170,36 @@
 		mix-blend-mode: normal;
 	}
 
+	/* The circle is a radial-gradient mask, not a clip-path, because a gradient can
+	   have a soft edge: solid up to radius - blur, then fading out until radius.
+	   forwards: the transition outlives the animation by a frame or so. Without it,
+	   the radius drops back to 0px in that gap, the mask hides the new picture, and
+	   the old theme flashes through. */
 	:global(:root:active-view-transition-type(theme)::view-transition-new(root)) {
-		animation: theme-reveal 0.6s var(--ease-in-out-3);
+		animation: theme-reveal var(--reveal-duration) var(--ease-in-out-3) forwards;
 		mix-blend-mode: normal;
+		mask-image: radial-gradient(
+			circle at var(--reveal-x) var(--reveal-y),
+			#000 calc(var(--reveal-radius) - var(--reveal-blur)),
+			transparent var(--reveal-radius)
+		);
 	}
 
+	/* A custom property is untyped text, so the browser can't animate it between two
+	   values. Registering it as a <length> lets the keyframes below tween it. */
+	@property --reveal-radius {
+		syntax: '<length>';
+		inherits: false;
+		initial-value: 0px;
+	}
+
+	/* It ends a blur past the farthest corner, so the soft edge leaves the screen too. */
 	@keyframes -global-theme-reveal {
 		from {
-			clip-path: circle(0 at var(--reveal-x) var(--reveal-y));
+			--reveal-radius: 0px;
 		}
 		to {
-			clip-path: circle(var(--reveal-r) at var(--reveal-x) var(--reveal-y));
+			--reveal-radius: calc(var(--reveal-r) + var(--reveal-blur));
 		}
 	}
 </style>

@@ -86,6 +86,8 @@ The circle uses the [View Transition API](https://developer.mozilla.org/docs/Web
 
 You style that animation with two pseudo-elements: `::view-transition-old(root)` and `::view-transition-new(root)`. By default they cross-fade. For the reveal, the old picture stays still and the new one is clipped to a circle that grows from the button:
 
+This was my first version:
+
 ```css
 :root:active-view-transition-type(theme)::view-transition-old(root) {
 	animation: none;
@@ -108,6 +110,56 @@ You style that animation with two pseudo-elements: `::view-transition-old(root)`
 ```
 
 `mix-blend-mode: normal` is there because the default cross-fade blends the two pictures together, which would brighten everything inside the circle.
+
+### A soft edge
+
+A `clip-path` circle always has a sharp edge. I wanted to try a blurry one, so I switched to a mask. A `radial-gradient` can be solid black (visible) up to one radius and fade to transparent (hidden) at another, and the gap between the two is the blur:
+
+```css
+:root:active-view-transition-type(theme)::view-transition-new(root) {
+	animation: theme-reveal var(--reveal-duration) var(--ease-in-out-3) forwards;
+	mix-blend-mode: normal;
+	mask-image: radial-gradient(
+		circle at var(--reveal-x) var(--reveal-y),
+		#000 calc(var(--reveal-radius) - var(--reveal-blur)),
+		transparent var(--reveal-radius)
+	);
+}
+```
+
+Now the animation has to grow `--reveal-radius`, a custom property. By default the browser treats a custom property as plain text, and it can't animate between two pieces of text, so the circle would jump from nothing to full size. `@property` tells it the value is a length, and lengths can be animated:
+
+```css
+@property --reveal-radius {
+	syntax: '<length>';
+	inherits: false;
+	initial-value: 0px;
+}
+
+@keyframes theme-reveal {
+	from {
+		--reveal-radius: 0px;
+	}
+	to {
+		--reveal-radius: calc(var(--reveal-r) + var(--reveal-blur));
+	}
+}
+```
+
+The circle ends one blur past the farthest corner, so the fading edge leaves the screen too.
+
+The `forwards` took me a flash to find. The view transition stays on screen a frame or so after its animation ends. With `clip-path` that didn't matter: without the animation, `clip-path` goes back to `none` and shows everything. But without the animation, `--reveal-radius` goes back to its `initial-value` of `0px`, the mask hides the whole new picture, and the old theme flashes through. `forwards` keeps the animation's last frame until the transition is gone.
+
+The speed and the blur are props: `<ThemeToggle duration={800} blur={120} />`. My `Hero` takes CSS props like `--photo-animation`, but that doesn't work here. Svelte puts those on a wrapper around the component, and the transition's pseudo-elements hang off `:root`, outside it. So the click handler writes them on `:root`, next to the circle's position:
+
+```ts
+root.style.setProperty('--reveal-duration', `${duration}ms`);
+root.style.setProperty('--reveal-blur', `${blur}px`);
+```
+
+<!-- TODO: the values I picked for the header, and why -->
+
+I tried all this first in a CodePen with sliders for the duration, easing, blur and blend mode. One thing I learned there: with a blend mode other than `normal`, the reveal's last frame is the two pictures blended, so the page snaps to the real new theme when the transition ends. That's a flash.
 
 The click handler works out where the circle starts and how big it must get. It starts at the button's center and has to reach the farthest corner of the screen:
 
