@@ -10,7 +10,7 @@ Alfonso's personal portfolio, built as a **learning project** (Alfonso is a juni
 - One branch and one PR per phase. Write **one Bitácora entry per topic** (not one per phase), and copy each one to the Obsidian vault project `10 Projects/Portfolio/` (use the `obsidian-obsidianai` skill).
 - Write **one `draft: true` blog article per topic** too (e.g. design tokens, cascade layers, dark mode), in `content/blog/`.
 - The learning path (phases 0–9) is in [learning-path.md](learning-path.md). Check which phase is current before suggesting work.
-- **Progress:** Phases 0–3 done (CI split, TypeScript, layout/routing/base path, Open Props design system). **Phase 4 (Hero landing) is finished on `feat/hero`, waiting for Alfonso to push and open the PR.** The tagline moved to Phase 4.5. Open interview question: why `animation: var(--photo-animation, none)` defaults to `none`. **Phase 4.5 (Identity & motion) in progress on `feat/identity`** (branched from `feat/hero`). Update this line when a phase is merged. The latest `content/bitacora/` entries have the details.
+- **Progress:** Phases 0–3 done (CI split, TypeScript, layout/routing/base path, Open Props design system). **Phase 4 (Hero landing) is finished on `feat/hero`, waiting for Alfonso to push and open the PR.** The tagline moved to Phase 4.5. **Phase 4.5 (Identity & motion) in progress on `feat/identity`** (branched from `feat/hero`). Update this line when a phase is merged. The latest `content/bitacora/` entries have the details.
 - When the work changes something a `draft: true` post in `content/blog/` describes, update that post too. Leave `<!-- TODO -->` placeholders where Alfonso's own code goes rather than writing the solution into the post.
 
 ## Stack & decisions
