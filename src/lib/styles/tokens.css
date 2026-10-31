@@ -48,6 +48,9 @@
 	--mascot-blush: var(--pink-soft);
 	--mascot-shadow: color-mix(in oklch, var(--text-1) 15%, transparent);
 
+	/* Floating things (the detached header, the footer hint). */
+	--shadow-float: 0 var(--size-2) var(--size-6) color-mix(in oklch, var(--ink-8) 35%, transparent);
+
 	/* Layout: the header, main and footer share one content width. */
 	--content-width: 70rem;
 

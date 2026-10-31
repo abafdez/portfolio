@@ -65,6 +65,20 @@
 }
 
 @layer base {
+	/* The page scrollbar: thin, accent thumb on the page background. Standard
+	   properties (Firefox, Chrome 121+); other browsers keep their default. */
+	html {
+		scrollbar-color: var(--brand) var(--surface-1);
+		scrollbar-width: thin;
+	}
+
+	/* In-page links (like the footer hint) glide instead of jumping. */
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
+	}
+
 	/* The blueprint grid is drawn on top of this color by Blueprint.svelte. */
 	body {
 		font-family: var(--font-body);

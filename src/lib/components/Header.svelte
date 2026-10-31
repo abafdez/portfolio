@@ -14,7 +14,51 @@
 
 <style>
 	header {
-		border-block-end: var(--border-size-1) solid var(--surface-3);
+		padding: var(--size-2);
+	}
+
+	/* The floating bar: see-through background, blurred, with a border and shadow.
+	   This is the end state of the detach animation below, and the look everywhere
+	   that animation doesn't run. */
+	.inner {
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
+		background-color: color-mix(in oklch, var(--surface-1) 75%, transparent);
+		backdrop-filter: blur(12px);
+		box-shadow: var(--shadow-float);
+	}
+
+	/* Sticky only on wide screens: on phones the header is two rows tall and would
+	   eat too much of the screen. */
+	@media (min-width: 48rem) {
+		header {
+			position: sticky;
+			inset-block-start: 0;
+			z-index: 1;
+		}
+	}
+
+	/* Scroll-driven animation: the timeline is the page's scroll position, not time.
+	   At the top the bar sits flat with the page; over the first 6rem of scrolling it
+	   lifts off into the floating bar. animation-range says where 0% and 100% are. */
+	@supports (animation-timeline: scroll()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.inner {
+				animation: header-detach linear both;
+				animation-timeline: scroll();
+				animation-range: 0 var(--size-10);
+			}
+		}
+	}
+
+	@keyframes header-detach {
+		from {
+			border-color: transparent;
+			border-radius: 0;
+			background-color: transparent;
+			backdrop-filter: blur(0);
+			box-shadow: none;
+		}
 	}
 
 	/* Narrow: name and toggle on the first row, nav on its own row below.
