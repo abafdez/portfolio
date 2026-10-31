@@ -100,6 +100,22 @@ Julibe's site snaps each section into place when you stop scrolling. I wanted a 
 
 ## Reveals
 
-Each section's cards fade in as they scroll into view, with a scroll-driven animation on a `view()` timeline (I explained those in [the header and footer post](./2026-10-31-scroll-driven-header-footer)). It's on the cards' grid, not the section, because the section already runs a time-based entrance, and two `animation` declarations on one element replace each other.
+Each section's cards are wiped in from the top as they scroll into view, like a terminal printing lines. It's a scroll-driven animation on a `view()` timeline (I explained those in [the header and footer post](./2026-10-31-scroll-driven-header-footer)):
+
+```css
+@keyframes reveal {
+	from {
+		clip-path: inset(0 0 100% 0);
+		translate: 0 var(--size-6);
+	}
+	to {
+		clip-path: inset(0);
+	}
+}
+```
+
+It's on the cards' grid, not the section, because the section already runs a time-based entrance, and two `animation` declarations on one element replace each other.
+
+My first version faded in from `opacity: 0`, and Lighthouse's accessibility score dropped to 95. Lighthouse checks the page in a phone-sized window right after it loads. Content below the fold hadn't been revealed yet, so it measured faded text at 1.86:1 contrast. Nobody actually sees it like that, but a wipe hides the content instead of fading it, so there's no faded text to measure, and the score went back to 100.
 
 Next: [transitions between pages](./2026-10-31-route-transitions-composition).

@@ -11,7 +11,7 @@ tags: [css, layout, intersection-observer, scroll-snap]
 - New `SectionNav.svelte`: an in-page nav that highlights the section being read (a scroll-spy), with `aria-current="location"`, a longer line and the brand color.
 - A `--header-space` token and `scroll-padding-block-start` on `html`, so the sticky intro and in-page jumps stop below the sticky header.
 - `proximity` scroll snapping on the sections, only on wide screens and without a reduced-motion preference.
-- Each section's content fades in as it scrolls into view (a `view()` timeline).
+- Each section's content is wiped in from the top as it scrolls into view (a `view()` timeline animating `clip-path`).
 - Tested on the built site at 1280×800, 1280×700, 320px, both themes and reduced motion.
 
 ## What I learned
@@ -30,6 +30,8 @@ tags: [css, layout, intersection-observer, scroll-snap]
 - The intro was 689px tall: in a narrow 2fr column every link button wrapped onto its own row. Equal columns fixed it (589px).
 - The page loaded scrolled down 50px. With proximity snapping, the first section was the nearest snap point on load, so the browser jumped to it. Making the top of the landing a snap point too fixed it.
 - I guessed the header at 5rem; it's 98px (about 6.1rem). `--header-space` is now 6.5rem.
+- Lighthouse accessibility dropped to 95 on the home page: contrast 1.86:1 on "No projects yet". Lighthouse loads a phone-sized window, where that text is below the fold, so the reveal still had it at `opacity: 0`. Switching the reveal from a fade to a `clip-path` wipe brought it back to 100 in both themes.
+- `/bitacora` had a heading-order warning: the placeholder subtitle was an `<h3>` right after the `<h1>`. It's a `<p>` now.
 
 ## Links
 

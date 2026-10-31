@@ -139,8 +139,11 @@
 		color: var(--text-2);
 	}
 
-	/* Scroll-driven reveal: each section's content fades and slides up as it enters the
-	   screen. Content already in view on load is past the range, so it's just shown.
+	/* Scroll-driven reveal: each section's content is wiped in from the top, like a
+	   terminal printing lines, and slides up as it enters the screen. Content already in
+	   view on load is past the range, so it's just shown.
+	   A wipe (clip-path), not a fade: Lighthouse measures contrast on load, and content
+	   below the fold at opacity 0 failed it (1.86:1), even though nobody sees it faded.
 	   It's on .grid, not the section: the section already runs the time-based entrance,
 	   and two animation declarations on one element would replace each other. */
 	@supports (animation-timeline: view()) {
@@ -155,8 +158,11 @@
 
 	@keyframes reveal {
 		from {
-			opacity: 0;
+			clip-path: inset(0 0 100% 0);
 			translate: 0 var(--size-6);
+		}
+		to {
+			clip-path: inset(0);
 		}
 	}
 
