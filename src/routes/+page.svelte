@@ -35,10 +35,9 @@
      right. Narrow screens: one column, intro first. -->
 <div class="landing">
 	<div class="intro">
-		<!-- TODO: write the real tagline -->
 		<Hero
 			name="Alfonso Baeza"
-			tagline="Web developer."
+			tagline="Web developer. I make websites that are fast, accessible and a little playful."
 			{photo}
 			{links}
 			--photo-animation={enter(0)}
