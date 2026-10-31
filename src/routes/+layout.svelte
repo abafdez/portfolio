@@ -8,6 +8,7 @@
 	import '#lib/styles/global.css';
 	import type { Snippet } from 'svelte';
 	import { onNavigate } from '$app/navigation';
+	import { page } from '$app/state';
 	import { canTransition } from '#lib/view-transitions.ts';
 	import Header from '#lib/components/Header.svelte';
 	import Footer from '#lib/components/Footer.svelte';
@@ -41,5 +42,6 @@
 </svelte:head>
 <Blueprint />
 <Header />
-<main>{@render children()}</main>
+<!-- Each route picks its composition in its load data (see App.PageData). -->
+<main data-composition={page.data.composition ?? 'default'}>{@render children()}</main>
 <Footer />
