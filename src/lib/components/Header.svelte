@@ -39,7 +39,7 @@
 	}
 
 	/* Scroll-driven animation: the timeline is the page's scroll position, not time.
-	   At the top the bar sits flat with the page; over the first 6rem of scrolling it
+	   At the top the bar sits flat with the page; over the first 5rem of scrolling it
 	   lifts off into the floating bar. animation-range says where 0% and 100% are. */
 	@supports (animation-timeline: scroll()) {
 		@media (prefers-reduced-motion: no-preference) {

@@ -77,4 +77,6 @@ A CSS file has no exports. A plain `import '…'` tells Vite to add the styleshe
 
 I also wrapped my CSS in `export tokens { … }`. CSS has no `export` at all. A custom property declared on `:root` (the `<html>` element) is available everywhere because elements inherit it.
 
+**Update:** this setup paid off later. When I gave the site its own look, I swapped the Open Props grays and blues for my own [oklch palette](./2026-10-31-dark-first-palette). Every change was in `tokens.css`; no component changed.
+
 Next: [cascade layers](./2026-10-29-cascade-layers), for where these tokens get applied.
