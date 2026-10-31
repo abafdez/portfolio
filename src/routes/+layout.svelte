@@ -9,6 +9,7 @@
 	import type { Snippet } from 'svelte';
 	import Header from '#lib/components/Header.svelte';
 	import Footer from '#lib/components/Footer.svelte';
+	import Blueprint from '#lib/components/Blueprint.svelte';
 
 	let { children }: { children: Snippet } = $props();
 </script>
@@ -16,6 +17,7 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
+<Blueprint />
 <Header />
 <main>{@render children()}</main>
 <Footer />

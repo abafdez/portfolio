@@ -41,6 +41,7 @@
 
 	.site-name {
 		grid-area: name;
+		font-family: var(--font-label);
 		font-weight: var(--font-weight-7);
 		color: var(--text-1);
 		text-decoration: none;

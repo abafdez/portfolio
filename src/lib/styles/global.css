@@ -65,16 +65,31 @@
 }
 
 @layer base {
+	/* The blueprint grid is drawn on top of this color by Blueprint.svelte. */
 	body {
 		font-family: var(--font-body);
 		color: var(--text-1);
 		background-color: var(--surface-1);
+		caret-color: var(--brand);
 	}
 
 	h1,
 	h2,
 	h3 {
-		font-family: var(--font-heading, var(--font-body));
+		font-family: var(--font-heading);
+		font-weight: var(--font-weight-6);
+		/* Monospace runs wide; pull big headings in a little. */
+		letter-spacing: -0.02em;
+	}
+
+	::selection {
+		background-color: var(--brand);
+		color: var(--surface-1);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--brand);
+		outline-offset: 3px;
 	}
 
 	/* Header, main, footer as three rows; main takes the leftover height, so the

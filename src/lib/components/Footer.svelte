@@ -16,6 +16,7 @@
 <style>
 	footer {
 		border-block-start: var(--border-size-1) solid var(--surface-3);
+		font-family: var(--font-label);
 		color: var(--text-2);
 	}
 

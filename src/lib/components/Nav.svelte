@@ -38,6 +38,7 @@
 	}
 
 	a {
+		font-family: var(--font-label);
 		color: var(--text-2);
 		text-decoration: none;
 	}

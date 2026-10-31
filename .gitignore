@@ -24,3 +24,6 @@ vite.config.ts.timestamp-*
 
 # Claude Code (personal, not shared)
 .claude/settings.local.json
+
+# Playwright MCP screenshots and snapshots
+.playwright-mcp/

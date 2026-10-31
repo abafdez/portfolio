@@ -102,6 +102,7 @@
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);
 		background: var(--surface-2);
+		font-family: var(--font-label);
 		text-decoration: none;
 	}
 
