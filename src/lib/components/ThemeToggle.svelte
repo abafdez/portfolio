@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, flushSync } from 'svelte';
+	import { canTransition } from '#lib/view-transitions.ts';
 
 	type Theme = 'light' | 'dark';
 
@@ -53,8 +54,7 @@
 	// The new theme grows out of the button in a circle (a view transition).
 	// Without view transition types, or with reduced motion, it just flips.
 	function toggle(event: MouseEvent) {
-		const canReveal = typeof ViewTransition !== 'undefined' && 'types' in ViewTransition.prototype;
-		if (!canReveal || matchMedia('(prefers-reduced-motion: reduce)').matches) return flip();
+		if (!canTransition()) return flip();
 
 		// The circle starts at the button's center and must end past the farthest corner.
 		const { left, top, width, height } = (
