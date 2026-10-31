@@ -72,6 +72,14 @@
 		scrollbar-width: thin;
 	}
 
+	/* Where the header is sticky, in-page jumps (#posts) and scroll snapping stop
+	   below it instead of hiding the target's top under it. */
+	@media (min-width: 48rem) {
+		html {
+			scroll-padding-block-start: var(--header-space);
+		}
+	}
+
 	/* In-page links (like the footer hint) glide instead of jumping. */
 	@media (prefers-reduced-motion: no-preference) {
 		html {

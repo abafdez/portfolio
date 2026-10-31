@@ -53,6 +53,9 @@
 
 	/* Layout: the header, main and footer share one content width. */
 	--content-width: 70rem;
+	/* Room for the sticky header (from 48rem, about 6.1rem tall): sticky things below it
+	   and in-page jumps leave this much space at the top. */
+	--header-space: 6.5rem;
 
 	/* Sections override these (e.g. the bitácora layout sets --font-body).
 	   --font-heading and --font-label point at --font-code, not --font-body: they're
