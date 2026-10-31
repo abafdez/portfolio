@@ -66,6 +66,7 @@ Added after Phase 4. The site gets a look that stands out: **technical** (termin
   5. ✅ View transitions between routes, plus a way for each route to set its own composition.
   6. ✅ The real tagline.
 - **Done when:** the Phase 4 checks still pass, every effect is an enhancement (no JS, no view transitions or reduced motion still give a complete site), and the dark theme is the polished one.
+- **Status:** ✅ merged in PR #8 (2026-10-31). Step 4, the mascot, moved to later.
 
 Each later route phase (5–8) also builds that route's own composition and trick. Projects (Phase 8) can use three.js, loaded only on that page and with a static fallback.
 
@@ -80,6 +81,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Learn:** preprocessors, mdsvex config (`extensions: ['.svelte', '.md']`), frontmatter, `import.meta.glob` (eager), `+page.ts` `load`, dynamic routes `[slug]`, `entries()` for prerendering, sorting dates.
 - **Do:** set up `src/content/bitacora/*.md` with typed frontmatter (`title`, `date`, `tags`) and write a `src/lib/content.ts` helper that returns a typed, sorted list. Build `/bitacora` as a timeline and `/bitacora/[slug]`. **Migrate each `<details>` from the dev page into its own entry.**
 - **Done when:** adding a `.md` file is the only step needed to publish an entry, and `pnpm build` prerenders it (strict mode passes).
+- **Notes:** done before Phase 5. The markdown lives in `content/` at the repo root, not `src/content/`. Started early on `feat/content`: a frontmatter-only `src/lib/content.ts` (the `yaml` package) feeds the landing. Rendering the bodies is still open: mdsvex broke on code samples in the posts (see the Progress line in CLAUDE.md).
 
 ## Phase 7 — Blog (1–1.5 weeks)
 
