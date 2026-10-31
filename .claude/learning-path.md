@@ -59,12 +59,12 @@ Added after Phase 4. The site gets a look that stands out: **technical** (termin
 
 - **Learn:** the View Transitions API (`startViewTransition`, transition types, the `::view-transition-*` pseudo-elements, SvelteKit's `onNavigate`), SVG basics (`viewBox`, `mask`, animating shapes with CSS), scroll-driven animations (`animation-timeline: view()`/`scroll()` behind `@supports`), `IntersectionObserver` for scroll-spy, pointer media queries (`pointer: fine`), progressive enhancement.
 - **Do:**
-  1. A theme toggle with a sun/moon icon and a circular reveal from the button (inspired by [nerdy.dev](https://nerdy.dev)).
-  2. A dark-first technical identity: palette, monospace type, blueprint/grid backgrounds.
-  3. The landing layout (inspired by [brittanychiang.com](https://brittanychiang.com)): a sticky intro beside scrolling sections, a scroll-spy nav, a cursor spotlight on fine pointers, and scroll-driven reveals for mobile.
-  4. The mascot as an animated SVG.
-  5. View transitions between routes, plus a way for each route to set its own composition.
-  6. The real tagline.
+  1. ✅ A theme toggle with a sun/moon icon and a circular reveal from the button (inspired by [nerdy.dev](https://nerdy.dev)). Merged in PR #7.
+  2. ✅ A dark-first technical identity: palette, monospace type, blueprint/grid backgrounds.
+  3. ✅ The landing layout (inspired by [brittanychiang.com](https://brittanychiang.com)): a sticky intro beside scrolling sections, a scroll-spy nav, a cursor spotlight on fine pointers, and scroll-driven reveals for mobile.
+  4. The mascot as an animated SVG. **Moved to later:** a draft exists (`Mascot.svelte`, `/mascot`, `design/mascot.md`).
+  5. ✅ View transitions between routes, plus a way for each route to set its own composition.
+  6. ✅ The real tagline.
 - **Done when:** the Phase 4 checks still pass, every effect is an enhancement (no JS, no view transitions or reduced motion still give a complete site), and the dark theme is the polished one.
 
 Each later route phase (5–8) also builds that route's own composition and trick. Projects (Phase 8) can use three.js, loaded only on that page and with a static fallback.

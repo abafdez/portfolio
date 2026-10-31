@@ -16,12 +16,13 @@
 <nav aria-label="Main navigation">
 	<ul>
 		{#each links as link (link.href)}
+			{@const current = page.url.pathname === resolve(link.href)}
 			<li>
-				<a
-					href={resolve(link.href)}
-					aria-current={page.url.pathname === resolve(link.href) ? 'page' : undefined}
-				>
+				<a href={resolve(link.href)} aria-current={current ? 'page' : undefined}>
 					{link.label}
+					{#if current}
+						<span class="marker" aria-hidden="true"></span>
+					{/if}
 				</a>
 			</li>
 		{/each}
@@ -38,6 +39,8 @@
 	}
 
 	a {
+		position: relative;
+		font-family: var(--font-label);
 		color: var(--text-2);
 		text-decoration: none;
 	}
@@ -47,10 +50,24 @@
 		text-decoration: underline;
 	}
 
-	/* The current page: brand color plus a thick underline, so it doesn't rely on color alone. */
+	/* The current page: brand color plus a bar under it, so it doesn't rely on color alone. */
 	a[aria-current='page'] {
 		color: var(--brand);
-		text-decoration: underline;
-		text-decoration-thickness: 2px;
+	}
+
+	/* The bar is its own element, not a text underline, so a view transition can move it:
+	   during a route change it gets a name, and the browser slides it from the old
+	   page's link to the new one. Only during "route" transitions: a named element is
+	   cut out of the root picture, and the theme reveal only animates the root. */
+	.marker {
+		position: absolute;
+		inset-inline: 0;
+		inset-block-end: -0.25em;
+		block-size: 2px;
+		background: currentColor;
+	}
+
+	:global(:root:active-view-transition-type(route)) .marker {
+		view-transition-name: nav-marker;
 	}
 </style>

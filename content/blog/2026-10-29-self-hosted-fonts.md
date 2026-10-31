@@ -123,3 +123,5 @@ h1 {
 ```
 
 Now `--font-body` is looked up on the `h1` itself, inside the section, and it picks up the override. The same rule explains why the Bitácora wrapper sets `font-family` again: `body` already computed its font, and children inherit that computed value, not the token.
+
+**Update:** later, for the site's [dark-first identity](./2026-10-31-dark-first-palette), headings switched to Fira Code everywhere. So `--font-heading` is now defined on `:root` as `var(--font-code)`, and a new `--font-label` does the same for the nav, buttons and small UI text. Neither follows `--font-body` any more, on purpose, so this gotcha can't bite them. The rule still holds for any token built from another one.

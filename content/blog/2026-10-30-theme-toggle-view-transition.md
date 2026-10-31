@@ -196,6 +196,8 @@ Svelte doesn't update the DOM the moment `$state` changes. It collects the chang
 
 The reveal is an enhancement. If the browser has no view transition types, or the visitor prefers reduced motion, `toggle()` just calls `flip()` and the theme switches instantly. Checking for `types` matters: older browsers support `startViewTransition()` but only with a function argument, and they'd throw an error on the options object.
 
+**Update:** when I added [transitions between pages](./2026-10-31-route-transitions-composition), they needed the same check, so it moved into one shared function, `canTransition()` in `src/lib/view-transitions.ts`. The toggle now starts with `if (!canTransition()) return flip();`.
+
 ## A bug I found on the way
 
 The button's `theme` starts as `undefined`, because the prerendered page can't know the visitor's theme. I thought that kept `aria-pressed` out of the HTML. It didn't: Svelte renders `false` on an `aria-*` attribute as the string `"false"`, so every visitor got `aria-pressed="false"` until the page loaded. Only `undefined` leaves the attribute out:
