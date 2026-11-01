@@ -45,7 +45,7 @@ By default the whole page cross-fades. `view-transition-name` gives an element i
 
 ```css
 :root:active-view-transition-type(route) {
-	& header {
+	& .site-header {
 		view-transition-name: site-header;
 	}
 
@@ -54,6 +54,8 @@ By default the whole page cross-fades. `view-transition-name` gives an element i
 	}
 }
 ```
+
+A name must be unique on the page. My first version said `& header`, and it worked until a Bitácora entry got a `<header>` of its own for its title. Two elements had the name `site-header`, and the browser aborted the transition with "Unexpected duplicate view-transition-name". A class on the site header fixed it.
 
 The names only exist during `route` transitions. My theme toggle's circular reveal animates the root picture, and a named element is cut out of the root. With a permanent name, the header would sit outside the circle and change theme on its own.
 
