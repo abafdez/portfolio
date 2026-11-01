@@ -1,9 +1,14 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Hero from '#lib/components/Hero.svelte';
 	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
 	import SectionNav, { type Section } from '#lib/components/SectionNav.svelte';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
 	import { profiles, type Link } from '#lib/links.ts';
+	import type { PageProps } from './$types';
+
+	// From +page.server.ts: the latest posts and Bitácora entries.
+	let { data }: PageProps = $props();
 
 	const links: Link[] = [
 		{ label: 'View my CV', route: '/cv' },
@@ -12,14 +17,14 @@
 		...profiles
 	];
 
-	// Empty until the blog (Phase 7) and projects (Phase 8) exist. The {:else}
-	// fallbacks below show until then; nothing else changes when real data arrives.
-	const posts: Teaser[] = [];
+	// Empty until projects (Phase 8) exist. The {:else} fallback shows until then;
+	// nothing else changes when real data arrives.
 	const projects: Teaser[] = [];
 
 	// The sections on the right, in order. The intro's nav is built from this list.
 	const sections: Section[] = [
 		{ id: 'posts', label: 'Latest posts' },
+		{ id: 'log', label: 'Bitácora' },
 		{ id: 'projects', label: 'Featured projects' }
 	];
 
@@ -50,7 +55,7 @@
 		<section id="posts" style:animation={enter(300)} aria-labelledby="posts-title">
 			<h2 id="posts-title">Latest posts</h2>
 			<div class="grid">
-				{#each posts as post (post.title)}
+				{#each data.posts as post (post.slug)}
 					<TeaserCard {...post} />
 				{:else}
 					<p class="empty">No posts yet. They'll show up here once the blog is live.</p>
@@ -58,7 +63,19 @@
 			</div>
 		</section>
 
-		<section id="projects" style:animation={enter(450)} aria-labelledby="projects-title">
+		<section id="log" style:animation={enter(450)} aria-labelledby="log-title">
+			<h2 id="log-title">Bitácora</h2>
+			<p class="intro-text">Short notes from building this site, step by step.</p>
+			<div class="grid">
+				{#each data.log as entry (entry.slug)}
+					<TeaserCard {...entry} href={resolve('/bitacora/[slug]', { slug: entry.slug })} />
+				{:else}
+					<p class="empty">No entries yet.</p>
+				{/each}
+			</div>
+		</section>
+
+		<section id="projects" style:animation={enter(600)} aria-labelledby="projects-title">
 			<h2 id="projects-title">Featured projects</h2>
 			<div class="grid">
 				{#each projects as project (project.title)}
@@ -135,8 +152,13 @@
 		margin-block-start: var(--size-4);
 	}
 
-	.empty {
+	.empty,
+	.intro-text {
 		color: var(--text-2);
+	}
+
+	.intro-text {
+		margin-block-start: var(--size-2);
 	}
 
 	/* Scroll-driven reveal: each section's content is wiped in from the top, like a

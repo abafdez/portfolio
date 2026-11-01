@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
-	import type { RouteId } from '$app/types';
+	import type { RouteWithoutParams } from '#lib/links.ts';
 
-	const links: { href: RouteId; label: string }[] = [
+	const links: { href: RouteWithoutParams; label: string }[] = [
 		{ href: '/', label: 'Home' },
 		{ href: '/blog', label: 'Blog' },
 		{ href: '/awesome', label: 'Awesome' },
