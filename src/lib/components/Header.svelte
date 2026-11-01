@@ -4,7 +4,7 @@
 	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
 </script>
 
-<header>
+<header class="site-header">
 	<div class="inner">
 		<a class="site-name" href={resolve('/')}>Alfonso Baeza</a>
 		<div class="nav"><Nav /></div>

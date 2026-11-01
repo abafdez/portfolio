@@ -1,8 +1,13 @@
 import type { RouteId } from '$app/types';
 
+// The routes resolve() can build from the id alone: those without a [param].
+// '/bitacora/[slug]' needs a slug too, so it's left out.
+export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
+
 // A link is either a route on this site (checked by the type system and passed
 // through resolve()) or an external https URL. Never both.
-export type Link = { label: string; route: RouteId } | { label: string; url: `https://${string}` };
+export type Link =
+	{ label: string; route: RouteWithoutParams } | { label: string; url: `https://${string}` };
 
 // Shared by the hero and the footer, so a profile URL only lives in one place.
 // `satisfies` checks each entry is a valid Link but keeps the exact type, so code

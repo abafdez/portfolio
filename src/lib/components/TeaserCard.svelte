@@ -1,5 +1,5 @@
 <script module lang="ts">
-	import type { RouteId } from '$app/types';
+	import type { ResolvedPathname } from '$app/types';
 
 	// Exported so pages can type their lists: const posts: Teaser[] = [...]
 	export interface Teaser {
@@ -8,15 +8,15 @@
 		// 'YYYY-MM-DD', shown as is: it fits the terminal look and needs no formatting.
 		date?: string;
 		tags?: string[];
-		// Optional: a card can exist before its page does.
-		route?: RouteId;
+		// Optional: a card can exist before its page does. Already resolved by the
+		// caller (resolve('/bitacora/[slug]', { slug })), so the route and its params
+		// are still type-checked there.
+		href?: ResolvedPathname;
 	}
 </script>
 
 <script lang="ts">
-	import { resolve } from '$app/paths';
-
-	let { title, description, date, tags, route }: Teaser = $props();
+	let { title, description, date, tags, href }: Teaser = $props();
 </script>
 
 <article>
@@ -24,8 +24,8 @@
 		<time datetime={date}>{date}</time>
 	{/if}
 	<h3>
-		{#if route}
-			<a href={resolve(route)}>{title}</a>
+		{#if href}
+			<a {href}>{title}</a>
 		{:else}
 			{title}
 		{/if}

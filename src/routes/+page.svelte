@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Hero from '#lib/components/Hero.svelte';
 	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
 	import SectionNav, { type Section } from '#lib/components/SectionNav.svelte';
@@ -67,7 +68,7 @@
 			<p class="intro-text">Short notes from building this site, step by step.</p>
 			<div class="grid">
 				{#each data.log as entry (entry.slug)}
-					<TeaserCard {...entry} />
+					<TeaserCard {...entry} href={resolve('/bitacora/[slug]', { slug: entry.slug })} />
 				{:else}
 					<p class="empty">No entries yet.</p>
 				{/each}

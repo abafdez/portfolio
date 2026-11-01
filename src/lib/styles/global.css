@@ -167,7 +167,9 @@
 	   of the page (the root). Names only during "route" transitions, so the theme
 	   reveal, which animates the root, still covers the whole page. */
 	:root:active-view-transition-type(route) {
-		& header {
+		/* The site header only, by class: a name must be unique on the page, and pages
+		   have <header>s of their own (a Bitácora entry's title block). */
+		& .site-header {
 			view-transition-name: site-header;
 		}
 
@@ -199,6 +201,66 @@
 
 		&::view-transition-new(page) {
 			animation: route-in 300ms var(--ease-out-3) both;
+		}
+	}
+}
+
+@layer components {
+	/* Rendered markdown (a Bitácora entry, later a blog post). mdsvex makes its HTML in
+	   another component, so a page's scoped styles can't reach it; a global class can.
+	   Space goes between siblings, never before the first one or after the last. */
+	.prose {
+		& > * + * {
+			margin-block-start: var(--size-3);
+		}
+
+		/* A heading starts a new part: more space above it than below. */
+		& :is(h2, h3) {
+			margin-block-start: var(--size-7);
+		}
+
+		& :is(h2, h3) + * {
+			margin-block-start: var(--size-2);
+		}
+
+		& h3 {
+			font-size: var(--font-size-3);
+		}
+
+		& :is(ul, ol) {
+			padding-inline-start: var(--size-5);
+		}
+
+		& li + li {
+			margin-block-start: var(--size-1);
+		}
+
+		& li::marker {
+			color: var(--brand);
+		}
+
+		/* Inline code; code blocks are styled on the pre. */
+		& :not(pre) > code {
+			padding: 0.1em 0.3em;
+			border-radius: var(--radius-2);
+			background-color: var(--surface-2);
+			font-size: 0.9em;
+		}
+
+		/* Long lines scroll inside the block, not the page. */
+		& pre {
+			padding: var(--size-3);
+			overflow-x: auto;
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			background-color: var(--surface-2);
+			font-size: var(--font-size-1);
+		}
+
+		& blockquote {
+			padding-inline-start: var(--size-3);
+			border-inline-start: var(--border-size-2) solid var(--brand);
+			color: var(--text-2);
 		}
 	}
 }
