@@ -2,7 +2,6 @@
 title: A different font for each part of my site, all self-hosted
 date: 2026-10-29
 tags: [css, fonts, fontsource, design-tokens, sveltekit]
-draft: true
 description: Fira Code for code, a handwritten font for my dev log and the system font everywhere else. No Google Fonts, no extra cost on pages that don't use them.
 ---
 

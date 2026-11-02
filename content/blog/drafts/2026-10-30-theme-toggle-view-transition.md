@@ -2,7 +2,6 @@
 title: 'A theme toggle that reveals itself: SVG masks and view transitions'
 date: 2026-10-30
 tags: [css, view-transitions, svg, svelte, dark-mode]
-draft: true
 description: My theme toggle became a sun that turns into a moon, and the new theme now grows out of the button in a circle. An SVG mask, one number token, and the View Transition API.
 ---
 

@@ -1,3 +1,4 @@
+import { resolve } from '$app/paths';
 import type { RouteId } from '$app/types';
 
 // The routes resolve() can build from the id alone: those without a [param].
@@ -16,3 +17,7 @@ export const profiles = [
 	{ label: 'GitHub', url: 'https://github.com/abafdez' },
 	{ label: 'LinkedIn', url: 'https://www.linkedin.com/in/alfonso-baeza-fdez/' }
 ] as const satisfies readonly Link[];
+
+// A blog tag's page. Cards and headers take this as tagHref to link their tags.
+// Bitácora tags have no pages, so the Bitácora doesn't pass it.
+export const blogTag = (tag: string) => resolve('/blog/tags/[tag]', { tag });

@@ -85,9 +85,10 @@ Each later route phase (5–8) also builds that route's own composition and tric
 
 ## Phase 7 — Blog (1–1.5 weeks)
 
-- **Learn:** reuse the Phase 6 helper (generalise it with a generic `<T>`), custom mdsvex layouts, syntax highlighting (Shiki), components inside markdown, tag pages, an RSS feed as a prerendered `+server.ts`, reading time.
-- **Do:** build `/blog`, `/blog/[slug]`, `/blog/tags/[tag]`, and `/rss.xml`. Support draft posts that are hidden in production.
-- **Done when:** code blocks are highlighted, the RSS validates, and drafts don't ship.
+- **Learn:** reuse the Phase 6 helper (generalise it with a generic `<T>`), custom mdsvex layouts, syntax highlighting (Shiki), components inside markdown, tag pages, reading time. (RSS dropped: Alfonso's call, 2026-11-02.)
+- **Do:** build `/blog`, `/blog/[slug]`, and `/blog/tags/[tag]`. Support draft posts that are hidden in production.
+- **Done when:** code blocks are highlighted, posts can be browsed by tag, and drafts don't ship.
+- **Status:** ✅ done on `feat/blog` (2026-11-02), waiting for its PR. Drafts live in `content/blog/drafts/` and never reach a build; code blocks get our own Shiki theme and a frame (language, copy, line numbers); reading time; tag pages.
 
 ## Phase 8 — Subprojects & Awesome-X (1.5 weeks)
 
@@ -114,7 +115,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 src/
   content/{blog,bitacora,awesome}/*.md
   lib/{components,styles,data,content.ts,types.ts}
-  routes/{cv,projects/[tool],awesome/[list],blog/[slug],bitacora/[slug],rss.xml}
+  routes/{cv,projects/[tool],awesome/[list],blog/[slug],bitacora/[slug]}
 ```
 
 ## Verification (each phase)

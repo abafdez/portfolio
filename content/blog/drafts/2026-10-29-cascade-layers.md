@@ -2,7 +2,6 @@
 title: 'Cascade layers: stop fighting specificity'
 date: 2026-10-29
 tags: [css, cascade-layers]
-draft: true
 description: How @layer lets me decide once which global styles win, and why my Svelte component styles beat all of them without extra effort.
 ---
 

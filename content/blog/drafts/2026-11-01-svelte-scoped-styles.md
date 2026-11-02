@@ -2,7 +2,6 @@
 title: 'How Svelte scopes styles, read from the compiler output'
 date: 2026-11-01
 tags: [svelte, css]
-draft: true
 description: What the Svelte compiler does to a component's style block, why a page's styles couldn't reach my rendered markdown, and when :global() or a global class is the right fix.
 ---
 

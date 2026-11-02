@@ -2,7 +2,6 @@
 title: 'Learning Svelte styling: the resources I am using'
 date: 2026-11-01
 tags: [svelte, css, resources]
-draft: true
 description: Where to learn how Svelte styles components, from the official tutorial to videos, plus the playground experiments that finally made scoped styles click for me.
 ---
 

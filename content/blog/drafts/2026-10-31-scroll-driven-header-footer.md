@@ -2,7 +2,6 @@
 title: 'Scroll-driven animations: a header that detaches and a footer that hints'
 date: 2026-10-31
 tags: [css, scroll-driven-animations, accessibility]
-draft: true
 description: Animations that follow the scroll instead of the clock, in pure CSS. A header that lifts into a floating bar, a footer that slides in, and a hint that there's more below, all with a fallback for older browsers and reduced motion.
 ---
 

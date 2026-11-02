@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-static'; //for SSG
@@ -5,6 +6,8 @@ import { enhancedImages } from '@sveltejs/enhanced-img';
 import { compile } from 'mdsvex'; //markdown to Svelte markup
 import OpenProps from 'open-props'; //Styling
 import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
+import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki'; //code blocks
+import { codeTheme } from './src/lib/code-theme.ts';
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -12,6 +15,42 @@ const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
 if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 	throw new Error(`BASE_PATH must look like '/portfolio'. Got: "${base}"`);
 }
+
+// Code blocks are highlighted with Shiki at build time: the HTML ships with a color on
+// every token and no highlighting JS. Our theme's colors are var(--code-…), so code
+// follows the site theme like everything else (see code-theme.ts).
+// Created once and shared by every .md file. It starts with no languages: each one is
+// loaded the first time a code block uses it.
+const shiki = createHighlighter({ themes: [codeTheme], langs: [] });
+
+async function highlight(code: string, lang: string | null | undefined) {
+	const highlighter = await shiki;
+	let language = 'text';
+	if (lang && lang in bundledLanguages) {
+		await highlighter.loadLanguage(lang as BundledLanguage);
+		language = lang;
+	} else if (lang) {
+		console.warn(`Shiki has no language "${lang}"; that block is shown as plain text.`);
+	}
+	const html = highlighter.codeToHtml(code, {
+		lang: language,
+		theme: 'tokens',
+		// Long lines wrap (CodeBlock.svelte), so a block never scrolls and doesn't need
+		// to be focusable.
+		transformers: [{ pre: (node) => void delete node.properties.tabindex }]
+	});
+	// The HTML goes into a Svelte template string: { } would be read as Svelte
+	// expressions, and ` \ would end or change the string. As HTML entities they show
+	// the same characters on screen. CodeBlock comes from the layout (MarkdownLayout).
+	const escaped = html.replace(/[{}`\\]/g, (c) => `&#${c.charCodeAt(0)};`);
+	return `<Components.CodeBlock lang="${language}">{@html \`${escaped}\`}</Components.CodeBlock>`;
+}
+
+// The layout every .md file is wrapped in. mdsvex reads it from disk (to see which
+// elements it replaces), so it needs a file path, not a URL.
+const layout = fileURLToPath(
+	new URL('./src/lib/components/MarkdownLayout.svelte', import.meta.url)
+);
 
 // Turns each .md file into Svelte markup with mdsvex; vite-plugin-svelte then compiles
 // it like any component. Why a plugin and not `preprocess: [mdsvex()]`: enhanced-img
@@ -27,13 +66,22 @@ function markdown(): Plugin {
 			// Only plain .md imports: '…md?raw' (content.ts) must stay plain text.
 			filter: { id: /\.md$/ },
 			async handler(code, id) {
-				const out = await compile(code, { filename: id, extensions: ['.md'] });
+				const out = await compile(code, {
+					filename: id,
+					extensions: ['.md'],
+					highlight: { highlighter: highlight },
+					layout
+				});
 				if (!out) return;
-				// mdsvex 0.12 still writes Svelte 4 syntax for the frontmatter script.
+				// mdsvex 0.12 still writes Svelte 4 syntax: <script context="module"> for
+				// the frontmatter, and {...$$props} on the layout (runes mode has no $$props;
+				// nothing passes props to a post anyway).
 				// The empty map says "no sourcemap on purpose": markdown -> HTML has no
 				// useful line-by-line mapping, and without it the build warns per file.
 				return {
-					code: out.code.replace('<script context="module">', '<script module>'),
+					code: out.code
+						.replace('<script context="module">', '<script module>')
+						.replace('{...$$props}', ''),
 					map: { mappings: '' }
 				};
 			}
@@ -60,7 +108,17 @@ export default defineConfig({
 				assets: 'build',
 				fallback: '404.html',
 				strict: true
-			})
+			}),
+			prerender: {
+				// A route nobody links to fails the build, which catches broken links. The
+				// exceptions: the post and tag pages have no pages while every post is a
+				// draft (drafts don't exist in a build). Once a post is published,
+				// entries() makes them.
+				handleUnseenRoutes: ({ routes, message }) => {
+					const draftOnly = ['/blog/[slug]', '/blog/tags/[tag]'];
+					if (routes.some((route) => !draftOnly.includes(route))) throw new Error(message);
+				}
+			}
 		})
 	],
 	css: {

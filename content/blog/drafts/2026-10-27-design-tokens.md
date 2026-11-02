@@ -2,7 +2,6 @@
 title: 'Design tokens: give your colors a job'
 date: 2026-10-27
 tags: [css, design-tokens, open-props]
-draft: true
 description: Why my components use --text-1 instead of --gray-8, and how a small tokens.css made dark mode a one-file change.
 ---
 

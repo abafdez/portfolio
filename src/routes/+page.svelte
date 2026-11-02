@@ -4,7 +4,7 @@
 	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
 	import SectionNav, { type Section } from '#lib/components/SectionNav.svelte';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
-	import { profiles, type Link } from '#lib/links.ts';
+	import { blogTag, profiles, type Link } from '#lib/links.ts';
 	import type { PageProps } from './$types';
 
 	// From +page.server.ts: the latest posts and Bitácora entries.
@@ -56,7 +56,11 @@
 			<h2 id="posts-title">Latest posts</h2>
 			<div class="grid">
 				{#each data.posts as post (post.slug)}
-					<TeaserCard {...post} />
+					<TeaserCard
+						{...post}
+						href={resolve('/blog/[slug]', { slug: post.slug })}
+						tagHref={blogTag}
+					/>
 				{:else}
 					<p class="empty">No posts yet. They'll show up here once the blog is live.</p>
 				{/each}

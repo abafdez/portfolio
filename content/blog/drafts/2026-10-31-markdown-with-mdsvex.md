@@ -2,7 +2,6 @@
 title: 'Markdown pages with mdsvex, and a lesson in Vite plugin order'
 date: 2026-10-31
 tags: [sveltekit, mdsvex, markdown, vite]
-draft: true
 description: Turning a folder of markdown files into prerendered SvelteKit pages with mdsvex, why the usual preprocess setup broke on my own posts, and how Vite really orders plugins.
 ---
 
@@ -87,6 +86,8 @@ Three small things in there:
 - **The filter.** `content.ts` still imports the same files with `?raw`, to read their frontmatter as plain text. Vite turns those into a JS module (`export default "---\ntitle: …"`), and every transform hook runs on that module too. Their id ends in `?raw`, not `.md`, so the `$` in `/\.md$/` keeps my plugin away from them. Without it, mdsvex would wrap that JS in a `<p>` and the build would fail.
 - **`<script module>`.** mdsvex 0.12 still writes the Svelte 4 syntax `context="module"`. Svelte 5 accepts it with a deprecation warning, one per file. One `replace` and the warnings are gone.
 - **The empty sourcemap.** A plugin that changes code should say how the new lines map to the old ones. Markdown to HTML has no useful mapping, and `{ mappings: '' }` says so on purpose. Without it, the build warned once per file.
+
+The plugin grew a little later. It passes two more options to `compile`: a `highlight` function for code blocks (see [Syntax highlighting with Shiki](./2026-11-02-shiki-with-design-tokens)), and a `layout`, a Svelte component every file is wrapped in. The layout brought one more piece of Svelte 4 syntax, `{...$$props}`, which runes mode doesn't allow, so a second `replace` removes it. My layout swaps every link for a component that knows the base path: [Markdown links that know the base path](./2026-11-02-markdown-links-with-an-mdsvex-layout).
 
 ## One page per file
 

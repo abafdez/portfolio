@@ -2,7 +2,6 @@
 title: Deploying SvelteKit 3 to GitHub Pages, step by step
 date: 2026-10-20
 tags: [sveltekit, github-actions, github-pages, ci]
-draft: true
 description: My GitHub Actions setup for a solo SvelteKit 3 project. PRs run checks, merges to main deploy, and an artifact connects the two jobs.
 ---
 
