@@ -1,4 +1,7 @@
 <script lang="ts">
+	import type { ResolvedPathname } from '$app/types';
+	import TagList from './TagList.svelte';
+
 	// The top of a Bitácora entry or a blog post, from its frontmatter.
 	interface Props {
 		title: string;
@@ -9,9 +12,11 @@
 		minutes?: number;
 		// Only in dev: drafts don't exist in a build (see content.ts).
 		draft?: boolean;
+		// Links each tag to its page (see TagList).
+		tagHref?: (tag: string) => ResolvedPathname;
 	}
 
-	let { title, date, minutes, tags, description, draft }: Props = $props();
+	let { title, date, minutes, tags, description, draft, tagHref }: Props = $props();
 </script>
 
 <header>
@@ -27,11 +32,7 @@
 		<p class="description">{description}</p>
 	{/if}
 	{#if tags?.length}
-		<ul class="tags" aria-label="Tags">
-			{#each tags as tag (tag)}
-				<li>#{tag}</li>
-			{/each}
-		</ul>
+		<TagList {tags} {tagHref} />
 	{/if}
 </header>
 
@@ -42,8 +43,7 @@
 
 	time,
 	.minutes,
-	.draft,
-	.tags {
+	.draft {
 		font-family: var(--font-label);
 		font-size: var(--font-size-0);
 		color: var(--text-2);
@@ -60,14 +60,5 @@
 		margin-block-start: var(--size-2);
 		font-size: var(--font-size-3);
 		color: var(--text-2);
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--size-1) var(--size-3);
-		margin-block-start: var(--size-2);
-		padding: 0;
-		list-style: none;
 	}
 </style>

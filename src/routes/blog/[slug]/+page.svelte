@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
+	import { blogTag } from '#lib/links.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -12,6 +13,6 @@
 </svelte:head>
 
 <article>
-	<ArticleHeader {...post} />
+	<ArticleHeader {...post} tagHref={blogTag} />
 	<div class="prose"><Body /></div>
 </article>

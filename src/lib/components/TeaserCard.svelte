@@ -1,5 +1,6 @@
 <script module lang="ts">
 	import type { ResolvedPathname } from '$app/types';
+	import TagList from './TagList.svelte';
 
 	// Exported so pages can type their lists: const posts: Teaser[] = [...]
 	export interface Teaser {
@@ -14,11 +15,13 @@
 		// caller (resolve('/bitacora/[slug]', { slug })), so the route and its params
 		// are still type-checked there.
 		href?: ResolvedPathname;
+		// Links each tag to its page (see TagList).
+		tagHref?: (tag: string) => ResolvedPathname;
 	}
 </script>
 
 <script lang="ts">
-	let { title, description, date, minutes, tags, href }: Teaser = $props();
+	let { title, description, date, minutes, tags, href, tagHref }: Teaser = $props();
 </script>
 
 <article>
@@ -39,11 +42,7 @@
 		<p>{description}</p>
 	{/if}
 	{#if tags?.length}
-		<ul class="tags" aria-label="Tags">
-			{#each tags as tag (tag)}
-				<li>#{tag}</li>
-			{/each}
-		</ul>
+		<TagList {tags} {tagHref} --tags-space="var(--size-3)" />
 	{/if}
 </article>
 
@@ -55,8 +54,7 @@
 		background: var(--surface-2);
 	}
 
-	.meta,
-	.tags {
+	.meta {
 		font-family: var(--font-label);
 		font-size: var(--font-size-0);
 		color: var(--text-2);
@@ -68,15 +66,6 @@
 
 	.meta + h3 {
 		margin-block-start: var(--size-1);
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--size-1) var(--size-3);
-		margin-block-start: var(--size-3);
-		padding: 0;
-		list-style: none;
 	}
 
 	p {

@@ -110,11 +110,13 @@ export default defineConfig({
 				strict: true
 			}),
 			prerender: {
-				// A route nobody links to fails the build, which catches broken links. One
-				// exception: /blog/[slug] has no pages while every post is a draft (drafts
-				// don't exist in a build). Once a post is published, entries() makes it.
+				// A route nobody links to fails the build, which catches broken links. The
+				// exceptions: the post and tag pages have no pages while every post is a
+				// draft (drafts don't exist in a build). Once a post is published,
+				// entries() makes them.
 				handleUnseenRoutes: ({ routes, message }) => {
-					if (routes.some((route) => route !== '/blog/[slug]')) throw new Error(message);
+					const draftOnly = ['/blog/[slug]', '/blog/tags/[tag]'];
+					if (routes.some((route) => !draftOnly.includes(route))) throw new Error(message);
 				}
 			}
 		})
