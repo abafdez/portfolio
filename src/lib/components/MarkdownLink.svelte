@@ -1,7 +1,8 @@
 <script lang="ts">
 	// Every link written in markdown (MarkdownLayout.svelte swaps <a> for this).
 	// - /cv: a page on this site. Gets the base path (/portfolio on GitHub Pages),
-	//   like the links in our components do with resolve().
+	//   like the links in our components do with resolve(). Only one slash: //host
+	//   is another site.
 	// - https://…: rel="external". mdsvex adds rel="nofollow" to every link, which
 	//   tells search engines not to vouch for it. These are links I recommend, so it's
 	//   dropped (it's never read from the props below).
@@ -24,7 +25,7 @@
 	let { href, title, children }: Props = $props();
 
 	let external = $derived(/^https?:\/\//.test(href));
-	let url = $derived(href.startsWith('/') ? withBase(href) : href);
+	let url = $derived(/^\/(?!\/)/.test(href) ? withBase(href) : href);
 </script>
 
 <a href={url} {title} rel={external ? 'external' : undefined}>{@render children()}</a>

@@ -57,7 +57,7 @@ mdsvex imports the layout as `* as Components`, so the other exports are reachab
 	let { href, title, children }: Props = $props();
 
 	let external = $derived(/^https?:\/\//.test(href));
-	let url = $derived(href.startsWith('/') ? withBase(href) : href);
+	let url = $derived(/^\/(?!\/)/.test(href) ? withBase(href) : href);
 </script>
 
 <a href={url} {title} rel={external ? 'external' : undefined}>{@render children()}</a>
@@ -65,7 +65,7 @@ mdsvex imports the layout as `* as Components`, so the other exports are reachab
 
 Three kinds of links:
 
-- **`/cv`**, a page on my site. It gets the base path. In the build it comes out as `href="../cv"`, because SvelteKit writes relative links in prerendered pages.
+- **`/cv`**, a page on my site. It gets the base path. In the build it comes out as `href="../cv"`, because SvelteKit writes relative links in prerendered pages. The regular expression checks for one slash and not two: `//example.com` is a link to another site that keeps the page's protocol, and it must not get the base.
 - **`https://…`**, another site. It gets `rel="external"`.
 - **`./other-post` or `#a-heading`.** These are relative, so they already work under any base.
 
