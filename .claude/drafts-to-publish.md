@@ -54,6 +54,9 @@ These link to no other draft.
 - `2026-11-02-a-contrast-checker-for-my-own-tokens`
   - add `data-theme="light"` to an element in DevTools and describe what happened
   - a link to the tool once it's live, and a screenshot of the tables
+- `2026-11-02-filters-in-a-svelte-class`
+  - whether AND felt right for tags, or OR
+  - what a screen reader said when toggling a tag and typing a search
 
 ## Groups that go up together
 
