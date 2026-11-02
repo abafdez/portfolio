@@ -17,6 +17,18 @@
 	--green-bright: oklch(84% 0.2 148);
 
 	--pink-soft: oklch(76% 0.13 5);
+
+	/* Syntax colors: a dark (light theme) and a bright (dark theme) step per hue. */
+	--violet-dark: oklch(47% 0.2 305);
+	--violet-bright: oklch(78% 0.13 305);
+	--blue-dark: oklch(47% 0.15 255);
+	--blue-bright: oklch(79% 0.11 240);
+	--amber-dark: oklch(50% 0.12 55);
+	--amber-bright: oklch(83% 0.13 75);
+	--teal-dark: oklch(48% 0.08 195);
+	--teal-bright: oklch(82% 0.11 190);
+	--red-dark: oklch(50% 0.19 22);
+	--red-bright: oklch(75% 0.15 18);
 }
 
 /* light-dark(a, b) picks a or b from the element's color-scheme.
@@ -47,6 +59,19 @@
 	--mascot-light: var(--ink-0);
 	--mascot-blush: var(--pink-soft);
 	--mascot-shadow: color-mix(in oklch, var(--text-1) 15%, transparent);
+
+	/* Code blocks. Our Shiki theme (src/lib/code-theme.ts) colors every token with one
+	   of these. All ≥ 5.3:1 on --surface-2 (the code block) in both themes. */
+	--code-background: var(--surface-2);
+	--code-foreground: var(--text-1);
+	--code-comment: var(--text-2);
+	--code-punctuation: var(--text-2);
+	--code-keyword: light-dark(var(--violet-dark), var(--violet-bright));
+	--code-string: var(--brand);
+	--code-function: light-dark(var(--blue-dark), var(--blue-bright));
+	--code-constant: light-dark(var(--amber-dark), var(--amber-bright));
+	--code-type: light-dark(var(--teal-dark), var(--teal-bright));
+	--code-tag: light-dark(var(--red-dark), var(--red-bright));
 
 	/* Floating things (the detached header, the footer hint). */
 	--shadow-float: 0 var(--size-2) var(--size-6) color-mix(in oklch, var(--ink-8) 35%, transparent);

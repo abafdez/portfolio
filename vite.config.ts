@@ -5,12 +5,37 @@ import { enhancedImages } from '@sveltejs/enhanced-img';
 import { compile } from 'mdsvex'; //markdown to Svelte markup
 import OpenProps from 'open-props'; //Styling
 import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
+import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki'; //code blocks
+import { codeTheme } from './src/lib/code-theme.ts';
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
 //Checks if the base path is valid. It must start with a slash and not end with a slash.
 if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 	throw new Error(`BASE_PATH must look like '/portfolio'. Got: "${base}"`);
+}
+
+// Code blocks are highlighted with Shiki at build time: the HTML ships with a color on
+// every token and no highlighting JS. Our theme's colors are var(--code-…), so code
+// follows the site theme like everything else (see code-theme.ts).
+// Created once and shared by every .md file. It starts with no languages: each one is
+// loaded the first time a code block uses it.
+const shiki = createHighlighter({ themes: [codeTheme], langs: [] });
+
+async function highlight(code: string, lang: string | null | undefined) {
+	const highlighter = await shiki;
+	let language = 'text';
+	if (lang && lang in bundledLanguages) {
+		await highlighter.loadLanguage(lang as BundledLanguage);
+		language = lang;
+	} else if (lang) {
+		console.warn(`Shiki has no language "${lang}"; that block is shown as plain text.`);
+	}
+	const html = highlighter.codeToHtml(code, { lang: language, theme: 'tokens' });
+	// The HTML goes into a Svelte template string: { } would be read as Svelte
+	// expressions, and ` \ would end or change the string. As HTML entities they show
+	// the same characters on screen.
+	return `{@html \`${html.replace(/[{}`\\]/g, (c) => `&#${c.charCodeAt(0)};`)}\`}`;
 }
 
 // Turns each .md file into Svelte markup with mdsvex; vite-plugin-svelte then compiles
@@ -27,7 +52,11 @@ function markdown(): Plugin {
 			// Only plain .md imports: '…md?raw' (content.ts) must stay plain text.
 			filter: { id: /\.md$/ },
 			async handler(code, id) {
-				const out = await compile(code, { filename: id, extensions: ['.md'] });
+				const out = await compile(code, {
+					filename: id,
+					extensions: ['.md'],
+					highlight: { highlighter: highlight }
+				});
 				if (!out) return;
 				// mdsvex 0.12 still writes Svelte 4 syntax for the frontmatter script.
 				// The empty map says "no sourcemap on purpose": markdown -> HTML has no
