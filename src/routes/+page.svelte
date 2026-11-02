@@ -56,7 +56,7 @@
 			<h2 id="posts-title">Latest posts</h2>
 			<div class="grid">
 				{#each data.posts as post (post.slug)}
-					<TeaserCard {...post} />
+					<TeaserCard {...post} href={resolve('/blog/[slug]', { slug: post.slug })} />
 				{:else}
 					<p class="empty">No posts yet. They'll show up here once the blog is live.</p>
 				{/each}

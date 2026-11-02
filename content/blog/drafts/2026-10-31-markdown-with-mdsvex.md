@@ -2,7 +2,6 @@
 title: 'Markdown pages with mdsvex, and a lesson in Vite plugin order'
 date: 2026-10-31
 tags: [sveltekit, mdsvex, markdown, vite]
-draft: true
 description: Turning a folder of markdown files into prerendered SvelteKit pages with mdsvex, why the usual preprocess setup broke on my own posts, and how Vite really orders plugins.
 ---
 

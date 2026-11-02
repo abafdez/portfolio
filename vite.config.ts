@@ -60,7 +60,15 @@ export default defineConfig({
 				assets: 'build',
 				fallback: '404.html',
 				strict: true
-			})
+			}),
+			prerender: {
+				// A route nobody links to fails the build, which catches broken links. One
+				// exception: /blog/[slug] has no pages while every post is a draft (drafts
+				// don't exist in a build). Once a post is published, entries() makes it.
+				handleUnseenRoutes: ({ routes, message }) => {
+					if (routes.some((route) => route !== '/blog/[slug]')) throw new Error(message);
+				}
+			}
 		})
 	],
 	css: {

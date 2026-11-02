@@ -2,7 +2,6 @@
 title: 'Entrance animations: let the page decide'
 date: 2026-10-29
 tags: [css, animation, svelte, accessibility]
-draft: true
 description: Why my hero component doesn't animate itself, how the page passes it animations as CSS props, and a reduced-motion safety net that actually covers delays.
 ---
 

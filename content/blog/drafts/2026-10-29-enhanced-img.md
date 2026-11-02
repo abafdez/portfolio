@@ -2,7 +2,6 @@
 title: Responsive images with @sveltejs/enhanced-img
 date: 2026-10-29
 tags: [images, sveltekit, performance]
-draft: true
 description: My hero photo in AVIF, WebP and JPEG at two densities, with no layout shift, from a single import.
 ---
 

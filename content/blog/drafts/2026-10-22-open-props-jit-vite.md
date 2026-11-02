@@ -2,7 +2,6 @@
 title: Open Props in SvelteKit with only the variables you use
 date: 2026-10-22
 tags: [css, open-props, postcss, vite, sveltekit]
-draft: true
 description: How I set up Open Props with postcss-jit-props in a SvelteKit 3 project. The config goes in vite.config.ts, and I explain why CSS needs a plugin to do tree-shaking.
 ---
 

@@ -2,7 +2,6 @@
 title: Responsive layouts with (almost) no media queries
 date: 2026-10-29
 tags: [css, grid, container-queries, responsive]
-draft: true
 description: Card grids that pick their own column count, a hero that adapts to its container instead of the screen, and a header that rearranges itself with grid areas.
 ---
 
