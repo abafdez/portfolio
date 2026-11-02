@@ -51,6 +51,9 @@ These link to no other draft.
   - why one column
   - a screenshot of the overlapping numbers, or of the empty lines
   - what a screen reader said when I pressed the copy button
+- `2026-11-02-a-contrast-checker-for-my-own-tokens`
+  - add `data-theme="light"` to an element in DevTools and describe what happened
+  - a link to the tool once it's live, and a screenshot of the tables
 
 ## Groups that go up together
 
