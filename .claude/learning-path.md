@@ -88,7 +88,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Learn:** reuse the Phase 6 helper (generalise it with a generic `<T>`), custom mdsvex layouts, syntax highlighting (Shiki), components inside markdown, tag pages, reading time. (RSS dropped: Alfonso's call, 2026-11-02.)
 - **Do:** build `/blog`, `/blog/[slug]`, and `/blog/tags/[tag]`. Support draft posts that are hidden in production.
 - **Done when:** code blocks are highlighted, posts can be browsed by tag, and drafts don't ship.
-- **Status:** ✅ done on `feat/blog` (2026-11-02), waiting for its PR. Drafts live in `content/blog/drafts/` and never reach a build; code blocks get our own Shiki theme and a frame (language, copy, line numbers); reading time; tag pages.
+- **Status:** ✅ merged in PR #10 (2026-11-02). Drafts live in `content/blog/drafts/` and never reach a build; code blocks get our own Shiki theme and a frame (language, copy, line numbers); reading time; tag pages.
 
 ## Phase 8 — Subprojects & Awesome-X (1.5 weeks)
 
@@ -96,6 +96,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Subprojects:** create `/projects` as a card grid from data, plus `/projects/[tool]` where each tool is a small self-contained Svelte app. Start with one small tool, for example a color/contrast checker built on your own tokens.
 - **Awesome-X:** create `/awesome/[list]` from markdown or JSON (categories, links, descriptions, tags). Add client-side search and tag filtering with `$derived`, and optionally sync the state into URL search params.
 - **Done when:** there's at least one working tool and one awesome list, and both are filterable and shareable via URL.
+- **Status:** on `feat/projects` (branched 2026-11-02), not started.
 
 ## Phase 9 — Quality, SEO & polish (1 week)
 
