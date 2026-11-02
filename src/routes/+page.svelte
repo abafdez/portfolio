@@ -5,6 +5,7 @@
 	import SectionNav, { type Section } from '#lib/components/SectionNav.svelte';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
 	import { blogTag, profiles, type Link } from '#lib/links.ts';
+	import { projects as allProjects } from '#lib/projects/projects.ts';
 	import type { PageProps } from './$types';
 
 	// From +page.server.ts: the latest posts and Bitácora entries.
@@ -17,9 +18,17 @@
 		...profiles
 	];
 
-	// Empty until projects (Phase 8) exist. The {:else} fallback shows until then;
-	// nothing else changes when real data arrives.
-	const projects: Teaser[] = [];
+	// The newest projects (the list is newest first). Imported, not loaded: it's plain
+	// data, and the tools themselves stay on their own pages.
+	const projects: Teaser[] = allProjects
+		.slice(0, 3)
+		.map(({ slug, title, description, date, tags }) => ({
+			title,
+			description,
+			date,
+			tags,
+			href: resolve('/projects/[tool]', { tool: slug })
+		}));
 
 	// The sections on the right, in order. The intro's nav is built from this list.
 	const sections: Section[] = [
@@ -82,7 +91,7 @@
 		<section id="projects" style:animation={enter(600)} aria-labelledby="projects-title">
 			<h2 id="projects-title">Featured projects</h2>
 			<div class="grid">
-				{#each projects as project (project.title)}
+				{#each projects as project (project.href)}
 					<TeaserCard {...project} />
 				{:else}
 					<p class="empty">No projects yet. Featured work will appear here.</p>
