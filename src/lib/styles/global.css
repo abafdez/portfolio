@@ -133,10 +133,10 @@
 	}
 
 	/* Compositions: how a route's content is arranged (data-composition is set from the
-	   route's load data in +layout.svelte). Reading: one narrow column, about 60
-	   characters per line, for long text. */
+	   route's load data in +layout.svelte). Reading: one column for long text and its
+	   code blocks (--reading-width). */
 	main[data-composition='reading'] {
-		max-inline-size: var(--size-content-3);
+		max-inline-size: var(--reading-width);
 	}
 
 	code,
@@ -239,25 +239,12 @@
 			color: var(--brand);
 		}
 
-		/* Inline code; code blocks are styled on the pre. */
+		/* Inline code; code blocks are CodeBlock.svelte. */
 		& :not(pre) > code {
 			padding: 0.1em 0.3em;
 			border-radius: var(--radius-2);
 			background-color: var(--surface-2);
 			font-size: 0.9em;
-		}
-
-		/* Long lines scroll inside the block, not the page. The colors are set by Shiki
-		   (an inline style with the --code-* tokens). Shiki also adds tabindex="0", so a
-		   block that scrolls can be focused and scrolled with the keyboard. */
-		& pre {
-			padding: var(--size-3);
-			overflow-x: auto;
-			border: var(--border-size-1) solid var(--surface-3);
-			border-radius: var(--radius-3);
-			font-size: var(--font-size-1);
-			/* The code uses tabs, 8 columns wide by default: too much on a phone. */
-			tab-size: 2;
 		}
 
 		& blockquote {

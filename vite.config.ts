@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-static'; //for SSG
@@ -31,12 +32,25 @@ async function highlight(code: string, lang: string | null | undefined) {
 	} else if (lang) {
 		console.warn(`Shiki has no language "${lang}"; that block is shown as plain text.`);
 	}
-	const html = highlighter.codeToHtml(code, { lang: language, theme: 'tokens' });
+	const html = highlighter.codeToHtml(code, {
+		lang: language,
+		theme: 'tokens',
+		// Long lines wrap (CodeBlock.svelte), so a block never scrolls and doesn't need
+		// to be focusable.
+		transformers: [{ pre: (node) => void delete node.properties.tabindex }]
+	});
 	// The HTML goes into a Svelte template string: { } would be read as Svelte
 	// expressions, and ` \ would end or change the string. As HTML entities they show
-	// the same characters on screen.
-	return `{@html \`${html.replace(/[{}`\\]/g, (c) => `&#${c.charCodeAt(0)};`)}\`}`;
+	// the same characters on screen. CodeBlock comes from the layout (MarkdownLayout).
+	const escaped = html.replace(/[{}`\\]/g, (c) => `&#${c.charCodeAt(0)};`);
+	return `<Components.CodeBlock lang="${language}">{@html \`${escaped}\`}</Components.CodeBlock>`;
 }
+
+// The layout every .md file is wrapped in. mdsvex reads it from disk (to see which
+// elements it replaces), so it needs a file path, not a URL.
+const layout = fileURLToPath(
+	new URL('./src/lib/components/MarkdownLayout.svelte', import.meta.url)
+);
 
 // Turns each .md file into Svelte markup with mdsvex; vite-plugin-svelte then compiles
 // it like any component. Why a plugin and not `preprocess: [mdsvex()]`: enhanced-img
@@ -55,14 +69,19 @@ function markdown(): Plugin {
 				const out = await compile(code, {
 					filename: id,
 					extensions: ['.md'],
-					highlight: { highlighter: highlight }
+					highlight: { highlighter: highlight },
+					layout
 				});
 				if (!out) return;
-				// mdsvex 0.12 still writes Svelte 4 syntax for the frontmatter script.
+				// mdsvex 0.12 still writes Svelte 4 syntax: <script context="module"> for
+				// the frontmatter, and {...$$props} on the layout (runes mode has no $$props;
+				// nothing passes props to a post anyway).
 				// The empty map says "no sourcemap on purpose": markdown -> HTML has no
 				// useful line-by-line mapping, and without it the build warns per file.
 				return {
-					code: out.code.replace('<script context="module">', '<script module>'),
+					code: out.code
+						.replace('<script context="module">', '<script module>')
+						.replace('{...$$props}', ''),
 					map: { mappings: '' }
 				};
 			}

@@ -78,6 +78,9 @@
 
 	/* Layout: the header, main and footer share one content width. */
 	--content-width: 70rem;
+	/* The reading composition (posts, Bitácora entries): one column for text and code.
+	   80ch of the body font is about 90 characters of text and 80 of code. */
+	--reading-width: 80ch;
 	/* Room for the sticky header (from 48rem, about 6.1rem tall): sticky things below it
 	   and in-page jumps leave this much space at the top. */
 	--header-space: 6.5rem;

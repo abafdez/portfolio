@@ -5,15 +5,20 @@
 		date: string;
 		tags?: string[];
 		description?: string;
+		// Reading time, from content.ts.
+		minutes?: number;
 		// Only in dev: drafts don't exist in a build (see content.ts).
 		draft?: boolean;
 	}
 
-	let { title, date, tags, description, draft }: Props = $props();
+	let { title, date, minutes, tags, description, draft }: Props = $props();
 </script>
 
 <header>
 	<time datetime={date}>{date}</time>
+	{#if minutes}
+		<span class="minutes">· {minutes} min read</span>
+	{/if}
 	{#if draft}
 		<span class="draft">draft</span>
 	{/if}
@@ -36,6 +41,7 @@
 	}
 
 	time,
+	.minutes,
 	.draft,
 	.tags {
 		font-family: var(--font-label);

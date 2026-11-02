@@ -20,7 +20,8 @@ export interface LogMeta extends Frontmatter {
 }
 
 // draft: the file is in a drafts/ folder (only possible in dev, see below).
-export type Entry<T extends Frontmatter> = T & { slug: string; draft: boolean };
+// minutes: reading time, from the words in the file (see readingTime()).
+export type Entry<T extends Frontmatter> = T & { slug: string; draft: boolean; minutes: number };
 
 // import.meta.glob is a Vite feature: it finds the files at build time and imports
 // them all. eager: imported right away, not as lazy functions. query '?raw' +
@@ -49,13 +50,22 @@ const log = import.meta.glob<string>('/content/bitacora/*.md', {
 // The frontmatter is the YAML between the two --- lines at the top of the file.
 const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---/;
 
+// Minutes to read the body (the file without its frontmatter), rounded up.
+// 200 words a minute: a bit under the usual ~238 for non-fiction, because the posts
+// are technical and full of code. Code counts as words too.
+function readingTime(text: string): number {
+	const words = text.replace(frontmatter, '').match(/\S+/g)?.length ?? 0;
+	return Math.max(1, Math.ceil(words / 200));
+}
+
 // The file name is the slug: /content/blog/2026-10-27-design-tokens.md -> 2026-10-27-design-tokens
 function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[] {
 	return Object.entries(files)
 		.map(([path, text]) => ({
 			...(parse(text.match(frontmatter)?.[1] ?? '') as T),
 			slug: path.split('/').at(-1)!.replace(/\.md$/, ''),
-			draft: path.includes('/drafts/')
+			draft: path.includes('/drafts/'),
+			minutes: readingTime(text)
 		}))
 		.sort((a, b) => b.date.localeCompare(a.date) || b.slug.localeCompare(a.slug));
 }

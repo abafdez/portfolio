@@ -7,6 +7,8 @@
 		description?: string;
 		// 'YYYY-MM-DD', shown as is: it fits the terminal look and needs no formatting.
 		date?: string;
+		// Reading time, shown next to the date.
+		minutes?: number;
 		tags?: string[];
 		// Optional: a card can exist before its page does. Already resolved by the
 		// caller (resolve('/bitacora/[slug]', { slug })), so the route and its params
@@ -16,12 +18,15 @@
 </script>
 
 <script lang="ts">
-	let { title, description, date, tags, href }: Teaser = $props();
+	let { title, description, date, minutes, tags, href }: Teaser = $props();
 </script>
 
 <article>
 	{#if date}
-		<time datetime={date}>{date}</time>
+		<div class="meta">
+			<time datetime={date}>{date}</time>
+			{#if minutes}· {minutes} min read{/if}
+		</div>
 	{/if}
 	<h3>
 		{#if href}
@@ -50,7 +55,7 @@
 		background: var(--surface-2);
 	}
 
-	time,
+	.meta,
 	.tags {
 		font-family: var(--font-label);
 		font-size: var(--font-size-0);
@@ -61,7 +66,7 @@
 		font-size: var(--font-size-3);
 	}
 
-	time + h3 {
+	.meta + h3 {
 		margin-block-start: var(--size-1);
 	}
 
