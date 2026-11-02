@@ -87,6 +87,8 @@ Three small things in there:
 - **`<script module>`.** mdsvex 0.12 still writes the Svelte 4 syntax `context="module"`. Svelte 5 accepts it with a deprecation warning, one per file. One `replace` and the warnings are gone.
 - **The empty sourcemap.** A plugin that changes code should say how the new lines map to the old ones. Markdown to HTML has no useful mapping, and `{ mappings: '' }` says so on purpose. Without it, the build warned once per file.
 
+The plugin grew a little later. It passes two more options to `compile`: a `highlight` function for code blocks (see [Syntax highlighting with Shiki](./2026-11-02-shiki-with-design-tokens)), and a `layout`, a Svelte component every file is wrapped in. The layout brought one more piece of Svelte 4 syntax, `{...$$props}`, which runes mode doesn't allow, so a second `replace` removes it. My layout swaps every link for a component that knows the base path: [Markdown links that know the base path](./2026-11-02-markdown-links-with-an-mdsvex-layout).
+
 ## One page per file
 
 The page lives in `src/routes/bitacora/[slug]/` and is split across two load files.

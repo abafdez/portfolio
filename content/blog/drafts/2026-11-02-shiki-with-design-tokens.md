@@ -22,11 +22,14 @@ async function highlight(code: string, lang: string | null | undefined) {
 		language = lang;
 	}
 	const html = highlighter.codeToHtml(code, { lang: language, theme: 'tokens' });
-	return `{@html \`${html.replace(/[{}`\\]/g, (c) => `&#${c.charCodeAt(0)};`)}\`}`;
+	const escaped = html.replace(/[{}`\\]/g, (c) => `&#${c.charCodeAt(0)};`);
+	return `<Components.CodeBlock lang="${language}">{@html \`${escaped}\`}</Components.CodeBlock>`;
 }
 ```
 
 The highlighter is created once and starts with no languages. Each one loads the first time a block uses it. What reaches the browser is a `<pre>` full of `<span>`s that already have their colors, and no highlighting JavaScript.
+
+The `<pre>` is wrapped in a small `CodeBlock` component, which adds the language, line numbers and a copy button. That's a story of its own: [A code block frame](./2026-11-02-a-code-block-frame).
 
 ## Where the colors come from
 
