@@ -269,6 +269,24 @@ groups:
         logo: jira
         level: 2
         profiles: [web, support, mainframe]
+      - name: Jira Service Management
+        logo: jira
+        level: 1
+        profiles: [support]
+      - name: ServiceNow
+        icon: headset
+        level: 1
+        profiles: [support]
+      - name: TeamViewer, AnyDesk and RustDesk
+        logo: teamviewer
+        level: 2
+        profiles: [support]
+        note: I support people remotely with them now and then.
+      - name: Trello and Asana
+        logo: trello
+        level: 2
+        profiles: [web, support]
+        note: Planned projects and tasks in them.
       - name: Notion
         logo: notion
         level: 3
@@ -320,6 +338,16 @@ groups:
         evidence:
           - label: Drafts only in dev
             entry: 2026-11-02-drafts-only-in-dev
+      - name: Scrum and Agile
+        icon: kanban
+        level: 2
+        profiles: [web, support, mainframe]
+        note: 'Worked in Scrum teams: sprints, stand-ups, boards.'
+      - name: Help desk and ticketing (ITIL)
+        icon: ticket
+        level: 2
+        profiles: [support]
+        note: 'Worked tickets in a queue: triage, priorities, escalation.'
       - name: Pull requests and CI
         icon: git-pull-request
         level: 2
