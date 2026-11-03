@@ -61,7 +61,12 @@ The current section is the last one whose top has passed a line a third of the w
 		current = atBottom ? sections.at(-1)?.id : id;
 	}
 
-	$effect(update);
+	$effect(() => {
+		update();
+		const observer = new ResizeObserver(update);
+		observer.observe(document.body);
+		return () => observer.disconnect();
+	});
 </script>
 
 <svelte:window onscroll={update} onresize={update} />
@@ -72,7 +77,7 @@ Two edges are handled on purpose:
 - **The top.** Before the first section reaches the line, it's already current (`id` starts as the first one). Otherwise nothing is highlighted until you scroll a bit.
 - **The bottom.** A short last section never reaches the line: the page ends first. So at the very bottom, the last one is current.
 
-`$effect(update)` runs it once the page is in the DOM, so a reload halfway down highlights the right section straight away. After that, the window's scroll and resize events run it.
+The effect runs it once the page is in the DOM, so a reload halfway down highlights the right section straight away. After that, the window's scroll and resize events run it, and so does a `ResizeObserver` on the body: on my about page, sections open by themselves and move everything below them without any scroll.
 
 My first version used an `IntersectionObserver` with `rootMargin: '-33% 0px -67% 0px'`, which shrinks the watched area to that same thin line. It looks neater: no measuring on every scroll, the browser tells you when a section crosses the line. But an observer only reports _changes_. When I scrolled fast, the scroll could stop with the line in the gap between two sections; nothing was touching it, no event came, and the old section stayed highlighted. Measuring ten sections per scroll costs nothing, and browsers fire `scroll` at most once per frame, so I traded the neat version for one that can't fall out of step.
 

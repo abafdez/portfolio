@@ -93,4 +93,5 @@ These need that whole group live first:
 
 - `2026-11-03-brand-colors-at-my-themes-lightness` (3: raw vs final screenshot; changing `--icon-tone` in DevTools; the logo that surprised me) → contrast checker
 - `2026-11-03-icons-as-data-and-an-svg-sprite` (2: editing the YAML vs the TypeScript; the build error from a wrong logo) → filters in a Svelte class
+- `2026-11-03-windows-that-collapse-and-still-search` (3: a video of windows opening and collapsing; Ctrl+F inside a collapsed window; what a screen reader says on the title bar)
 - `2026-11-03-htop-bars-and-a-border-spotlight` (4: a video of the bars and the glow; the three showcases and why terminal and spotlight; a stepped fill next to the smooth one; logos.svg in the Network tab) → icons as data and an SVG sprite
