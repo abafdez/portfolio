@@ -13,6 +13,7 @@ export const cvSkills: CvSkills = {
 		skills: group.skills
 			.toSorted((a, b) => (b.level ?? 0) - (a.level ?? 0))
 			.map(({ name, level, note, profiles }) => ({
+				name,
 				label: !level && note ? `${name} (${note.split('.')[0]})` : name,
 				profiles
 			}))

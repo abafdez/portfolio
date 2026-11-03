@@ -3,6 +3,7 @@
 // the repo or the build.
 // A $state class, like the Awesome filter: the values, and the ways to load and save
 // them, in one object.
+import { isObject, loadJson, saveJson } from './storage.ts';
 
 // One key for the whole form, as JSON. localStorage only stores strings.
 const key = 'cv-builder';
@@ -45,11 +46,7 @@ export class CvDetails {
 	// Called in onMount: localStorage only exists in the browser, and the page is
 	// prerendered without it.
 	load() {
-		try {
-			this.read(JSON.parse(localStorage.getItem(key) ?? '{}'));
-		} catch {
-			// Not JSON, or storage blocked: start empty.
-		}
+		this.read(loadJson(key));
 		this.loaded = true;
 	}
 
@@ -58,11 +55,10 @@ export class CvDetails {
 	// Returns how many fields it took, so an import can say whether the file had any.
 	// A field the data doesn't have keeps its value.
 	read(data: unknown): number {
-		if (typeof data !== 'object' || data === null) return 0;
-		const saved = data as Record<string, unknown>;
+		if (!isObject(data)) return 0;
 		let count = 0;
 		for (const field of fields) {
-			const value = saved[field];
+			const value = data[field];
 			if (typeof value !== 'string') continue;
 			if (field === 'profile' && !this.#profiles.includes(value)) continue;
 			this.values[field] = value;
@@ -71,18 +67,7 @@ export class CvDetails {
 		return count;
 	}
 
-	// The values as a JSON file, the same shape localStorage holds, so read() can load
-	// it back.
-	toFile(): Blob {
-		return new Blob([JSON.stringify(this.values, null, '\t')], { type: 'application/json' });
-	}
-
 	save() {
-		try {
-			localStorage.setItem(key, JSON.stringify(this.values));
-		} catch {
-			// Storage full or blocked (some private windows): the form still works, it just
-			// won't survive a reload.
-		}
+		saveJson(key, this.values);
 	}
 }

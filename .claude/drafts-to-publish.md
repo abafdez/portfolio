@@ -105,3 +105,4 @@ These need that whole group live first:
 - `2026-11-03-a-form-that-remembers` (3: a screenshot with made-up data; junk in localStorage and what `read()` kept; how I'd have found the select bug). Links to no draft.
 - `2026-11-03-printing-a-cv-from-a-web-page` (3: a print preview screenshot; the print rule tried in global.css; select-all from the PDF). Links to no draft.
 - `2026-11-03-form-validation-without-a-library` (3: screenshots in both themes; `:user-invalid` alone in DevTools; what a screen reader said). Links to no draft.
+- `2026-11-03-store-the-changes-not-the-copy` (3: a screenshot of the editor; my edits as stored in DevTools; the broken `??=` in the playground). Links to no draft.

@@ -1,19 +1,29 @@
 <script lang="ts">
 	// The CV builder: pick the kind of job, fill in who you are, and the CV next to the
 	// form follows. The skills come from the site's data (the page's server load); the
-	// rest is typed here and kept in this browser only (details.svelte.ts).
+	// rest is typed here and kept in this browser only (details.svelte.ts), with my
+	// changes to the skills (edits.svelte.ts).
 	import { onMount, tick } from 'svelte';
-	import { skillsFor, type CvSkills } from './cv.ts';
+	import type { CvSkills } from './cv.ts';
 	import { CvDetails, type Field } from './details.svelte.ts';
+	import { SkillEdits } from './edits.svelte.ts';
 	import { inputs, problem } from './inputs.ts';
+	import SkillEditor from './SkillEditor.svelte';
+	import { isObject } from './storage.ts';
 
 	let { skills }: { skills: CvSkills } = $props();
 
 	// The profiles never change after the page loads, so the first value is all it needs.
 	// svelte-ignore state_referenced_locally
-	const cv = new CvDetails(skills.profiles.map(({ id }) => id));
+	const ids = skills.profiles.map(({ id }) => id);
+	const cv = new CvDetails(ids);
+	const edits = new SkillEdits(ids);
 
-	onMount(() => cv.load());
+	// The edits first: cv.load() sets loaded, and that lets the effects save.
+	onMount(() => {
+		edits.load();
+		cv.load();
+	});
 
 	// Every change goes to localStorage: keeping something outside Svelte in step with
 	// the state is what $effect is for. save() reads every field (JSON.stringify), so the
@@ -25,8 +35,14 @@
 		if (cv.loaded) cv.save();
 	});
 
+	// The same for the skill edits, in an effect of its own: a change to one doesn't
+	// write the other again.
+	$effect(() => {
+		if (cv.loaded) edits.save();
+	});
+
 	let profile = $derived(skills.profiles.find(({ id }) => id === cv.values.profile)!);
-	let groups = $derived(skillsFor(skills, profile.id));
+	let groups = $derived(edits.groups(skills, profile.id));
 	let fullName = $derived(`${cv.values.name} ${cv.values.surnames}`.trim());
 	let place = $derived(
 		[cv.values.city, cv.values.state, cv.values.postalCode].filter(Boolean).join(', ')
@@ -81,8 +97,11 @@
 	// A download made in the page: the file is a Blob, URL.createObjectURL gives it a
 	// blob: URL, and a link with download saves it instead of opening it. The URL is
 	// released once the click has started the download.
+	// The file holds the details as localStorage does, plus the skill edits under
+	// "skills", so each read() can take its part.
 	function exportFile() {
-		const url = URL.createObjectURL(cv.toFile());
+		const data = JSON.stringify({ ...cv.values, skills: edits.all }, null, '\t');
+		const url = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
 		const link = document.createElement('a');
 		link.href = url;
 		link.download = 'cv-details.json';
@@ -99,10 +118,13 @@
 		const file = input.files?.[0];
 		if (!file) return;
 		try {
-			const count = cv.read(JSON.parse(await file.text()));
-			message = count
-				? `Loaded ${count} fields from ${file.name}.`
-				: `No CV fields in ${file.name}.`;
+			const data = JSON.parse(await file.text());
+			const count = cv.read(data);
+			const profiles = isObject(data) ? edits.read(data.skills) : 0;
+			message =
+				count || profiles
+					? `Loaded ${count} fields and skill edits for ${profiles} ${profiles === 1 ? 'profile' : 'profiles'} from ${file.name}.`
+					: `No CV fields in ${file.name}.`;
 			// A file can hold anything that's a string: show what needs fixing. tick() waits
 			// for the fields to show the new values before they're checked.
 			if (count) await tick().then(checkAll);
@@ -194,6 +216,11 @@
 			</label>
 		</fieldset>
 
+		<fieldset class="skills" disabled={!cv.loaded}>
+			<legend>Skills</legend>
+			<SkillEditor {skills} {edits} {profile} />
+		</fieldset>
+
 		<!-- type="button" on each: inside a form, a button without it submits. -->
 		<fieldset disabled={!cv.loaded}>
 			<legend>Your CV</legend>
@@ -244,7 +271,7 @@
 				{#each groups as group (group.name)}
 					<li>
 						<strong>{group.name}:</strong>
-						{group.skills.map(({ label }) => label).join(', ')}
+						{group.skills.join(', ')}
 					</li>
 				{/each}
 			</ul>
@@ -277,6 +304,11 @@
 		&:disabled {
 			opacity: 0.6;
 		}
+	}
+
+	/* One column: the editor's rows need the whole width. */
+	.skills {
+		display: block;
 	}
 
 	legend {

@@ -79,7 +79,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 
 ## Phase 5.5 — CV builder (1–1.5 weeks)
 
-- **Status:** on `feat/cv-builder` (branched 2026-11-03). Step 1 ✅: the profile filter on `/about` (`?profile=`, a radio group). Step 2 ✅: `/projects/cv` with the form (name, surnames, phone, email, city, state, postal code, short letter; experience is v2) kept in `localStorage`, and a live CV. Step 3 ✅: print button + print CSS, JSON export/import. Step 4 ✅: native validation. Next: editing skills for the selected profile.
+- **Status:** on `feat/cv-builder` (branched 2026-11-03). Step 1 ✅: the profile filter on `/about` (`?profile=`, a radio group). Step 2 ✅: `/projects/cv` with the form (name, surnames, phone, email, city, state, postal code, short letter; experience is v2) kept in `localStorage`, and a live CV. Step 3 ✅: print button + print CSS, JSON export/import. Step 4 ✅: native validation. Step 5 ✅: editing skills per profile (changes to the YAML, not a copy). Next: Alfonso prints the three CVs, then the PR.
 
 - **Why:** Alfonso applies for different kinds of jobs (web, support, mainframe) and needs a CV for each, readable by applicant tracking systems (ATS).
 - **Learn:** print CSS (`@media print`, `@page`, page breaks), what ATS parsers need (one column, real text, standard headings, no tables, images or icons), forms and validation in Svelte, `localStorage` behind a `$state` class, importing and exporting a JSON file (File API, `Blob`, a download link), the Clipboard API.
