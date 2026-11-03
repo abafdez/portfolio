@@ -50,6 +50,10 @@ import {
 // One file per icon: importing from '@lucide/svelte' itself would load all 2,000 in dev.
 import Accessibility from '@lucide/svelte/icons/accessibility';
 import Activity from '@lucide/svelte/icons/activity';
+import Bot from '@lucide/svelte/icons/bot';
+import Clapperboard from '@lucide/svelte/icons/clapperboard';
+import CodeXml from '@lucide/svelte/icons/code-xml';
+import Globe from '@lucide/svelte/icons/globe';
 import BookOpen from '@lucide/svelte/icons/book-open';
 import Boxes from '@lucide/svelte/icons/boxes';
 import Camera from '@lucide/svelte/icons/camera';
@@ -107,6 +111,8 @@ export interface Skill {
 
 export interface Group {
 	name: string;
+	// Next to the heading. Always a generic one: a group isn't a brand.
+	icon: LucideIcon;
 	// For the heading's id and the "on this page" nav.
 	id: string;
 	skills: Skill[];
@@ -127,6 +133,7 @@ export const groups: Group[] = [
 	{
 		name: 'Languages',
 		id: 'languages',
+		icon: CodeXml,
 		skills: [
 			{
 				name: 'HTML',
@@ -188,6 +195,7 @@ export const groups: Group[] = [
 	{
 		name: 'Web development',
 		id: 'web',
+		icon: Globe,
 		skills: [
 			{
 				name: 'Svelte and SvelteKit',
@@ -231,6 +239,7 @@ export const groups: Group[] = [
 	{
 		name: 'Databases',
 		id: 'databases',
+		icon: Database,
 		skills: [
 			{ name: 'MySQL', icon: siMysql, level: 3, note: 'Behind most of my freelance sites.' },
 			{ name: 'SQLite', icon: siSqlite, level: 2 },
@@ -240,6 +249,7 @@ export const groups: Group[] = [
 	{
 		name: 'Mainframe',
 		id: 'mainframe',
+		icon: Server,
 		skills: [
 			{
 				name: 'Natural and NaturalONE',
@@ -272,6 +282,7 @@ export const groups: Group[] = [
 	{
 		name: 'Tools',
 		id: 'tools',
+		icon: Wrench,
 		skills: [
 			{
 				name: 'Git and GitHub',
@@ -319,6 +330,7 @@ export const groups: Group[] = [
 	{
 		name: 'Ways of working',
 		id: 'methods',
+		icon: Workflow,
 		skills: [
 			{
 				name: 'Accessibility (WCAG)',
@@ -382,6 +394,7 @@ export const groups: Group[] = [
 	{
 		name: 'AI workflows',
 		id: 'ai',
+		icon: Bot,
 		skills: [
 			{
 				name: 'Claude Code',
@@ -414,6 +427,7 @@ export const groups: Group[] = [
 	{
 		name: 'Systems and support',
 		id: 'systems',
+		icon: Network,
 		skills: [
 			{
 				name: 'Local networks',
@@ -442,6 +456,7 @@ export const groups: Group[] = [
 	{
 		name: 'Multimedia and 3D',
 		id: 'multimedia',
+		icon: Clapperboard,
 		skills: [
 			{ name: 'Adobe Creative Suite', icon: Palette, level: 2 },
 			{ name: 'DaVinci Resolve', icon: siDavinciresolve, level: 2 },
@@ -458,6 +473,7 @@ export const groups: Group[] = [
 	{
 		name: 'Languages I speak',
 		id: 'spoken',
+		icon: Languages,
 		skills: [
 			{ name: 'Spanish', icon: Languages, note: 'Native.' },
 			{

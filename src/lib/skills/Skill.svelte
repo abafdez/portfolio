@@ -2,16 +2,22 @@
 	// One skill in /about: its icon, name and level, and, when there's more to say,
 	// a <details> that opens to how I use it and where it shows.
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
+	import { hueAndChroma } from './brand-color.ts';
 	import { evidenceHref, levels, type Skill } from './skills.ts';
 
 	let { skill }: { skill: Skill } = $props();
 
 	let more = $derived(Boolean(skill.note || skill.evidence?.length));
+	// A brand logo brings its own hue. A generic (Lucide) icon has none, and the CSS
+	// falls back to --icon-tone's own (the site's green).
+	let color = $derived(
+		skill.icon && 'hex' in skill.icon ? hueAndChroma(skill.icon.hex) : undefined
+	);
 </script>
 
 {#snippet head()}
 	{@const Icon = skill.icon}
-	<span class="icon">
+	<span class="icon" style:--hue={color?.hue} style:--chroma={color?.chroma}>
 		<!-- Simple Icons are data (they have a path), Lucide icons are components. -->
 		{#if Icon && 'path' in Icon}
 			<BrandIcon icon={Icon} size="1.25rem" />
@@ -92,10 +98,13 @@
 		}
 	}
 
+	/* Relative color: start from --icon-tone, keep its lightness (l), swap in the
+	   brand's chroma and hue. var(--hue, h) falls back to the tone's own h when the
+	   skill has no brand color. */
 	.icon {
 		display: flex;
 		inline-size: 1.25rem;
-		color: var(--text-2);
+		color: oklch(from var(--icon-tone) l var(--chroma, c) var(--hue, h));
 	}
 
 	/* minmax(0, 1fr) above lets this column shrink below its longest word, and a word

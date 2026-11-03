@@ -57,6 +57,11 @@
 	--grid-mark: color-mix(in oklch, var(--text-1) 18%, transparent);
 	--grid-size: 1.5rem;
 
+	/* Skill icons (/about): only this color's lightness is used. Each brand logo keeps
+	   its own hue and chroma at this lightness (oklch(from var(--icon-tone) l c h) in
+	   Skill.svelte), so the theme controls their contrast, like it does for text. */
+	--icon-tone: var(--brand);
+
 	/* The mascot. Same in both themes: the dark outline keeps it readable on light. */
 	--mascot-body: var(--green-bright);
 	--mascot-ink: var(--ink-8);

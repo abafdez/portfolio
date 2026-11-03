@@ -51,7 +51,7 @@
 	<div class="groups">
 		{#each groups as group (group.id)}
 			<section aria-labelledby={group.id}>
-				<h2 id={group.id}>{group.name}</h2>
+				<h2 id={group.id}><group.icon aria-hidden="true" />{group.name}</h2>
 				<ul class="skills">
 					{#each group.skills as skill (skill.name)}
 						<Skill {skill} />
@@ -102,6 +102,20 @@
 			&:hover {
 				background: var(--surface-3);
 			}
+		}
+	}
+
+	/* The group's icon before its name, in the brand color, sized with the heading. */
+	h2 {
+		display: flex;
+		align-items: center;
+		gap: var(--size-3);
+
+		& :global(svg) {
+			flex: none;
+			inline-size: 1em;
+			block-size: 1em;
+			color: var(--brand);
 		}
 	}
 
