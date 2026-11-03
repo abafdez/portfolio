@@ -138,3 +138,14 @@
 	color-scheme: dark;
 	--dark: 1;
 }
+
+/* Paper is white: printing always uses the light theme, whatever the screen shows
+   (dark-theme text would print light grey). Last in the file, so it beats the
+   [data-theme] rules above: same specificity, later wins. */
+@media print {
+	:root,
+	[data-theme] {
+		color-scheme: light;
+		--dark: 0;
+	}
+}

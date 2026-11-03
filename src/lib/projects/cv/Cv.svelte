@@ -34,7 +34,55 @@
 
 	// A letter, but a short one: it goes at the top of the CV.
 	const letterMax = 600;
+
+	// What the last import did, for the status line.
+	let message = $state('');
+
+	// A download made in the page: the file is a Blob, URL.createObjectURL gives it a
+	// blob: URL, and a link with download saves it instead of opening it. The URL is
+	// released once the click has started the download.
+	function exportFile() {
+		const url = URL.createObjectURL(cv.toFile());
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = 'cv-details.json';
+		link.click();
+		setTimeout(() => URL.revokeObjectURL(url));
+	}
+
+	// The file is read in the browser (File.text()); it's never uploaded. read() checks
+	// it like it checks localStorage, and the $effect saves what it took.
+	async function importFile(event: Event & { currentTarget: HTMLInputElement }) {
+		// currentTarget is only set while the event is being handled: after the await it's
+		// null, so keep the input now.
+		const input = event.currentTarget;
+		const file = input.files?.[0];
+		if (!file) return;
+		try {
+			const count = cv.read(JSON.parse(await file.text()));
+			message = count
+				? `Loaded ${count} fields from ${file.name}.`
+				: `No CV fields in ${file.name}.`;
+		} catch {
+			message = `${file.name} isn't a JSON file.`;
+		}
+		// Empty again, so picking the same file twice still fires change.
+		input.value = '';
+	}
+
+	// The browser names the PDF after the page title, so while printing it's the CV's:
+	// "Name Surnames - CV - Mainframe.pdf", not "CV builder · Projects · AB.pdf".
+	let pageTitle = '';
+	function beforePrint() {
+		pageTitle = document.title;
+		document.title = `${fullName || 'CV'} - CV - ${profile.name}`;
+	}
+	function afterPrint() {
+		document.title = pageTitle;
+	}
 </script>
+
+<svelte:window onbeforeprint={beforePrint} onafterprint={afterPrint} />
 
 <div class="builder">
 	<!-- onsubmit: a <button> in a form submits it unless it says type="button", and so
@@ -94,15 +142,34 @@
 			</label>
 		</fieldset>
 
+		<!-- type="button" on each: inside a form, a button without it submits. -->
+		<fieldset disabled={!cv.loaded}>
+			<legend>Your CV</legend>
+			<div class="actions">
+				<!-- The print dialog has "Save as PDF": a PDF with real text, which is what
+				     an applicant tracking system needs. -->
+				<button class="primary" type="button" onclick={() => print()}>Print or save as PDF</button>
+				<button type="button" onclick={exportFile}>Export details</button>
+				<!-- A file input looks like nothing else on the site, so it's hidden and its
+				     label is the button (like the radios on /about). -->
+				<label class="file">
+					Import details
+					<input type="file" accept=".json,application/json" onchange={importFile} />
+				</label>
+			</div>
+			<p class="note" role="status">{message}</p>
+		</fieldset>
+
 		<p class="note">
-			Saved in this browser only. Nothing you type here is sent anywhere.
+			Saved in this browser only. Nothing you type here is sent anywhere. Export your details to
+			keep a copy: clearing the browser's data deletes them.
 			<noscript>The builder needs JavaScript.</noscript>
 		</p>
 	</form>
 
-	<!-- The CV itself: what will print (a later step hides everything else). Plain text
-	     in one column, standard headings, no icons: what an applicant tracking system
-	     can read. -->
+	<!-- The CV itself, and all that prints (the print styles below). Plain text in one
+	     column, standard headings, no icons: what an applicant tracking system can
+	     read. -->
 	<article class="cv" aria-labelledby="cv-name">
 		<header>
 			<h2 id="cv-name">{fullName || 'Your name'}</h2>
@@ -249,5 +316,105 @@
 			margin-block-start: var(--size-3);
 			white-space: pre-line;
 		}
+	}
+
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--size-2);
+		grid-column: 1 / -1;
+	}
+
+	/* The buttons, and the label that stands in for the file input. */
+	.actions > * {
+		display: inline-flex;
+		align-items: center;
+		padding: var(--size-2) var(--size-3);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-2);
+		background: var(--surface-2);
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		color: var(--text-1);
+		cursor: pointer;
+
+		&:hover {
+			background: var(--surface-3);
+		}
+	}
+
+	/* The main action: the brand color, the text in the page's (like a picked tag). */
+	.actions .primary {
+		border-color: var(--brand);
+		background: var(--brand);
+		color: var(--surface-1);
+
+		&:hover {
+			background: var(--brand);
+			opacity: 0.9;
+		}
+	}
+
+	/* Hidden, still focusable: Enter or Space on it opens the file picker, and the label
+	   shows its focus. */
+	.file {
+		&:has(:focus-visible) {
+			outline: 2px solid var(--brand);
+			outline-offset: 3px;
+		}
+
+		& input {
+			position: absolute;
+			opacity: 0;
+			pointer-events: none;
+			inline-size: 1px;
+		}
+	}
+
+	/* On paper: only the CV, in one column. The site's header, footer and background
+	   hide themselves (their own print styles), the page header is hidden by the route,
+	   and tokens.css switches to the light theme. Sizes in points, the unit of paper. */
+	@media print {
+		form {
+			display: none;
+		}
+
+		.builder {
+			display: block;
+			margin: 0;
+		}
+
+		.cv {
+			padding: 0;
+			border: none;
+			background: none;
+			font-size: 10.5pt;
+			line-height: 1.4;
+
+			& h2 {
+				font-size: 20pt;
+			}
+
+			& .headline {
+				font-size: 12pt;
+			}
+
+			& h3 {
+				font-size: 12pt;
+				/* Never a heading alone at the bottom of a page. */
+				break-after: avoid;
+			}
+
+			& li,
+			& .letter {
+				break-inside: avoid;
+			}
+		}
+	}
+
+	/* The sheet: A4, the size used in Spain and most of the world. */
+	@page {
+		size: A4;
+		margin: 15mm;
 	}
 </style>

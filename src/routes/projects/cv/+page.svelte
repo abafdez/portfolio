@@ -6,5 +6,14 @@
 	let { data }: PageProps = $props();
 </script>
 
-<ProjectHeader project={data.project} />
+<!-- Not on paper: only the CV prints. -->
+<div class="screen-only"><ProjectHeader project={data.project} /></div>
 <Cv skills={data.skills} />
+
+<style>
+	@media print {
+		.screen-only {
+			display: none;
+		}
+	}
+</style>

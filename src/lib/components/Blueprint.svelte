@@ -118,4 +118,11 @@
 			display: block;
 		}
 	}
+
+	/* Not printed: paper gets the plain page color. */
+	@media print {
+		.blueprint {
+			display: none;
+		}
+	}
 </style>

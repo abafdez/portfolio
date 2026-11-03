@@ -54,15 +54,26 @@ export class CvDetails {
 
 	// Only known fields, only strings. unknown, not any: TypeScript makes us check
 	// before we use it, which is the point with data we didn't write.
-	read(data: unknown) {
-		if (typeof data !== 'object' || data === null) return;
+	// Returns how many fields it took, so an import can say whether the file had any.
+	// A field the data doesn't have keeps its value.
+	read(data: unknown): number {
+		if (typeof data !== 'object' || data === null) return 0;
 		const saved = data as Record<string, unknown>;
+		let count = 0;
 		for (const field of fields) {
 			const value = saved[field];
 			if (typeof value !== 'string') continue;
 			if (field === 'profile' && !this.#profiles.includes(value)) continue;
 			this.values[field] = value;
+			count++;
 		}
+		return count;
+	}
+
+	// The values as a JSON file, the same shape localStorage holds, so read() can load
+	// it back.
+	toFile(): Blob {
+		return new Blob([JSON.stringify(this.values, null, '\t')], { type: 'application/json' });
 	}
 
 	save() {
