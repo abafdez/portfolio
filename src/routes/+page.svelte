@@ -12,7 +12,7 @@
 	let { data }: PageProps = $props();
 
 	const links: Link[] = [
-		{ label: 'View my CV', route: '/cv' },
+		{ label: 'About me', route: '/about' },
 		{ label: 'See projects', route: '/projects' },
 		{ label: 'Read the blog', route: '/blog' },
 		...profiles

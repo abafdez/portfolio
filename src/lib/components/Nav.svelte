@@ -8,7 +8,7 @@
 		{ href: '/blog', label: 'Blog' },
 		{ href: '/awesome', label: 'Awesome' },
 		{ href: '/projects', label: 'Projects' },
-		{ href: '/cv', label: 'CV' },
+		{ href: '/about', label: 'About' },
 		{ href: '/bitacora', label: 'Bitacora' }
 	];
 </script>

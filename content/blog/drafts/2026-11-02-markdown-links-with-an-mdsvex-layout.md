@@ -2,10 +2,10 @@
 title: 'Markdown links that know the base path: an mdsvex layout'
 date: 2026-11-02
 tags: [mdsvex, sveltekit, links]
-description: My site lives under /portfolio on GitHub Pages, so a markdown link to /cv broke. An mdsvex layout swaps every link for a component that fixes it.
+description: My site lives under /portfolio on GitHub Pages, so a markdown link to /about broke. An mdsvex layout swaps every link for a component that fixes it.
 ---
 
-My site is served from `/portfolio`, because that's where GitHub Pages puts a project site. In my Svelte components, every link goes through SvelteKit's `resolve()`, which adds that base path. But my posts are markdown, and a markdown link to `/cv` is just `<a href="/cv">`. It points at the root of the domain, outside my site, and 404s.
+My site is served from `/portfolio`, because that's where GitHub Pages puts a project site. In my Svelte components, every link goes through SvelteKit's `resolve()`, which adds that base path. But my posts are markdown, and a markdown link to `/about` is just `<a href="/about">`. It points at the root of the domain, outside my site, and 404s.
 
 <!-- TODO: how I noticed (the dev server has no base path, so it only broke in the build) -->
 
@@ -65,13 +65,13 @@ mdsvex imports the layout as `* as Components`, so the other exports are reachab
 
 Three kinds of links:
 
-- **`/cv`**, a page on my site. It gets the base path. In the build it comes out as `href="../cv"`, because SvelteKit writes relative links in prerendered pages. The regular expression checks for one slash and not two: `//example.com` is a link to another site that keeps the page's protocol, and it must not get the base.
+- **`/about`**, a page on my site. It gets the base path. In the build it comes out as `href="../about"`, because SvelteKit writes relative links in prerendered pages. The regular expression checks for one slash and not two: `//example.com` is a link to another site that keeps the page's protocol, and it must not get the base.
 - **`https://…`**, another site. It gets `rel="external"`.
 - **`./other-post` or `#a-heading`.** These are relative, so they already work under any base.
 
 ## The cast, and who checks the links
 
-`resolve()` is typed from my routes: it only accepts a path it knows, like `'/cv'` or `'/blog/[slug]'` with a slug. A markdown `href` is just a `string`, so TypeScript can't check it. For a path with no `[param]`, `resolve()` only adds the base, so I widen its type once, in `withBase`.
+`resolve()` is typed from my routes: it only accepts a path it knows, like `'/about'` or `'/blog/[slug]'` with a slug. A markdown `href` is just a `string`, so TypeScript can't check it. For a path with no `[param]`, `resolve()` only adds the base, so I widen its type once, in `withBase`.
 
 That gives up a check, so something else has to do it. The prerender crawler does: it follows every link while it builds the site, and a link to a page that doesn't exist fails the build. I tried it with a link to `/nope`, and the build stopped.
 

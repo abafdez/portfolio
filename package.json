@@ -44,5 +44,9 @@
 	"imports": {
 		"#lib": "./src/lib/index.ts",
 		"#lib/*": "./src/lib/*"
+	},
+	"dependencies": {
+		"@lucide/svelte": "^1.66.0",
+		"simple-icons": "^16.36.0"
 	}
 }
