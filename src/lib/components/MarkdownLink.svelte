@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Every link written in markdown (MarkdownLayout.svelte swaps <a> for this).
-	// - /cv: a page on this site. Gets the base path (/portfolio on GitHub Pages),
+	// - /about: a page on this site. Gets the base path (/portfolio on GitHub Pages),
 	//   like the links in our components do with resolve(). Only one slash: //host
 	//   is another site.
 	// - https://…: rel="external". mdsvex adds rel="nofollow" to every link, which

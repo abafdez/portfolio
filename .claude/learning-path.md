@@ -75,6 +75,14 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Learn:** separating data from presentation, TS types for data (`src/lib/data/cv.ts`), `{#each}` with keys, `$derived`, print CSS (`@media print`).
 - **Do:** create typed CV data (experience, education, skills) and add a filterable skills list using `$state`/`$derived`. Add a print stylesheet so the CV prints well and "Save as PDF" works.
 - **Done when:** the browser print preview looks like a real CV.
+- **Changed (2026-11-03, Alfonso's call):** no public CV: it has contact details and employers, so it's sent on request. Phase 5 became `/about` on `feat/about`: skills as typed data (`src/lib/skills/skills.ts`) in groups, with levels and evidence links, brand icons (Lucide + Simple Icons, OKLCH brand hues at the theme's lightness), terminal windows with htop bars that fill on view, a border spotlight and a logo marquee, and LinkedIn/GitHub buttons to ask for the CV. Print CSS moved to Phase 5.5. The skills then moved to `content/skills.yaml` with job profiles (web, support, mainframe), icons as data and a `/logos.svg` sprite endpoint. Then collapsible, animated windows. Ready for its PR (2026-11-03); the profile filter moved to Phase 5.5.
+
+## Phase 5.5 — CV builder (1–1.5 weeks)
+
+- **Why:** Alfonso applies for different kinds of jobs (web, support, mainframe) and needs a CV for each, readable by applicant tracking systems (ATS).
+- **Learn:** print CSS (`@media print`, `@page`, page breaks), what ATS parsers need (one column, real text, standard headings, no tables, images or icons), forms and validation in Svelte, `localStorage` behind a `$state` class, importing and exporting a JSON file (File API, `Blob`, a download link), the Clipboard API.
+- **Do:** first, a profile filter on `/about` (`?profile=support`, shareable, like the Awesome filters). Then a `/projects/cv` tool. Pick a profile, and the skills come from `content/skills.yaml` (only that profile's, strongest first). The personal part (contact, experience, education) is typed into a form or imported from a JSON file Alfonso keeps; it stays in the browser (`localStorage`) and never reaches the repo or the build. A print stylesheet makes "Save as PDF" give an ATS-friendly text PDF. Optional later: a plain-text copy, `.docx`.
+- **Done when:** for each profile, the PDF from the print dialog reads well, selecting all its text gives the CV in order, and a reload keeps the data while the repo has none of it.
 
 ## Phase 6 — Markdown with mdsvex: Bitácora (1.5 weeks)
 

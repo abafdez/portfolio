@@ -108,6 +108,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@lucide/svelte':
+        specifier: ^1.66.0
+        version: 1.66.0(svelte@5.57.2)
+      simple-icons:
+        specifier: ^16.36.0
+        version: 16.36.0
     devDependencies:
       '@fontsource-variable/fira-code':
         specifier: ^5.3.0
@@ -130,6 +137,9 @@ importers:
       '@types/node':
         specifier: ^26.6.5
         version: 26.6.5
+      lucide:
+        specifier: 1.66.0
+        version: 1.66.0
       mdsvex:
         specifier: 0.12.8
         version: 0.12.8(svelte@5.57.2)
@@ -355,6 +365,11 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@lucide/svelte@1.66.0':
+    resolution: {integrity: sha512-G2qFyutQpgk9TY0QYgqXk9rQtUt8p509mFpQzmTpyc894hfRSFhGNcGAVAUgB8znAyVsp5WTF/2vmCwprnNQ/w==}
+    peerDependencies:
+      svelte: ^5
 
   '@oxc-project/types@0.152.0':
     resolution: {integrity: sha512-oM/5rLBm2tPkg0iBgkH/FOeR3PCDpY19GTgAZjMFM8h9WI9VW7cLgzp6nwtarYKmovavIQZ+Fe/RKX/8C8O/Rw==}
@@ -752,6 +767,9 @@ packages:
   locate-character@3.0.0:
     resolution: {integrity: sha512-SW13ws7BjaeJ6p7Q6CO2nchbYEc3X3J6WrmTTDto7yMPqVSZTUyY5Tjbid+Ab8gLnATtygYtiDIJGQRRn2ZOiA==}
 
+  lucide@1.66.0:
+    resolution: {integrity: sha512-Ngq8coV3XJ9S/DLTNnIWk9lmdJusoSnuuoO1rK7C0H9/VaV93LoWkv/u5GyUAJhL+rFesAd4gL3YG544bnH6gQ==}
+
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
@@ -1038,6 +1056,10 @@ packages:
   shiki@4.5.0:
     resolution: {integrity: sha512-OcRW72ngQvc+MSVWBRIovC/BTW589iUE/Vxav7VeM4RcY9MUjqB+IR6ILG1k9nuW6LiG/nct9uma4/MBtnZbmQ==}
     engines: {node: '>=20'}
+
+  simple-icons@16.36.0:
+    resolution: {integrity: sha512-+VNPPkqSOLidFeSgBKUWX4n50WPpDC09hav+BgS26anIF1oQOlGBb8LvwGR+6fYRjo+B6CiKzNBceMPkSVXANQ==}
+    engines: {node: '>=0.12.18'}
 
   sirv@3.0.2:
     resolution: {integrity: sha512-2wcC/oGxHis/BoHkkPwldgiPSYcpZK3JU28WoMVv55yHJgcZ8rlXvuG9iZggz+sU1d4bRgIGASwyWqjxu3FM0g==}
@@ -1329,6 +1351,10 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
+
+  '@lucide/svelte@1.66.0(svelte@5.57.2)':
+    dependencies:
+      svelte: 5.57.2
 
   '@oxc-project/types@0.152.0': {}
 
@@ -1627,6 +1653,8 @@ snapshots:
 
   locate-character@3.0.0: {}
 
+  lucide@1.66.0: {}
+
   magic-string@0.30.21:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
@@ -1804,6 +1832,8 @@ snapshots:
       '@shikijs/types': 4.5.0
       '@shikijs/vscode-textmate': 10.1.0
       '@types/hast': 3.0.5
+
+  simple-icons@16.36.0: {}
 
   sirv@3.0.2:
     dependencies:

@@ -1,0 +1,143 @@
+<script lang="ts">
+	import MessageSquare from '@lucide/svelte/icons/message-square';
+	import { siGithub } from 'simple-icons';
+	import BrandIcon from '#lib/components/BrandIcon.svelte';
+	import SectionNav from '#lib/components/SectionNav.svelte';
+	import { profiles } from '#lib/links.ts';
+	import LogoMarquee from '#lib/skills/LogoMarquee.svelte';
+	import SkillWindow from '#lib/skills/SkillWindow.svelte';
+
+	let { data } = $props();
+
+	const [github, linkedin] = profiles;
+	let sections = $derived(data.groups.map(({ id, name }) => ({ id, label: name })));
+</script>
+
+<svelte:head>
+	<title>About · AB</title>
+	<meta
+		name="description"
+		content="What I work with: languages, frameworks, tools, ways of working and AI workflows."
+	/>
+</svelte:head>
+
+<!-- The CV is shared on request, not published: it has my contact details. -->
+{#snippet cv()}
+	<ul class="cv">
+		<li>
+			<a href={linkedin.url} rel="external"
+				><MessageSquare size="1.25rem" aria-hidden="true" />Ask on LinkedIn</a
+			>
+		</li>
+		<li>
+			<a href={github.url} rel="external"><BrandIcon icon={siGithub} size="1.25rem" />GitHub</a>
+		</li>
+	</ul>
+{/snippet}
+
+<!-- The landing's layout: on wide screens the intro stays put on the left while the
+     skills scroll on the right. -->
+<div class="about">
+	<div class="intro">
+		<h1>About me</h1>
+		<p class="lead">
+			More than 15 years making technology work for small businesses: networks, hardware, automation
+			and websites. I studied web development, I'm certified in mainframe Natural, Adabas and COBOL,
+			and I'm now going deep on the modern front end, learning in public on this site.
+		</p>
+		<p>Want my full CV? I send it on request.</p>
+		{@render cv()}
+		<div class="toc"><SectionNav {sections} /></div>
+	</div>
+
+	<div class="groups">
+		<LogoMarquee logos={data.logos} />
+		<!-- Each group is a terminal window that collapses (SkillWindow.svelte). The first
+		     starts open: it's the one on screen when the page loads. -->
+		{#each data.groups as group, i (group.id)}
+			<SkillWindow {group} open={i === 0} />
+		{/each}
+
+		<section aria-labelledby="cv-title">
+			<h2 id="cv-title">Want my full CV?</h2>
+			<p>It has the dates, the companies and the details. Send me a message and I'll send it.</p>
+			{@render cv()}
+		</section>
+	</div>
+</div>
+
+<style>
+	.intro p {
+		margin-block-start: var(--size-3);
+		max-inline-size: var(--size-content-2);
+		color: var(--text-2);
+	}
+
+	.lead {
+		font-size: var(--font-size-3);
+	}
+
+	/* Same buttons as the hero's links, with an icon. */
+	.cv {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--size-2);
+		margin-block-start: var(--size-3);
+		padding: 0;
+		list-style: none;
+
+		& a {
+			display: inline-flex;
+			align-items: center;
+			gap: var(--size-2);
+			padding: var(--size-2) var(--size-3);
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-2);
+			background: var(--surface-2);
+			font-family: var(--font-label);
+			text-decoration: none;
+
+			&:hover {
+				background: var(--surface-3);
+			}
+		}
+	}
+
+	section {
+		margin-block-start: var(--size-8);
+
+		& > p {
+			margin-block-start: var(--size-2);
+			color: var(--text-2);
+		}
+	}
+
+	.toc {
+		display: none;
+	}
+
+	/* Two columns on wide screens, like the landing. Unlike the landing, the whole intro
+	   is too tall to stay put next to nine groups, so only the nav sticks: the intro
+	   scrolls away (the CV link is repeated at the end), the nav stays. */
+	@media (min-width: 64rem) {
+		.about {
+			display: grid;
+			grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+			gap: var(--size-9);
+		}
+
+		.toc {
+			display: block;
+			margin-block-start: var(--size-7);
+		}
+	}
+
+	/* The intro column stretches to the full height of the row (grid's default), so
+	   the nav inside it has room to stick all the way down. */
+	@media (min-width: 64rem) and (min-height: 36rem) {
+		.toc {
+			position: sticky;
+			inset-block-start: var(--header-space);
+		}
+	}
+</style>
