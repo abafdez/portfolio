@@ -60,6 +60,12 @@
 	});
 	let skillCount = $derived(groups.reduce((sum, group) => sum + group.skills.length, 0));
 
+	// Everything the CV shows, as one string. When it changes, the {#key} below throws
+	// the CV away and builds it again, so text typed straight into the CV goes with it.
+	// Without that, Svelte would update only the text it wrote and leave mine mixed in,
+	// or fail on a piece of the page I'd deleted.
+	let shown = $derived(JSON.stringify([fullName, profile.name, contact, cv.values.letter, groups]));
+
 	// A letter, but a short one: it goes at the top of the CV.
 	const letterMax = 600;
 
@@ -153,10 +159,21 @@
 		input.value = '';
 	}
 
+	// A paste into the CV takes only the text, not the fonts and colors it came with
+	// (from Word, a web page…): the PDF has to stay plain text. execCommand is
+	// deprecated, but it's still the one way to insert text that the browser's undo
+	// (Ctrl+Z) knows about.
+	function pastePlain(event: ClipboardEvent) {
+		event.preventDefault();
+		document.execCommand('insertText', false, event.clipboardData?.getData('text/plain') ?? '');
+	}
+
 	// The browser names the PDF after the page title, so while printing it's the CV's:
 	// "Name Surnames - CV - Mainframe.pdf", not "CV builder · Projects · AB.pdf".
 	let pageTitle = '';
 	function beforePrint() {
+		// Ctrl+P while typing in the CV would print the text cursor: leave the CV first.
+		if (document.activeElement?.closest('.cv')) (document.activeElement as HTMLElement).blur();
 		pageTitle = document.title;
 		document.title = `${fullName || 'CV'} - CV - ${profile.name}`;
 	}
@@ -277,39 +294,50 @@
 				</label>
 			</div>
 			<p class="note" role="status">{message}</p>
+			<p class="note">
+				Tip: you can also type straight into the CV for a last-minute change before printing. It
+				isn't saved, and any change in the form starts the CV over.
+			</p>
 		</fieldset>
 
 		<!-- The CV itself, and all that prints (the print styles below). Plain text in one
 	     column, standard headings, no icons: what an applicant tracking system can
 	     read. -->
-		<article class="cv" aria-labelledby="cv-name">
-			<header>
-				<h2 id="cv-name">{fullName || 'Your name'}</h2>
-				<p class="headline">{profile.name}</p>
-				{#if contact.length}
-					<p>{contact.join(' · ')}</p>
+		<!-- contenteditable: the CV takes typing like a text field, and the print dialog
+		     prints what's on the page, typing included. Not "plaintext-only", which
+		     would keep pastes plain by itself: Chrome then forces white-space: pre-wrap
+		     on everything inside, even over !important, and the line breaks between the
+		     template's blocks print as blank lines. pastePlain does that job instead. -->
+		{#key shown}
+			<article class="cv" aria-labelledby="cv-name" contenteditable="true" onpaste={pastePlain}>
+				<header>
+					<h2 id="cv-name">{fullName || 'Your name'}</h2>
+					<p class="headline">{profile.name}</p>
+					{#if contact.length}
+						<p>{contact.join(' · ')}</p>
+					{/if}
+				</header>
+
+				{#if cv.values.letter.trim()}
+					<section>
+						<h3>Summary</h3>
+						<p class="letter">{cv.values.letter}</p>
+					</section>
 				{/if}
-			</header>
 
-			{#if cv.values.letter.trim()}
 				<section>
-					<h3>Summary</h3>
-					<p class="letter">{cv.values.letter}</p>
+					<h3>Skills</h3>
+					<ul>
+						{#each groups as group (group.name)}
+							<li>
+								<strong>{group.name}:</strong>
+								{group.skills.join(', ')}
+							</li>
+						{/each}
+					</ul>
 				</section>
-			{/if}
-
-			<section>
-				<h3>Skills</h3>
-				<ul>
-					{#each groups as group (group.name)}
-						<li>
-							<strong>{group.name}:</strong>
-							{group.skills.join(', ')}
-						</li>
-					{/each}
-				</ul>
-			</section>
-		</article>
+			</article>
+		{/key}
 	</div>
 </div>
 
@@ -452,6 +480,12 @@
 		border-radius: var(--radius-3);
 		background: var(--surface-2);
 
+		/* Being typed in: the frame says so (the global focus ring, set back off the
+		   edge). */
+		&:focus-visible {
+			outline-offset: -2px;
+		}
+
 		& h2 {
 			font-size: var(--font-size-5);
 		}
@@ -569,6 +603,7 @@
 		.cv {
 			padding: 0;
 			border: none;
+			outline: none;
 			background: none;
 			font-size: 10.5pt;
 			line-height: 1.4;

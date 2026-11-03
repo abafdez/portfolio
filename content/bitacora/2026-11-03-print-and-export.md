@@ -12,6 +12,7 @@ tags: [css, print, svelte]
 - `tokens.css` switches to the light theme for print (`color-scheme: light` on `:root, [data-theme]`, last in the file).
 - While printing, the page title is "Name Surnames - CV - Profile", so the PDF gets that name (`beforeprint` / `afterprint`).
 - "Export details" downloads `cv-details.json`. "Import details" loads it back through the same `read()` as `localStorage`, which now returns how many fields it took.
+- Later: the CV preview is `contenteditable`, for a last-minute change right before printing, with a hint under the buttons. It isn't saved: the CV sits in a `{#key}` on a JSON snapshot of everything it shows, so any change in the form rebuilds it from the form. A paste keeps only the text (`onpaste`). Pressing Ctrl+P while typing blurs the CV first (no cursor on paper), and print drops the focus ring.
 - Tested: the PDF from a dark-theme screen is one A4 page, black on white, real text in reading order.
 
 ## What I learned
@@ -21,6 +22,8 @@ tags: [css, print, svelte]
 - A download made in the page: `Blob` → `URL.createObjectURL()` → a link with `download` → click → `revokeObjectURL()`, or the Blob stays in memory until the tab closes.
 - `file.text()` reads a picked file without uploading it. `event.currentTarget` is `null` after an `await`, so keep it in a variable first. Empty the input after, or picking the same file again doesn't fire `change`.
 - Inside a `<form>`, a `<button>` without `type="button"` submits it.
+- Svelte doesn't know about text typed into a `contenteditable`: it would update only the text it wrote and leave mine mixed in, or fail on a node I'd deleted. `{#key}` throws the block away and rebuilds it instead.
+- `contenteditable="plaintext-only"` keeps pastes plain by itself, but Chrome then forces `white-space: pre-wrap` on everything inside, even over an inline `!important`, and the line breaks between the template's blocks printed as blank lines. `contenteditable="true"` plus an `onpaste` that inserts `text/plain` does the same job. `execCommand('insertText')` is deprecated, but it's the one way to insert text that Ctrl+Z can undo.
 
 ## Problems & fixes
 
