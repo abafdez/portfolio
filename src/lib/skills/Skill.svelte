@@ -181,16 +181,6 @@
 		}
 	}
 
-	/* Visually hidden, still read. */
-	.visually-hidden {
-		position: absolute;
-		inline-size: 1px;
-		block-size: 1px;
-		overflow: hidden;
-		clip-path: inset(50%);
-		white-space: nowrap;
-	}
-
 	/* [||||||      ]: the ticks are text, in the code font, so 1ch is one tick. The
 	   fill is --ticks characters wide; the empty part of the track is dots drawn
 	   underneath it (a pseudo-element, so it isn't text anyone reads).

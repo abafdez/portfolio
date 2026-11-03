@@ -13,8 +13,13 @@ export interface CvSkill {
 	profiles: string[];
 }
 
+export interface CvGroup {
+	name: string;
+	// Strongest first.
+	skills: CvSkill[];
+}
+
 export interface CvSkills {
 	profiles: Profile[];
-	// Strongest first in each group.
-	groups: { name: string; skills: CvSkill[] }[];
+	groups: CvGroup[];
 }

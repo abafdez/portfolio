@@ -209,6 +209,17 @@
 }
 
 @layer components {
+	/* Read by screen readers, not shown: a heading or a hint that the layout already
+	   says to the eye. Not display: none, which hides it from screen readers too. */
+	.visually-hidden {
+		position: absolute;
+		inline-size: 1px;
+		block-size: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
 	/* Rendered markdown (a Bitácora entry, later a blog post). mdsvex makes its HTML in
 	   another component, so a page's scoped styles can't reach it; a global class can.
 	   Space goes between siblings, never before the first one or after the last. */

@@ -49,6 +49,17 @@
 	);
 	let contact = $derived([cv.values.phone, cv.values.email, place].filter(Boolean));
 
+	// What a collapsed section says about itself in its summary line.
+	const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
+	let aboutStatus = $derived.by(() => {
+		const problems = Object.values(errors).filter(Boolean).length;
+		const missing = inputs.filter(({ name, required }) => required && !cv.values[name].trim());
+		if (problems) return `${plural(problems, 'field')} to fix`;
+		if (missing.length) return `${plural(missing.length, 'required field')} left`;
+		return fullName;
+	});
+	let skillCount = $derived(groups.reduce((sum, group) => sum + group.skills.length, 0));
+
 	// A letter, but a short one: it goes at the top of the CV.
 	const letterMax = 600;
 
@@ -81,13 +92,20 @@
 		return fields.find((field) => !field.validity.valid);
 	}
 
+	// A field in a closed <details> can't take the focus: open its section first.
+	function reveal(field: HTMLElement) {
+		const section = field.closest('details');
+		if (section) section.open = true;
+		field.focus();
+	}
+
 	// A CV without a name or a way to reach you shouldn't go out: show what's missing and
 	// take the focus there (a screen reader then reads its message), instead of printing.
 	function printCv() {
 		const first = checkAll();
 		if (first) {
 			message = 'Some fields need fixing first.';
-			first.focus();
+			reveal(first);
 			return;
 		}
 		message = '';
@@ -176,50 +194,61 @@
 			</label>
 		</fieldset>
 
-		<!-- autocomplete: the browser can fill these from what it knows about you, and
+		<!-- Sections that fold away once they're done. name="cv-form" makes them an
+		     accordion (opening one closes the other), built into HTML. Closed, each says
+		     how it's doing in its summary. The legend repeats the summary for screen
+		     readers (it names the group of fields), hidden for the eye. -->
+		<details name="cv-form" open>
+			<summary>About you <span class="note">{aboutStatus}</span></summary>
+			<!-- autocomplete: the browser can fill these from what it knows about you, and
 		     tells password managers and screen readers what each field is. -->
-		<fieldset disabled={!cv.loaded}>
-			<legend>About you <span class="note">(* required)</span></legend>
-			{#each inputs as input (input.name)}
-				{@const error = errors[input.name]}
-				<!-- The message sits outside the label, or it would become part of the field's
+			<fieldset disabled={!cv.loaded}>
+				<legend class="visually-hidden">About you</legend>
+				<p class="note wide">* required</p>
+				{#each inputs as input (input.name)}
+					{@const error = errors[input.name]}
+					<!-- The message sits outside the label, or it would become part of the field's
 				     name. aria-describedby links it instead: a screen reader reads it after
 				     the name, and aria-invalid says "invalid". The * is for the eye; required
 				     tells a screen reader. -->
-				<div class="field">
-					<label>
-						<span
-							>{input.label}{#if input.required}<span class="required" aria-hidden="true">*</span
-								>{/if}</span
-						>
-						<input
-							name={input.name}
-							type={input.type ?? 'text'}
-							bind:value={cv.values[input.name]}
-							autocomplete={input.autocomplete}
-							inputmode={input.inputmode}
-							required={input.required}
-							pattern={input.pattern}
-							aria-invalid={error ? 'true' : undefined}
-							aria-describedby={error ? `${input.name}-error` : undefined}
-						/>
-					</label>
-					{#if error}
-						<span class="error" id="{input.name}-error">{error}</span>
-					{/if}
-				</div>
-			{/each}
-			<label class="wide">
-				Short letter
-				<textarea bind:value={cv.values.letter} maxlength={letterMax} rows="6"></textarea>
-				<span class="count">{cv.values.letter.length} / {letterMax}</span>
-			</label>
-		</fieldset>
+					<div class="field">
+						<label>
+							<span
+								>{input.label}{#if input.required}<span class="required" aria-hidden="true">*</span
+									>{/if}</span
+							>
+							<input
+								name={input.name}
+								type={input.type ?? 'text'}
+								bind:value={cv.values[input.name]}
+								autocomplete={input.autocomplete}
+								inputmode={input.inputmode}
+								required={input.required}
+								pattern={input.pattern}
+								aria-invalid={error ? 'true' : undefined}
+								aria-describedby={error ? `${input.name}-error` : undefined}
+							/>
+						</label>
+						{#if error}
+							<span class="error" id="{input.name}-error">{error}</span>
+						{/if}
+					</div>
+				{/each}
+				<label class="wide">
+					Short letter
+					<textarea bind:value={cv.values.letter} maxlength={letterMax} rows="6"></textarea>
+					<span class="count">{cv.values.letter.length} / {letterMax}</span>
+				</label>
+			</fieldset>
+		</details>
 
-		<fieldset class="skills" disabled={!cv.loaded}>
-			<legend>Skills</legend>
-			<SkillEditor {skills} {edits} {profile} />
-		</fieldset>
+		<details name="cv-form">
+			<summary>Skills <span class="note">{skillCount} on the CV</span></summary>
+			<fieldset class="skills" disabled={!cv.loaded}>
+				<legend class="visually-hidden">Skills</legend>
+				<SkillEditor {skills} {edits} {profile} />
+			</fieldset>
+		</details>
 
 		<!-- type="button" on each: inside a form, a button without it submits. -->
 		<fieldset disabled={!cv.loaded}>
@@ -309,6 +338,34 @@
 	/* One column: the editor's rows need the whole width. */
 	.skills {
 		display: block;
+	}
+
+	/* A section's title, and how it's doing in a smaller line next to it. */
+	summary {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--size-1) var(--size-3);
+		padding-block: var(--size-2);
+		border-block-end: var(--border-size-1) solid var(--surface-3);
+		font-family: var(--font-label);
+		color: var(--text-1);
+		cursor: pointer;
+
+		/* display: flex hides the marker (it belongs to display: list-item), so draw
+		   our own, turning when the section opens. */
+		&::before {
+			content: '▸';
+			color: var(--brand);
+		}
+	}
+
+	details[open] > summary {
+		margin-block-end: var(--size-4);
+
+		&::before {
+			content: '▾';
+		}
 	}
 
 	legend {

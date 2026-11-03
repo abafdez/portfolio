@@ -18,9 +18,12 @@ interface ProfileEdits {
 	on: string[]; // switched on, though the YAML doesn't give this profile
 	off: string[]; // switched off, though it does
 	labels: Record<string, string>; // my wording, by skill name
-	added: Record<string, string[]>; // my own, by group
+	added: Record<string, { id: string; text: string }[]>; // my own, by group
+	order: Record<string, string[]>; // my order, by group: skill names and my skills' ids
 }
 ```
+
+My own skills got an id when I added reordering: the order has to point at them, and their place in the list changes whenever one before them is removed.
 
 Whether a skill is on the CV is computed every time:
 
@@ -40,13 +43,13 @@ Switching a skill back to what the YAML says removes it from both lists, so "Res
 The first time I change a profile, its edits object has to be created:
 
 ```ts
-(this.all[profile] ??= { on: [], off: [], labels: {}, added: {} }).off.push(name);
+(this.all[profile] ??= { on: [], off: [], labels: {}, added: {}, order: {} }).off.push(name);
 ```
 
 That looks right, but it wouldn't update the page. `this.all` is `$state`, a deep proxy: the object I assign is wrapped in a new proxy when it's stored. But `a ??= b` evaluates to `b`, the plain object I passed in, not the proxy. Pushing to the plain object changes the data without telling Svelte. The fix is to read it back:
 
 ```ts
-this.all[profile] ??= { on: [], off: [], labels: {}, added: {} };
+this.all[profile] ??= empty();
 return this.all[profile];
 ```
 
