@@ -67,7 +67,7 @@ Chroma is capped at 0.17. A very saturated brand (a pure red) at my theme's ligh
 
 ## CSS takes it from there
 
-The component puts the two numbers on the skill's row, and CSS builds the color with relative color syntax:
+This runs at build time, when my skills file is read, so the browser only gets two numbers per logo. The component puts them on the skill's row, and CSS builds the color with relative color syntax:
 
 ```svelte
 <li class="skill" style:--hue={color?.hue} style:--chroma={color?.chroma}>

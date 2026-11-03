@@ -57,11 +57,6 @@ These link to no other draft.
 - `2026-11-02-filters-in-a-svelte-class`
   - whether AND felt right for tags, or OR
   - what a screen reader said when toggling a tag and typing a search
-- `2026-11-03-htop-bars-and-a-border-spotlight`
-  - a short video: the bars filling on load, scrolling a window in, pointing at rows
-  - the three showcases, and why I kept terminal and spotlight
-  - what a stepped fill (`steps(var(--ticks))`) looked like next to the smooth one
-  - the Lighthouse score before and after, and whether I did the sprite
 
 ## Groups that go up together
 
@@ -97,3 +92,5 @@ These need that whole group live first:
 **About page** (Phase 5):
 
 - `2026-11-03-brand-colors-at-my-themes-lightness` (3: raw vs final screenshot; changing `--icon-tone` in DevTools; the logo that surprised me) → contrast checker
+- `2026-11-03-icons-as-data-and-an-svg-sprite` (2: editing the YAML vs the TypeScript; the build error from a wrong logo) → filters in a Svelte class
+- `2026-11-03-htop-bars-and-a-border-spotlight` (4: a video of the bars and the glow; the three showcases and why terminal and spotlight; a stepped fill next to the smooth one; logos.svg in the Network tab) → icons as data and an SVG sprite

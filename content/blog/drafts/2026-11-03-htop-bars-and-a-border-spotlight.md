@@ -144,18 +144,18 @@ The bar of the row you point at grows a little and settles back:
 
 Above the skills, every brand logo slides by forever. It's the list twice, sliding left by exactly half its width: at that point the second copy is where the first one started, so the loop can't be seen.
 
-The first version wrote every logo's path twice into the HTML: 168 KB, half the page. Now the first copy gives each path an id, and the second copy points at it:
+The first version wrote every logo's path twice into the HTML: 168 KB, half the page. My first fix gave each path in the first copy an id and made the second copy point at it with `<use href="#logo-svelte">`: `<use>` draws a copy of an element that's already in the document. That saved 73 KB, but the skill rows still had every path too.
+
+So now no path is in the page at all. Every logo lives in one file, `logos.svg`, which a SvelteKit endpoint writes at build time, and every icon on the page (the rows and both copies of the marquee) points into it:
 
 ```svelte
 <svg viewBox="0 0 24 24" width="2rem" height="2rem" fill="currentColor">
-	{#if copy === 0}
-		<path id="logo-{icon.slug}" d={icon.path} />
-	{:else}
-		<use href="#logo-{icon.slug}" />
-	{/if}
+	<use href="{resolve('/logos.svg')}#svelte" />
 </svg>
 ```
 
-`<use>` draws a copy of an element that's already in the document. And `contain: inline-size` on the strip keeps the page from measuring the whole track: without it, the page grew 800px wider on a phone. `overflow: hidden` alone doesn't stop that.
+The browser downloads that file once and caches it. The page went from 351 KB to 152 KB, and Lighthouse's performance score from 91 to 96. (How the file is made is in [its own post](./2026-11-03-icons-as-data-and-an-svg-sprite).)
 
-<!-- TODO: the Lighthouse score before and after, and whether I did the sprite for the skill rows too -->
+One more thing about the strip: `contain: inline-size` keeps the page from measuring the whole track. Without it, the page grew 800px wider on a phone. `overflow: hidden` alone doesn't stop that.
+
+<!-- TODO: the network tab: logos.svg loaded once, then cached on the next visit -->
