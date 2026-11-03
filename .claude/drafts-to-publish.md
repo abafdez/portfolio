@@ -57,6 +57,9 @@ These link to no other draft.
 - `2026-11-02-filters-in-a-svelte-class`
   - whether AND felt right for tags, or OR
   - what a screen reader said when toggling a tag and typing a search
+- `2026-11-03-smooth-scroll-only-where-you-mean-it`
+  - a recording of the glide before the fix
+  - whether the jump feels better than a glide or a fade
 
 ## Groups that go up together
 

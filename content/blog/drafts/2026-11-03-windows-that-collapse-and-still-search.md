@@ -2,7 +2,7 @@
 title: 'Windows that collapse, open as you read, and still show up in Ctrl+F'
 date: 2026-11-03
 tags: [svelte, accessibility, html, css]
-description: A collapsible section that works without JS, opens by itself as you scroll, remembers what you chose, and doesn't hide its content from find in page.
+description: A collapsible section that works without JS, opens by itself as you scroll, respects what you chose, and doesn't hide its content from find in page.
 ---
 
 My about page groups my skills into terminal windows, ten of them, about ninety skills in all. That's a long page, so I made the windows collapse, Mac style: collapsed, a window keeps its name, a line about it, a few skills as chips, and its icons in the title bar.
@@ -120,21 +120,16 @@ The page is prerendered, so the server can't know what's on screen. It opens the
 
 ## The visitor's choice wins
 
-Once you open or close a window yourself, it stops opening by itself, and your choice is kept for your next visit:
+Once you open or close a window yourself, it stops opening by itself:
 
 ```ts
 function toggle() {
-	open = !open;
+	show(!open);
 	chosen = true;
-	try {
-		localStorage.setItem(key, JSON.stringify({ ...saved(), [group.id]: open }));
-	} catch {
-		// Not remembered, that's all.
-	}
 }
 ```
 
-`localStorage` can throw: in some private windows, or when storage is blocked. So every use is in a `try`, and without storage the windows just don't remember.
+My first version also saved each choice in `localStorage`, for the next visit. I took it out: coming back to a page with half its windows closed, and no memory of closing them, felt broken. Now a reload starts fresh.
 
 <!-- TODO: what a screen reader says on the title bar, collapsed and open -->
 

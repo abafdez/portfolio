@@ -10,7 +10,7 @@ tags: [svelte, accessibility, css, html]
 - Each skill group on `/about` is now a window that collapses (`SkillWindow.svelte`). The title bar is the button, with "expand [+]" or "collapse [-]" on the right.
 - Collapsed, a window keeps its name, a new one-line description (in `content/skills.yaml`), chips for its first five skills with "+N more", and every icon in the title bar, like a dock. One light is on, in Mac colors (new tokens): yellow (minimize) while collapsed, green (zoom) while open. It fades and pops (a spring) when it changes.
 - Collapsing and expanding animate: the list shrinks while the chips grow, and back. The dock's icons pop in one after another, and when they don't fit the title bar they loop like the logo marquee.
-- Windows start collapsed, except the first, and open by themselves as they reach the top two thirds of the screen. Once I open or close one, that's my choice: it's kept in `localStorage` and the window stops opening by itself.
+- Windows start collapsed, except the first, and open by themselves as they reach the top two thirds of the screen. Once I open or close one, that's my choice and it stops opening by itself, until I leave or reload. (A first version saved choices in `localStorage`; a reload starting fresh felt better.)
 - Generic (Lucide) icons got colors: a hue from a hash of the skill's name, so each keeps the same color everywhere and on every build.
 
 ## What I learned
@@ -26,7 +26,6 @@ tags: [svelte, accessibility, css, html]
 - `hidden="until-found"` would hide the list at once, before it could shrink, so it's set on `transitionend`. Transitions inside the list (a bar's bump) bubble up too, so it checks `event.target === event.currentTarget` and the property name. With reduced motion there's no animation to wait for, so it's set straight away.
 - An animation runs when its element goes from `display: none` to shown, so the dock icons' pop-in replays on every collapse, with `--i` for the stagger.
 - Whether the dock's icons fit is measured with a `ResizeObserver` on the dock (a hidden dock is 0 wide, so it's measured again when it appears). Only then is the second copy rendered.
-- `localStorage` can throw (private windows, blocked storage), so every use is in a `try`, and without it the windows just don't remember.
 
 ## Problems & fixes
 
