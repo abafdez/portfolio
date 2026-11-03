@@ -243,8 +243,9 @@ groups:
         profiles: [web]
       - name: Docker
         logo: docker
-        level: 2
+        level: 4
         profiles: [web, support]
+        note: 'Images, networks, volumes and compose stacks: most of my self-hosted apps run in it.'
       - name: Lighthouse
         logo: lighthouse
         level: 2
@@ -392,13 +393,63 @@ groups:
         level: 3
         profiles: [support]
         note: Designed and set up for small businesses.
+      - name: OpenWrt
+        logo: openwrt
+        level: 3
+        profiles: [support]
+        note: My routers run it; I change it often and fix what breaks.
+      - name: pfSense
+        logo: pfsense
+        level: 2
+        profiles: [support]
+        note: Firewall rules, NAT, VLANs and VPN.
+      - name: WireGuard and Tailscale
+        logo: wireguard
+        level: 3
+        profiles: [support]
+        note: 'Remote access to my network every day: peers, ACLs and DNS.'
+      - name: Pi-hole and AdGuard Home
+        logo: pihole
+        level: 3
+        profiles: [support]
+        note: DNS filtering for the whole network.
+      - name: Proxmox
+        logo: proxmox
+        level: 3
+        profiles: [support]
+        note: 'My homelab runs on it: virtual machines and LXC containers.'
+      - name: Ansible
+        logo: ansible
+        level: 2
+        profiles: [web, support]
+        note: My own playbooks and roles to set up my machines.
+      - name: Terraform
+        logo: terraform
+        level: 2
+        profiles: [web, support]
+        note: 'Infrastructure as code: my own configurations.'
+      - name: Caddy
+        logo: caddy
+        level: 2
+        profiles: [web, support]
+        note: Reverse proxy and automatic HTTPS for my self-hosted apps.
+      - name: Home Assistant
+        logo: homeassistant
+        level: 3
+        profiles: [support]
+        note: 'My home runs on it: many automations, YAML when needed.'
+      - name: n8n
+        logo: n8n
+        level: 2
+        profiles: [web, support]
+        note: 'My own workflows: webhooks, APIs and schedules.'
+      - name: Self-hosted apps
+        icon: server-cog
+        profiles: [support]
+        note: Plex, Immich and the *arr stack; Syncthing, Vaultwarden and Paperless-ngx; Grafana, Portainer and MailHog.
       - name: Hardware repair and support
         icon: wrench
         level: 4
-        profiles: [support]
-      - name: Virtualization
-        icon: boxes
-        level: 2
         profiles: [support]
       - name: Google Workspace
         logo: google

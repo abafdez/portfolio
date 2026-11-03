@@ -302,6 +302,13 @@
 		}
 	}
 
+	/* Always the last column, also in a row with no level (Spanish, Self-hosted apps):
+	   placed by order, it would land in the level's column. -1 is the grid's last
+	   line, so -2 / -1 is the last column, three columns or four. */
+	.toggle {
+		grid-column: -2 / -1;
+	}
+
 	.toggle::before {
 		content: '[+]';
 		font-family: var(--font-label);
