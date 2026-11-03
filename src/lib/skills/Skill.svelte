@@ -258,22 +258,28 @@
 		color: var(--brand);
 	}
 
-	/* The fill states, set by fill.ts. Waiting: empty, until the bar is on screen.
-	   Filling: counts up tick by tick, steps() so it jumps one character at a time like
-	   htop redrawing. Each tick takes 60ms, so every bar fills at the same speed and a
-	   longer one takes longer (3 ticks in 180ms, 12 in 720ms).
-	   :global(): JS sets data-fill, not the template, so Svelte can't see these match
-	   anything, and would drop them from the CSS as unused. */
-	.bar:global([data-fill='waiting']) .fill {
-		clip-path: inset(0 100% 0 0);
+	/* The fill sweeps in from the left, from empty to its level, once the bar is on
+	   screen (fill.ts marks it data-filling). 90ms per tick, so every bar moves at the
+	   same speed and a longer one takes longer (3 ticks in 0.27s, 12 in about 1s),
+	   easing out as it reaches its level. --delay (from fill.ts) staggers the bars that
+	   come into view together, so they cascade down the list.
+	   Until then it's empty, from the start: (scripting: enabled) is true when the
+	   browser runs JS, so the prerendered page doesn't show full bars that then empty
+	   and refill once the JS starts. Without JS, or with reduced motion, it stays full.
+	   :global(): JS sets data-filling, not the template, so Svelte can't see it match
+	   anything, and would drop the rule from the CSS as unused. */
+	@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+		.fill {
+			clip-path: inset(0 100% 0 0);
+		}
+
+		.bar:global([data-filling]) .fill {
+			animation: count-up calc(var(--ticks) * 90ms) var(--ease-out-3) var(--delay, 0s) both;
+		}
 	}
 
-	.bar:global([data-fill='filling']) .fill {
-		animation: count-up calc(var(--ticks) * 60ms) steps(var(--ticks), jump-end) both;
-	}
-
-	/* With reduced motion, fill.ts marks nothing (the bars are full) and the bump is
-	   instant; the cursor stays on without blinking. */
+	/* With reduced motion, the bump is instant and the cursor stays on without
+	   blinking. */
 	@media (prefers-reduced-motion: no-preference) {
 		/* A spring easing overshoots and settles back: the bump. */
 		.bar {
@@ -286,9 +292,16 @@
 		}
 	}
 
+	/* Both ends are inset(), on purpose. With only a from, the end is the fill's own
+	   clip-path, none, and inset() and none can't be blended: the browser flips from one
+	   to the other halfway through instead of animating, and the bar just appeared. */
 	@keyframes count-up {
 		from {
 			clip-path: inset(0 100% 0 0);
+		}
+
+		to {
+			clip-path: inset(0);
 		}
 	}
 
