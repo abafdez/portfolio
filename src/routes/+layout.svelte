@@ -7,7 +7,7 @@
 	import '#lib/styles/tokens.css';
 	import '#lib/styles/global.css';
 	import type { Snippet } from 'svelte';
-	import { onNavigate } from '$app/navigation';
+	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { canTransition } from '#lib/view-transitions.ts';
 	import Header from '#lib/components/Header.svelte';
@@ -22,6 +22,8 @@
 	// Shallow navigations (a tool updating its URL params) run it too, but don't swap the
 	// page, so there's nothing to animate.
 	onNavigate((navigation) => {
+		// No smooth scrolling while SvelteKit moves to the new page (see global.css).
+		delete document.documentElement.dataset.smoothScroll;
 		if (navigation.shallow || !canTransition()) return;
 
 		// SvelteKit waits for this promise before it updates the page.
@@ -36,6 +38,13 @@
 				types: ['route']
 			});
 		});
+	});
+
+	// Smooth scrolling back on once a page is in place and SvelteKit has scrolled it:
+	// after the first load (including a reload's jump back down) and after each
+	// navigation. A frame later, so that jump is already done.
+	afterNavigate(() => {
+		requestAnimationFrame(() => (document.documentElement.dataset.smoothScroll = ''));
 	});
 </script>
 

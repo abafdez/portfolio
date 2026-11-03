@@ -2,7 +2,8 @@
 	// One group of skills as a terminal window that collapses to a preview: its name, a
 	// line about it, a few skills as chips and every icon in the title bar.
 	// Windows start collapsed and open by themselves as they come into view; once the
-	// visitor opens or closes one, that's their choice, kept for their next visit.
+	// visitor opens or closes one, that's their choice until they leave or reload (not
+	// saved: a reload starts fresh).
 	// Without JS every window is open (the CSS below), and the title bar does nothing.
 	import type { Attachment } from 'svelte/attachments';
 	import Icon from './Icon.svelte';
@@ -47,38 +48,15 @@
 		if (event.propertyName === 'grid-template-rows' && !open) shut = true;
 	}
 
-	// Per visitor, in their browser: { "web": true, "tools": false }. Storage can be
-	// missing or blocked (private windows), so every use is wrapped, and without it
-	// the windows just don't remember.
-	const key = 'about-windows';
-
-	function saved(): Record<string, boolean> {
-		try {
-			return JSON.parse(localStorage.getItem(key) ?? '{}');
-		} catch {
-			return {};
-		}
-	}
-
 	function toggle() {
 		show(!open);
 		chosen = true;
-		try {
-			localStorage.setItem(key, JSON.stringify({ ...saved(), [group.id]: open }));
-		} catch {
-			// Not remembered, that's all.
-		}
 	}
 
-	// On the window: restore the visitor's choice, or open it when it reaches the top
-	// two thirds of the screen. A region, not a line: a fast scroll can jump over a line,
-	// but where it stops, a window on screen is inside the region.
+	// On the window: open it when it reaches the top two thirds of the screen, unless
+	// the visitor already chose. A region, not a line: a fast scroll can jump over a
+	// line, but where it stops, a window on screen is inside the region.
 	const watch: Attachment<HTMLElement> = (section) => {
-		const choice = saved()[group.id];
-		if (choice !== undefined) {
-			show(choice, false);
-			chosen = true;
-		}
 		ready = true;
 
 		const observer = new IntersectionObserver(

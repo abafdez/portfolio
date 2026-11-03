@@ -80,9 +80,12 @@
 		}
 	}
 
-	/* In-page links (like the footer hint) glide instead of jumping. */
+	/* In-page links (like the footer hint) glide instead of jumping. Only while the
+	   layout says so (data-smooth-scroll, +layout.svelte): SvelteKit scrolls too, to the
+	   top of a new page or back where you were after a reload, and smooth would turn
+	   that jump into a glide from wherever the old page was. */
 	@media (prefers-reduced-motion: no-preference) {
-		html {
+		html[data-smooth-scroll] {
 			scroll-behavior: smooth;
 		}
 	}
