@@ -1,0 +1,485 @@
+# What I know, for /about (and the CV builder). Read at build time by
+# src/lib/skills/skills.server.ts, which fails the build on a mistake and says where.
+#
+# A skill:
+#   name:      what it is
+#   logo:      a brand logo, by its Simple Icons slug (https://simpleicons.org), or
+#   icon:      a generic Lucide icon, by name (https://lucide.dev/icons)
+#   level:     1 Learning, 2 Comfortable, 3 Daily, 4 Could teach it (none: no bar)
+#   profiles:  the kinds of job it matters for (ids from the list below)
+#   note:      how I use it, in one line
+#   evidence:  where it shows, each a label and one of
+#              entry (a Bitácora slug), tool (a /projects tool), list (an Awesome
+#              list) or url (https://)
+#
+# Levels and profiles are claims about me: keep them honest.
+
+# The kinds of job I apply for. /about and the CV builder filter skills by these.
+profiles:
+  - id: web
+    name: Web development
+  - id: support
+    name: IT support and systems
+  - id: mainframe
+    name: Mainframe
+
+groups:
+  - name: Languages
+    id: languages
+    icon: code-xml
+    skills:
+      - name: HTML
+        logo: html5
+        level: 3
+        profiles: [web]
+        note: 'Semantic markup first: landmarks, headings in order, native elements before ARIA.'
+        evidence:
+          - label: Lighthouse accessibility check
+            entry: 2026-10-29-lighthouse-a11y-check
+      - name: CSS
+        logo: css
+        level: 3
+        profiles: [web]
+        note: 'Modern CSS: cascade layers, container queries, light-dark(), scroll-driven animations.'
+        evidence:
+          - label: Cascade layers
+            entry: 2026-10-29-cascade-layers
+          - label: Scroll-driven header and footer
+            entry: 2026-10-31-scroll-driven-header-footer
+          - label: My Modern CSS list
+            list: modern-css
+      - name: JavaScript
+        logo: javascript
+        level: 3
+        profiles: [web]
+        note: Websites for small businesses since 2010, and userscripts to automate the boring parts.
+        evidence:
+          - label: A theme toggle without a flash
+            entry: 2026-10-29-theme-toggle-no-flash
+      - name: TypeScript
+        logo: typescript
+        level: 2
+        profiles: [web]
+        note: 'This site, migrated from JSDoc: typed content, routes and data.'
+        evidence:
+          - label: Migrating to TypeScript
+            entry: 2026-10-21-typescript-migration
+          - label: The contrast checker
+            tool: contrast
+      - name: PHP
+        logo: php
+        level: 3
+        profiles: [web]
+        note: Freelance websites with PHP and MySQL since 2010.
+      - name: Python
+        logo: python
+        level: 2
+        profiles: [web, support]
+        note: Web scraping to compare supplier prices and automate rate updates.
+      - name: SQL
+        icon: database
+        level: 3
+        profiles: [web, support, mainframe]
+        note: MySQL, PostgreSQL and SQLite.
+
+  - name: Web development
+    id: web
+    icon: globe
+    skills:
+      - name: Svelte and SvelteKit
+        logo: svelte
+        level: 2
+        profiles: [web]
+        note: 'This site: Svelte 5 runes, prerendered SvelteKit on GitHub Pages.'
+        evidence:
+          - label: A composition per route
+            entry: 2026-10-31-route-composition
+          - label: Filters in a $state class
+            entry: 2026-11-02-awesome-list-filters
+          - label: Source code
+            url: https://github.com/abafdez/portfolio
+      - name: Vue
+        logo: vuedotjs
+        level: 1
+        profiles: [web]
+      - name: Laravel
+        logo: laravel
+        level: 2
+        profiles: [web]
+      - name: WordPress
+        logo: wordpress
+        level: 3
+        profiles: [web]
+        note: Sites for small businesses.
+      - name: Node.js
+        logo: nodedotjs
+        level: 2
+        profiles: [web]
+      - name: Deno
+        logo: deno
+        level: 1
+        profiles: [web]
+      - name: Tailwind CSS
+        logo: tailwindcss
+        level: 2
+        profiles: [web]
+      - name: PostCSS and Open Props
+        logo: postcss
+        level: 2
+        profiles: [web]
+        evidence:
+          - label: Open Props with JIT
+            entry: 2026-10-22-open-props-jit-setup
+      - name: Markdown and mdsvex
+        logo: markdown
+        level: 3
+        profiles: [web]
+        note: This Bitácora and the blog, with my own code highlighting theme.
+        evidence:
+          - label: Markdown with mdsvex
+            entry: 2026-10-31-markdown-with-mdsvex
+          - label: A Shiki theme from my tokens
+            entry: 2026-11-02-shiki-code-theme
+      - name: Static sites (Jamstack) and PWAs
+        icon: layers
+        level: 2
+        profiles: [web]
+      - name: GraphQL
+        logo: graphql
+        level: 1
+        profiles: [web]
+      - name: Supabase
+        logo: supabase
+        level: 1
+        profiles: [web]
+      - name: PocketBase
+        logo: pocketbase
+        level: 1
+        profiles: [web]
+
+  - name: Databases
+    id: databases
+    icon: database
+    skills:
+      - name: MySQL
+        logo: mysql
+        level: 3
+        profiles: [web, support]
+        note: Behind most of my freelance sites.
+      - name: SQLite
+        logo: sqlite
+        level: 2
+        profiles: [web]
+      - name: PostgreSQL
+        logo: postgresql
+        level: 2
+        profiles: [web, support]
+
+  - name: Mainframe
+    id: mainframe
+    icon: server
+    skills:
+      - name: Natural and NaturalONE
+        icon: square-terminal
+        level: 1
+        profiles: [mainframe]
+        note: Software AG certificate (Essential and Basic).
+      - name: Adabas
+        icon: database
+        level: 1
+        profiles: [mainframe]
+        note: Software AG certificate (Essential and Basic).
+      - name: COBOL
+        icon: code
+        level: 1
+        profiles: [mainframe]
+        note: IBM Z Xplore (Concepts and Intermediate).
+      - name: JCL
+        icon: file-text
+        level: 1
+        profiles: [mainframe]
+        note: IBM Z Xplore (Concepts and Intermediate).
+      - name: z/OS and USS
+        icon: server
+        level: 1
+        profiles: [mainframe]
+        note: IBM Z Xplore (Concepts and Intermediate).
+      - name: IBM AS/400
+        icon: server
+        level: 2
+        profiles: [mainframe, support]
+        note: Invoicing with an ERP on AS/400.
+
+  - name: Tools
+    id: tools
+    icon: wrench
+    skills:
+      - name: Git and GitHub
+        logo: git
+        level: 3
+        profiles: [web]
+        note: A branch and a pull request per feature, checked by CI before merging.
+        evidence:
+          - label: Source code
+            url: https://github.com/abafdez/portfolio
+      - name: GitHub Actions
+        logo: githubactions
+        level: 2
+        profiles: [web]
+        evidence:
+          - label: Checks on every pull request
+            entry: 2026-10-20-ci-pr-checks
+      - name: VS Code
+        icon: code
+        level: 3
+        profiles: [web, mainframe]
+      - name: Vite
+        logo: vite
+        level: 2
+        profiles: [web]
+      - name: pnpm
+        logo: pnpm
+        level: 2
+        profiles: [web]
+      - name: Docker
+        logo: docker
+        level: 2
+        profiles: [web, support]
+      - name: Lighthouse
+        logo: lighthouse
+        level: 2
+        profiles: [web]
+        evidence:
+          - label: A contrast regression
+            entry: 2026-10-29-contrast-regression
+      - name: Playwright
+        icon: scan-eye
+        level: 1
+        profiles: [web]
+      - name: Puppeteer
+        logo: puppeteer
+        level: 2
+        profiles: [web]
+      - name: Grafana
+        logo: grafana
+        level: 1
+        profiles: [support]
+      - name: Jira
+        logo: jira
+        level: 2
+        profiles: [web, support, mainframe]
+      - name: Notion
+        logo: notion
+        level: 3
+        profiles: [web, support]
+      - name: Obsidian
+        logo: obsidian
+        level: 3
+        profiles: []
+        note: My notes and project boards.
+      - name: AutoHotkey
+        logo: autohotkey
+        level: 3
+        profiles: [support]
+        note: 'Desktop automation: price comparisons and repetitive data entry.'
+      - name: Tampermonkey
+        logo: tampermonkey
+        level: 3
+        profiles: [web, support]
+        note: Userscripts that add what a web app is missing.
+
+  - name: Ways of working
+    id: methods
+    icon: workflow
+    skills:
+      - name: Accessibility (WCAG)
+        icon: accessibility
+        level: 2
+        profiles: [web]
+        note: Every page checked with Lighthouse in both themes, and contrast checked as tokens change.
+        evidence:
+          - label: The contrast checker
+            tool: contrast
+          - label: Lighthouse accessibility check
+            entry: 2026-10-29-lighthouse-a11y-check
+      - name: Design tokens and theming
+        icon: swatch-book
+        level: 2
+        profiles: [web]
+        evidence:
+          - label: Semantic tokens
+            entry: 2026-10-27-semantic-tokens
+          - label: Dark mode with light-dark()
+            entry: 2026-10-29-dark-mode-light-dark
+      - name: Progressive enhancement
+        icon: layers
+        level: 2
+        profiles: [web]
+        note: Pages work without JS; effects are extras and respect reduced motion.
+        evidence:
+          - label: Drafts only in dev
+            entry: 2026-11-02-drafts-only-in-dev
+      - name: Pull requests and CI
+        icon: git-pull-request
+        level: 2
+        profiles: [web]
+        evidence:
+          - label: Checks on every pull request
+            entry: 2026-10-20-ci-pr-checks
+      - name: Learning in public
+        icon: book-open
+        level: 3
+        profiles: [web, support, mainframe]
+        note: A dev log entry for every topic I learn.
+        evidence:
+          - label: The learning path
+            entry: 2026-10-20-learning-path
+      - name: Automation and web scraping
+        icon: workflow
+        level: 3
+        profiles: [web, support]
+        note: Supplier rates and price comparisons with Python, Tampermonkey and AutoHotkey.
+      - name: Data protection
+        icon: shield-check
+        level: 2
+        profiles: [support]
+        note: Certified; I looked after a customer database under GDPR.
+      - name: Training people
+        icon: graduation-cap
+        level: 3
+        profiles: [support]
+        note: Taught staff office and productivity tools.
+
+  - name: AI workflows
+    id: ai
+    icon: bot
+    skills:
+      - name: Claude Code
+        logo: claude
+        level: 3
+        profiles: [web]
+        note: Project rules, skills and agents in the repo; it writes a step, explains it, then quizzes me.
+        evidence:
+          - label: The .claude folder
+            url: https://github.com/abafdez/portfolio/tree/main/.claude
+      - name: MCP servers
+        icon: plug
+        level: 2
+        profiles: [web]
+        note: Svelte docs and a Playwright browser, so the AI checks its own work.
+      - name: Writing context for AI
+        icon: file-text
+        level: 2
+        profiles: [web]
+        note: 'CLAUDE.md files and skills: the rules and the steps, written once.'
+      - name: An AI-run knowledge base
+        logo: obsidian
+        level: 2
+        profiles: []
+        note: 'Claude keeps my Obsidian vault: notes, boards and this dev log.'
+      - name: ComfyUI
+        icon: wand-sparkles
+        level: 1
+        profiles: []
+        note: Image generation workflows.
+
+  - name: Systems and support
+    id: systems
+    icon: network
+    skills:
+      - name: Local networks
+        icon: network
+        level: 3
+        profiles: [support]
+        note: Designed and set up for small businesses.
+      - name: Hardware repair and support
+        icon: wrench
+        level: 4
+        profiles: [support]
+      - name: Virtualization
+        icon: boxes
+        level: 2
+        profiles: [support]
+      - name: Google Workspace
+        logo: google
+        level: 3
+        profiles: [support]
+        note: Moved an order system onto it.
+      - name: Microsoft Office
+        icon: file-spreadsheet
+        level: 3
+        profiles: [support]
+      - name: Telemetry and data analysis
+        icon: activity
+        level: 2
+        profiles: [support]
+        note: 'Five years in GT racing: car telemetry, and the data to tune the setup at each track.'
+      - name: System migrations
+        icon: hard-drive
+        level: 3
+        profiles: [support]
+
+  - name: Multimedia and 3D
+    id: multimedia
+    icon: clapperboard
+    skills:
+      - name: Adobe Creative Suite
+        icon: palette
+        level: 2
+        profiles: [web]
+      - name: DaVinci Resolve
+        logo: davinciresolve
+        level: 2
+        profiles: []
+      - name: Blender
+        logo: blender
+        level: 2
+        profiles: []
+      - name: Unreal Engine
+        logo: unrealengine
+        level: 1
+        profiles: []
+      - name: FreeCAD
+        logo: freecad
+        level: 1
+        profiles: []
+      - name: Agisoft Metashape
+        icon: scan-eye
+        level: 1
+        profiles: []
+        note: Photogrammetry.
+      - name: Inkscape
+        logo: inkscape
+        level: 2
+        profiles: [web]
+      - name: OBS
+        logo: obsstudio
+        level: 2
+        profiles: []
+      - name: FL Studio
+        icon: music
+        level: 1
+        profiles: []
+      - name: Product photography
+        icon: camera
+        level: 3
+        profiles: [web]
+        note: Catalogue photos for shops.
+
+  - name: Languages I speak
+    id: spoken
+    icon: languages
+    skills:
+      - name: Spanish
+        icon: languages
+        profiles: [web, support, mainframe]
+        note: Native.
+      - name: English
+        icon: languages
+        profiles: [web, support, mainframe]
+        note: C1. Six months studying in Manchester.
+      - name: Translation and SEO writing
+        icon: pen-line
+        level: 2
+        profiles: [web]
+        note: Translated and wrote web content, SEO included.

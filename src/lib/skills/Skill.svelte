@@ -1,29 +1,19 @@
 <script lang="ts">
 	// One skill in /about: its icon, name and level, and, when there's more to say,
 	// a <details> that opens to how I use it and where it shows.
-	import BrandIcon from '#lib/components/BrandIcon.svelte';
-	import { hueAndChroma } from './brand-color.ts';
 	import { fillOnView } from './fill.ts';
+	import Icon from './Icon.svelte';
 	import { evidenceHref, levels, type Skill } from './skills.ts';
 
 	let { skill }: { skill: Skill } = $props();
 
 	let more = $derived(Boolean(skill.note || skill.evidence?.length));
-	// A brand logo brings its own hue. A generic (Lucide) icon has none, and the CSS
-	// falls back to --icon-tone's own (the site's green).
-	let color = $derived(
-		skill.icon && 'hex' in skill.icon ? hueAndChroma(skill.icon.hex) : undefined
-	);
 </script>
 
 {#snippet head()}
-	{@const Icon = skill.icon}
 	<span class="icon">
-		<!-- Simple Icons are data (they have a path), Lucide icons are components. -->
-		{#if Icon && 'path' in Icon}
-			<BrandIcon icon={Icon} size="1.25rem" />
-		{:else if Icon}
-			<Icon size="1.25rem" aria-hidden="true" />
+		{#if skill.icon}
+			<Icon icon={skill.icon} size="1.25rem" />
 		{/if}
 	</span>
 	<span class="name">{skill.name}</span>
@@ -40,8 +30,9 @@
 	{/if}
 {/snippet}
 
-<!-- The brand color goes on the row: the icon, the glow and the cursor all use it. -->
-<li class="skill" style:--hue={color?.hue} style:--chroma={color?.chroma}>
+<!-- The brand color goes on the row: the icon, the glow and the cursor all use it.
+     A skill without a logo has none, and the CSS falls back to --icon-tone's own. -->
+<li class="skill" style:--hue={skill.hue} style:--chroma={skill.chroma}>
 	{#if more}
 		<details>
 			<summary>

@@ -110,6 +110,9 @@ export default defineConfig({
 				strict: true
 			}),
 			prerender: {
+				// '*' is every page the crawler finds from the home page (the default).
+				// /logos.svg is only used by <use href>, which the crawler doesn't follow.
+				entries: ['*', '/logos.svg'],
 				// A route nobody links to fails the build, which catches broken links. The
 				// exceptions: the post and tag pages have no pages while every post is a
 				// draft (drafts don't exist in a build). Once a post is published,

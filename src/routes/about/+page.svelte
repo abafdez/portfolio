@@ -4,13 +4,15 @@
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import SectionNav from '#lib/components/SectionNav.svelte';
 	import { profiles } from '#lib/links.ts';
+	import Icon from '#lib/skills/Icon.svelte';
 	import LogoMarquee from '#lib/skills/LogoMarquee.svelte';
 	import Skill from '#lib/skills/Skill.svelte';
-	import { groups } from '#lib/skills/skills.ts';
 	import { spotlight } from '#lib/skills/spotlight.ts';
 
+	let { data } = $props();
+
 	const [github, linkedin] = profiles;
-	const sections = groups.map(({ id, name }) => ({ id, label: name }));
+	let sections = $derived(data.groups.map(({ id, name }) => ({ id, label: name })));
 </script>
 
 <svelte:head>
@@ -51,8 +53,8 @@
 	</div>
 
 	<div class="groups">
-		<LogoMarquee />
-		{#each groups as group (group.id)}
+		<LogoMarquee logos={data.logos} />
+		{#each data.groups as group (group.id)}
 			<!-- Each group is a terminal window. The title bar is decoration
 			     (aria-hidden): the heading and the list are the content. -->
 			<section class="window" aria-labelledby={group.id}>
@@ -61,7 +63,7 @@
 					<span class="path">alfonso@portfolio: ~/skills/{group.id}</span>
 				</div>
 				<div class="screen">
-					<h2 id={group.id}><group.icon aria-hidden="true" />{group.name}</h2>
+					<h2 id={group.id}><Icon icon={group.icon} />{group.name}</h2>
 					<!-- spotlight: a glow follows the pointer over the rows (spotlight.ts). -->
 					<ul class="skills spotlight" {@attach spotlight}>
 						{#each group.skills as skill (skill.name)}

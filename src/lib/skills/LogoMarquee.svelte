@@ -1,40 +1,24 @@
 <script lang="ts">
 	// Every brand logo in the skills, sliding by in a loop. Decoration: the same skills
 	// are listed, with names, right below, so the whole strip is aria-hidden.
-	import type { SimpleIcon } from 'simple-icons';
-	import { hueAndChroma } from './brand-color.ts';
-	import { groups } from './skills.ts';
+	import Icon from './Icon.svelte';
+	import type { Logo } from './skills.ts';
 
-	// Brand logos only (generic icons say nothing on their own), once each.
-	const logos = [
-		...new Map(
-			groups
-				.flatMap((group) => group.skills)
-				.flatMap((skill) => (skill.icon && 'hex' in skill.icon ? [skill.icon] : []))
-				.map((icon: SimpleIcon) => [icon.slug, icon])
-		).values()
-	].map((icon) => ({ icon, ...hueAndChroma(icon.hex) }));
+	let { logos }: { logos: Logo[] } = $props();
 </script>
 
 <!-- The list twice, one after the other. The track slides left by exactly half its
      width (one copy) and starts over: the second copy is then where the first one
      was, so the jump can't be seen.
-     The first copy writes each logo's path, with an id; the second one only points at
-     it (<use href="#…">), so the paths aren't in the HTML twice. Written out twice they
-     were 168 KB, half the page. -->
+     Both copies draw the logos from the logos.svg sprite with <use>.
+     Written out twice, the paths were 168 KB, half the page. -->
 <div class="marquee" aria-hidden="true">
 	<div class="track">
 		{#each [0, 1] as copy (copy)}
 			<ul>
-				{#each logos as { icon, hue, chroma } (icon.slug)}
-					<li style:--hue={hue} style:--chroma={chroma} title={icon.title}>
-						<svg viewBox="0 0 24 24" width="2rem" height="2rem" fill="currentColor">
-							{#if copy === 0}
-								<path id="logo-{icon.slug}" d={icon.path} />
-							{:else}
-								<use href="#logo-{icon.slug}" />
-							{/if}
-						</svg>
+				{#each logos as { slug, title, hue, chroma } (slug)}
+					<li style:--hue={hue} style:--chroma={chroma} {title}>
+						<Icon icon={{ logo: slug }} size="2rem" />
 					</li>
 				{/each}
 			</ul>
