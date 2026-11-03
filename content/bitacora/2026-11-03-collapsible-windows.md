@@ -16,7 +16,7 @@ tags: [svelte, accessibility, css, html]
 ## What I learned
 
 - `hidden="until-found"` hides content but lets find in page (Ctrl+F) search it. On a match, the browser fires `beforematch` on it, and the window opens.
-- A `display: none` would stop that search, so the CSS only hides a collapsed list until the JS runs (`:not([data-ready])`); after that, the attribute does it.
+- A `display: none` would stop that search, so the CSS never uses it on the list. Before the JS runs, a collapsed list just sits in a row of height zero (below); the attribute only goes on once the JS runs.
 - `@media (scripting: enabled)` again: collapsed only happens with JS. Without it every window is open and the hint is hidden, because the button wouldn't do anything.
 - The prerendered page can't know what's on screen, so the server opens the first window, the one you see when the page loads. The rest would have opened after load and shifted the page.
 - Opening by itself uses an IntersectionObserver on a region (the top two thirds), not a line: a fast scroll can jump over a line, but where it stops, a window on screen is inside the region.

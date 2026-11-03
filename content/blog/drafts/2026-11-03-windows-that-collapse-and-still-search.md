@@ -49,7 +49,7 @@ const openOnFind: Attachment<HTMLElement> = (list) => {
 };
 ```
 
-`ready` matters. Before the JavaScript starts, the attribute isn't there and a CSS rule hides collapsed lists instead (`:not([data-ready])`). Once it runs, the rule stops matching and the attribute takes over. If the CSS kept a `display: none`, it would override `until-found` and the search would find nothing.
+`ready` matters: the attribute only goes on once the JavaScript runs. Before that, a collapsed list just sits in a row of height zero (more on that below). And never a `display: none` from the CSS: it would override `until-found`, and the search would find nothing.
 
 <!-- TODO: try it: collapse a window, press Ctrl+F, search for a skill inside it -->
 
