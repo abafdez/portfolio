@@ -102,3 +102,4 @@ These need that whole group live first:
 **CV builder** (Phase 5.5):
 
 - `2026-11-03-radio-buttons-for-a-filter` (4: a screenshot with a profile picked; what a screen reader said; the inputs without `opacity: 0`; the flash before the filter) → filters in a Svelte class
+- `2026-11-03-a-form-that-remembers` (3: a screenshot with made-up data; junk in localStorage and what `read()` kept; how I'd have found the select bug). Links to no draft.
