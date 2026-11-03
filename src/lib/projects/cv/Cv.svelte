@@ -250,8 +250,19 @@
 			</fieldset>
 		</details>
 
-		<!-- type="button" on each: inside a form, a button without it submits. -->
-		<fieldset disabled={!cv.loaded}>
+		<p class="note">
+			Saved in this browser only. Nothing you type here is sent anywhere. Export your details to
+			keep a copy: clearing the browser's data deletes them.
+			<noscript>The builder needs JavaScript.</noscript>
+		</p>
+	</form>
+
+	<!-- The right column: what to do with the CV, then the CV. -->
+	<div class="preview">
+		<!-- Over the CV it acts on, outside the form: these buttons don't edit anything.
+		     A fieldset still works outside a form, and still disables them all at once.
+		     type="button" anyway, in case they ever move back into a form. -->
+		<fieldset class="actions-box" disabled={!cv.loaded}>
 			<legend>Your CV</legend>
 			<div class="actions">
 				<!-- The print dialog has "Save as PDF": a PDF with real text, which is what
@@ -268,44 +279,38 @@
 			<p class="note" role="status">{message}</p>
 		</fieldset>
 
-		<p class="note">
-			Saved in this browser only. Nothing you type here is sent anywhere. Export your details to
-			keep a copy: clearing the browser's data deletes them.
-			<noscript>The builder needs JavaScript.</noscript>
-		</p>
-	</form>
-
-	<!-- The CV itself, and all that prints (the print styles below). Plain text in one
+		<!-- The CV itself, and all that prints (the print styles below). Plain text in one
 	     column, standard headings, no icons: what an applicant tracking system can
 	     read. -->
-	<article class="cv" aria-labelledby="cv-name">
-		<header>
-			<h2 id="cv-name">{fullName || 'Your name'}</h2>
-			<p class="headline">{profile.name}</p>
-			{#if contact.length}
-				<p>{contact.join(' · ')}</p>
+		<article class="cv" aria-labelledby="cv-name">
+			<header>
+				<h2 id="cv-name">{fullName || 'Your name'}</h2>
+				<p class="headline">{profile.name}</p>
+				{#if contact.length}
+					<p>{contact.join(' · ')}</p>
+				{/if}
+			</header>
+
+			{#if cv.values.letter.trim()}
+				<section>
+					<h3>Summary</h3>
+					<p class="letter">{cv.values.letter}</p>
+				</section>
 			{/if}
-		</header>
 
-		{#if cv.values.letter.trim()}
 			<section>
-				<h3>Summary</h3>
-				<p class="letter">{cv.values.letter}</p>
+				<h3>Skills</h3>
+				<ul>
+					{#each groups as group (group.name)}
+						<li>
+							<strong>{group.name}:</strong>
+							{group.skills.join(', ')}
+						</li>
+					{/each}
+				</ul>
 			</section>
-		{/if}
-
-		<section>
-			<h3>Skills</h3>
-			<ul>
-				{#each groups as group (group.name)}
-					<li>
-						<strong>{group.name}:</strong>
-						{group.skills.join(', ')}
-					</li>
-				{/each}
-			</ul>
-		</section>
-	</article>
+		</article>
+	</div>
 </div>
 
 <style>
@@ -335,8 +340,9 @@
 		}
 	}
 
-	/* One column: the editor's rows need the whole width. */
-	.skills {
+	/* One column: the editor's rows and the row of buttons need the whole width. */
+	.skills,
+	.actions-box {
 		display: block;
 	}
 
@@ -485,11 +491,15 @@
 		}
 	}
 
+	.preview {
+		display: grid;
+		gap: var(--size-4);
+	}
+
 	.actions {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--size-2);
-		grid-column: 1 / -1;
 	}
 
 	/* The buttons, and the label that stands in for the file input. */
@@ -542,8 +552,13 @@
 	   hide themselves (their own print styles), the page header is hidden by the route,
 	   and tokens.css switches to the light theme. Sizes in points, the unit of paper. */
 	@media print {
-		form {
+		form,
+		.actions-box {
 			display: none;
+		}
+
+		.preview {
+			display: block;
 		}
 
 		.builder {

@@ -13,6 +13,7 @@ tags: [html, svelte, accessibility, forms]
 - My own skills now have an id (`crypto.randomUUID()`). Skills saved the old way, as plain strings, still load.
 - Print opens "About you" before focusing a field that needs fixing.
 - Each skill group is a panel on `--surface-1` with a border, so it stands off the blueprint grid; each skill row is a `--surface-2` strip, and the text fields in it go back to `--surface-1` so they still read as fields (Alfonso's idea: the groups were hard to read).
+- The "Your CV" buttons (print, export, import) moved out of the form to sit over the live CV they act on. A `<fieldset>` works outside a form too, so it still disables them until the data is loaded; print hides it with the form.
 - One `.visually-hidden` in `global.css` instead of four copies (`Skill`, `SkillWindow`, `SkillEditor`, now `Cv`).
 
 ## What I learned
