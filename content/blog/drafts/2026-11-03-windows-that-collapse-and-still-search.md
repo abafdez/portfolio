@@ -53,6 +53,52 @@ const openOnFind: Attachment<HTMLElement> = (list) => {
 
 <!-- TODO: try it: collapse a window, press Ctrl+F, search for a skill inside it -->
 
+## Animating to and from nothing
+
+CSS can't animate `height: auto`. It can animate a grid row from `1fr` (as tall as its content) to `0fr` (nothing):
+
+```css
+.reveal {
+	display: grid;
+	transition: grid-template-rows 400ms var(--ease-out-3);
+
+	& > * {
+		min-block-size: 0;
+		overflow: clip;
+		overflow-clip-margin: var(--size-1);
+	}
+}
+
+.content {
+	grid-template-rows: 1fr;
+}
+
+.window:not([data-open]) .content {
+	grid-template-rows: 0fr;
+}
+```
+
+`min-block-size: 0` lets the child shrink below its content, and `overflow: clip` cuts what doesn't fit. The clip margin keeps the glowing borders of my rows from being cut at the edges. The chips use the same trick the other way round, so they grow while the list shrinks.
+
+There's a catch with `hidden="until-found"`: it hides the list at once, before there's anything left to shrink. So the window sets it when the collapse ends:
+
+```ts
+function collapsed(event: TransitionEvent) {
+	if (event.target !== event.currentTarget) return;
+	if (event.propertyName === 'grid-template-rows' && !open) shut = true;
+}
+```
+
+`transitionend` bubbles, and the list is full of transitions (a bar grows when you point at it), so it only listens to its own row. With reduced motion there's nothing to wait for, and the list is hidden straight away.
+
+<!-- TODO: collapse a window with the Animations panel in DevTools open, and slow it down -->
+
+## The title bar
+
+The lights say the state: green (zoom) while a window is open, yellow (minimize) while it's collapsed, with a spring easing so the light that turns on pops a little.
+
+Collapsed, the title bar shows the window's icons, like a dock. They pop in one after another: an animation runs whenever its element goes from `display: none` to shown, so it replays on every collapse, and each icon's `--i` delays it a little more. When there are more icons than room, a `ResizeObserver` notices, a second copy of the icons follows the first, and they loop like the logo strip at the top of the page.
+
 ## Opening as you read
 
 The windows start collapsed and open by themselves as they come up the screen:
