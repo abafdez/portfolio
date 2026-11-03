@@ -75,6 +75,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Learn:** separating data from presentation, TS types for data (`src/lib/data/cv.ts`), `{#each}` with keys, `$derived`, print CSS (`@media print`).
 - **Do:** create typed CV data (experience, education, skills) and add a filterable skills list using `$state`/`$derived`. Add a print stylesheet so the CV prints well and "Save as PDF" works.
 - **Done when:** the browser print preview looks like a real CV.
+- **Changed (2026-11-03, Alfonso's call):** no public CV: it has contact details and employers, so it's sent on request. Phase 5 became `/about` on `feat/about`: skills as typed data (`src/lib/skills/skills.ts`) in groups, with levels and evidence links, brand icons (Lucide + Simple Icons, OKLCH brand hues at the theme's lightness), terminal windows with htop bars that fill on view, a border spotlight and a logo marquee, and LinkedIn/GitHub buttons to ask for the CV. Print CSS dropped with the CV. Next: Alfonso reviews the levels and intro, then the PR.
 
 ## Phase 6 — Markdown with mdsvex: Bitácora (1.5 weeks)
 

@@ -57,6 +57,11 @@ These link to no other draft.
 - `2026-11-02-filters-in-a-svelte-class`
   - whether AND felt right for tags, or OR
   - what a screen reader said when toggling a tag and typing a search
+- `2026-11-03-htop-bars-and-a-border-spotlight`
+  - a short video: the bars filling on load, scrolling a window in, pointing at rows
+  - the three showcases, and why I kept terminal and spotlight
+  - what a stepped fill (`steps(var(--ticks))`) looked like next to the smooth one
+  - the Lighthouse score before and after, and whether I did the sprite
 
 ## Groups that go up together
 
@@ -77,7 +82,7 @@ These need that whole group live first:
 
 - `2026-10-22-open-props-jit-vite` → design tokens
 - `2026-10-29-self-hosted-fonts` → design tokens, dark-first palette
-- `2026-10-31-sticky-intro-scroll-spy` (2: a desktop video; the `rootMargin` tried) → route transitions, scroll-driven header and footer
+- `2026-10-31-sticky-intro-scroll-spy` (2: a desktop video; where the line goes and why a third of the way down) → route transitions, scroll-driven header and footer
 
 **Svelte styles:**
 
@@ -88,3 +93,7 @@ These need that whole group live first:
 - `2026-10-31-markdown-with-mdsvex` (3: why mdsvex; what I tried; the Network tab) → markdown links, Shiki
 - `2026-11-02-shiki-with-design-tokens` (3: light and dark screenshots; a token from the inspector; how I checked contrast) → code block frame
 - `2026-11-02-tag-pages-from-frontmatter` (2: the unseen-routes error; a screenshot of the tag index) → drafts that never ship
+
+**About page** (Phase 5):
+
+- `2026-11-03-brand-colors-at-my-themes-lightness` (3: raw vs final screenshot; changing `--icon-tone` in DevTools; the logo that surprised me) → contrast checker
