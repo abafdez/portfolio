@@ -21,7 +21,8 @@ export const fields = [
 	'letter'
 ] as const;
 
-export type Details = Record<(typeof fields)[number], string>;
+export type Field = (typeof fields)[number];
+export type Details = Record<Field, string>;
 
 export class CvDetails {
 	// One object, not a $state per field: a $state object is a deep proxy, so

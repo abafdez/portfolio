@@ -53,6 +53,10 @@
 	--surface-2: light-dark(var(--ink-1), var(--ink-7));
 	--surface-3: light-dark(var(--ink-3), var(--ink-6));
 
+	/* Something is wrong: a field's border and its message. Text on any surface: light
+	   ≥ 5.74:1, dark ≥ 7.45:1 (so a border, which needs 3:1, too). */
+	--error: light-dark(var(--red-dark), var(--red-bright));
+
 	/* The blueprint grid behind the page (Blueprint.svelte): faint text-colored lines,
 	   a minor cell, a major one every 4 cells, and a "+" at major crossings.
 	   Decorative, so no contrast requirement. */

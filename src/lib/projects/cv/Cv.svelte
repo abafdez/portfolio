@@ -2,9 +2,10 @@
 	// The CV builder: pick the kind of job, fill in who you are, and the CV next to the
 	// form follows. The skills come from the site's data (the page's server load); the
 	// rest is typed here and kept in this browser only (details.svelte.ts).
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { skillsFor, type CvSkills } from './cv.ts';
-	import { CvDetails } from './details.svelte.ts';
+	import { CvDetails, type Field } from './details.svelte.ts';
+	import { inputs, problem } from './inputs.ts';
 
 	let { skills }: { skills: CvSkills } = $props();
 
@@ -35,8 +36,47 @@
 	// A letter, but a short one: it goes at the top of the CV.
 	const letterMax = 600;
 
-	// What the last import did, for the status line.
+	// What the last import or print did, for the status line.
 	let message = $state('');
+
+	let form: HTMLFormElement | undefined = $state();
+
+	// The fields with a problem, and what it is ('' once it's fixed). A field is first
+	// checked when you leave it, so it doesn't turn red while you're still typing; from
+	// then on it's checked on every keystroke, so the message goes as soon as it's right.
+	// (CSS has this rule built in, :user-invalid, but the message needs JS anyway.)
+	let errors: Partial<Record<Field, string>> = $state({});
+
+	function check(field: EventTarget | null) {
+		if (field instanceof HTMLInputElement && field.name) {
+			errors[field.name as Field] = problem(field);
+		}
+	}
+
+	function recheck(event: Event) {
+		const field = event.target;
+		if (field instanceof HTMLInputElement && field.name in errors) check(field);
+	}
+
+	// Every field at once; the first with a problem, if any.
+	function checkAll() {
+		const fields = [...(form?.querySelectorAll<HTMLInputElement>('input[name]') ?? [])];
+		fields.forEach(check);
+		return fields.find((field) => !field.validity.valid);
+	}
+
+	// A CV without a name or a way to reach you shouldn't go out: show what's missing and
+	// take the focus there (a screen reader then reads its message), instead of printing.
+	function printCv() {
+		const first = checkAll();
+		if (first) {
+			message = 'Some fields need fixing first.';
+			first.focus();
+			return;
+		}
+		message = '';
+		print();
+	}
 
 	// A download made in the page: the file is a Blob, URL.createObjectURL gives it a
 	// blob: URL, and a link with download saves it instead of opening it. The URL is
@@ -63,6 +103,9 @@
 			message = count
 				? `Loaded ${count} fields from ${file.name}.`
 				: `No CV fields in ${file.name}.`;
+			// A file can hold anything that's a string: show what needs fixing. tick() waits
+			// for the fields to show the new values before they're checked.
+			if (count) await tick().then(checkAll);
 		} catch {
 			message = `${file.name} isn't a JSON file.`;
 		}
@@ -87,8 +130,16 @@
 <div class="builder">
 	<!-- onsubmit: a <button> in a form submits it unless it says type="button", and so
 	     can Enter in a field. A form without an action sends its fields to the same URL,
-	     as ?name=…&phone=…, into the address bar and the history. Nothing is ever sent. -->
-	<form onsubmit={(event) => event.preventDefault()}>
+	     as ?name=…&phone=…, into the address bar and the history. Nothing is ever sent.
+	     novalidate: no browser bubbles, we show our own messages. The fields still check
+	     themselves (validity). focusout and input bubble, so the form hears every field. -->
+	<form
+		bind:this={form}
+		novalidate
+		onsubmit={(event) => event.preventDefault()}
+		onfocusout={(event) => check(event.target)}
+		oninput={recheck}
+	>
 		<!-- Disabled until the saved values are in, and for good without JS (it can't
 		     save or preview anything then). A disabled fieldset disables every field. -->
 		<fieldset disabled={!cv.loaded}>
@@ -106,35 +157,36 @@
 		<!-- autocomplete: the browser can fill these from what it knows about you, and
 		     tells password managers and screen readers what each field is. -->
 		<fieldset disabled={!cv.loaded}>
-			<legend>About you</legend>
-			<label>
-				Name
-				<input bind:value={cv.values.name} autocomplete="given-name" />
-			</label>
-			<label>
-				Surnames
-				<input bind:value={cv.values.surnames} autocomplete="family-name" />
-			</label>
-			<label>
-				Phone
-				<input type="tel" bind:value={cv.values.phone} autocomplete="tel" />
-			</label>
-			<label>
-				Email
-				<input type="email" bind:value={cv.values.email} autocomplete="email" />
-			</label>
-			<label>
-				City
-				<input bind:value={cv.values.city} autocomplete="address-level2" />
-			</label>
-			<label>
-				State
-				<input bind:value={cv.values.state} autocomplete="address-level1" />
-			</label>
-			<label>
-				Postal code
-				<input bind:value={cv.values.postalCode} autocomplete="postal-code" inputmode="numeric" />
-			</label>
+			<legend>About you <span class="note">(* required)</span></legend>
+			{#each inputs as input (input.name)}
+				{@const error = errors[input.name]}
+				<!-- The message sits outside the label, or it would become part of the field's
+				     name. aria-describedby links it instead: a screen reader reads it after
+				     the name, and aria-invalid says "invalid". The * is for the eye; required
+				     tells a screen reader. -->
+				<div class="field">
+					<label>
+						<span
+							>{input.label}{#if input.required}<span class="required" aria-hidden="true">*</span
+								>{/if}</span
+						>
+						<input
+							name={input.name}
+							type={input.type ?? 'text'}
+							bind:value={cv.values[input.name]}
+							autocomplete={input.autocomplete}
+							inputmode={input.inputmode}
+							required={input.required}
+							pattern={input.pattern}
+							aria-invalid={error ? 'true' : undefined}
+							aria-describedby={error ? `${input.name}-error` : undefined}
+						/>
+					</label>
+					{#if error}
+						<span class="error" id="{input.name}-error">{error}</span>
+					{/if}
+				</div>
+			{/each}
 			<label class="wide">
 				Short letter
 				<textarea bind:value={cv.values.letter} maxlength={letterMax} rows="6"></textarea>
@@ -148,7 +200,7 @@
 			<div class="actions">
 				<!-- The print dialog has "Save as PDF": a PDF with real text, which is what
 				     an applicant tracking system needs. -->
-				<button class="primary" type="button" onclick={() => print()}>Print or save as PDF</button>
+				<button class="primary" type="button" onclick={printCv}>Print or save as PDF</button>
 				<button type="button" onclick={exportFile}>Export details</button>
 				<!-- A file input looks like nothing else on the site, so it's hidden and its
 				     label is the button (like the radios on /about). -->
@@ -261,6 +313,32 @@
 
 	textarea {
 		resize: vertical;
+	}
+
+	.field {
+		display: grid;
+		gap: var(--size-1);
+		align-content: start;
+	}
+
+	/* A problem: the border turns the error color, twice as thick (an inset shadow, so
+	   nothing moves), and the message says what's wrong: color alone isn't enough for
+	   people who can't tell red apart. Styled from aria-invalid, the same attribute a
+	   screen reader hears, so the two can't disagree. */
+	[aria-invalid='true'] {
+		border-color: var(--error);
+		box-shadow: inset 0 0 0 1px var(--error);
+	}
+
+	/* A margin, not a space: Svelte trims the whitespace at the start of an element. */
+	.required {
+		margin-inline-start: 0.5ch;
+	}
+
+	.error {
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		color: var(--error);
 	}
 
 	.count {

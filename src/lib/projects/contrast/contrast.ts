@@ -7,6 +7,7 @@ export const texts = [
 	'text-1',
 	'text-2',
 	'brand',
+	'error',
 	'code-keyword',
 	'code-function',
 	'code-constant',

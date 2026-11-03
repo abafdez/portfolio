@@ -103,3 +103,5 @@ These need that whole group live first:
 
 - `2026-11-03-radio-buttons-for-a-filter` (4: a screenshot with a profile picked; what a screen reader said; the inputs without `opacity: 0`; the flash before the filter) → filters in a Svelte class
 - `2026-11-03-a-form-that-remembers` (3: a screenshot with made-up data; junk in localStorage and what `read()` kept; how I'd have found the select bug). Links to no draft.
+- `2026-11-03-printing-a-cv-from-a-web-page` (3: a print preview screenshot; the print rule tried in global.css; select-all from the PDF). Links to no draft.
+- `2026-11-03-form-validation-without-a-library` (3: screenshots in both themes; `:user-invalid` alone in DevTools; what a screen reader said). Links to no draft.
