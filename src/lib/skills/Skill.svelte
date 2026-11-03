@@ -3,6 +3,7 @@
 	// a <details> that opens to how I use it and where it shows.
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import { hueAndChroma } from './brand-color.ts';
+	import { fillOnView } from './fill.ts';
 	import { evidenceHref, levels, type Skill } from './skills.ts';
 
 	let { skill }: { skill: Skill } = $props();
@@ -31,7 +32,7 @@
 		     "CSS, Daily" (the comma is hidden from sight, not from it). -->
 		<span class="level">
 			<!-- htop-style: [||||||      ], 3 ticks per level out of 12. -->
-			<span class="bar" style:--ticks={skill.level * 3} aria-hidden="true"
+			<span class="bar" style:--ticks={skill.level * 3} aria-hidden="true" {@attach fillOnView}
 				>[<span class="track"><span class="fill">||||||||||||</span></span>]</span
 			>
 			<span><span class="visually-hidden">, </span>{levels[skill.level]}</span>
@@ -201,10 +202,19 @@
 
 	/* [||||||      ]: the ticks are text, in the code font, so 1ch is one tick. The
 	   fill is --ticks characters wide; the empty part of the track is dots drawn
-	   underneath it (a pseudo-element, so it isn't text anyone reads). */
+	   underneath it (a pseudo-element, so it isn't text anyone reads).
+	   inline-block: an inline box can't be scaled (the hover bump below). */
 	.bar {
+		display: inline-block;
+		transform-origin: right;
 		font-family: var(--font-code);
 		white-space: pre;
+	}
+
+	/* The bump: the row you point at grows its bar a little, from its right end so it
+	   doesn't push into the word next to it. */
+	.skill:is(:hover, :focus-within) .bar {
+		scale: 1.12;
 	}
 
 	.track {
@@ -248,18 +258,26 @@
 		color: var(--brand);
 	}
 
-	/* The bar counts up tick by tick as it scrolls into view: a view timeline, and
-	   steps() so it jumps one character at a time, like htop redrawing. The range is
-	   the bottom tenth of the screen (cover 0% is the row's top edge appearing), so
-	   it's full by the time you read it. Without support, or with reduced motion, it's
-	   just full, and the cursor stays on without blinking. */
+	/* The fill states, set by fill.ts. Waiting: empty, until the bar is on screen.
+	   Filling: counts up tick by tick, steps() so it jumps one character at a time like
+	   htop redrawing. Each tick takes 60ms, so every bar fills at the same speed and a
+	   longer one takes longer (3 ticks in 180ms, 12 in 720ms).
+	   :global(): JS sets data-fill, not the template, so Svelte can't see these match
+	   anything, and would drop them from the CSS as unused. */
+	.bar:global([data-fill='waiting']) .fill {
+		clip-path: inset(0 100% 0 0);
+	}
+
+	.bar:global([data-fill='filling']) .fill {
+		animation: count-up calc(var(--ticks) * 60ms) steps(var(--ticks), jump-end) both;
+	}
+
+	/* With reduced motion, fill.ts marks nothing (the bars are full) and the bump is
+	   instant; the cursor stays on without blinking. */
 	@media (prefers-reduced-motion: no-preference) {
-		@supports (animation-timeline: view()) {
-			.fill {
-				animation: count-up steps(var(--ticks), jump-end) both;
-				animation-timeline: view();
-				animation-range: cover 0% cover 10%;
-			}
+		/* A spring easing overshoots and settles back: the bump. */
+		.bar {
+			transition: scale 500ms var(--ease-spring-3);
 		}
 
 		/* steps(1): on or off, no fade, like a real cursor. */
