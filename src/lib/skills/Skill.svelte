@@ -3,6 +3,7 @@
 	// a <details> that opens to how I use it and where it shows.
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import { hueAndChroma } from './brand-color.ts';
+	import { decode } from './decode.ts';
 	import { evidenceHref, levels, type Skill } from './skills.ts';
 
 	let { skill }: { skill: Skill } = $props();
@@ -25,13 +26,21 @@
 			<Icon size="1.25rem" aria-hidden="true" />
 		{/if}
 	</span>
-	<span class="name">{skill.name}</span>
+	<!-- The name twice: the real one for screen readers, and a copy that decodes from
+	     random glyphs when it scrolls into view (garbage while it runs, so hidden). -->
+	<span class="name">
+		<span class="visually-hidden">{skill.name}</span>
+		<span aria-hidden="true" {@attach decode(skill.name)}>{skill.name}</span>
+	</span>
 	{#if skill.level}
-		<!-- The word is the level; the meter only draws it. A screen reader hears
+		<!-- The word is the level; the bar only draws it. A screen reader hears
 		     "CSS, Daily" (the comma is hidden from sight, not from it). -->
 		<span class="level">
-			<span class="meter" style:--level={skill.level} aria-hidden="true"></span>
-			<span><span class="comma">, </span>{levels[skill.level]}</span>
+			<!-- htop-style: [||||||      ], 3 ticks per level out of 12. -->
+			<span class="bar" style:--ticks={skill.level * 3} aria-hidden="true"
+				>[<span class="track"><span class="fill">||||||||||||</span></span>]</span
+			>
+			<span><span class="visually-hidden">, </span>{levels[skill.level]}</span>
 		</span>
 	{/if}
 {/snippet}
@@ -67,10 +76,15 @@
 </li>
 
 <style>
+	/* A row in a terminal, not a card: no border, a highlight on hover.
+	   container-type: the row's layout below depends on its own width, not the screen's. */
 	.skill {
-		border: var(--border-size-1) solid var(--surface-3);
+		container-type: inline-size;
 		border-radius: var(--radius-2);
-		background: var(--surface-2);
+
+		&:hover {
+			background: var(--surface-2);
+		}
 	}
 
 	/* The same row, clickable or not: icon, name, level, then the [+] when it opens.
@@ -78,10 +92,13 @@
 	summary,
 	.head {
 		display: grid;
-		grid-template-columns: auto minmax(0, 1fr) auto 3ch;
+		/* fit-content(50%): the level never takes more than half the row. As plain
+		   auto, grid gave it all the spare room before the name's 1fr got any, and at
+		   320px names were one letter wide. */
+		grid-template-columns: auto minmax(0, 1fr) fit-content(50%) 3ch;
 		align-items: center;
 		gap: var(--size-2);
-		padding: var(--size-3);
+		padding: var(--size-2) var(--size-3);
 	}
 
 	summary {
@@ -110,24 +127,49 @@
 	/* minmax(0, 1fr) above lets this column shrink below its longest word, and a word
 	   too long for it breaks with a hyphen: at 320px, "Virtualization" next to
 	   "Comfortable" didn't fit, and the whole page grew sideways. */
+	/* Monospace, so the random glyphs take exactly the room of the letters they
+	   replace, and the row doesn't jitter while the name decodes. */
 	.name {
+		font-family: var(--font-code);
 		color: var(--text-1);
 		overflow-wrap: break-word;
 		hyphens: auto;
 	}
 
+	/* Bar and word on one line, like a row of htop. The word gets a fixed width so the
+	   bars line up down the list; on a narrow screen the word wraps under the bar. */
 	.level {
-		display: grid;
-		justify-items: end;
-		gap: var(--size-1);
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: end;
+		align-items: center;
+		gap: var(--size-1) var(--size-2);
 		font-family: var(--font-label);
 		font-size: var(--font-size-0);
 		color: var(--text-2);
-		text-align: end;
+
+		& > :last-child {
+			min-inline-size: 14ch;
+		}
+	}
+
+	/* A narrow row (a phone): the level moves to its own line, under the name.
+	   After .level on purpose: @container adds no specificity, so the later rule wins. */
+	@container (width < 26rem) {
+		summary,
+		.head {
+			grid-template-columns: auto minmax(0, 1fr) 3ch;
+		}
+
+		.level {
+			grid-column: 2;
+			grid-row: 2;
+			justify-content: start;
+		}
 	}
 
 	/* Visually hidden, still read. */
-	.comma {
+	.visually-hidden {
 		position: absolute;
 		inline-size: 1px;
 		block-size: 1px;
@@ -136,59 +178,52 @@
 		white-space: nowrap;
 	}
 
-	/* Four segments, drawn with a repeating gradient: --segment of color, then --gap of
-	   nothing. The empty ones are the meter's background; ::after draws --level of them
-	   filled, on top. The gradient is declared on both, so each one reads its own
-	   --color (a custom property holding it would be resolved once, on .meter, and
-	   ::after would inherit the gray: the same trap as light-dark() in tokens.css). */
-	.meter,
-	.meter::after {
-		background: repeating-linear-gradient(
-			to right,
-			var(--color) 0 var(--segment),
-			transparent 0 calc(var(--segment) + var(--gap))
-		);
+	/* [||||||      ]: the ticks are text, in the code font, so 1ch is one tick. The
+	   fill is --ticks characters wide; the empty part of the track is dots drawn
+	   underneath it (a pseudo-element, so it isn't text anyone reads). */
+	.bar {
+		font-family: var(--font-code);
+		white-space: pre;
 	}
 
-	.meter {
-		--segment: 0.6rem;
-		--gap: 0.15rem;
-		--color: var(--surface-3);
+	.track {
 		position: relative;
-		display: block;
-		inline-size: calc(4 * var(--segment) + 3 * var(--gap));
-		block-size: 0.5rem;
+		display: inline-block;
+		inline-size: 12ch;
+		vertical-align: bottom;
+		text-align: start;
 
-		&::after {
-			--color: var(--brand);
-			content: '';
+		&::before {
+			content: '............';
 			position: absolute;
-			inset-block: 0;
-			inset-inline-start: 0;
-			inline-size: calc(var(--level) * (var(--segment) + var(--gap)) - var(--gap));
+			inset: 0;
+			color: var(--surface-3);
 		}
 	}
 
-	/* The wow part, CSS only. As each meter scrolls up into view, its segments light up
-	   one at a time: the timeline is the meter's own trip through the viewport (a view
-	   timeline), and steps() jumps segment by segment instead of sliding, like a
-	   terminal progress bar. Without support, or with reduced motion, it's just full. */
+	.fill {
+		position: relative;
+		display: inline-block;
+		inline-size: calc(var(--ticks) * 1ch);
+		overflow: hidden;
+		vertical-align: bottom;
+		color: var(--brand);
+	}
+
+	/* The bar counts up tick by tick as it scrolls into view: a view timeline, and
+	   steps() so it jumps one character at a time, like htop redrawing. Without
+	   support, or with reduced motion, it's just full. */
 	@supports (animation-timeline: view()) {
 		@media (prefers-reduced-motion: no-preference) {
-			.meter {
-				view-timeline: --meter;
-			}
-
-			.meter::after {
-				animation: meter-fill steps(var(--level), jump-end) both;
-				animation-timeline: --meter;
-				/* From fully in view at the bottom to a third of the way up the screen. */
+			.fill {
+				animation: count-up steps(var(--ticks), jump-end) both;
+				animation-timeline: view();
 				animation-range: entry 100% cover 35%;
 			}
 		}
 	}
 
-	@keyframes meter-fill {
+	@keyframes count-up {
 		from {
 			clip-path: inset(0 100% 0 0);
 		}
