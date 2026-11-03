@@ -467,14 +467,4 @@
 			translate: -50%;
 		}
 	}
-
-	/* Visually hidden, still read. */
-	.visually-hidden {
-		position: absolute;
-		inline-size: 1px;
-		block-size: 1px;
-		overflow: hidden;
-		clip-path: inset(50%);
-		white-space: nowrap;
-	}
 </style>

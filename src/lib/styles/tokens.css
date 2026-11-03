@@ -53,6 +53,10 @@
 	--surface-2: light-dark(var(--ink-1), var(--ink-7));
 	--surface-3: light-dark(var(--ink-3), var(--ink-6));
 
+	/* Something is wrong: a field's border and its message. Text on any surface: light
+	   ≥ 5.74:1, dark ≥ 7.45:1 (so a border, which needs 3:1, too). */
+	--error: light-dark(var(--red-dark), var(--red-bright));
+
 	/* The blueprint grid behind the page (Blueprint.svelte): faint text-colored lines,
 	   a minor cell, a major one every 4 cells, and a "+" at major crossings.
 	   Decorative, so no contrast requirement. */
@@ -137,4 +141,15 @@
 [data-theme='dark'] {
 	color-scheme: dark;
 	--dark: 1;
+}
+
+/* Paper is white: printing always uses the light theme, whatever the screen shows
+   (dark-theme text would print light grey). Last in the file, so it beats the
+   [data-theme] rules above: same specificity, later wins. */
+@media print {
+	:root,
+	[data-theme] {
+		color-scheme: light;
+		--dark: 0;
+	}
 }

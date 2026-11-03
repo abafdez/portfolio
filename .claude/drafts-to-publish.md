@@ -98,3 +98,12 @@ These need that whole group live first:
 - `2026-11-03-icons-as-data-and-an-svg-sprite` (2: editing the YAML vs the TypeScript; the build error from a wrong logo) → filters in a Svelte class
 - `2026-11-03-windows-that-collapse-and-still-search` (4: a video of windows opening and collapsing; the collapse slowed down in the Animations panel; Ctrl+F inside a collapsed window; what a screen reader says on the title bar)
 - `2026-11-03-htop-bars-and-a-border-spotlight` (4: a video of the bars and the glow; the three showcases and why terminal and spotlight; a stepped fill next to the smooth one; logos.svg in the Network tab) → icons as data and an SVG sprite
+
+**CV builder** (Phase 5.5):
+
+- `2026-11-03-radio-buttons-for-a-filter` (4: a screenshot with a profile picked; what a screen reader said; the inputs without `opacity: 0`; the flash before the filter) → filters in a Svelte class
+- `2026-11-03-a-form-that-remembers` (3: a screenshot with made-up data; junk in localStorage and what `read()` kept; how I'd have found the select bug). Links to no draft.
+- `2026-11-03-printing-a-cv-from-a-web-page` (3: a print preview screenshot; the print rule tried in global.css; select-all from the PDF). Links to no draft.
+- `2026-11-03-form-validation-without-a-library` (3: screenshots in both themes; `:user-invalid` alone in DevTools; what a screen reader said). Links to no draft.
+- `2026-11-03-store-the-changes-not-the-copy` (3: a screenshot of the editor; my edits as stored in DevTools; the broken `??=` in the playground). Links to no draft.
+- `2026-11-03-an-accordion-without-javascript` (3: a recording of the sections; what a screen reader says on a summary; browser support for `name` on details). Links to no draft.

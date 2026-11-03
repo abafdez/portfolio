@@ -98,4 +98,11 @@
 	.toggle {
 		grid-area: toggle;
 	}
+
+	/* Not printed: the site nav means nothing on paper. */
+	@media print {
+		header {
+			display: none;
+		}
+	}
 </style>

@@ -118,4 +118,11 @@
 			translate: 0 3px;
 		}
 	}
+
+	/* Not printed: its links and hints mean nothing on paper. */
+	@media print {
+		footer {
+			display: none;
+		}
+	}
 </style>

@@ -12,11 +12,20 @@ export interface Project {
 	date: string;
 	tags: string[];
 	// The tool itself. A dynamic import() becomes its own chunk, downloaded only on the
-	// tool's page, never on /projects or the landing.
-	tool: () => Promise<{ default: Component }>;
+	// tool's page, never on /projects or the landing. None for a tool with a route of
+	// its own (src/routes/projects/cv): that route imports it.
+	tool?: () => Promise<{ default: Component }>;
 }
 
 export const projects: Project[] = [
+	{
+		slug: 'cv',
+		title: 'CV builder',
+		description:
+			'A CV for each kind of job I apply for: the skills come from this site, the rest is typed in and stays in your browser.',
+		date: '2026-11-03',
+		tags: ['forms', 'local-storage', 'svelte']
+	},
 	{
 		slug: 'contrast',
 		title: 'Contrast checker',
