@@ -32,6 +32,7 @@ interface SkillFile {
 interface GroupFile {
 	name: string;
 	id: string;
+	description: string;
 	icon: string;
 	skills: SkillFile[];
 }
@@ -59,6 +60,17 @@ function fail(where: string, message: string): never {
 }
 
 const kebab = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+// A generic icon has no brand color, so it gets a hue from its skill's name: a small
+// hash, so the same name always gives the same hue, on every build, on the server and
+// in the browser. The chroma is one moderate value for all of them.
+function hueOf(name: string): number {
+	let hash = 0;
+	for (const char of name) hash = (hash * 31 + char.codePointAt(0)!) % 360;
+	return hash;
+}
+
+const genericChroma = 0.13;
 
 // Simple Icons exports one constant per logo (siSvelte…); look them up by slug.
 const brands = new Map(Object.values(simpleIcons).map((icon) => [icon.slug, icon]));
@@ -103,7 +115,13 @@ function load(): Omit<SkillData, 'logos'> & { logos: LogoPath[] } {
 		}
 
 		const result: Skill = { ...rest, profiles, evidence, level: level as Level | undefined };
-		if (icon) result.icon = lucide(where, icon);
+		if (icon) {
+			Object.assign(result, {
+				icon: lucide(where, icon),
+				hue: hueOf(entry.name),
+				chroma: genericChroma
+			});
+		}
 		if (logo) {
 			const brand = brands.get(logo) ?? fail(where, `no Simple Icon "${logo}"`);
 			const color = hueAndChroma(brand.hex);
@@ -117,9 +135,11 @@ function load(): Omit<SkillData, 'logos'> & { logos: LogoPath[] } {
 
 	const groups = file.groups.map((group) => {
 		if (!kebab.test(group.id)) fail(`group "${group.name}"`, 'ids are kebab-case');
+		if (!group.description) fail(`group "${group.name}"`, 'needs a description');
 		return {
 			name: group.name,
 			id: group.id,
+			description: group.description,
 			icon: lucide(`group "${group.name}"`, group.icon),
 			skills: group.skills.map((entry) => skill(group.name, entry))
 		};

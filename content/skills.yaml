@@ -1,6 +1,9 @@
 # What I know, for /about (and the CV builder). Read at build time by
 # src/lib/skills/skills.server.ts, which fails the build on a mistake and says where.
 #
+# A group: name, id (kebab-case, for links), description (one line), icon (Lucide),
+# skills.
+#
 # A skill:
 #   name:      what it is
 #   logo:      a brand logo, by its Simple Icons slug (https://simpleicons.org), or
@@ -26,6 +29,7 @@ profiles:
 groups:
   - name: Languages
     id: languages
+    description: The languages I write code in.
     icon: code-xml
     skills:
       - name: HTML
@@ -84,6 +88,7 @@ groups:
 
   - name: Web development
     id: web
+    description: Frameworks, CMSs and services for building websites.
     icon: globe
     skills:
       - name: Svelte and SvelteKit
@@ -159,6 +164,7 @@ groups:
 
   - name: Databases
     id: databases
+    description: Where the data lives.
     icon: database
     skills:
       - name: MySQL
@@ -177,6 +183,7 @@ groups:
 
   - name: Mainframe
     id: mainframe
+    description: IBM Z and Software AG, from my certificates.
     icon: server
     skills:
       - name: Natural and NaturalONE
@@ -212,6 +219,7 @@ groups:
 
   - name: Tools
     id: tools
+    description: What I use to build, test, plan and support.
     icon: wrench
     skills:
       - name: Git and GitHub
@@ -309,6 +317,7 @@ groups:
 
   - name: Ways of working
     id: methods
+    description: How I work, on my own and in a team.
     icon: workflow
     skills:
       - name: Accessibility (WCAG)
@@ -381,6 +390,7 @@ groups:
 
   - name: AI workflows
     id: ai
+    description: How I work with AI, and what I let it do.
     icon: bot
     skills:
       - name: Claude Code
@@ -414,6 +424,7 @@ groups:
 
   - name: Systems and support
     id: systems
+    description: Networks, servers, my homelab, and the people who use them.
     icon: network
     skills:
       - name: Local networks
@@ -500,6 +511,7 @@ groups:
 
   - name: Multimedia and 3D
     id: multimedia
+    description: Video, 3D, design and photography.
     icon: clapperboard
     skills:
       - name: Adobe Creative Suite
@@ -547,6 +559,7 @@ groups:
 
   - name: Languages I speak
     id: spoken
+    description: Spanish, English, and writing for the web.
     icon: languages
     skills:
       - name: Spanish

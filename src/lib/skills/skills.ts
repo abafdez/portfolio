@@ -46,8 +46,8 @@ export interface Profile {
 export interface Skill {
 	name: string;
 	icon?: IconData;
-	// The brand color, for a skill with a logo. A generic icon has none, and the CSS
-	// falls back to --icon-tone's own (the site's green).
+	// The icon's color in OKLCH: the brand's for a logo, one from the name for a
+	// generic icon (skills.server.ts).
 	hue?: number;
 	chroma?: number;
 	// No level for things a level doesn't fit (spoken languages say it in the note).
@@ -62,6 +62,8 @@ export interface Group {
 	name: string;
 	// For the heading's id and the "on this page" nav.
 	id: string;
+	// One line under the heading, also shown when the window is collapsed.
+	description: string;
 	// Next to the heading. Always a generic one: a group isn't a brand.
 	icon: IconData;
 	skills: Skill[];

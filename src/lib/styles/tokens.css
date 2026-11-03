@@ -29,6 +29,11 @@
 	--teal-bright: oklch(82% 0.11 190);
 	--red-dark: oklch(50% 0.19 22);
 	--red-bright: oklch(75% 0.15 18);
+
+	/* A Mac window's title bar lights: close, minimize, zoom. */
+	--light-red: oklch(70% 0.19 25);
+	--light-yellow: oklch(83% 0.16 80);
+	--light-green: oklch(73% 0.2 145);
 }
 
 /* light-dark(a, b) picks a or b from the element's color-scheme.
@@ -61,6 +66,12 @@
 	   its own hue and chroma at this lightness (oklch(from var(--icon-tone) l c h) in
 	   Skill.svelte), so the theme controls their contrast, like it does for text. */
 	--icon-tone: var(--brand);
+
+	/* The skill windows' title bar lights (/about), the same in both themes, like a
+	   Mac's. Decorative: the "expand"/"collapse" text says the same. */
+	--window-close: var(--light-red);
+	--window-minimize: var(--light-yellow);
+	--window-zoom: var(--light-green);
 
 	/* The mascot. Same in both themes: the dark outline keeps it readable on light. */
 	--mascot-body: var(--green-bright);

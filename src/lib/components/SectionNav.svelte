@@ -33,8 +33,15 @@
 		current = atBottom ? sections.at(-1)?.id : id;
 	}
 
-	// Once the page is in the DOM (on load, or a reload halfway down), then on scroll.
-	$effect(update);
+	// Once the page is in the DOM (on load, or a reload halfway down), then on scroll,
+	// and whenever the page changes height without a scroll: on /about, a window that
+	// opens by itself moves every section below it.
+	$effect(() => {
+		update();
+		const observer = new ResizeObserver(update);
+		observer.observe(document.body);
+		return () => observer.disconnect();
+	});
 </script>
 
 <svelte:window onscroll={update} onresize={update} />
