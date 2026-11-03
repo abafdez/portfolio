@@ -3,7 +3,6 @@
 	// a <details> that opens to how I use it and where it shows.
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import { hueAndChroma } from './brand-color.ts';
-	import { decode } from './decode.ts';
 	import { evidenceHref, levels, type Skill } from './skills.ts';
 
 	let { skill }: { skill: Skill } = $props();
@@ -18,7 +17,7 @@
 
 {#snippet head()}
 	{@const Icon = skill.icon}
-	<span class="icon" style:--hue={color?.hue} style:--chroma={color?.chroma}>
+	<span class="icon">
 		<!-- Simple Icons are data (they have a path), Lucide icons are components. -->
 		{#if Icon && 'path' in Icon}
 			<BrandIcon icon={Icon} size="1.25rem" />
@@ -26,12 +25,7 @@
 			<Icon size="1.25rem" aria-hidden="true" />
 		{/if}
 	</span>
-	<!-- The name twice: the real one for screen readers, and a copy that decodes from
-	     random glyphs when it scrolls into view (garbage while it runs, so hidden). -->
-	<span class="name">
-		<span class="visually-hidden">{skill.name}</span>
-		<span aria-hidden="true" {@attach decode(skill.name)}>{skill.name}</span>
-	</span>
+	<span class="name">{skill.name}</span>
 	{#if skill.level}
 		<!-- The word is the level; the bar only draws it. A screen reader hears
 		     "CSS, Daily" (the comma is hidden from sight, not from it). -->
@@ -45,7 +39,8 @@
 	{/if}
 {/snippet}
 
-<li class="skill">
+<!-- The brand color goes on the row: the icon, the glow and the cursor all use it. -->
+<li class="skill" style:--hue={color?.hue} style:--chroma={color?.chroma}>
 	{#if more}
 		<details>
 			<summary>
@@ -77,14 +72,41 @@
 
 <style>
 	/* A row in a terminal, not a card: no border, a highlight on hover.
-	   container-type: the row's layout below depends on its own width, not the screen's. */
+	   container-type: the row's layout below depends on its own width, not the screen's.
+	   --glow: the brand's color at the theme's lightness (see .icon below). */
 	.skill {
+		--glow: oklch(from var(--icon-tone) l var(--chroma, c) var(--hue, h));
+		position: relative;
 		container-type: inline-size;
 		border-radius: var(--radius-2);
 
 		&:hover {
 			background: var(--surface-2);
 		}
+	}
+
+	/* The spotlight: a border that lights up in the brand's color near the pointer.
+	   spotlight.ts sets --x and --y on every row of the list while the pointer moves
+	   over it, and this is a radial gradient centered there, cut down to a 1px ring
+	   with a mask (the whole box minus its content box). It's 16rem wide, so it reaches
+	   the rows above and below too. It only fades in while the pointer is over the list. */
+	.skill::before {
+		content: '';
+		position: absolute;
+		inset: calc(-1 * var(--border-size-1));
+		padding: var(--border-size-1);
+		border-radius: inherit;
+		background: radial-gradient(16rem circle at var(--x) var(--y), var(--glow), transparent 70%);
+		mask:
+			linear-gradient(#000 0 0) content-box exclude,
+			linear-gradient(#000 0 0);
+		opacity: 0;
+		transition: opacity 300ms;
+		pointer-events: none;
+	}
+
+	:global(.spotlight:hover) .skill::before {
+		opacity: 1;
 	}
 
 	/* The same row, clickable or not: icon, name, level, then the [+] when it opens.
@@ -121,14 +143,13 @@
 	.icon {
 		display: flex;
 		inline-size: 1.25rem;
-		color: oklch(from var(--icon-tone) l var(--chroma, c) var(--hue, h));
+		color: var(--glow);
 	}
 
-	/* minmax(0, 1fr) above lets this column shrink below its longest word, and a word
+	/* Monospace, like the rest of a terminal listing.
+	   minmax(0, 1fr) above lets this column shrink below its longest word, and a word
 	   too long for it breaks with a hyphen: at 320px, "Virtualization" next to
 	   "Comfortable" didn't fit, and the whole page grew sideways. */
-	/* Monospace, so the random glyphs take exactly the room of the letters they
-	   replace, and the row doesn't jitter while the name decodes. */
 	.name {
 		font-family: var(--font-code);
 		color: var(--text-1);
@@ -199,6 +220,23 @@
 			inset: 0;
 			color: var(--surface-3);
 		}
+
+		/* A block cursor on the last tick, like a terminal waiting at the end of the
+		   line. Only on the row you're pointing at (or tabbing through): seventy
+		   cursors blinking at once would be noise. */
+		&::after {
+			content: '';
+			position: absolute;
+			inset-block: 0;
+			inset-inline-start: calc((var(--ticks) - 1) * 1ch);
+			inline-size: 1ch;
+			background: var(--glow);
+			opacity: 0;
+		}
+	}
+
+	.skill:is(:hover, :focus-within) .track::after {
+		opacity: 1;
 	}
 
 	.fill {
@@ -211,21 +249,34 @@
 	}
 
 	/* The bar counts up tick by tick as it scrolls into view: a view timeline, and
-	   steps() so it jumps one character at a time, like htop redrawing. Without
-	   support, or with reduced motion, it's just full. */
-	@supports (animation-timeline: view()) {
-		@media (prefers-reduced-motion: no-preference) {
+	   steps() so it jumps one character at a time, like htop redrawing. The range is
+	   the bottom tenth of the screen (cover 0% is the row's top edge appearing), so
+	   it's full by the time you read it. Without support, or with reduced motion, it's
+	   just full, and the cursor stays on without blinking. */
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: view()) {
 			.fill {
 				animation: count-up steps(var(--ticks), jump-end) both;
 				animation-timeline: view();
-				animation-range: entry 100% cover 35%;
+				animation-range: cover 0% cover 10%;
 			}
+		}
+
+		/* steps(1): on or off, no fade, like a real cursor. */
+		.skill:is(:hover, :focus-within) .track::after {
+			animation: blink 1s steps(1) infinite;
 		}
 	}
 
 	@keyframes count-up {
 		from {
 			clip-path: inset(0 100% 0 0);
+		}
+	}
+
+	@keyframes blink {
+		50% {
+			opacity: 0;
 		}
 	}
 

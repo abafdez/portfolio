@@ -4,8 +4,10 @@
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import SectionNav from '#lib/components/SectionNav.svelte';
 	import { profiles } from '#lib/links.ts';
+	import LogoMarquee from '#lib/skills/LogoMarquee.svelte';
 	import Skill from '#lib/skills/Skill.svelte';
 	import { groups } from '#lib/skills/skills.ts';
+	import { spotlight } from '#lib/skills/spotlight.ts';
 
 	const [github, linkedin] = profiles;
 	const sections = groups.map(({ id, name }) => ({ id, label: name }));
@@ -49,10 +51,9 @@
 	</div>
 
 	<div class="groups">
+		<LogoMarquee />
 		{#each groups as group (group.id)}
-			{@const command = `skills --list ${group.id}`}
-			<!-- Each group is a terminal window: a title bar, then the command that
-			     "printed" it, typed out as the window scrolls in. Both are decoration
+			<!-- Each group is a terminal window. The title bar is decoration
 			     (aria-hidden): the heading and the list are the content. -->
 			<section class="window" aria-labelledby={group.id}>
 				<div class="titlebar" aria-hidden="true">
@@ -60,12 +61,9 @@
 					<span class="path">alfonso@portfolio: ~/skills/{group.id}</span>
 				</div>
 				<div class="screen">
-					<p class="command" aria-hidden="true">
-						<span class="prompt">$</span>
-						<span class="typed" style:--chars={command.length}>{command}</span>
-					</p>
 					<h2 id={group.id}><group.icon aria-hidden="true" />{group.name}</h2>
-					<ul class="skills">
+					<!-- spotlight: a glow follows the pointer over the rows (spotlight.ts). -->
+					<ul class="skills spotlight" {@attach spotlight}>
 						{#each group.skills as skill (skill.name)}
 							<Skill {skill} />
 						{/each}
@@ -142,10 +140,11 @@
 		}
 	}
 
-	/* In a window, the skills are one list of rows, like a terminal prints them. */
+	/* In a window, the skills are one list of rows, like a terminal prints them. The
+	   small gap keeps the glowing borders of two rows from touching. */
 	.window .skills {
 		grid-template-columns: 1fr;
-		gap: 0;
+		gap: var(--size-1);
 	}
 
 	.window {
@@ -198,66 +197,7 @@
 		padding: var(--size-3) var(--size-3) var(--size-4);
 
 		& h2 {
-			margin-block-start: var(--size-3);
 			padding-inline: var(--size-3);
-		}
-	}
-
-	.command {
-		padding-inline: var(--size-3);
-		font-family: var(--font-code);
-		color: var(--text-2);
-
-		/* A block cursor after the command. */
-		&::after {
-			content: '';
-			display: inline-block;
-			inline-size: 1ch;
-			block-size: 1.1em;
-			margin-inline-start: 0.25ch;
-			vertical-align: text-bottom;
-			background: var(--brand);
-		}
-	}
-
-	.prompt {
-		color: var(--brand);
-	}
-
-	/* The command is exactly --chars characters wide (1ch each, in the code font). */
-	.typed {
-		display: inline-block;
-		inline-size: calc(var(--chars) * 1ch);
-		overflow: hidden;
-		vertical-align: bottom;
-		white-space: pre;
-	}
-
-	/* Typed as the window scrolls in: the width grows one character per step. Then
-	   the cursor blinks (a time-based loop, steps(1) so it's on or off, no fade). */
-	@supports (animation-timeline: view()) {
-		@media (prefers-reduced-motion: no-preference) {
-			.typed {
-				animation: type steps(var(--chars), jump-end) both;
-				animation-timeline: view();
-				animation-range: entry 100% cover 30%;
-			}
-
-			.command::after {
-				animation: blink 1s steps(1) infinite;
-			}
-		}
-	}
-
-	@keyframes type {
-		from {
-			inline-size: 0;
-		}
-	}
-
-	@keyframes blink {
-		50% {
-			opacity: 0;
 		}
 	}
 

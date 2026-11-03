@@ -9,9 +9,15 @@
 <script lang="ts">
 	let { sections }: { sections: Section[] } = $props();
 
-	// The id of the section being read. Without JS it stays undefined: the links still
-	// jump to their sections, there's just no highlight.
-	let current = $state<string>();
+	// The section crossing the line (below), and whether the page is scrolled to the end.
+	// Without JS both stay as they are: the links still jump to their sections, there's
+	// just no highlight.
+	let crossing = $state<string>();
+	let atBottom = $state(false);
+
+	// The last sections can be too short to ever reach the line: the page ends first.
+	// So at the very bottom, the last one is current, whatever crosses the line.
+	let current = $derived(atBottom ? sections.at(-1)?.id : crossing);
 
 	// Scroll-spy. rootMargin shrinks the observed area to a thin line a third of the
 	// way down the screen; a section "intersects" while it crosses that line.
@@ -20,7 +26,7 @@
 		const observer = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
-					if (entry.isIntersecting) current = entry.target.id;
+					if (entry.isIntersecting) crossing = entry.target.id;
 				}
 			},
 			{ rootMargin: '-33% 0px -67% 0px' }
@@ -33,7 +39,15 @@
 
 		return () => observer.disconnect();
 	});
+
+	// "At the bottom" with a few pixels to spare: zoom can leave scrollY a fraction short.
+	function checkBottom() {
+		const { scrollHeight } = document.documentElement;
+		atBottom = scrollY + innerHeight >= scrollHeight - 4;
+	}
 </script>
+
+<svelte:window onscroll={checkBottom} onresize={checkBottom} />
 
 <nav aria-label="On this page">
 	<ul>
