@@ -17,13 +17,35 @@
 	// Only the first value of openAtFirst, on purpose: after that, open is the visitor's.
 	// svelte-ignore state_referenced_locally
 	let open = $state(openAtFirst);
-	// True once the JS runs: until then the CSS decides what's hidden (see the styles).
+	// Whether the list is hidden (hidden="until-found"). It follows open, except when the
+	// window collapses with motion: then it waits for the animation to end (collapsed()),
+	// so the list is still there to shrink.
+	// svelte-ignore state_referenced_locally
+	let shut = $state(!openAtFirst);
+	// True once the JS runs: until then, the hidden attribute stays off.
 	let ready = $state(false);
 	// The visitor chose: don't open it by itself any more.
 	let chosen = false;
+	// The icons don't fit in the title bar: they loop, like a carousel.
+	let loop = $state(false);
 
 	// How many skills a collapsed window shows as chips.
 	const preview = 5;
+	let icons = $derived(group.skills.filter((skill) => skill.icon));
+
+	const motion = () => matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
+	function show(value: boolean, animate = true) {
+		open = value;
+		if (value || !animate || !motion()) shut = !value;
+	}
+
+	// The end of the collapse: hide the list for real. Only the list's own row size
+	// counts; transitions inside it (a bar's bump, a row's glow) bubble up here too.
+	function collapsed(event: TransitionEvent) {
+		if (event.target !== event.currentTarget) return;
+		if (event.propertyName === 'grid-template-rows' && !open) shut = true;
+	}
 
 	// Per visitor, in their browser: { "web": true, "tools": false }. Storage can be
 	// missing or blocked (private windows), so every use is wrapped, and without it
@@ -39,7 +61,7 @@
 	}
 
 	function toggle() {
-		open = !open;
+		show(!open);
 		chosen = true;
 		try {
 			localStorage.setItem(key, JSON.stringify({ ...saved(), [group.id]: open }));
@@ -54,7 +76,7 @@
 	const watch: Attachment<HTMLElement> = (section) => {
 		const choice = saved()[group.id];
 		if (choice !== undefined) {
-			open = choice;
+			show(choice, false);
 			chosen = true;
 		}
 		ready = true;
@@ -62,7 +84,7 @@
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (!entry.isIntersecting || chosen) return;
-				open = true;
+				show(true);
 				observer.disconnect();
 			},
 			{ rootMargin: '0px 0px -33% 0px' }
@@ -72,21 +94,27 @@
 	};
 
 	// Find in page (Ctrl+F) can look inside a hidden="until-found" list, and fires
-	// beforematch on it just before showing a match: open the window then.
+	// beforematch on it just before showing a match: open the window then, at once
+	// (the browser scrolls to the match straight away).
 	const openOnFind: Attachment<HTMLElement> = (list) => {
-		const show = () => (open = true);
-		list.addEventListener('beforematch', show);
-		return () => list.removeEventListener('beforematch', show);
+		const found = () => show(true, false);
+		list.addEventListener('beforematch', found);
+		return () => list.removeEventListener('beforematch', found);
+	};
+
+	// Do the icons fit in the title bar? Measured again whenever the dock changes size
+	// (a resize, or the dock appearing when the window collapses; hidden, it's 0 wide).
+	const fit: Attachment<HTMLElement> = (dock) => {
+		const observer = new ResizeObserver(() => {
+			const copy = dock.querySelector<HTMLElement>('.copy');
+			if (copy && dock.clientWidth > 0) loop = copy.offsetWidth > dock.clientWidth;
+		});
+		observer.observe(dock);
+		return () => observer.disconnect();
 	};
 </script>
 
-<section
-	class="window"
-	aria-labelledby={group.id}
-	data-open={open || undefined}
-	data-ready={ready || undefined}
-	{@attach watch}
->
+<section class="window" aria-labelledby={group.id} data-open={open || undefined} {@attach watch}>
 	<!-- The title bar is the button. Its name for a screen reader is the hidden group
 	     name plus the hint ("Web development: collapse"), and aria-expanded says the
 	     state; the lights, the path and the icons are decoration. -->
@@ -99,15 +127,27 @@
 	>
 		<span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
 		<span class="path" aria-hidden="true">alfonso@portfolio: ~/skills/{group.id}</span>
-		<!-- Collapsed, the window shows what's inside in its title bar, like a dock. -->
-		<span class="dock" aria-hidden="true">
-			{#each group.skills as skill (skill.name)}
-				{#if skill.icon}
-					<span style:--hue={skill.hue} style:--chroma={skill.chroma}>
-						<Icon icon={skill.icon} size="1rem" />
+		<!-- Collapsed, the window shows what's inside in its title bar, like a dock. When
+		     the icons don't fit, a second copy follows the first and the two slide by,
+		     like the marquee at the top of the page (LogoMarquee.svelte). -->
+		<span
+			class="dock"
+			aria-hidden="true"
+			data-loop={loop || undefined}
+			style:--count={icons.length}
+			{@attach fit}
+		>
+			<span class="track">
+				{#each loop ? [0, 1] : [0] as copy (copy)}
+					<span class="copy">
+						{#each icons as skill, i (skill.name)}
+							<span style:--hue={skill.hue} style:--chroma={skill.chroma} style:--i={i}>
+								<Icon icon={skill.icon!} size="1rem" />
+							</span>
+						{/each}
 					</span>
-				{/if}
-			{/each}
+				{/each}
+			</span>
 		</span>
 		<span class="hint">
 			<span class="visually-hidden">{group.name}: </span>{open ? 'collapse' : 'expand'}
@@ -119,33 +159,42 @@
 		<h2 id={group.id}><Icon icon={group.icon} />{group.name}</h2>
 		<p class="description">{group.description}</p>
 
-		<!-- The preview: the first few skills by name. Only while collapsed. -->
-		<ul class="chips">
-			{#each group.skills.slice(0, preview) as skill (skill.name)}
-				<li style:--hue={skill.hue} style:--chroma={skill.chroma}>
-					{#if skill.icon}<Icon icon={skill.icon} size="1rem" />{/if}{skill.name}
-				</li>
-			{/each}
-			{#if group.skills.length > preview}
-				<li class="more">+{group.skills.length - preview} more</li>
-			{/if}
-		</ul>
+		<!-- Two rows that swap as the window opens and closes: the preview (the first few
+		     skills by name) grows while the list shrinks, and back. Each is a one-row
+		     grid whose row goes from 1fr (its height) to 0fr (nothing), which CSS can
+		     animate, unlike height: auto. -->
+		<div class="reveal preview">
+			<div>
+				<ul class="chips">
+					{#each group.skills.slice(0, preview) as skill (skill.name)}
+						<li style:--hue={skill.hue} style:--chroma={skill.chroma}>
+							{#if skill.icon}<Icon icon={skill.icon} size="1rem" />{/if}{skill.name}
+						</li>
+					{/each}
+					{#if group.skills.length > preview}
+						<li class="more">+{group.skills.length - preview} more</li>
+					{/if}
+				</ul>
+			</div>
+		</div>
 
 		<!-- hidden="until-found": hidden, but find in page still searches it (and
-		     openOnFind opens the window). Only once the JS runs: before, the CSS hides
-		     it, and without JS nothing does. -->
-		<div
-			class="list"
-			id="{group.id}-skills"
-			hidden={ready && !open ? 'until-found' : undefined}
-			{@attach openOnFind}
-		>
-			<!-- spotlight: a glow follows the pointer over the rows (spotlight.ts). -->
-			<ul class="skills spotlight" {@attach spotlight}>
-				{#each group.skills as skill (skill.name)}
-					<Skill {skill} />
-				{/each}
-			</ul>
+		     openOnFind opens the window). Only once the JS runs; without JS every list
+		     shows. -->
+		<div class="reveal content" ontransitionend={collapsed}>
+			<div
+				class="list"
+				id="{group.id}-skills"
+				hidden={ready && shut ? 'until-found' : undefined}
+				{@attach openOnFind}
+			>
+				<!-- spotlight: a glow follows the pointer over the rows (spotlight.ts). -->
+				<ul class="skills spotlight" {@attach spotlight}>
+					{#each group.skills as skill (skill.name)}
+						<Skill {skill} />
+					{/each}
+				</ul>
+			</div>
 		</div>
 	</div>
 </section>
@@ -180,7 +229,8 @@
 		}
 	}
 
-	/* Open, the three lights are on, like a Mac's active window. */
+	/* One light is on, a little bigger: green (zoom) while open, yellow (minimize) while
+	   collapsed, below. Red (close) stays off: nothing closes. */
 	.lights {
 		display: flex;
 		gap: var(--size-1);
@@ -189,15 +239,12 @@
 			inline-size: 0.6rem;
 			block-size: 0.6rem;
 			border-radius: var(--radius-round);
-			background: var(--window-close);
-		}
-
-		& i:nth-child(2) {
-			background: var(--window-minimize);
+			background: var(--surface-3);
 		}
 
 		& i:nth-child(3) {
 			background: var(--window-zoom);
+			scale: 1.2;
 		}
 	}
 
@@ -217,11 +264,35 @@
 
 	.dock {
 		display: none;
+	}
+
+	.track {
+		display: flex;
+		inline-size: max-content;
+	}
+
+	.copy {
+		display: flex;
 		gap: var(--size-2);
 
 		& > span {
 			display: flex;
 			color: oklch(from var(--icon-tone) l var(--chroma, c) var(--hue, h));
+		}
+	}
+
+	/* Looping: the gap between the two copies, and edges that fade out. */
+	.dock[data-loop] {
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 var(--size-3),
+			#000 calc(100% - var(--size-3)),
+			transparent
+		);
+
+		& .copy {
+			padding-inline-end: var(--size-2);
 		}
 	}
 
@@ -234,7 +305,7 @@
 	.screen {
 		padding: var(--size-3) var(--size-3) var(--size-4);
 
-		& > :not(.list) {
+		& > :not(.content) {
 			padding-inline: var(--size-3);
 		}
 	}
@@ -258,11 +329,38 @@
 		color: var(--text-2);
 	}
 
+	/* A one-row grid: 1fr is the row's content height, 0fr is nothing, and the browser
+	   can animate between the two. The child needs min-block-size: 0 (or the row can't
+	   go below its content) and overflow: clip, with a small margin so the rows'
+	   glowing borders aren't cut at the edges. Open: the list shows, the preview not. */
+	.reveal {
+		display: grid;
+
+		& > * {
+			min-block-size: 0;
+			overflow: clip;
+			overflow-clip-margin: var(--size-1);
+		}
+	}
+
+	.preview {
+		grid-template-rows: 0fr;
+
+		& > * {
+			opacity: 0;
+		}
+	}
+
+	.content {
+		grid-template-rows: 1fr;
+	}
+
 	.chips {
-		display: none;
+		display: flex;
 		flex-wrap: wrap;
 		gap: var(--size-2);
 		margin-block-start: var(--size-3);
+		padding: 0;
 		list-style: none;
 
 		& li {
@@ -299,28 +397,42 @@
 
 	/* Collapsed, which only happens with JS (scripting: enabled; without it, every
 	   window stays open and the hint is gone). The path gives way to the dock, the
-	   preview shows, and only the yellow light, minimize, stays on. */
+	   preview grows, the list shrinks, and the yellow light takes over from the green. */
 	@media (scripting: enabled) {
 		.window:not([data-open]) {
 			& .path {
 				display: none;
 			}
 
-			& .dock,
-			& .chips {
-				display: flex;
+			& .dock {
+				display: block;
 			}
 
-			& .lights i:not(:nth-child(2)) {
+			& .preview {
+				grid-template-rows: 1fr;
+
+				& > * {
+					opacity: 1;
+				}
+			}
+
+			& .content {
+				grid-template-rows: 0fr;
+
+				& > * {
+					opacity: 0;
+				}
+			}
+
+			& .lights i:nth-child(3) {
 				background: var(--surface-3);
+				scale: 1;
 			}
-		}
 
-		/* Before the JS starts, the CSS hides a collapsed window's list; once it runs,
-		   hidden="until-found" does instead (a display: none here would stop find in
-		   page from looking inside). */
-		.window:not([data-open]):not([data-ready]) .list {
-			display: none;
+			& .lights i:nth-child(2) {
+				background: var(--window-minimize);
+				scale: 1.2;
+			}
 		}
 	}
 
@@ -331,6 +443,50 @@
 
 		.titlebar {
 			cursor: default;
+		}
+	}
+
+	/* The motion. With reduced motion, everything above still happens, at once. */
+	@media (prefers-reduced-motion: no-preference) {
+		.reveal {
+			transition: grid-template-rows 400ms var(--ease-out-3);
+
+			& > * {
+				transition: opacity 400ms var(--ease-out-3);
+			}
+		}
+
+		/* A spring easing overshoots and settles back: the light pops as it turns on. */
+		.lights i {
+			transition:
+				background-color 300ms,
+				scale 500ms var(--ease-spring-3);
+		}
+
+		/* The icons pop into the title bar one after another as the window collapses
+		   (an animation runs when its element goes from display: none to shown). */
+		.copy > span {
+			animation: dock-in 500ms var(--ease-spring-3) both;
+			animation-delay: calc(var(--i) * 30ms);
+		}
+
+		/* 1.5s per icon, so a longer group doesn't slide faster. */
+		.dock[data-loop] .track {
+			animation: slide calc(var(--count) * 1.5s) linear infinite;
+		}
+	}
+
+	@keyframes dock-in {
+		from {
+			opacity: 0;
+			translate: 0 0.5rem;
+			scale: 0.5;
+		}
+	}
+
+	@keyframes slide {
+		to {
+			translate: -50%;
 		}
 	}
 
