@@ -19,8 +19,10 @@
 	// Route changes run inside a view transition of type "route": the header stays put,
 	// the nav marker slides to the new link and the page content fades in (the CSS is
 	// in global.css). onNavigate runs just before SvelteKit swaps the page.
+	// Shallow navigations (a tool updating its URL params) run it too, but don't swap the
+	// page, so there's nothing to animate.
 	onNavigate((navigation) => {
-		if (!canTransition()) return;
+		if (navigation.shallow || !canTransition()) return;
 
 		// SvelteKit waits for this promise before it updates the page.
 		return new Promise<void>((resolve) => {

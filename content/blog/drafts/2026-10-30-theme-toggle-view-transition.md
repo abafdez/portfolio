@@ -43,12 +43,12 @@ The colors don't have this problem, because the CSS already knows the theme befo
 	}
 }
 
-:root[data-theme='light'] {
+[data-theme='light'] {
 	color-scheme: light;
 	--dark: 0;
 }
 
-:root[data-theme='dark'] {
+[data-theme='dark'] {
 	color-scheme: dark;
 	--dark: 1;
 }

@@ -33,8 +33,13 @@
 
 /* light-dark(a, b) picks a or b from the element's color-scheme.
    "light dark" = follow the OS; [data-theme] (set by the toggle) forces one.
-   Dark first: the second value is the one we design; the first is its adaptation. */
-:root {
+   Dark first: the second value is the one we design; the first is its adaptation.
+   A custom property holding light-dark() is resolved where it's declared: on :root,
+   --text-1 is already one color, and children only inherit that color. So the tokens
+   are declared again on any [data-theme] element, and a part of the page can show the
+   other theme (the contrast checker draws both). */
+:root,
+[data-theme] {
 	color-scheme: light dark;
 
 	--brand: light-dark(var(--green-dark), var(--green-bright));
@@ -109,12 +114,12 @@
 	}
 }
 
-:root[data-theme='light'] {
+[data-theme='light'] {
 	color-scheme: light;
 	--dark: 0;
 }
 
-:root[data-theme='dark'] {
+[data-theme='dark'] {
 	color-scheme: dark;
 	--dark: 1;
 }

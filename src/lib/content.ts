@@ -61,9 +61,10 @@ function readingTime(text: string): number {
 // Tags become URLs (/blog/tags/design-tokens), so they must be lowercase kebab-case.
 // Otherwise 'CSS' and 'css' would be two pages, and 'design tokens' an ugly URL.
 // A tag that doesn't fit fails the build, with the file that has it.
+// Exported for the Awesome lists (awesome.ts), whose tags end up in ?tag= URLs.
 const kebabCase = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
-function checkTags(path: string, tags: string[] = []) {
+export function checkTags(path: string, tags: string[] = []) {
 	const bad = tags.filter((tag) => !kebabCase.test(tag));
 	if (bad.length) throw new Error(`${path}: tags must be lowercase kebab-case: ${bad.join(', ')}`);
 }
