@@ -148,15 +148,32 @@
 		color: var(--text-2);
 	}
 
+	/* Each group is a panel on the page's own surface, so it stands off the blueprint
+	   grid; each skill is a strip one step up (surface-2), and the text fields in it go
+	   back down to surface-1, so they still read as fields. */
 	details {
-		border-block-end: var(--border-size-1) solid var(--surface-3);
+		margin-block-start: var(--size-2);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
+		background: var(--surface-1);
 	}
 
+	/* The whole title line is the click target, padded like the panel. */
 	summary {
-		padding-block: var(--size-2);
+		padding: var(--size-2) var(--size-3);
 		font-family: var(--font-label);
 		color: var(--text-1);
 		cursor: pointer;
+	}
+
+	/* The inside of an open panel: the list and the Add button. */
+	details > :not(summary) {
+		margin-inline: var(--size-2);
+	}
+
+	details[open] > summary {
+		border-block-end: var(--border-size-1) solid var(--surface-3);
+		margin-block-end: var(--size-2);
 	}
 
 	ul {
@@ -173,13 +190,16 @@
 		grid-template-columns: 1.5rem minmax(0, 1fr) auto;
 		align-items: center;
 		gap: var(--size-2);
+		padding: var(--size-1) var(--size-2);
+		border-radius: var(--radius-2);
+		background: var(--surface-2);
 	}
 
 	.text {
 		padding: var(--size-1) var(--size-2);
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);
-		background-color: var(--surface-2);
+		background-color: var(--surface-1);
 		font: inherit;
 		color: var(--text-1);
 	}

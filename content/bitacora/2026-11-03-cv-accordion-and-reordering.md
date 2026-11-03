@@ -12,6 +12,7 @@ tags: [html, svelte, accessibility, forms]
 - Every skill row has ↑ ↓ (my own skills too, plus ✕). The order is per profile, in `order` by group (skill names and my skills' ids); anything not in it, like a skill new to the YAML, goes last. The editor and the CV read the same `items()`, so they can't disagree.
 - My own skills now have an id (`crypto.randomUUID()`). Skills saved the old way, as plain strings, still load.
 - Print opens "About you" before focusing a field that needs fixing.
+- Each skill group is a panel on `--surface-1` with a border, so it stands off the blueprint grid; each skill row is a `--surface-2` strip, and the text fields in it go back to `--surface-1` so they still read as fields (Alfonso's idea: the groups were hard to read).
 - One `.visually-hidden` in `global.css` instead of four copies (`Skill`, `SkillWindow`, `SkillEditor`, now `Cv`).
 
 ## What I learned
