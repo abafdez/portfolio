@@ -87,11 +87,12 @@
 	}
 
 	/* The spotlight: the same grid in the accent color, only visible in a circle
-	   around the pointer, plus a faint glow. Hidden until the mouse moves. */
+	   around the pointer, plus a faint glow. Hidden until the mouse moves. Text sits
+	   on top of it, so its colors are tokens checked for contrast (tokens.css). */
 	.spot {
 		display: none;
-		--line: color-mix(in oklch, var(--brand) 25%, transparent);
-		--line-major: color-mix(in oklch, var(--brand) 45%, transparent);
+		--line: var(--grid-spot-line);
+		--line-major: var(--grid-spot-line-major);
 		mask-image: radial-gradient(circle 14rem at var(--x) var(--y), black, transparent);
 		opacity: 0;
 		transition: opacity 300ms ease-out;
@@ -102,7 +103,7 @@
 			inset: 0;
 			background: radial-gradient(
 				circle 14rem at var(--x) var(--y),
-				color-mix(in oklch, var(--brand) 8%, transparent),
+				var(--grid-spot-glow),
 				transparent
 			);
 		}
