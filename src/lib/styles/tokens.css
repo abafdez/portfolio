@@ -65,6 +65,15 @@
 	--grid-mark: color-mix(in oklch, var(--text-1) 18%, transparent);
 	--grid-size: 1.5rem;
 
+	/* The spotlight: the same grid lit in the brand color around the mouse, plus a
+	   glow. Not decorative any more once text sits on it: a lit line runs under the
+	   letters, so it counts as their background. At the spot's center (glow + major
+	   line, the brightest point) --text-2 keeps 4.89:1 dark, 4.83:1 light; on a minor
+	   line 5.77:1 and 5.40:1. A theme that changes --brand must re-check these. */
+	--grid-spot-line: color-mix(in oklch, var(--brand) 8%, transparent);
+	--grid-spot-line-major: color-mix(in oklch, var(--brand) 15%, transparent);
+	--grid-spot-glow: color-mix(in oklch, var(--brand) 4%, transparent);
+
 	/* Skill icons (/about): only this color's lightness is used. Each brand logo keeps
 	   its own hue and chroma at this lightness (oklch(from var(--icon-tone) l c h) in
 	   Skill.svelte), so the theme controls their contrast, like it does for text. */

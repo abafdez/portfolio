@@ -9,6 +9,9 @@ declare global {
 			// How the root layout arranges this route: <main data-composition>, styled in
 			// global.css. A route sets it in its +layout.ts or +page.ts; unset is 'default'.
 			composition?: 'default' | 'reading';
+			// This page's name in the breadcrumbs (Breadcrumbs.svelte). Only pages inside a
+			// section set it, in their own load: a post's title, a tool's name.
+			crumb?: string;
 		}
 		// interface PageState {}    // Shallow routing state
 		// interface Platform {}     // Platform-specific objects (e.g., Cloudflare Workers env/bindings)

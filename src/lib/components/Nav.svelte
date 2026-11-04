@@ -1,24 +1,23 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
-	import type { RouteWithoutParams } from '#lib/links.ts';
-
-	const links: { href: RouteWithoutParams; label: string }[] = [
-		{ href: '/', label: 'Home' },
-		{ href: '/blog', label: 'Blog' },
-		{ href: '/awesome', label: 'Awesome' },
-		{ href: '/projects', label: 'Projects' },
-		{ href: '/about', label: 'About' },
-		{ href: '/bitacora', label: 'Bitacora' }
-	];
+	import { isInside, sections } from '#lib/links.ts';
 </script>
 
 <nav aria-label="Main navigation">
 	<ul>
-		{#each links as link (link.href)}
-			{@const current = page.url.pathname === resolve(link.href)}
+		{#each sections as link (link.href)}
+			<!-- 'page' on the section's own page; 'true' on a page inside it (a post is in
+			     Blog), the current item of this set. Both get the marker. Route ids, not
+			     URLs: see isInside() in links.ts. -->
+			{@const current =
+				page.route.id === link.href
+					? 'page'
+					: isInside(link.href, page.route.id)
+						? 'true'
+						: undefined}
 			<li>
-				<a href={resolve(link.href)} aria-current={current ? 'page' : undefined}>
+				<a href={resolve(link.href)} aria-current={current}>
 					{link.label}
 					{#if current}
 						<span class="marker" aria-hidden="true"></span>
@@ -50,8 +49,9 @@
 		text-decoration: underline;
 	}
 
-	/* The current page: brand color plus a bar under it, so it doesn't rely on color alone. */
-	a[aria-current='page'] {
+	/* The current section: brand color plus a bar under it, so it doesn't rely on color
+	   alone. */
+	a[aria-current] {
 		color: var(--brand);
 	}
 

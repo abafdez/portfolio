@@ -99,11 +99,13 @@ The spotlight is the same grid again, with the line colors swapped for the accen
 
 ```css
 .spot {
-	--line: color-mix(in oklch, var(--brand) 25%, transparent);
-	--line-major: color-mix(in oklch, var(--brand) 45%, transparent);
+	--line: var(--grid-spot-line);
+	--line-major: var(--grid-spot-line-major);
 	mask-image: radial-gradient(circle 14rem at var(--x) var(--y), black, transparent);
 }
 ```
+
+The colors are the brand green, only 8% and 15% strong. I started at 25% and 45%, and text on top of the lit lines became hard to read: [decoration under text still needs contrast](./2026-11-04-decoration-under-text-needs-contrast).
 
 The mask shows it only in a circle around `--x`/`--y`. Svelte writes those two from the pointer position:
 

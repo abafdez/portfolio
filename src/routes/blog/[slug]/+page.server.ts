@@ -8,5 +8,5 @@ export const entries: EntryGenerator = () => allPosts.map(({ slug }) => ({ slug 
 export const load: PageServerLoad = ({ params }) => {
 	const post = allPosts.find(({ slug }) => slug === params.slug);
 	if (!post) error(404, 'No post with that name');
-	return { post };
+	return { post, crumb: post.title };
 };

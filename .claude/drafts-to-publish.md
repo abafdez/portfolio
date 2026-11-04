@@ -61,11 +61,16 @@ These link to no other draft.
   - a recording of the glide before the fix
   - whether the jump feels better than a glide or a fade
 
+- `2026-11-04-breadcrumbs-from-route-ids`
+  - a screenshot of the breadcrumbs and the nav marker on /projects/cv
+  - what a screen reader said on the breadcrumbs
+  - try it: the relative hrefs in `build/projects/cv.html`, and the marker with JS off
+
 ## Groups that go up together
 
 A post needs every draft it links to, and those drafts need theirs.
 
-**Design system** (Phases 2–4.5). 11 TODOs in all, from the posts marked with a number:
+**Design system** (Phases 2–4.5). 14 TODOs in all, from the posts marked with a number:
 
 - `2026-10-27-design-tokens` → cascade layers, dark-first palette
 - `2026-10-29-cascade-layers` → design tokens, dark mode
@@ -73,7 +78,8 @@ A post needs every draft it links to, and those drafts need theirs.
 - `2026-10-30-theme-toggle-view-transition` (2: the header values and why; a demo GIF) → dark mode, route transitions
 - `2026-10-31-route-transitions-composition` (2: a video of the nav; the durations tried) → theme toggle
 - `2026-10-31-dark-first-palette` (3: an ink scale screenshot; the contrast table; what I'd still change) → design tokens, dark mode, blueprint
-- `2026-10-31-blueprint-background` (2: a screenshot and GIF; a DevTools experiment) → scroll-driven header and footer
+- `2026-10-31-blueprint-background` (2: a screenshot and GIF; a DevTools experiment) → scroll-driven header and footer, decoration under text
+- `2026-11-04-decoration-under-text-needs-contrast` (3: a before/after screenshot; how light feels now; the 45% experiment in DevTools) → blueprint, contrast checker
 - `2026-10-31-scroll-driven-header-footer` (see above)
 
 These need that whole group live first:
