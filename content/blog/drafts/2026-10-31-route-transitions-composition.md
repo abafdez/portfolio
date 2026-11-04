@@ -77,13 +77,15 @@ Then the content: the old page fades out fast, the new one fades in and rises a 
 The current nav link used to have a thick underline. An underline is part of the text, so it can't move between links. So I made it an element:
 
 ```svelte
-<a href={resolve(link.href)} aria-current={current ? 'page' : undefined}>
+<a href={resolve(link.href)} aria-current={current}>
 	{link.label}
 	{#if current}
 		<span class="marker" aria-hidden="true"></span>
 	{/if}
 </a>
 ```
+
+`current` is `'page'` on a section's own page, `'true'` on a page inside it (a post is inside Blog), and `undefined` everywhere else, which Svelte leaves out of the HTML.
 
 There's only one marker on each page. During a route transition it's named `nav-marker`, so the browser pairs the old one with the new one and moves it from the old link's position to the new one's.
 

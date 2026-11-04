@@ -61,6 +61,11 @@ These link to no other draft.
   - a recording of the glide before the fix
   - whether the jump feels better than a glide or a fade
 
+- `2026-11-04-breadcrumbs-from-route-ids`
+  - a screenshot of the breadcrumbs and the nav marker on /projects/cv
+  - what a screen reader said on the breadcrumbs
+  - try it: the relative hrefs in `build/projects/cv.html`, and the marker with JS off
+
 ## Groups that go up together
 
 A post needs every draft it links to, and those drafts need theirs.
