@@ -66,11 +66,6 @@ These link to no other draft.
   - what a screen reader said on the breadcrumbs
   - try it: the relative hrefs in `build/projects/cv.html`, and the marker with JS off
 
-- `2026-11-04-seo-on-a-github-pages-project-site`
-  - what I decided about indexing, and why
-  - a screenshot of a link preview once it's deployed
-  - submitting the sitemap in Search Console, and what it reported
-
 ## Groups that go up together
 
 A post needs every draft it links to, and those drafts need theirs.
@@ -118,3 +113,8 @@ These need that whole group live first:
 - `2026-11-03-form-validation-without-a-library` (3: screenshots in both themes; `:user-invalid` alone in DevTools; what a screen reader said). Links to no draft.
 - `2026-11-03-store-the-changes-not-the-copy` (3: a screenshot of the editor; my edits as stored in DevTools; the broken `??=` in the playground). Links to no draft.
 - `2026-11-03-an-accordion-without-javascript` (3: a recording of the sections; what a screen reader says on a summary; browser support for `name` on details). Links to no draft.
+
+**SEO and tests** (Phase 9):
+
+- `2026-11-04-seo-on-a-github-pages-project-site` (3: what I decided about indexing and why; a link preview screenshot once deployed; the sitemap in Search Console) → unit tests with Vitest
+- `2026-11-04-unit-tests-with-vitest` (2: what I watched first and what clicked; breaking summary() on purpose in watch mode). Links to no draft.

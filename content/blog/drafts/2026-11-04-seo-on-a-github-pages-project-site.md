@@ -92,6 +92,7 @@ export function summary(text: string, max = 160): string {
 	const first =
 		text
 			.replace(frontmatter, '')
+			.replace(codeBlock, '') // whole fenced blocks, fence to fence
 			.split(/\r?\n/)
 			.map((line) => line.trim())
 			.find((line) => line && !/^(#|<!--|```)/.test(line)) ?? '';
@@ -99,7 +100,7 @@ export function summary(text: string, max = 160): string {
 }
 ````
 
-My entries start with "What we did", so the first bullet is usually a good one-line summary.
+My entries start with "What we did", so the first bullet is usually a good one-line summary. (My first unit test of this function found a bug: it skipped a code block's opening fence but took the code under it as the summary. That's the [next post](./2026-11-04-unit-tests-with-vitest).)
 
 ## A sitemap from the content
 
