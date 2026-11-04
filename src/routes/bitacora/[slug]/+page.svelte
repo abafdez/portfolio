@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
 	import type { PageProps } from './$types';
 
@@ -6,7 +7,12 @@
 	let { entry, Body } = $derived(data);
 </script>
 
-<svelte:head><title>{entry.title} · Bitácora · AB</title></svelte:head>
+<Seo
+	title={entry.title}
+	section="Bitácora"
+	description={entry.description}
+	published={entry.date}
+/>
 
 <article>
 	<ArticleHeader {...entry} />

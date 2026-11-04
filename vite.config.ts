@@ -101,7 +101,14 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			paths: { base: base as `/${string}` | '' }, //validated above, so this is safe to cast
+			paths: {
+				base: base as `/${string}` | '', //validated above, so this is safe to cast
+				// The site's public origin. While prerendering there's no real request, so
+				// SvelteKit makes up page.url (http://sveltekit-prerender); with this, its
+				// origin is the one the pages are served from, so canonical and og:url
+				// (Seo.svelte) and the sitemap get absolute URLs that work.
+				origin: 'https://abafdez.github.io'
+			},
 			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 			adapter: adapter({
 				pages: 'build',
@@ -111,8 +118,9 @@ export default defineConfig({
 			}),
 			prerender: {
 				// '*' is every page the crawler finds from the home page (the default).
-				// /logos.svg is only used by <use href>, which the crawler doesn't follow.
-				entries: ['*', '/logos.svg'],
+				// /logos.svg is only used by <use href>, and nothing links to /sitemap.xml
+				// (search engines are told about it), so the crawler finds neither.
+				entries: ['*', '/logos.svg', '/sitemap.xml'],
 				// A route nobody links to fails the build, which catches broken links. The
 				// exceptions: the post and tag pages have no pages while every post is a
 				// draft (drafts don't exist in a build). Once a post is published,

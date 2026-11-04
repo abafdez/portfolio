@@ -9,8 +9,10 @@ interface Frontmatter {
 	// 'YYYY-MM-DD'. The yaml package keeps unquoted dates as strings.
 	date: string;
 	tags?: string[];
+	description?: string;
 }
 
+// A post must have a description: it's written for search results and link previews.
 export interface PostMeta extends Frontmatter {
 	description: string;
 }
@@ -21,7 +23,13 @@ export interface LogMeta extends Frontmatter {
 
 // draft: the file is in a drafts/ folder (only possible in dev, see below).
 // minutes: reading time, from the words in the file (see readingTime()).
-export type Entry<T extends Frontmatter> = T & { slug: string; draft: boolean; minutes: number };
+// description: the frontmatter's, or one taken from the body (see summary()).
+export type Entry<T extends Frontmatter> = T & {
+	slug: string;
+	draft: boolean;
+	minutes: number;
+	description: string;
+};
 
 // import.meta.glob is a Vite feature: it finds the files at build time and imports
 // them all. eager: imported right away, not as lazy functions. query '?raw' +
@@ -58,6 +66,27 @@ function readingTime(text: string): number {
 	return Math.max(1, Math.ceil(words / 200));
 }
 
+// A description for a file that has none (Bitácora entries): the body's first
+// paragraph or list item, as plain text, cut at a word to fit in max characters.
+// Search results show about 160. Headings, HTML comments and code fences are skipped.
+export function summary(text: string, max = 160): string {
+	const first =
+		text
+			.replace(frontmatter, '')
+			.split(/\r?\n/)
+			.map((line) => line.trim())
+			.find((line) => line && !/^(#|<!--|```)/.test(line)) ?? '';
+	const plain = first
+		.replace(/^([-*+]|\d+\.)\s+/, '') // a list marker
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // [text](url) -> text
+		.replace(/[`*]/g, ''); // code and emphasis marks (not _, which names use: page_data)
+	if (plain.length <= max) return plain;
+	// Leave room for the ellipsis, and don't cut a word in half.
+	const cut = plain.slice(0, max - 1);
+	// Nor leave a comma or an open bracket right before it.
+	return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[\s,;:(]+$/, '')}…`;
+}
+
 // Tags become URLs (/blog/tags/design-tokens), so they must be lowercase kebab-case.
 // Otherwise 'CSS' and 'css' would be two pages, and 'design tokens' an ugly URL.
 // A tag that doesn't fit fails the build, with the file that has it.
@@ -79,7 +108,8 @@ function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[
 				...meta,
 				slug: path.split('/').at(-1)!.replace(/\.md$/, ''),
 				draft: path.includes('/drafts/'),
-				minutes: readingTime(text)
+				minutes: readingTime(text),
+				description: meta.description ?? summary(text)
 			};
 		})
 		.sort((a, b) => b.date.localeCompare(a.date) || b.slug.localeCompare(a.slug));

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import { resolve } from '$app/paths';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import type { PageProps } from './$types';
@@ -6,7 +7,10 @@
 	let { data }: PageProps = $props();
 </script>
 
-<svelte:head><title>Bitácora · AB</title></svelte:head>
+<Seo
+	title="Bitácora"
+	description="Short notes from building this site, step by step, newest first."
+/>
 
 <h1>Bitácora</h1>
 <p class="intro">Short notes from building this site, step by step, newest first.</p>
