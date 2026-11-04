@@ -61,18 +61,24 @@ const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---/;
 // Minutes to read the body (the file without its frontmatter), rounded up.
 // 200 words a minute: a bit under the usual ~238 for non-fiction, because the posts
 // are technical and full of code. Code counts as words too.
-function readingTime(text: string): number {
+// Exported for its tests (content.test.ts).
+export function readingTime(text: string): number {
 	const words = text.replace(frontmatter, '').match(/\S+/g)?.length ?? 0;
 	return Math.max(1, Math.ceil(words / 200));
 }
 
 // A description for a file that has none (Bitácora entries): the body's first
 // paragraph or list item, as plain text, cut at a word to fit in max characters.
-// Search results show about 160. Headings, HTML comments and code fences are skipped.
+// Search results show about 160. Headings, HTML comments and code blocks are skipped.
+// A code block goes whole, from its fence to the closing one with as many backticks
+// (\1): skipping only the fence line would make the code's first line the summary.
+const codeBlock = /^(`{3,})[^\n]*\n[\s\S]*?^\1/gm;
+
 export function summary(text: string, max = 160): string {
 	const first =
 		text
 			.replace(frontmatter, '')
+			.replace(codeBlock, '')
 			.split(/\r?\n/)
 			.map((line) => line.trim())
 			.find((line) => line && !/^(#|<!--|```)/.test(line)) ?? '';

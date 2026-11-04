@@ -1,5 +1,7 @@
 import { fileURLToPath } from 'node:url';
-import { defineConfig, type Plugin } from 'vite';
+import type { Plugin } from 'vite';
+// Vite's defineConfig with Vitest's types added, so the config can have a `test` section.
+import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-static'; //for SSG
 import { enhancedImages } from '@sveltejs/enhanced-img';
@@ -132,6 +134,12 @@ export default defineConfig({
 			}
 		})
 	],
+	// Unit tests (pnpm test). Vitest runs them through this same config, plugins and all,
+	// so a test imports files exactly like the site does (#lib/…, import.meta.glob).
+	// A test lives next to the file it tests: content.ts -> content.test.ts.
+	test: {
+		include: ['src/**/*.test.ts']
+	},
 	css: {
 		postcss: {
 			plugins: [postcssJitProps(OpenProps)]
