@@ -8,5 +8,5 @@ export const entries: EntryGenerator = () => allLists.map(({ slug }) => ({ list:
 export const load: PageServerLoad = ({ params }) => {
 	const list = allLists.find(({ slug }) => slug === params.list);
 	if (!list) error(404, 'No list with that name');
-	return { list };
+	return { list, crumb: list.title };
 };

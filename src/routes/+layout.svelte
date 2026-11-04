@@ -13,6 +13,7 @@
 	import Header from '#lib/components/Header.svelte';
 	import Footer from '#lib/components/Footer.svelte';
 	import Blueprint from '#lib/components/Blueprint.svelte';
+	import Breadcrumbs from '#lib/components/Breadcrumbs.svelte';
 
 	let { children }: { children: Snippet } = $props();
 
@@ -54,5 +55,8 @@
 <Blueprint />
 <Header />
 <!-- Each route picks its composition in its load data (see App.PageData). -->
-<main data-composition={page.data.composition ?? 'default'}>{@render children()}</main>
+<main data-composition={page.data.composition ?? 'default'}>
+	<Breadcrumbs />
+	{@render children()}
+</main>
 <Footer />

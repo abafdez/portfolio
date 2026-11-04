@@ -11,6 +11,7 @@ export const load: PageServerLoad = ({ params }) => {
 	// Grouped by year like /blog, which also gives the cards (h3) a heading (h2) above.
 	return {
 		tag: params.tag,
+		crumb: `#${params.tag}`,
 		count: posts.length,
 		years: [...Map.groupBy(posts, (post) => post.date.slice(0, 4))]
 	};

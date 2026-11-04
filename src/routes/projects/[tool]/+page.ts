@@ -15,5 +15,5 @@ export const load: PageLoad = async ({ params }) => {
 	const project = projects.find(({ slug }) => slug === params.tool);
 	if (!project?.tool) error(404, 'No project with that name');
 	const { default: Tool } = await project.tool();
-	return { project, Tool };
+	return { project, Tool, crumb: project.title };
 };

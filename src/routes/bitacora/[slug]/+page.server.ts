@@ -10,5 +10,5 @@ export const entries: EntryGenerator = () => allLog.map(({ slug }) => ({ slug })
 export const load: PageServerLoad = ({ params }) => {
 	const entry = allLog.find(({ slug }) => slug === params.slug);
 	if (!entry) error(404, 'No Bitácora entry with that name');
-	return { entry };
+	return { entry, crumb: entry.title };
 };
