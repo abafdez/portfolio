@@ -66,6 +66,11 @@ These link to no other draft.
   - what a screen reader said on the breadcrumbs
   - try it: the relative hrefs in `build/projects/cv.html`, and the marker with JS off
 
+- `2026-11-04-seo-on-a-github-pages-project-site`
+  - what I decided about indexing, and why
+  - a screenshot of a link preview once it's deployed
+  - submitting the sitemap in Search Console, and what it reported
+
 ## Groups that go up together
 
 A post needs every draft it links to, and those drafts need theirs.

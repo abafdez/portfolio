@@ -18,7 +18,7 @@ Alfonso (junior) wants to build a portfolio and level up while doing it. The sit
 
 1. Hard-coded links (`href="/dev/"`) will break on GitHub Pages if the repo isn't `<user>.github.io`, because of the base path. Lesson: `paths.base` plus `resolve()` from `$app/paths`.
 2. Broken href in the dev page: `https://open-props.style/>open-props`.
-3. `robots.txt` uses `Disallow: /` and a `noindex` meta is planned. That's a deliberate choice, but it conflicts with a portfolio being findable. Revisit it in Phase 9.
+3. `robots.txt` uses `Disallow: /` and a `noindex` meta is planned. That's a deliberate choice, but it conflicts with a portfolio being findable. Revisit it in Phase 9. **Decided 2026-11-04: findable.** The file was never read anyway (crawlers only read `robots.txt` at the host root, and this is a project site under `/portfolio/`), so it's gone; `noindex` only on `/mascot`.
 4. The workflow runs `deploy` on `pull_request`. Split it so PRs only build, which also answers the note "test CI without pushing to main".
 
 ---
