@@ -90,10 +90,17 @@
 			>
 				The quick brown fox jumps over the lazy dog.
 			</p>
-			{#if colors}
-				{@const pair = ratio(colors, scheme, text, surface)}
-				<p class="score"><strong>{format(pair)}:1</strong> {level(pair)}</p>
-			{/if}
+			<!-- Always there, empty until the tokens are read: a line that appeared later
+			     would push everything under it down (a layout shift). -->
+			<p class="score">
+				{#if colors}
+					{@const pair = ratio(colors, scheme, text, surface)}
+					<strong>{format(pair)}:1</strong>
+					{level(pair)}
+				{:else}
+					&nbsp;
+				{/if}
+			</p>
 		</section>
 	{/each}
 </div>

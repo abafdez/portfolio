@@ -107,7 +107,23 @@ To update the URL right where the search text changes, I used a function binding
 
 ## Without JavaScript
 
-The filters only appear once `onMount` has run (`{#if ready}`). Without JS they would be a search box and buttons that do nothing. The prerendered page already has every link, so nothing is lost.
+Without JS, the filters would be a search box and buttons that do nothing. The prerendered page already has every link, so nothing is lost by hiding them.
+
+My first version didn't render them at all until `onMount` had run (`{#if ready}`). Lighthouse caught the problem: when they appeared, they pushed the whole list down, a **layout shift** (CLS 0.16, enough to drop the page under 90). Now they're in the prerendered HTML, but invisible until JS is ready, and gone entirely when scripting is off:
+
+```css
+search:not(.ready) {
+	visibility: hidden;
+}
+
+@media (scripting: none) {
+	search {
+		display: none;
+	}
+}
+```
+
+`visibility: hidden` keeps an element's space but hides it from the eye, the keyboard and screen readers. `display: none` removes the space too. The class comes from `<search class:ready>`, set in `onMount`.
 
 ## Small accessibility details
 
