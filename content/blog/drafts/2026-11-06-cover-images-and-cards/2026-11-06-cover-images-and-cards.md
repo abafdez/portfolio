@@ -42,32 +42,28 @@ export function checkCover(path: string, alt: unknown, files: string[] = coverFi
 
 ## One glob, the right sizes
 
-The covers are found with Vite's `import.meta.glob`, processed by `@sveltejs/enhanced-img`:
+The covers are found with Vite's `import.meta.glob`, processed by `@sveltejs/enhanced-img`. One glob covers everything under `content/`, so the same code will serve Bitácora entries and Awesome lists when they get covers. A `!` pattern leaves the drafts out of a build:
 
 ```ts
-const pictures = import.meta.glob<Picture>('/content/blog/published/*/cover.{png,jpg,jpeg,webp}', {
-	eager: true,
-	import: 'default',
-	query: { enhanced: true, w: '1600;800;480' }
-});
+const pictures = import.meta.glob<Picture>(
+	['/content/**/cover.{png,jpg,jpeg,webp}', '!/content/blog/drafts/**'],
+	{ eager: true, import: 'default', query: { enhanced: true, w: '1600;800;480' } }
+);
 ```
+
+Each cover is then found by its **folder**: every post knows where it lives (`/content/blog/published/<slug>`), and `coverOf(post.folder)` returns its cover, if it has one.
 
 Each one becomes AVIF, WebP and the original format, each at three widths. On the page that's a `<picture>` with a `srcset` like `cover.avif 1600w, cover.avif 800w, cover.avif 480w`. With `sizes`, the browser picks the smallest file that's still sharp:
 
 ```svelte
-<!-- In the card: about 240px wide, or the card's width on a phone -->
-<enhanced:img src={cover} alt="" sizes="(min-width: 640px) 240px, 100vw" loading="lazy" />
-
 <!-- At the top of the post: the reading column -->
 <enhanced:img
-	src={cover}
+	src={cover.picture}
 	alt={post.cover}
 	sizes="(min-width: 800px) 740px, 100vw"
 	fetchpriority="high"
 />
 ```
-
-Same files, different `sizes`, so a card downloads the 480px version and the post the 1600px one on a sharp screen.
 
 The cover at the top of a post is usually the biggest thing on screen when it loads (its **LCP**, Largest Contentful Paint), so it gets `fetchpriority="high"` and is never lazy. Card thumbnails are lazy: `/blog` lists every post, and most cards are off screen.
 
@@ -93,12 +89,47 @@ article {
 
 @container (min-width: 34rem) {
 	.layout.with-thumbnail {
-		grid-template-columns: 15rem 1fr;
+		grid-template-columns: 12rem 1fr;
+		align-items: center;
 	}
 }
 ```
 
 Narrower than that, the image sits on top of the text.
+
+### 16:9 or square?
+
+My first version put the 16:9 cover beside the text. At 240px wide it was 135px tall, next to about 220px of text: a gap under the image in every card. I weighed five options:
+
+| Option                                   | Why not (or why)                                                         |
+| ---------------------------------------- | ------------------------------------------------------------------------ |
+| Keep 16:9, centre it vertically          | The gap is only split in two, and changes with each description          |
+| Stretch 16:9 to the card's height        | Every card crops differently, depending on its text                      |
+| **Square, cropped at build time**        | About as tall as the text; the crop keeps the middle                     |
+| Square, plus an optional `thumbnail.png` | Choose the crop by hand when the middle doesn't work; can be added later |
+| 4:3                                      | Still a small gap, and still a crop                                      |
+
+I went for the square. The important part is **where** it's cropped. With CSS (`object-fit: cover` on the 16:9 file), the browser would need a much wider file to fill a square sharply, so it's either blurry or heavy. Instead, imagetools (which enhanced-img uses) crops it at build time:
+
+```ts
+const squares = import.meta.glob<Picture>(
+	['/content/**/cover.{png,jpg,jpeg,webp}', '!/content/blog/drafts/**'],
+	{ eager: true, import: 'default', query: { enhanced: true, w: '480;240', aspect: '1:1' } }
+);
+```
+
+That makes 480×480 and 240×240 files (29 KB and 12 KB as PNG for my test image, less as AVIF), cut from the middle of the cover. So covers need what matters in the middle.
+
+On a narrow card the square would be huge, so there the 16:9 version sits on top. Both are in the HTML, and the container query shows one:
+
+```svelte
+<div class="wide"><enhanced:img src={cover.picture} alt="" loading="lazy" … /></div>
+<div class="square"><enhanced:img src={cover.square} alt="" sizes="192px" loading="lazy" /></div>
+```
+
+Both are `loading="lazy"`, and a lazy image that's `display: none` never comes into view, so the browser never downloads it. I checked: on `/blog` only the square was fetched.
+
+<!-- TODO: which option I'd pick if a CMS let me choose the focal point -->
 
 ### No cover yet
 
@@ -115,7 +146,7 @@ None of my posts has a cover yet. Text-only cards next to cards with images woul
 }
 ```
 
-It's `aria-hidden`: the tag is already in the card's tag list. On top of the text it's a 4:1 strip instead of 16:9, because it says no more than its tag.
+It's `aria-hidden`: the tag is already in the card's tag list. Beside the text it's square like the covers; on top of the text it's a 4:1 strip, because it says no more than its tag.
 
 ### The whole card is the link
 

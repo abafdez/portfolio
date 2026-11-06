@@ -124,6 +124,12 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Notes:** Spanish characters (`á é í ó ú ñ ü ¿ ¡`) are all in the Latin font file that's already preloaded. Tests to add: the smoke test per locale, a unit test that every UI string exists in both languages.
 - **Done when:** every page exists in both languages, links and the switch keep the language, search engines see the alternates, and Lighthouse stays ≥ 90.
 
+## Phase 11 — A CMS (later, Alfonso's idea 2026-11-06)
+
+- **Goal:** manage the site's content from a UI instead of editing files: posts, entries, lists, skills, and images, including **picking the focal point** a crop keeps (cards crop a square from the middle today, see `covers.ts`).
+- **To decide first:** a git-based CMS that writes the same markdown and YAML (Decap, TinaCMS, Keystatic, or Sveltia) versus building a small one in the site as a project. The site is static on GitHub Pages, so whatever it is has to commit to the repo, not to a database.
+- **Prepared for it:** content metadata lives in frontmatter and YAML (a focal point would sit next to `cover:`), and covers are found by folder, so any content type can get one.
+
 ## Ongoing habits
 
 - One branch and one PR per phase (or sub-step). Ask Claude for a review before merging.
