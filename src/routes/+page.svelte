@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import { resolve } from '$app/paths';
 	import Hero from '#lib/components/Hero.svelte';
 	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
@@ -43,7 +44,7 @@
 	const enter = (delay: number) => `home-enter 600ms ease-out ${delay}ms both`;
 </script>
 
-<svelte:head><title>Alfonso Baeza · Portfolio</title></svelte:head>
+<Seo description="Web developer. I make websites that are fast, accessible and a little playful." />
 
 <!-- Wide screens: the intro stays put on the left while the sections scroll on the
      right. Narrow screens: one column, intro first. -->

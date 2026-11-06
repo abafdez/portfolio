@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import AwesomeList from '#lib/awesome/AwesomeList.svelte';
 	import type { PageProps } from './$types';
 
@@ -6,10 +7,7 @@
 	let { list } = $derived(data);
 </script>
 
-<svelte:head>
-	<title>{list.title} · Awesome · AB</title>
-	<meta name="description" content={list.description} />
-</svelte:head>
+<Seo title={list.title} section="Awesome" description={list.description} />
 
 <header>
 	<h1>{list.title}</h1>

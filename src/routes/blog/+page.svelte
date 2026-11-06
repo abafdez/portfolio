@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import { resolve } from '$app/paths';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import { blogTag } from '#lib/links.ts';
@@ -7,7 +8,7 @@
 	let { data }: PageProps = $props();
 </script>
 
-<svelte:head><title>Blog · AB</title></svelte:head>
+<Seo title="Blog" description="Longer articles about what I learn building this site." />
 
 <h1>Blog</h1>
 <p class="intro">Longer articles about what I learn building this site.</p>

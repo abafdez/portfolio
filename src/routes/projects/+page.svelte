@@ -1,10 +1,11 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import { resolve } from '$app/paths';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import { projects } from '#lib/projects/projects.ts';
 </script>
 
-<svelte:head><title>Projects · AB</title></svelte:head>
+<Seo title="Projects" description="Small tools, each one a self-contained app." />
 
 <h1>Projects</h1>
 <p class="intro">Small tools, each one a self-contained app.</p>

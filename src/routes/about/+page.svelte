@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import MessageSquare from '@lucide/svelte/icons/message-square';
 	import { siGithub } from 'simple-icons';
 	import { onMount } from 'svelte';
@@ -50,13 +51,10 @@
 	}
 </script>
 
-<svelte:head>
-	<title>About · AB</title>
-	<meta
-		name="description"
-		content="What I work with: languages, frameworks, tools, ways of working and AI workflows."
-	/>
-</svelte:head>
+<Seo
+	title="About"
+	description="What I work with: languages, frameworks, tools, ways of working and AI workflows."
+/>
 
 <!-- The CV is shared on request, not published: it has my contact details. -->
 {#snippet cv()}

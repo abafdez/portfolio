@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import { resolve } from '$app/paths';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import type { PageProps } from './$types';
@@ -6,7 +7,10 @@
 	let { data }: PageProps = $props();
 </script>
 
-<svelte:head><title>Awesome · AB</title></svelte:head>
+<Seo
+	title="Awesome"
+	description="Curated lists of links I keep going back to, each one searchable by tag."
+/>
 
 <h1>Awesome</h1>
 <p class="intro">Curated lists of links I keep going back to, each one searchable by tag.</p>

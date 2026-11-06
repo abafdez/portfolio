@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import Mascot, { type Costume } from '#lib/components/Mascot.svelte';
 
 	// Review sheet for the mascot while it's designed (Phase 4.5, step 4). Not in the nav.
@@ -12,10 +13,8 @@
 	];
 </script>
 
-<svelte:head>
-	<title>Mascot · AB</title>
-	<meta name="robots" content="noindex" />
-</svelte:head>
+<!-- A review sheet, not a page yet: kept out of search results. -->
+<Seo title="Mascot" description="Review sheet for the site's mascot while it's designed." noindex />
 
 <h1>Mascot</h1>
 <ul>

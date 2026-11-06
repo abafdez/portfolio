@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import { resolve } from '$app/paths';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import { blogTag } from '#lib/links.ts';
@@ -8,7 +9,7 @@
 	let { tag, count, years } = $derived(data);
 </script>
 
-<svelte:head><title>#{tag} · Blog · AB</title></svelte:head>
+<Seo title="#{tag}" section="Blog" description="My posts tagged #{tag}, newest first." />
 
 <a class="back" href={resolve('/blog')}>← All posts</a>
 <h1>#{tag}</h1>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '#lib/components/Seo.svelte';
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
 	import { blogTag } from '#lib/links.ts';
 	import type { PageProps } from './$types';
@@ -7,10 +8,7 @@
 	let { post, Body } = $derived(data);
 </script>
 
-<svelte:head>
-	<title>{post.title} · Blog · AB</title>
-	<meta name="description" content={post.description} />
-</svelte:head>
+<Seo title={post.title} section="Blog" description={post.description} published={post.date} />
 
 <article>
 	<ArticleHeader {...post} tagHref={blogTag} />

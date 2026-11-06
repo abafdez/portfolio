@@ -1,5 +1,7 @@
 import { fileURLToPath } from 'node:url';
-import { defineConfig, type Plugin } from 'vite';
+import type { Plugin } from 'vite';
+// Vite's defineConfig with Vitest's types added, so the config can have a `test` section.
+import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-static'; //for SSG
 import { enhancedImages } from '@sveltejs/enhanced-img';
@@ -101,7 +103,14 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			paths: { base: base as `/${string}` | '' }, //validated above, so this is safe to cast
+			paths: {
+				base: base as `/${string}` | '', //validated above, so this is safe to cast
+				// The site's public origin. While prerendering there's no real request, so
+				// SvelteKit makes up page.url (http://sveltekit-prerender); with this, its
+				// origin is the one the pages are served from, so canonical and og:url
+				// (Seo.svelte) and the sitemap get absolute URLs that work.
+				origin: 'https://abafdez.github.io'
+			},
 			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 			adapter: adapter({
 				pages: 'build',
@@ -111,8 +120,9 @@ export default defineConfig({
 			}),
 			prerender: {
 				// '*' is every page the crawler finds from the home page (the default).
-				// /logos.svg is only used by <use href>, which the crawler doesn't follow.
-				entries: ['*', '/logos.svg'],
+				// /logos.svg is only used by <use href>, and nothing links to /sitemap.xml
+				// (search engines are told about it), so the crawler finds neither.
+				entries: ['*', '/logos.svg', '/sitemap.xml'],
 				// A route nobody links to fails the build, which catches broken links. The
 				// exceptions: the post and tag pages have no pages while every post is a
 				// draft (drafts don't exist in a build). Once a post is published,
@@ -124,6 +134,12 @@ export default defineConfig({
 			}
 		})
 	],
+	// Unit tests (pnpm test). Vitest runs them through this same config, plugins and all,
+	// so a test imports files exactly like the site does (#lib/…, import.meta.glob).
+	// A test lives next to the file it tests: content.ts -> content.test.ts.
+	test: {
+		include: ['src/**/*.test.ts']
+	},
 	css: {
 		postcss: {
 			plugins: [postcssJitProps(OpenProps)]
