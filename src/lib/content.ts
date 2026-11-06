@@ -138,6 +138,18 @@ export function checkTags(path: string, tags: string[] = []) {
 	if (bad.length) throw new Error(`${path}: tags must be lowercase kebab-case: ${bad.join(', ')}`);
 }
 
+// The YAML at the top of a file. A YAML error names the line but not the file, so it's
+// added: with a hundred markdown files, the file is what you need to know. The usual
+// mistake is an unquoted ': ' inside a value; wrap the value in quotes.
+// Exported for its tests (content.test.ts).
+export function readFrontmatter<T>(path: string, text: string): T {
+	try {
+		return parse(text.match(frontmatter)?.[1] ?? '') as T;
+	} catch (error) {
+		throw new Error(`${path}: the frontmatter isn't valid YAML. ${(error as Error).message}`);
+	}
+}
+
 // Each file sits in a folder with the same name, next to its images, and that name is
 // the slug: /content/blog/2026-10-27-design-tokens/2026-10-27-design-tokens.md ->
 // 2026-10-27-design-tokens. A folder and file that don't match fail the build (a
@@ -153,7 +165,7 @@ export function slugOf(path: string): string {
 function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[] {
 	return Object.entries(files)
 		.map(([path, text]) => {
-			const meta = parse(text.match(frontmatter)?.[1] ?? '') as T;
+			const meta = readFrontmatter<T>(path, text);
 			checkTags(path, meta.tags);
 			checkCover(path, meta.cover);
 			return {

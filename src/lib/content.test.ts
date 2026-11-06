@@ -9,6 +9,7 @@ import {
 	checkCover,
 	checkTags,
 	checkUniqueSlugs,
+	readFrontmatter,
 	readingTime,
 	slugOf,
 	summary
@@ -92,6 +93,22 @@ describe('readingTime', () => {
 	test("doesn't count the frontmatter", () => {
 		const long = `---\ntitle: ${'word '.repeat(300)}\n---\n\nShort body.`;
 		expect(readingTime(long)).toBe(1);
+	});
+});
+
+describe('readFrontmatter', () => {
+	test('reads the fields', () => {
+		expect(readFrontmatter('post.md', file('Text.'))).toEqual({
+			title: 'A title',
+			date: '2026-11-04'
+		});
+	});
+
+	test('names the file when the YAML is wrong', () => {
+		const text = '---\ntitle: A title\ndescription: Two parts: one colon\n---\n';
+		expect(() => readFrontmatter('post.md', text)).toThrow(
+			"post.md: the frontmatter isn't valid YAML"
+		);
 	});
 });
 
