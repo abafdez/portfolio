@@ -42,6 +42,8 @@ cover: What the cover image shows, for people who can't see it
 | `description` | yes               | Shown under the title, on the card, in search results. Search engines cut at about 160 characters.   |
 | `cover`       | with a cover file | The cover's alt text. Only together with `cover.png` (the build checks both ways).                   |
 
+**Quote a value that contains `: ` (colon and space)**, or YAML reads it as a new field and the build fails (the error names the file): `description: "Two things: this and that."`. A value with a `'` inside is easiest in double quotes.
+
 ## Images
 
 Put them in the post's folder. The build turns each one into AVIF and WebP copies at the sizes the page needs, with width and height set (so the page doesn't jump while they load). Commit the original; don't convert or shrink it to small sizes yourself.
