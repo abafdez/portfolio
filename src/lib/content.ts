@@ -35,7 +35,9 @@ export type Entry<T extends Frontmatter> = T & {
 // them all. eager: imported right away, not as lazy functions. query '?raw' +
 // import 'default': each file as plain text, not as a module. The options must be
 // written inline: Vite reads them from the source code, before anything runs.
-const posts = import.meta.glob<string>('/content/blog/*.md', {
+// Every file sits in a folder of its own, with its images (see slugOf()), so the
+// pattern is folder/file: '*/*.md'.
+const posts = import.meta.glob<string>('/content/blog/published/*/*.md', {
 	eager: true,
 	query: '?raw',
 	import: 'default'
@@ -43,13 +45,13 @@ const posts = import.meta.glob<string>('/content/blog/*.md', {
 // Drafts only exist in dev. In a build, Vite replaces import.meta.env.DEV with false
 // and removes the dead branch, glob included, so no draft is read or bundled.
 const drafts = import.meta.env.DEV
-	? import.meta.glob<string>('/content/blog/drafts/*.md', {
+	? import.meta.glob<string>('/content/blog/drafts/*/*.md', {
 			eager: true,
 			query: '?raw',
 			import: 'default'
 		})
 	: {};
-const log = import.meta.glob<string>('/content/bitacora/*.md', {
+const log = import.meta.glob<string>('/content/bitacora/*/*.md', {
 	eager: true,
 	query: '?raw',
 	import: 'default'
@@ -81,11 +83,13 @@ export function summary(text: string, max = 160): string {
 			.replace(codeBlock, '')
 			.split(/\r?\n/)
 			.map((line) => line.trim())
-			.find((line) => line && !/^(#|<!--|```)/.test(line)) ?? '';
+			.find((line) => line && !/^(#|<!--|```|!\[)/.test(line)) ?? '';
 	const plain = first
 		.replace(/^([-*+]|\d+\.)\s+/, '') // a list marker
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, '') // an image inside the text: ![alt](./x.png)
 		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // [text](url) -> text
-		.replace(/[`*]/g, ''); // code and emphasis marks (not _, which names use: page_data)
+		.replace(/[`*]/g, '') // code and emphasis marks (not _, which names use: page_data)
+		.replace(/\s{2,}/g, ' '); // the gap a removed image leaves
 	if (plain.length <= max) return plain;
 	// Leave room for the ellipsis, and don't cut a word in half.
 	const cut = plain.slice(0, max - 1);
@@ -104,7 +108,18 @@ export function checkTags(path: string, tags: string[] = []) {
 	if (bad.length) throw new Error(`${path}: tags must be lowercase kebab-case: ${bad.join(', ')}`);
 }
 
-// The file name is the slug: /content/blog/2026-10-27-design-tokens.md -> 2026-10-27-design-tokens
+// Each file sits in a folder with the same name, next to its images, and that name is
+// the slug: /content/blog/2026-10-27-design-tokens/2026-10-27-design-tokens.md ->
+// 2026-10-27-design-tokens. A folder and file that don't match fail the build (a
+// rename that missed one, or a file dropped straight into drafts/).
+// Exported for its tests (content.test.ts).
+export function slugOf(path: string): string {
+	const [folder, file] = path.split('/').slice(-2);
+	const slug = file.replace(/\.md$/, '');
+	if (folder !== slug) throw new Error(`${path}: the folder and the file must have the same name`);
+	return slug;
+}
+
 function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[] {
 	return Object.entries(files)
 		.map(([path, text]) => {
@@ -112,7 +127,7 @@ function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[
 			checkTags(path, meta.tags);
 			return {
 				...meta,
-				slug: path.split('/').at(-1)!.replace(/\.md$/, ''),
+				slug: slugOf(path),
 				draft: path.includes('/drafts/'),
 				minutes: readingTime(text),
 				description: meta.description ?? summary(text)

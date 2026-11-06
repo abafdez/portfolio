@@ -4,7 +4,7 @@
 // describe() groups tests; test() is one case; expect(value) plus a matcher (toBe,
 // toThrow…) is the check. If any expect fails, that test fails and says why.
 import { describe, expect, test } from 'vitest';
-import { allLog, checkTags, readingTime, summary } from './content.ts';
+import { allLog, checkTags, readingTime, slugOf, summary } from './content.ts';
 
 // A markdown file like ours: frontmatter, then a body.
 const file = (body: string) => `---\ntitle: A title\ndate: 2026-11-04\n---\n\n${body}`;
@@ -58,6 +58,14 @@ describe('summary', () => {
 		expect(summary(file('one two, three four'), 11)).toBe('one two…');
 	});
 
+	test('skips a line that is only an image', () => {
+		expect(summary(file('![A diagram](./diagram.png)\n\nThe text.'))).toBe('The text.');
+	});
+
+	test('drops an image inside the text', () => {
+		expect(summary(file('- Before ![a diagram](./diagram.png) after.'))).toBe('Before after.');
+	});
+
 	test('gives an empty string for a file with no text', () => {
 		expect(summary(file('## Only a heading'))).toBe('');
 	});
@@ -76,6 +84,27 @@ describe('readingTime', () => {
 	test("doesn't count the frontmatter", () => {
 		const long = `---\ntitle: ${'word '.repeat(300)}\n---\n\nShort body.`;
 		expect(readingTime(long)).toBe(1);
+	});
+});
+
+describe('slugOf', () => {
+	test('is the file name, inside a folder with the same name', () => {
+		expect(slugOf('/content/blog/2026-10-27-tokens/2026-10-27-tokens.md')).toBe(
+			'2026-10-27-tokens'
+		);
+	});
+
+	test('works for drafts too', () => {
+		expect(slugOf('/content/blog/drafts/2026-10-27-tokens/2026-10-27-tokens.md')).toBe(
+			'2026-10-27-tokens'
+		);
+	});
+
+	test.each([
+		'/content/blog/2026-10-27-tokens/2026-10-27-renamed.md',
+		'/content/blog/drafts/2026-10-27-tokens.md'
+	])('rejects a folder and file that do not match: %s', (path) => {
+		expect(() => slugOf(path)).toThrow(`${path}: the folder and the file must have the same name`);
 	});
 });
 

@@ -54,6 +54,30 @@ const layout = fileURLToPath(
 	new URL('./src/lib/components/MarkdownLayout.svelte', import.meta.url)
 );
 
+// Images next to the post. mdsvex turns ![A diagram](./diagram.png) into
+// <img src="./diagram.png" alt="A diagram">, and a browser reads ./ from the page's
+// URL, not from the file's folder: a 404. So each local image becomes an import (Vite
+// finds the file next to the .md, and the build fails if it's missing) and an
+// <enhanced:img>, which makes AVIF and WebP copies and sets width and height (its
+// space is kept while it loads: no layout shift). The imports go in the component's
+// <script>. mdsvex leaves alt out when it's empty, so a missing one fails the build.
+const localImage = /<img src="(\.\/[^"]+)"([^>]*?)\s*\/?>/g;
+
+function enhanceImages(code: string, id: string): string {
+	const imports: string[] = [];
+	const html = code.replace(localImage, (_, src: string, attributes: string) => {
+		if (!/\salt="[^"]+"/.test(attributes)) {
+			throw new Error(`${id}: ${src} needs alt text: ![What it shows](${src})`);
+		}
+		const name = `__image${imports.length}`;
+		imports.push(`import ${name} from '${src}?enhanced';`);
+		return `<enhanced:img src={${name}}${attributes} />`;
+	});
+	// The first plain <script> is the component's own; the frontmatter is in
+	// <script context="module">.
+	return imports.length ? html.replace('<script>', `<script>\n\t${imports.join('\n\t')}`) : code;
+}
+
 // Turns each .md file into Svelte markup with mdsvex; vite-plugin-svelte then compiles
 // it like any component. Why a plugin and not `preprocess: [mdsvex()]`: enhanced-img
 // parses every Svelte file in a 'pre' transform, which Vite runs before the
@@ -81,7 +105,7 @@ function markdown(): Plugin {
 				// The empty map says "no sourcemap on purpose": markdown -> HTML has no
 				// useful line-by-line mapping, and without it the build warns per file.
 				return {
-					code: out.code
+					code: enhanceImages(out.code, id)
 						.replace('<script context="module">', '<script module>')
 						.replace('{...$$props}', ''),
 					map: { mappings: '' }

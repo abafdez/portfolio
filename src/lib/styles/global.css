@@ -266,6 +266,15 @@
 			border-inline-start: var(--border-size-2) solid var(--brand);
 			color: var(--text-2);
 		}
+
+		/* Images next to the post (see markdown() in vite.config.ts). They come with
+		   width and height, so their space is kept while they load; block-size: auto
+		   keeps the proportions when max-inline-size makes them narrower. */
+		& img {
+			block-size: auto;
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-2);
+		}
 	}
 }
 
