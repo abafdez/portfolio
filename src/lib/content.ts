@@ -6,6 +6,8 @@ import { parse } from 'yaml';
 
 interface Frontmatter {
 	title: string;
+	// The alt text of the cover image, cover.png next to the file (see covers.ts).
+	cover?: string;
 	// 'YYYY-MM-DD'. The yaml package keeps unquoted dates as strings.
 	date: string;
 	tags?: string[];
@@ -15,8 +17,6 @@ interface Frontmatter {
 // A post must have a description: it's written for search results and link previews.
 export interface PostMeta extends Frontmatter {
 	description: string;
-	// The alt text of the post's cover image (cover.png next to it, see covers.ts).
-	cover?: string;
 }
 
 export interface LogMeta extends Frontmatter {
@@ -24,10 +24,13 @@ export interface LogMeta extends Frontmatter {
 }
 
 // draft: the file is in a drafts/ folder (only possible in dev, see below).
+// folder: where the file and its images are, e.g. /content/blog/published/<slug>
+// (covers.ts finds a cover by it).
 // minutes: reading time, from the words in the file (see readingTime()).
 // description: the frontmatter's, or one taken from the body (see summary()).
 export type Entry<T extends Frontmatter> = T & {
 	slug: string;
+	folder: string;
 	draft: boolean;
 	minutes: number;
 	description: string;
@@ -59,11 +62,11 @@ const log = import.meta.glob<string>('/content/bitacora/*/*.md', {
 	import: 'default'
 });
 
-// The posts' cover images (cover.png, .jpg or .webp next to the markdown). Only their
-// paths are used here, to check each one has its alt text: not eager, so no image is
-// read. covers.ts imports them for the pages.
+// The cover images (cover.png, .jpg or .webp next to a post's or an entry's markdown).
+// Only their paths are used here, to check each one has its alt text: not eager, so
+// no image is read. covers.ts imports them for the pages. Drafts only in dev.
 const coverFiles = Object.keys({
-	...import.meta.glob('/content/blog/published/*/cover.{png,jpg,jpeg,webp}'),
+	...import.meta.glob(['/content/**/cover.{png,jpg,jpeg,webp}', '!/content/blog/drafts/**']),
 	...(import.meta.env.DEV
 		? import.meta.glob('/content/blog/drafts/*/cover.{png,jpg,jpeg,webp}')
 		: {})
@@ -71,7 +74,7 @@ const coverFiles = Object.keys({
 
 // A cover and its alt text come together: an image nobody described is a problem for
 // screen readers, and alt text without an image is a typo somewhere. Either fails the
-// build, naming the file. Bitácora entries have no covers, so a `cover:` there fails.
+// build, naming the file.
 // Exported for its tests (content.test.ts).
 export function checkCover(path: string, alt: unknown, files: string[] = coverFiles) {
 	const folder = path.slice(0, path.lastIndexOf('/') + 1);
@@ -152,10 +155,11 @@ function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[
 		.map(([path, text]) => {
 			const meta = parse(text.match(frontmatter)?.[1] ?? '') as T;
 			checkTags(path, meta.tags);
-			checkCover(path, (meta as { cover?: unknown }).cover);
+			checkCover(path, meta.cover);
 			return {
 				...meta,
 				slug: slugOf(path),
+				folder: path.slice(0, path.lastIndexOf('/')),
 				draft: path.includes('/drafts/'),
 				minutes: readingTime(text),
 				description: meta.description ?? summary(text)

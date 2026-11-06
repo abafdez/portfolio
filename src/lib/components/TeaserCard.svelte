@@ -1,6 +1,6 @@
 <script module lang="ts">
 	import type { ResolvedPathname } from '$app/types';
-	import type { Picture } from '@sveltejs/enhanced-img';
+	import type { Cover } from '#lib/covers.ts';
 	import TagList from './TagList.svelte';
 
 	// Exported so pages can type their lists: const posts: Teaser[] = [...]
@@ -18,9 +18,9 @@
 		href?: ResolvedPathname;
 		// Links each tag to its page (see TagList).
 		tagHref?: (tag: string) => ResolvedPathname;
-		// A picture column, for blog posts (thumbnailOf() in covers.ts): the cover, or
+		// A picture, for content with covers (thumbnailOf() in covers.ts): the cover, or
 		// without one a tile with the label.
-		thumbnail?: { cover?: Picture; label: string };
+		thumbnail?: { cover?: Cover; label: string };
 	}
 </script>
 
@@ -35,14 +35,21 @@
 			     says what the post is, and a screen reader would hear it twice. -->
 			<div class="thumbnail">
 				{#if thumbnail.cover}
-					<!-- sizes: about 240px wide beside the text, the card's width on top of it
-					     (see the container query). The browser picks the smallest copy. -->
-					<enhanced:img
-						src={thumbnail.cover}
-						alt=""
-						sizes="(min-width: 640px) 240px, 100vw"
-						loading="lazy"
-					/>
+					<!-- Two crops: 16:9 on top of the text, square beside it. The container
+					     query shows one; both are lazy, and a lazy image that isn't shown is
+					     never downloaded. sizes: the card's width (at most 34rem) on top,
+					     12rem beside; the browser picks the smallest copy that's sharp. -->
+					<div class="wide">
+						<enhanced:img
+							src={thumbnail.cover.picture}
+							alt=""
+							sizes="(min-width: 600px) 544px, 100vw"
+							loading="lazy"
+						/>
+					</div>
+					<div class="square">
+						<enhanced:img src={thumbnail.cover.square} alt="" sizes="192px" loading="lazy" />
+					</div>
 				{:else}
 					<div class="tile" aria-hidden="true">{thumbnail.label}</div>
 				{/if}
@@ -120,14 +127,15 @@
 		gap: var(--size-3) var(--size-4);
 	}
 
+	/* On top of the text: the 16:9 cover, or a short strip for a tile. */
 	.thumbnail {
 		aspect-ratio: 16 / 9;
 		overflow: clip;
 		border-radius: var(--radius-2);
 		background: var(--surface-3);
 
-		/* enhanced:img makes a <picture> around an <img>: both fill the box, and the
-		   image is cropped to 16:9 if it isn't. */
+		/* enhanced:img makes a <picture> around an <img>: all of them fill the box. */
+		& > div,
 		& :global(:is(picture, img)) {
 			inline-size: 100%;
 			block-size: 100%;
@@ -136,22 +144,35 @@
 		& :global(img) {
 			object-fit: cover;
 		}
+
+		&:has(.tile) {
+			aspect-ratio: 4 / 1;
+		}
 	}
 
-	/* Above the text, a tile only needs to be a strip: it says no more than its tag. */
-	.thumbnail:has(.tile) {
-		aspect-ratio: 4 / 1;
+	.square {
+		display: none;
 	}
 
-	/* Wide enough: the picture beside the text instead of above it, always 16:9. */
+	/* Wide enough: a square beside the text, centered on its height. The square is a
+	   crop made at build time (covers.ts), and a tile is square too. */
 	@container (min-width: 34rem) {
 		.layout.with-thumbnail {
-			grid-template-columns: 15rem 1fr;
-			align-items: start;
+			grid-template-columns: 12rem 1fr;
+			align-items: center;
 		}
 
+		.thumbnail,
 		.thumbnail:has(.tile) {
-			aspect-ratio: 16 / 9;
+			aspect-ratio: 1;
+		}
+
+		.wide {
+			display: none;
+		}
+
+		.square {
+			display: block;
 		}
 	}
 
