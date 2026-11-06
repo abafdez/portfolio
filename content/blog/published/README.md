@@ -46,11 +46,11 @@ cover: What the cover image shows, for people who can't see it
 
 ## Images
 
-Put them in the post's folder. The build turns each one into AVIF and WebP copies at the sizes the page needs, with width and height set (so the page doesn't jump while they load). Commit the original; don't convert or shrink it to small sizes yourself.
+Put them in the post's folder. The build turns each one into AVIF and WebP copies at the sizes the page needs, with width and height set (so the page doesn't jump while they load). Commit a good-quality original at the size below; don't make small versions yourself.
 
 ### The cover (optional)
 
-- **File:** `cover.png`, `cover.jpg` or `cover.webp`, exactly that name.
+- **File:** `cover.avif`, `cover.png`, `cover.jpg` or `cover.webp`, exactly that name. One per post.
 - **Size:** 16:9, **1600 × 900** (at least that; larger is fine, it's scaled down).
 - **The middle matters most.** Cards show a square cut from the middle: for 1600 × 900, that's the middle 900 × 900. Keep the subject and any text inside it; the sides only show at the top of the post and in link previews.
 - **Little or no small text.** On a card it's shown at 192 px: small text becomes noise.
@@ -69,7 +69,7 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 
 - **Name:** lowercase, words joined by `-`, saying what it is: `workflow-run.png`, `ruleset-settings.png`. Not `Screenshot 2026-11-06 at 13.42.png` (spaces, and it says nothing).
 - **Width:** about **twice the width it's shown at**. The text column is about 740 px wide, so up to about 1500 px wide. Smaller is fine: it's never stretched bigger than the file.
-- **Format:** **PNG** for screenshots, diagrams and anything with text or flat colours. **JPEG** for photos. WebP is fine too. Not SVG or GIF: the image step doesn't handle them yet (ask Claude).
+- **Format:** **AVIF** is a good default: the smallest file in git for the same quality. Export it at a **high quality (70 or more)**: the build compresses it again for the page, and a file that's already heavily compressed loses detail twice. **PNG** is fine for screenshots and diagrams (text, flat colours), **JPEG** for photos, WebP too. Not SVG or GIF: the image step doesn't handle them yet (ask Claude).
 - **File size:** git keeps every version of every file forever, even after you delete it. Crop to what matters, and keep originals under about 1 MB.
 - **Alt text is required**: the build fails without it. It says what the image shows, for someone who can't see it. Don't start with "Image of…".
 - **A caption** (the quoted part) is for everyone: context, a source, what to notice. Don't repeat the alt text in it.
@@ -83,9 +83,11 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 | Any other page on this site | `[text](/bitacora/2026-10-21-layout-routing-base-path)` | One `/` at the start, then the path. The base path (`/portfolio`) is added for you: never write it. |
 | A tag                       | `[text](/blog/tags/github-actions)`                     | Like any other page.                                                                                |
 | Another site                | `[text](https://svelte.dev/docs/kit/images)`            | The full `https://` address. Gets `rel="external"`, opens in the same tab.                          |
-| A heading in the same post  | (not yet)                                               | Headings have no `id` yet, so `#a-heading` goes nowhere. Ask Claude if you need it.                 |
+| A heading in the same post  | `[text](#the-base-path)`                                | Every heading has an `id` made from its text (see below).                                           |
 
-- **The build checks every link to this site**: a page that doesn't exist fails it. Links to other sites aren't checked, so click them once before publishing.
+- **Heading ids** come from the heading's text: lowercase, spaces become `-`, punctuation goes, accents stay. `## Gotcha: the base path` is `#gotcha-the-base-path`; a second heading with the same text gets `-1`. The easiest way to get one: hover the heading in `pnpm dev`, click it, and copy the address. To a heading in another post: `[text](./2026-10-31-markdown-with-mdsvex#the-layout)`; on any other page: `[text](/bitacora/2026-10-21-layout-routing-base-path#what-we-did)`.
+- **Renaming a heading changes its id**, and links to it stop matching. On this site the build catches it (below); links from other sites can't be checked.
+- **The build checks every link to this site**: a page that doesn't exist fails it, and so does a `#heading` that isn't on the page. Links to other sites aren't checked, so click them once before publishing.
 - **Link text says where it goes**: "the SvelteKit docs on images", not "here" or "this link". Screen reader users often jump from link to link, hearing only their text.
 - **Prefer stable sources** for external links: official docs (MDN, svelte.dev, vite.dev), specs, the project's own repo. Link the page, not a search result.
 - Most posts end with a `## Links` list of the docs they used.
