@@ -3,13 +3,12 @@ title: 'Pages that jump: fixing layout shift on a static site'
 date: 2026-11-06
 tags: [performance, lighthouse, fonts, svelte]
 description: Three of my pages scored under 90 in Lighthouse for one reason, content moving after it appears. Two causes, web fonts and content added by JavaScript, and how I fixed each.
+cover: Diagram representing layout shift.
 ---
 
 You start reading, or reach for a link, and the page jumps. That's a **layout shift**, and Lighthouse measures it as **CLS**, Cumulative Layout Shift: how much visible content moved, and how far. Under 0.1 is good.
 
 I ran Lighthouse on one page of each kind on my site. Accessibility, best practices and SEO were 100 everywhere, and performance mostly 95 to 98. Three pages weren't: a Bitácora entry at 89, an Awesome list at 91, and my contrast checker at 86. All three had the same problem: CLS between 0.14 and 0.24.
-
-<!-- TODO: a screenshot or a short recording of the Awesome list jumping -->
 
 ## Finding what moved
 
@@ -64,8 +63,6 @@ export const handle: Handle = ({ event, resolve }) =>
 
 By default SvelteKit preloads JavaScript and CSS; this keeps that and adds fonts. But only the **Latin** files. My fonts come from Fontsource, which splits each font into one file per alphabet (Latin, Latin Extended, Cyrillic, Greek…), each with a `unicode-range`. The browser only downloads the ones a page actually uses. Preload them all and every visitor downloads every alphabet.
 
-<!-- TODO: what my fonts are for (Fira Code, Shantell Sans) and why I picked them -->
-
 ## Cause 2: content added by JavaScript
 
 My site is prerendered: every page is an HTML file, made at build time, that works without JavaScript. Some parts only make sense with JavaScript, so I added them once it ran:
@@ -116,8 +113,6 @@ For the contrast checker it was even simpler: the score line is always there, wi
 | The contrast checker |      0.237 |     0.003 |     86 → 96 |
 
 There was a cost. On Lighthouse's throttled mobile network, LCP (when the main content appears) went from about 2.0 to 2.5 seconds: the 115 KB of fonts now download early and compete with everything else. The score still went up, because CLS weighs more. A page that shows up a moment later is better than one that moves under your finger.
-
-<!-- TODO: try it: in DevTools, Performance panel, record a reload with "Slow 4G" and look for the "Layout shifts" track -->
 
 ## Links
 
