@@ -18,6 +18,7 @@ tags: [caching, github-pages, performance, ci]
 - CI starts on a fresh machine, and `cache: true` in the setup step only caches pnpm's packages, so every run processes every image again. The local cache is `node_modules/.cache/imagetools`.
 - `actions/cache` keeps files **between runs** in GitHub's cache service, not in the repo (it's on the Actions → Caches page). It restores `path` when `key` matches (or a `restore-keys` prefix does), and saves at the end of a successful job when there was no exact match. A cache can't be changed, only replaced by a new key. Unused for 7 days, it's deleted; a repo gets 10 GB. A PR's caches only serve re-runs of that PR; `main`'s serve everyone.
 - For images, the key needs the lockfile's hash in the restore prefix too, or a new `sharp` would get the old results.
+- Image processing is deterministic: a build with an empty image cache gave the same names and bytes as one with the cache, and my local build's avatar files have the same names as the live site's (built by CI). So reprocessing in CI never makes visitors download an image again; the cache only saves build time.
 
 ## Next
 

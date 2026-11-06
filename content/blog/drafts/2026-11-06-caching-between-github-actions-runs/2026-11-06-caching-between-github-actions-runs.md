@@ -82,6 +82,19 @@ The step goes after the one that installs dependencies and before the build.
 
 <!-- TODO: once there are images: add the step, and compare the Build step's time with and without the cache -->
 
+## Does reprocessing change the files?
+
+One worry: if CI processes an image again, do visitors get a "new" file and download it again? I tested it:
+
+- I built with the image cache, then with the cache folder deleted, and compared the image files: same names, same bytes.
+- I compared my local build's file names with the live site's, which GitHub's runner built: the same six names for my avatar.
+
+Image processing is **deterministic**: the same image, settings and library versions give exactly the same bytes, on any machine. And since the name is a hash of the content, the same bytes mean the same name, so a visitor's browser sees the file it already has.
+
+Files only change when something real changes: I edit the image, change the settings (widths, formats, the crop), or update the library that encodes them. Then the name changes too, and visitors download the new version once.
+
+So the CI cache only saves **build time**. Cached or freshly made, visitors get the same files.
+
 ## The cache I already had
 
 My setup step has `cache: true`:
