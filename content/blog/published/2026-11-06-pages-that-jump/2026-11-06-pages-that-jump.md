@@ -121,4 +121,3 @@ There was a cost. On Lighthouse's throttled mobile network, LCP (when the main c
 - [MDN: rel=preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preload)
 - [SvelteKit: the handle hook and preload](https://svelte.dev/docs/kit/hooks#Server-hooks-handle)
 - [MDN: @media scripting](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting)
-- [Filters in a Svelte class](./2026-11-02-filters-in-a-svelte-class)
