@@ -16,6 +16,8 @@ tags: [caching, github-pages, performance, ci]
 - But GitHub Pages' ETag comes from the **deploy time**. After any deploy, a browser asking "has this changed?" gets the file again in full, even if it's identical. Between deploys it gets a `304 Not Modified`: a tiny answer, and the cached copy is used.
 - `max-age=600`: a browser may reuse a file for 10 minutes without asking. Hashed files could be cached for a year (`Cache-Control: immutable`), but GitHub Pages doesn't let me set headers.
 - CI starts on a fresh machine, and `cache: true` in the setup step only caches pnpm's packages, so every run processes every image again. The local cache is `node_modules/.cache/imagetools`.
+- `actions/cache` keeps files **between runs** in GitHub's cache service, not in the repo (it's on the Actions → Caches page). It restores `path` when `key` matches (or a `restore-keys` prefix does), and saves at the end of a successful job when there was no exact match. A cache can't be changed, only replaced by a new key. Unused for 7 days, it's deleted; a repo gets 10 GB. A PR's caches only serve re-runs of that PR; `main`'s serve everyone.
+- For images, the key needs the lockfile's hash in the restore prefix too, or a new `sharp` would get the old results.
 
 ## Next
 

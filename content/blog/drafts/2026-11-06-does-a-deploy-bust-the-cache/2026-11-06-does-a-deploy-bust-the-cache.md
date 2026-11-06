@@ -59,25 +59,10 @@ For a small site that's a few hundred kilobytes per visitor per deploy. I'm keep
 
 ## The same question for my images
 
-My images are processed at build time: each cover becomes 16 files (three sizes in three formats, two square crops, and a JPEG for link previews). Locally the results are cached in `node_modules/.cache/imagetools`, so a second build skips them. With one cover, a build took 6.5 seconds with an empty cache and 5.0 with a full one.
-
-On GitHub Actions every run starts on a fresh machine, so it processes every image again. Today that's nothing, but with dozens of posts it would add up. The fix is a cache step in the workflow, restoring that folder between runs:
-
-```yaml
-- uses: actions/cache@v6
-  with:
-    path: node_modules/.cache/imagetools
-    key: images-${{ hashFiles('content/**/*.png', 'content/**/*.jpg', 'content/**/*.webp', 'pnpm-lock.yaml') }}
-    restore-keys: images-
-```
-
-<!-- TODO: add it once the first posts with images are live, and compare the build times -->
-
-Processing the images on my machine and committing the results would work too, but git keeps every file forever, and it would be 16 files per image.
+My images are processed at build time, and GitHub Actions starts every run on a fresh machine, so it processes every image again, every run. That one has a fix that works on GitHub Pages too: [caching between GitHub Actions runs](./2026-11-06-caching-between-github-actions-runs).
 
 ## Links
 
 - [MDN: HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching)
 - [MDN: ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag)
 - [SvelteKit: service workers](https://svelte.dev/docs/kit/service-workers)
-- [GitHub Docs: caching dependencies to speed up workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching)
