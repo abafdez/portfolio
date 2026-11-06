@@ -85,9 +85,12 @@ describe('checkTags', () => {
 		expect(() => checkTags('post.md', [tag])).not.toThrow();
 	});
 
-	test.each(['CSS', 'design tokens', 'design--tokens', '-css', 'css-'])('rejects "%s"', (tag) => {
-		expect(() => checkTags('post.md', [tag])).toThrow(`post.md: tags must be lowercase`);
-	});
+	test.each(['CSS', 'bitácora', 'css_grid', 'design tokens', 'design--tokens', '-css', 'css-'])(
+		'rejects "%s"',
+		(tag) => {
+			expect(() => checkTags('post.md', [tag])).toThrow(`post.md: tags must be lowercase`);
+		}
+	);
 
 	test('accepts a file with no tags', () => {
 		expect(() => checkTags('post.md')).not.toThrow();

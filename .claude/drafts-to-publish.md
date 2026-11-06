@@ -118,3 +118,4 @@ These need that whole group live first:
 
 - `2026-11-04-seo-on-a-github-pages-project-site` (3: what I decided about indexing and why; a link preview screenshot once deployed; the sitemap in Search Console) → unit tests with Vitest
 - `2026-11-04-unit-tests-with-vitest` (2: what I watched first and what clicked; breaking summary() on purpose in watch mode). Links to no draft.
+- `2026-11-06-a-smoke-test-with-playwright` (2: what I used to check by hand before each merge; breaking a page and reading the trace) → unit tests with Vitest

@@ -35,10 +35,31 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Unit tests # Vitest, src/**/*.test.ts
+        run: pnpm test
+
       - name: Build
         run: pnpm run build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
+
+      # Smoke test (Playwright, e2e/): a browser clicks through the build above.
+      # The runner has no browser, so install Chromium and the system libraries it needs.
+      - name: Install Chromium for Playwright
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Smoke test
+        run: pnpm exec playwright test
+        env:
+          BASE_PATH: '/${{ github.event.repository.name }}' # the same as the build
+
+      - name: Upload Playwright traces # Only when the smoke test failed, to see why
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
 
       - name: Upload GitHub Pages artifact # Prepares the files for deployment
         # Only upload when we're going to deploy (see the deploy job's `if`)
