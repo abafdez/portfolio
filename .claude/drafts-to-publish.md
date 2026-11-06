@@ -120,6 +120,7 @@ These need that whole group live first:
 **SEO and tests** (Phase 9):
 
 - `2026-11-04-seo-on-a-github-pages-project-site` (3: what I decided about indexing and why; a link preview screenshot once deployed; the sitemap in Search Console) → unit tests with Vitest, cover images
+- `2026-11-06-does-a-deploy-bust-the-cache` (2: what I expected before the diff; the CI image cache and its build times, once there are images) → none
 - `2026-11-06-cover-images-and-cards` (3: a screenshot of /blog with covers; what a screen reader said on a card; the tab-and-click exercise) → images next to the post, SEO
 - `2026-11-04-unit-tests-with-vitest` (2: what I watched first and what clicked; breaking summary() on purpose in watch mode). Links to no draft.
 - `2026-11-06-a-smoke-test-with-playwright` (2: what I used to check by hand before each merge; breaking a page and reading the trace) → unit tests with Vitest
