@@ -40,44 +40,44 @@
 	}
 </script>
 
-{#if ready}
-	<search>
-		<label>
-			Search
-			<!-- A function binding: a getter and a setter instead of a variable. The
+<!-- In the prerendered HTML too, but invisible until JS runs (see the styles): if it
+     only appeared then, it would push the whole list down (a layout shift). -->
+<search class:ready>
+	<label>
+		Search
+		<!-- A function binding: a getter and a setter instead of a variable. The
 			     setter updates the filter, then the URL, in that order. -->
-			<input
-				type="search"
-				bind:this={search}
-				bind:value={() => filter.query, (value) => ((filter.query = value), share())}
-			/>
-		</label>
+		<input
+			type="search"
+			bind:this={search}
+			bind:value={() => filter.query, (value) => ((filter.query = value), share())}
+		/>
+	</label>
 
-		<fieldset>
-			<legend>Tags</legend>
-			<ul>
-				{#each list.tags as tag (tag)}
-					<li>
-						<!-- aria-pressed makes it a toggle: screen readers say "pressed". -->
-						<button
-							type="button"
-							aria-pressed={filter.tags.includes(tag)}
-							onclick={() => (filter.toggle(tag), share())}>#{tag}</button
-						>
-					</li>
-				{/each}
-			</ul>
-		</fieldset>
+	<fieldset>
+		<legend>Tags</legend>
+		<ul>
+			{#each list.tags as tag (tag)}
+				<li>
+					<!-- aria-pressed makes it a toggle: screen readers say "pressed". -->
+					<button
+						type="button"
+						aria-pressed={filter.tags.includes(tag)}
+						onclick={() => (filter.toggle(tag), share())}>#{tag}</button
+					>
+				</li>
+			{/each}
+		</ul>
+	</fieldset>
 
-		<div class="summary">
-			<!-- role="status": screen readers announce the count when it changes. -->
-			<p role="status">{filter.count} of {list.count} links</p>
-			{#if filter.active}
-				<button type="button" onclick={clear}>Clear filters</button>
-			{/if}
-		</div>
-	</search>
-{/if}
+	<div class="summary">
+		<!-- role="status": screen readers announce the count when it changes. -->
+		<p role="status">{filter.count} of {list.count} links</p>
+		{#if filter.active}
+			<button type="button" onclick={clear}>Clear filters</button>
+		{/if}
+	</div>
+</search>
 
 {#each filter.results as category (category.id)}
 	<section aria-labelledby={category.id}>
@@ -104,6 +104,19 @@
 		font-family: var(--font-label);
 		font-size: var(--font-size-0);
 		color: var(--text-2);
+	}
+
+	/* Until JS runs, the filters keep their space but can't be seen or reached:
+	   visibility: hidden also takes them out of the tab order and away from screen
+	   readers. Without JS they'd never work, so they don't take space at all. */
+	search:not(.ready) {
+		visibility: hidden;
+	}
+
+	@media (scripting: none) {
+		search {
+			display: none;
+		}
 	}
 
 	label {

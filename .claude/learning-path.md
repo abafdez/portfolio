@@ -113,6 +113,16 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Learn:** `<svelte:head>` meta and Open Graph, a sitemap route, Lighthouse, unit tests with Vitest for `content.ts`, e2e smoke tests with Playwright, and adding tests to CI.
 - **Do:** decide on robots/noindex (issue 3), add a reusable `Seo` component, test the content helpers, and run an e2e check that every nav link loads.
 - **Done when:** CI runs check, lint, test and build on PRs, and Lighthouse scores are ≥ 90 across the board.
+- **Status:** steps 1–3 merged (PR #15 SEO + Vitest, PR #16 Playwright smoke test + tests in CI, 2026-11-06). Step 4 (Lighthouse ≥ 90, layout-shift fixes) on `feat/lighthouse`. Optional: `BreadcrumbList` structured data.
+
+## Phase 10 — English and Spanish (later, Alfonso's idea 2026-11-06)
+
+- **Goal:** the whole site in both languages, English the default.
+- **Learn:** i18n (internationalisation) vs l10n (localisation); locale in the URL (`/es/…`) and SvelteKit's `reroute` hook; `<html lang>` per page (`app.html` has `lang="en"` fixed today); `hreflang` alternates and `og:locale` in `Seo.svelte` and the sitemap; formatting dates and numbers with `Intl`.
+- **Options to compare first:** [Paraglide JS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs) (inlang; the Svelte CLI sets it up with `npx sv add paraglide`; messages compile to typed functions, only the used ones ship) versus something hand-rolled: an optional `[[lang]]` route param plus a small typed dictionary for UI strings. Most of the text is markdown and YAML, which Paraglide doesn't translate anyway, so the simpler way may be enough. Decide after a small spike on one page.
+- **Do:** UI strings in both languages; content per language (which posts and entries get a Spanish version, and what a page shows when there's none); a language switch that keeps you on the same page; skills YAML labels and the CV builder in Spanish too (the CV is useful in both for job hunting); prerender every locale.
+- **Notes:** Spanish characters (`á é í ó ú ñ ü ¿ ¡`) are all in the Latin font file that's already preloaded. Tests to add: the smoke test per locale, a unit test that every UI string exists in both languages.
+- **Done when:** every page exists in both languages, links and the switch keep the language, search engines see the alternates, and Lighthouse stays ≥ 90.
 
 ## Ongoing habits
 
