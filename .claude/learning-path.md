@@ -113,7 +113,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Learn:** `<svelte:head>` meta and Open Graph, a sitemap route, Lighthouse, unit tests with Vitest for `content.ts`, e2e smoke tests with Playwright, and adding tests to CI.
 - **Do:** decide on robots/noindex (issue 3), add a reusable `Seo` component, test the content helpers, and run an e2e check that every nav link loads.
 - **Done when:** CI runs check, lint, test and build on PRs, and Lighthouse scores are ≥ 90 across the board.
-- **Status:** steps 1–3 merged (PR #15 SEO + Vitest, PR #16 Playwright smoke test + tests in CI, 2026-11-06). Step 4 (Lighthouse ≥ 90, layout-shift fixes) on `feat/lighthouse`. Optional: `BreadcrumbList` structured data.
+- **Status:** steps 1–3 merged (PR #15 SEO + Vitest, PR #16 Playwright smoke test + tests in CI, 2026-11-06). Step 4 (Lighthouse ≥ 90, layout-shift fixes) merged in PR #17. ✅ Phase 9 done 2026-11-06. Optional: `BreadcrumbList` structured data.
 
 ## Phase 10 — English and Spanish (later, Alfonso's idea 2026-11-06)
 
