@@ -15,7 +15,9 @@ Before moving a draft:
 
 After the first post is live, remove the `handleUnseenRoutes` exceptions in `vite.config.ts`.
 
-Update this list as posts go up, or regenerate it: `grep -n '<!-- TODO' content/blog/drafts/*.md` for the TODOs, `grep -o '](\./[^)]*)' content/blog/drafts/*.md` for the links.
+Update this list as posts go up, or regenerate it: `grep -n '<!-- TODO' content/blog/drafts/*/*.md` for the TODOs, `grep -o '](\./[^)]*)' content/blog/drafts/*/*.md` for the links.
+
+The how-to for images, links and the publishing checklist is in `content/blog/published/README.md`.
 
 ## Ready (no TODOs, no links to drafts)
 

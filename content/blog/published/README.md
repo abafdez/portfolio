@@ -1,16 +1,112 @@
-# Published posts
-
-One folder per post, named like its file, with the post's images next to it:
-
-```text
-published/
-  2026-10-27-design-tokens/
-    2026-10-27-design-tokens.md
-    tokens-diagram.png
-```
+# Publishing a post
 
 Posts start in `../drafts/`, which only exists in dev. Publishing one is a move:
 
 ```sh
 git mv content/blog/drafts/<slug> content/blog/published/
 ```
+
+## The folder
+
+One folder per post, named like its markdown file, with the post's images next to it:
+
+```text
+published/
+  2026-10-20-sveltekit-3-github-pages-workflow/
+    2026-10-20-sveltekit-3-github-pages-workflow.md
+    cover.png
+    workflow-run.png
+```
+
+- The name is the URL: `/blog/2026-10-20-sveltekit-3-github-pages-workflow`. Write it as `YYYY-MM-DD-a-few-words`, lowercase, words joined by `-`.
+- The folder and the file must have the same name, or the build fails. Rename both, or neither.
+- Once a post is published, don't rename it: the old URL would stop working, and links to it with it.
+
+## Frontmatter
+
+```yaml
+---
+title: Deploying SvelteKit 3 to GitHub Pages, step by step
+date: 2026-10-20
+tags: [sveltekit, github-actions, github-pages, ci]
+description: One or two sentences for search results and link previews, up to 160 characters.
+cover: What the cover image shows, for people who can't see it
+---
+```
+
+| Field         | Required          | Notes                                                                                                |
+| ------------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
+| `title`       | yes               | The `<h1>`, the card, the browser tab and the link preview.                                          |
+| `date`        | yes               | `YYYY-MM-DD`. Keep the draft's, or use the day it goes live.                                         |
+| `tags`        | no                | Lowercase, words joined by `-` (the build checks). Reuse the tags on `/blog` before making new ones. |
+| `description` | yes               | Shown under the title, on the card, in search results. Search engines cut at about 160 characters.   |
+| `cover`       | with a cover file | The cover's alt text. Only together with `cover.png` (the build checks both ways).                   |
+
+## Images
+
+Put them in the post's folder. The build turns each one into AVIF and WebP copies at the sizes the page needs, with width and height set (so the page doesn't jump while they load). Commit the original; don't convert or shrink it to small sizes yourself.
+
+### The cover (optional)
+
+- **File:** `cover.png`, `cover.jpg` or `cover.webp`, exactly that name.
+- **Size:** 16:9, **1600 × 900** (at least that; larger is fine, it's scaled down).
+- **The middle matters most.** Cards show a square cut from the middle: for 1600 × 900, that's the middle 900 × 900. Keep the subject and any text inside it; the sides only show at the top of the post and in link previews.
+- **Little or no small text.** On a card it's shown at 192 px: small text becomes noise.
+- **Both themes.** The same image shows on the dark and the light theme; a mid or dark background sits well on both, a pure white one glares on dark.
+- **Alt text** goes in the frontmatter as `cover:`. Say what it shows ("The Actions run page with the build job green and deploy skipped"), not "Cover image of…".
+- Without a cover, the card shows a tile with the post's first tag. That's fine for a start.
+
+The cover is used four times: the card's thumbnail (square), the top of the post (16:9), and the link preview on LinkedIn, Slack and the like (a 1200 px JPEG, made by the build).
+
+### Images inside the post
+
+```md
+![What the image shows](./workflow-run.png)
+![What the image shows](./workflow-run.png 'A caption shown under the image')
+```
+
+- **Name:** lowercase, words joined by `-`, saying what it is: `workflow-run.png`, `ruleset-settings.png`. Not `Screenshot 2026-11-06 at 13.42.png` (spaces, and it says nothing).
+- **Width:** about **twice the width it's shown at**. The text column is about 740 px wide, so up to about 1500 px wide. Smaller is fine: it's never stretched bigger than the file.
+- **Format:** **PNG** for screenshots, diagrams and anything with text or flat colours. **JPEG** for photos. WebP is fine too. Not SVG or GIF: the image step doesn't handle them yet (ask Claude).
+- **File size:** git keeps every version of every file forever, even after you delete it. Crop to what matters, and keep originals under about 1 MB.
+- **Alt text is required**: the build fails without it. It says what the image shows, for someone who can't see it. Don't start with "Image of…".
+- **A caption** (the quoted part) is for everyone: context, a source, what to notice. Don't repeat the alt text in it.
+- **Screenshots: check for personal data before committing**: open tabs, notifications, email addresses, the CV builder with real details. Once it's pushed, it's public.
+
+## Links
+
+| To                          | Write                                                   | Notes                                                                                               |
+| --------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Another post                | `[text](./2026-10-31-markdown-with-mdsvex)`             | `./` and the other post's folder name. **Only published posts**: a link to a draft fails the build. |
+| Any other page on this site | `[text](/bitacora/2026-10-21-layout-routing-base-path)` | One `/` at the start, then the path. The base path (`/portfolio`) is added for you: never write it. |
+| A tag                       | `[text](/blog/tags/github-actions)`                     | Like any other page.                                                                                |
+| Another site                | `[text](https://svelte.dev/docs/kit/images)`            | The full `https://` address. Gets `rel="external"`, opens in the same tab.                          |
+| A heading in the same post  | (not yet)                                               | Headings have no `id` yet, so `#a-heading` goes nowhere. Ask Claude if you need it.                 |
+
+- **The build checks every link to this site**: a page that doesn't exist fails it. Links to other sites aren't checked, so click them once before publishing.
+- **Link text says where it goes**: "the SvelteKit docs on images", not "here" or "this link". Screen reader users often jump from link to link, hearing only their text.
+- **Prefer stable sources** for external links: official docs (MDN, svelte.dev, vite.dev), specs, the project's own repo. Link the page, not a search result.
+- Most posts end with a `## Links` list of the docs they used.
+
+## Before you publish
+
+1. Read it through. Claude wrote the drafts in your voice: change anything that doesn't sound like you.
+2. Fill or delete every `<!-- TODO -->`. Readers wouldn't see them, only the gap where your part goes:
+   ```sh
+   grep -n '<!-- TODO' content/blog/drafts/<slug>/<slug>.md
+   ```
+3. Check its links to other posts, and publish (or unlink) any that are still drafts:
+   ```sh
+   grep -o '](\./[^)]*)' content/blog/drafts/<slug>/<slug>.md
+   ```
+4. Is it still true? Posts describe the site as it was; if something changed since, update it.
+5. Description, tags, date; cover and its `cover:` if it has one.
+6. Move it: `git mv content/blog/drafts/<slug> content/blog/published/`
+7. Build and look at it as visitors will:
+   ```sh
+   BASE_PATH=/portfolio pnpm build && BASE_PATH=/portfolio pnpm preview
+   ```
+   The build fails on a link to a missing page, a missing image or a missing alt text, and names the file.
+8. Commit on a branch and open a PR as usual. Update `.claude/drafts-to-publish.md`.
+
+The first post to go up also needs a small change in `vite.config.ts` (the `handleUnseenRoutes` exceptions for `/blog/[slug]` and `/blog/tags/[tag]`): ask Claude.
