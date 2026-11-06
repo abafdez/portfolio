@@ -2,6 +2,7 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import { resolve } from '$app/paths';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
+	import { thumbnailOf } from '#lib/covers.ts';
 	import { blogTag } from '#lib/links.ts';
 	import type { PageProps } from './$types';
 
@@ -31,6 +32,7 @@
 				<TeaserCard
 					{...post}
 					href={resolve('/blog/[slug]', { slug: post.slug })}
+					thumbnail={thumbnailOf(post)}
 					tagHref={blogTag}
 				/>
 			{/each}

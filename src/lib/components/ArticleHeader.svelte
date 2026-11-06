@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ResolvedPathname } from '$app/types';
+	import type { Picture } from '@sveltejs/enhanced-img';
 	import TagList from './TagList.svelte';
 
 	// The top of a Bitácora entry or a blog post, from its frontmatter.
@@ -14,9 +15,13 @@
 		draft?: boolean;
 		// Links each tag to its page (see TagList).
 		tagHref?: (tag: string) => ResolvedPathname;
+		// A post's cover image (covers.ts) and its alt text, the frontmatter's cover:.
+		coverImage?: Picture;
+		cover?: string;
 	}
 
-	let { title, date, minutes, tags, description, draft, tagHref }: Props = $props();
+	let { title, date, minutes, tags, description, draft, tagHref, coverImage, cover }: Props =
+		$props();
 </script>
 
 <header>
@@ -33,6 +38,17 @@
 	{/if}
 	{#if tags?.length}
 		<TagList {tags} {tagHref} />
+	{/if}
+	{#if coverImage}
+		<!-- Usually the biggest thing on the page (its LCP): fetchpriority high, never
+		     lazy. sizes: the reading column (80ch, about 740px) or the screen's width. -->
+		<enhanced:img
+			class="cover"
+			src={coverImage}
+			alt={cover}
+			sizes="(min-width: 800px) 740px, 100vw"
+			fetchpriority="high"
+		/>
 	{/if}
 </header>
 
@@ -54,6 +70,14 @@
 		padding-inline: var(--size-1);
 		border: var(--border-size-1) solid currentColor;
 		border-radius: var(--radius-2);
+	}
+
+	.cover {
+		inline-size: 100%;
+		block-size: auto;
+		margin-block-start: var(--size-5);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
 	}
 
 	.description {

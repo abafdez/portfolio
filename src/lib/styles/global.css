@@ -275,6 +275,13 @@
 			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
 		}
+
+		/* ![alt](./x.png "Caption"): the caption under the image, small and muted. */
+		& figcaption {
+			margin-block-start: var(--size-2);
+			font-size: var(--font-size-0);
+			color: var(--text-2);
+		}
 	}
 }
 

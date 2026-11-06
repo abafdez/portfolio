@@ -4,7 +4,15 @@
 // describe() groups tests; test() is one case; expect(value) plus a matcher (toBe,
 // toThrow…) is the check. If any expect fails, that test fails and says why.
 import { describe, expect, test } from 'vitest';
-import { allLog, checkTags, readingTime, slugOf, summary } from './content.ts';
+import {
+	allLog,
+	checkCover,
+	checkTags,
+	checkUniqueSlugs,
+	readingTime,
+	slugOf,
+	summary
+} from './content.ts';
 
 // A markdown file like ours: frontmatter, then a body.
 const file = (body: string) => `---\ntitle: A title\ndate: 2026-11-04\n---\n\n${body}`;
@@ -105,6 +113,47 @@ describe('slugOf', () => {
 		'/content/blog/drafts/2026-10-27-tokens.md'
 	])('rejects a folder and file that do not match: %s', (path) => {
 		expect(() => slugOf(path)).toThrow(`${path}: the folder and the file must have the same name`);
+	});
+});
+
+describe('checkUniqueSlugs', () => {
+	const draft = '/content/blog/drafts/2026-11-06-a/2026-11-06-a.md';
+	const published = '/content/blog/published/2026-11-06-a/2026-11-06-a.md';
+
+	test('accepts different slugs', () => {
+		expect(() =>
+			checkUniqueSlugs([draft, '/content/blog/published/2026-11-06-b/2026-11-06-b.md'])
+		).not.toThrow();
+	});
+
+	test('rejects a post that is both a draft and published', () => {
+		expect(() => checkUniqueSlugs([published, draft])).toThrow(
+			`${draft}: ${published} has the same name`
+		);
+	});
+});
+
+describe('checkCover', () => {
+	const post = '/content/blog/published/2026-11-06-a/2026-11-06-a.md';
+	const cover = '/content/blog/published/2026-11-06-a/cover.png';
+	const other = '/content/blog/published/2026-11-06-b/cover.png';
+
+	test('accepts a cover with its alt text', () => {
+		expect(() => checkCover(post, 'A diagram', [cover])).not.toThrow();
+	});
+
+	test('accepts a post with neither', () => {
+		expect(() => checkCover(post, undefined, [other])).not.toThrow();
+	});
+
+	test.each([undefined, '', '  ', 42])('rejects a cover whose alt is %j', (alt) => {
+		expect(() => checkCover(post, alt, [cover])).toThrow(`${cover}: a cover needs alt text`);
+	});
+
+	test('rejects alt text without a cover', () => {
+		expect(() => checkCover(post, 'A diagram', [other])).toThrow(
+			`${post}: has cover: but no cover.png`
+		);
 	});
 });
 

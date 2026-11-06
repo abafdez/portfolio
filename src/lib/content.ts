@@ -15,6 +15,8 @@ interface Frontmatter {
 // A post must have a description: it's written for search results and link previews.
 export interface PostMeta extends Frontmatter {
 	description: string;
+	// The alt text of the post's cover image (cover.png next to it, see covers.ts).
+	cover?: string;
 }
 
 export interface LogMeta extends Frontmatter {
@@ -56,6 +58,31 @@ const log = import.meta.glob<string>('/content/bitacora/*/*.md', {
 	query: '?raw',
 	import: 'default'
 });
+
+// The posts' cover images (cover.png, .jpg or .webp next to the markdown). Only their
+// paths are used here, to check each one has its alt text: not eager, so no image is
+// read. covers.ts imports them for the pages.
+const coverFiles = Object.keys({
+	...import.meta.glob('/content/blog/published/*/cover.{png,jpg,jpeg,webp}'),
+	...(import.meta.env.DEV
+		? import.meta.glob('/content/blog/drafts/*/cover.{png,jpg,jpeg,webp}')
+		: {})
+});
+
+// A cover and its alt text come together: an image nobody described is a problem for
+// screen readers, and alt text without an image is a typo somewhere. Either fails the
+// build, naming the file. Bitácora entries have no covers, so a `cover:` there fails.
+// Exported for its tests (content.test.ts).
+export function checkCover(path: string, alt: unknown, files: string[] = coverFiles) {
+	const folder = path.slice(0, path.lastIndexOf('/') + 1);
+	const file = files.find((file) => file.startsWith(folder));
+	if (file && (typeof alt !== 'string' || !alt.trim())) {
+		throw new Error(`${file}: a cover needs alt text in the frontmatter: cover: What it shows`);
+	}
+	if (!file && alt !== undefined) {
+		throw new Error(`${path}: has cover: but no cover.png, .jpg or .webp next to it`);
+	}
+}
 
 // The frontmatter is the YAML between the two --- lines at the top of the file.
 const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---/;
@@ -125,6 +152,7 @@ function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[
 		.map(([path, text]) => {
 			const meta = parse(text.match(frontmatter)?.[1] ?? '') as T;
 			checkTags(path, meta.tags);
+			checkCover(path, (meta as { cover?: unknown }).cover);
 			return {
 				...meta,
 				slug: slugOf(path),
@@ -135,6 +163,21 @@ function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[
 		})
 		.sort((a, b) => b.date.localeCompare(a.date) || b.slug.localeCompare(a.slug));
 }
+
+// A slug is a URL, so it can only be used once: a post copied to published/ instead of
+// moved there would be in both folders, and two pages would want the same address.
+// Exported for its tests (content.test.ts).
+export function checkUniqueSlugs(paths: string[]) {
+	const seen = new Map<string, string>();
+	for (const path of paths) {
+		const slug = slugOf(path);
+		const other = seen.get(slug);
+		if (other) throw new Error(`${path}: ${other} has the same name; move a draft, don't copy it`);
+		seen.set(slug, path);
+	}
+}
+
+checkUniqueSlugs([...Object.keys(posts), ...Object.keys(drafts)]);
 
 export const allPosts = toList<PostMeta>({ ...posts, ...drafts });
 export const allLog = toList<LogMeta>(log);
