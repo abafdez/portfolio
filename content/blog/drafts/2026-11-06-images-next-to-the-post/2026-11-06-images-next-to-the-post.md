@@ -124,7 +124,7 @@ My first version had `<img src=` with a single space. It worked on my test image
 </p>
 ```
 
-The regex didn't match, the image stayed a plain `<img src="./screenshot.png">`, and the browser asked for a file that wasn't there. `\s+` matches any whitespace, line breaks included. The function now lives in its own file, `enhance-images.ts`, so Vitest can test it with real mdsvex output, the long tag included.
+The regex didn't match, the image stayed a plain `<img src="./screenshot.png">`, and the browser asked for a file that wasn't there. `\s+` matches any whitespace, line breaks included. The function now lives in its own file, so Vitest can test it with real mdsvex output, the long tag included. (Today it's `enhance-media.ts`, `enhanceMedia()`: it handles [videos](./2026-11-06-videos-in-markdown-posts) too.)
 
 <!-- TODO: try it: add an image to a draft, then delete its alt text and read the error -->
 

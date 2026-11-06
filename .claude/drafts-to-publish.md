@@ -99,6 +99,7 @@ These need that whole group live first:
 - `2026-10-31-markdown-with-mdsvex` (3: why mdsvex; what I tried; the Network tab) → markdown links, Shiki
 - `2026-11-06-linkable-headings-in-markdown` (3: the link I wanted to write; what a screen reader said; the hover-click-copy exercise) → markdown with mdsvex
 - `2026-11-06-images-next-to-the-post` (2: which post needed an image first; deleting an alt and reading the error) → markdown with mdsvex, drafts that never ship
+- `2026-11-06-videos-in-markdown-posts` (2: the hashed name the build wrote for my first video; the sizes of my first clip, raw, MP4 and WebM) → images next to the post, pages that jump
 - `2026-11-02-shiki-with-design-tokens` (3: light and dark screenshots; a token from the inspector; how I checked contrast) → code block frame
 - `2026-11-02-tag-pages-from-frontmatter` (2: the unseen-routes error; a screenshot of the tag index) → drafts that never ship
 
