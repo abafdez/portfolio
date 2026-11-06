@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import Hero from '#lib/components/Hero.svelte';
 	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
+	import { thumbnailOf } from '#lib/covers.ts';
 	import SectionNav, { type Section } from '#lib/components/SectionNav.svelte';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
 	import { blogTag, profiles, type Link } from '#lib/links.ts';
@@ -69,6 +70,8 @@
 					<TeaserCard
 						{...post}
 						href={resolve('/blog/[slug]', { slug: post.slug })}
+						thumbnail={thumbnailOf(post)}
+						status={post.draft ? 'draft' : 'published'}
 						tagHref={blogTag}
 					/>
 				{:else}

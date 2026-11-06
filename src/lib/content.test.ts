@@ -4,7 +4,16 @@
 // describe() groups tests; test() is one case; expect(value) plus a matcher (toBe,
 // toThrow…) is the check. If any expect fails, that test fails and says why.
 import { describe, expect, test } from 'vitest';
-import { allLog, checkTags, readingTime, summary } from './content.ts';
+import {
+	allLog,
+	checkCover,
+	checkTags,
+	checkUniqueSlugs,
+	readFrontmatter,
+	readingTime,
+	slugOf,
+	summary
+} from './content.ts';
 
 // A markdown file like ours: frontmatter, then a body.
 const file = (body: string) => `---\ntitle: A title\ndate: 2026-11-04\n---\n\n${body}`;
@@ -58,6 +67,14 @@ describe('summary', () => {
 		expect(summary(file('one two, three four'), 11)).toBe('one two…');
 	});
 
+	test('skips a line that is only an image', () => {
+		expect(summary(file('![A diagram](./diagram.png)\n\nThe text.'))).toBe('The text.');
+	});
+
+	test('drops an image inside the text', () => {
+		expect(summary(file('- Before ![a diagram](./diagram.png) after.'))).toBe('Before after.');
+	});
+
 	test('gives an empty string for a file with no text', () => {
 		expect(summary(file('## Only a heading'))).toBe('');
 	});
@@ -76,6 +93,84 @@ describe('readingTime', () => {
 	test("doesn't count the frontmatter", () => {
 		const long = `---\ntitle: ${'word '.repeat(300)}\n---\n\nShort body.`;
 		expect(readingTime(long)).toBe(1);
+	});
+});
+
+describe('readFrontmatter', () => {
+	test('reads the fields', () => {
+		expect(readFrontmatter('post.md', file('Text.'))).toEqual({
+			title: 'A title',
+			date: '2026-11-04'
+		});
+	});
+
+	test('names the file when the YAML is wrong', () => {
+		const text = '---\ntitle: A title\ndescription: Two parts: one colon\n---\n';
+		expect(() => readFrontmatter('post.md', text)).toThrow(
+			"post.md: the frontmatter isn't valid YAML"
+		);
+	});
+});
+
+describe('slugOf', () => {
+	test('is the file name, inside a folder with the same name', () => {
+		expect(slugOf('/content/blog/2026-10-27-tokens/2026-10-27-tokens.md')).toBe(
+			'2026-10-27-tokens'
+		);
+	});
+
+	test('works for drafts too', () => {
+		expect(slugOf('/content/blog/drafts/2026-10-27-tokens/2026-10-27-tokens.md')).toBe(
+			'2026-10-27-tokens'
+		);
+	});
+
+	test.each([
+		'/content/blog/2026-10-27-tokens/2026-10-27-renamed.md',
+		'/content/blog/drafts/2026-10-27-tokens.md'
+	])('rejects a folder and file that do not match: %s', (path) => {
+		expect(() => slugOf(path)).toThrow(`${path}: the folder and the file must have the same name`);
+	});
+});
+
+describe('checkUniqueSlugs', () => {
+	const draft = '/content/blog/drafts/2026-11-06-a/2026-11-06-a.md';
+	const published = '/content/blog/published/2026-11-06-a/2026-11-06-a.md';
+
+	test('accepts different slugs', () => {
+		expect(() =>
+			checkUniqueSlugs([draft, '/content/blog/published/2026-11-06-b/2026-11-06-b.md'])
+		).not.toThrow();
+	});
+
+	test('rejects a post that is both a draft and published', () => {
+		expect(() => checkUniqueSlugs([published, draft])).toThrow(
+			`${draft}: ${published} has the same name`
+		);
+	});
+});
+
+describe('checkCover', () => {
+	const post = '/content/blog/published/2026-11-06-a/2026-11-06-a.md';
+	const cover = '/content/blog/published/2026-11-06-a/cover.png';
+	const other = '/content/blog/published/2026-11-06-b/cover.png';
+
+	test('accepts a cover with its alt text', () => {
+		expect(() => checkCover(post, 'A diagram', [cover])).not.toThrow();
+	});
+
+	test('accepts a post with neither', () => {
+		expect(() => checkCover(post, undefined, [other])).not.toThrow();
+	});
+
+	test.each([undefined, '', '  ', 42])('rejects a cover whose alt is %j', (alt) => {
+		expect(() => checkCover(post, alt, [cover])).toThrow(`${cover}: a cover needs alt text`);
+	});
+
+	test('rejects alt text without a cover', () => {
+		expect(() => checkCover(post, 'A diagram', [other])).toThrow(
+			`${post}: has cover: but no cover.avif`
+		);
 	});
 });
 

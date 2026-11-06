@@ -5,7 +5,7 @@ description: Write a Bitácora (dev-log) entry summarizing the current session o
 
 # Bitácora entry
 
-Create `content/bitacora/YYYY-MM-DD-<short-slug>.md` (today's date; if the file exists, pick a different slug).
+Create `content/bitacora/YYYY-MM-DD-<short-slug>/YYYY-MM-DD-<short-slug>.md`: a folder and a file with the same name (today's date; if the folder exists, pick a different slug). Images go in the same folder, written as `![What it shows](./file.png)` (alt text is required).
 
 ## Format
 

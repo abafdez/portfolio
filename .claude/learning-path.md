@@ -113,7 +113,24 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Learn:** `<svelte:head>` meta and Open Graph, a sitemap route, Lighthouse, unit tests with Vitest for `content.ts`, e2e smoke tests with Playwright, and adding tests to CI.
 - **Do:** decide on robots/noindex (issue 3), add a reusable `Seo` component, test the content helpers, and run an e2e check that every nav link loads.
 - **Done when:** CI runs check, lint, test and build on PRs, and Lighthouse scores are ≥ 90 across the board.
-- **Status:** steps 1–3 merged (PR #15 SEO + Vitest, PR #16 Playwright smoke test + tests in CI, 2026-11-06). Step 4 (Lighthouse ≥ 90, layout-shift fixes) on `feat/lighthouse`. Optional: `BreadcrumbList` structured data.
+- **Status:** steps 1–3 merged (PR #15 SEO + Vitest, PR #16 Playwright smoke test + tests in CI, 2026-11-06). Step 4 (Lighthouse ≥ 90, layout-shift fixes) merged in PR #17. ✅ Phase 9 done 2026-11-06. Optional: `BreadcrumbList` structured data.
+
+## Phase 9.5 — Components in markdown (planned 2026-11-06, Alfonso's idea)
+
+- **Goal:** richer posts (callouts, videos, small demos) written in a syntax that **still reads well where it isn't supported**: Obsidian, GitHub, a plain editor. Its own branch, after `feat/post-folders` merges.
+- **Learn:** how mdsvex turns markdown into a Svelte component (markdown tree → HTML tree → Svelte code); remark plugins (markdown tree) vs rehype plugins (HTML tree); the hooks we already have: the `highlight` function (gets each code block's `code` and `lang`), `enhanceMedia()`, and the layout's components (`a`, `CodeBlock`).
+- **Step 1 — Callouts:** `> [!note]`, the syntax GitHub (as "alerts") and Obsidian (as "callouts") both render natively; elsewhere it's a readable blockquote. GitHub's five types (note, tip, important, warning, caution), Obsidian's custom title (`> [!tip] My title`), maybe its folding (`> [!note]-` → `<details>`). An `<aside>` with an icon and the type as text (not colour alone), one token per type, contrast checked in both themes. mdsvex 0.12 bundles an old markdown parser (`remark-parse` 8), so modern remark plugins may not run: do it on the HTML tree (a rehype plugin, like `rehype-slug`) or in our own step. Unit tests.
+- **Step 2 — Fenced-block components:** a code block whose language is a component name, with YAML as its body:
+  ````md
+  ```video
+  src: ./awesome-list-shift.mp4
+  caption: The filters appear after the list has loaded.
+  ```
+  ````
+  The `highlight` function sees `lang: video` and returns the component instead of highlighted code (a registry of names → Svelte components, like `CodeBlock`). The YAML is checked at build time: an unknown field or a missing required one fails the build, naming the file. Anywhere else it shows as a readable block of YAML. First component: `video` (replaces the `<video>` HTML; width and height still required, or read from the file), then candidates like `compare` (before/after) or a live demo.
+- **Considered, not now — generic directives** (`:::note`, `::video{src=…}`, `:abbr[CSS]{title=…}`): the CommonMark proposal, implemented by `remark-directive` and used by Docusaurus and Astro Starlight. Three reasons: (1) `remark-directive` needs the newer parser (micromark), which mdsvex 0.12 doesn't have; revisit with mdsvex 1.0. (2) Obsidian has no generic support: the only plugin found, [obsidian-docusaurus-style-admonitions](https://github.com/rwbr/obsidian-docusaurus-style-admonitions), handles `:::note`-style boxes (5 types) and nothing else; without it, Obsidian and GitHub show the colons. (3) Text directives can eat ordinary prose: [Docusaurus v3](https://docusaurus.io/docs/3.0.1/migration/v3) rendered "re:Invent" as "re", because `:Invent` parsed as a directive.
+- **Side project (vault board):** an Obsidian plugin that draws the same fenced blocks in notes (`registerMarkdownCodeBlockProcessor`, TypeScript), so the vault looks like the site.
+- **Done when:** a post can use callouts and at least one fenced-block component, the same file reads well in Obsidian and on GitHub, a broken block fails the build, and Lighthouse stays ≥ 90 with a11y 100.
 
 ## Phase 10 — English and Spanish (later, Alfonso's idea 2026-11-06)
 
@@ -123,6 +140,12 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Do:** UI strings in both languages; content per language (which posts and entries get a Spanish version, and what a page shows when there's none); a language switch that keeps you on the same page; skills YAML labels and the CV builder in Spanish too (the CV is useful in both for job hunting); prerender every locale.
 - **Notes:** Spanish characters (`á é í ó ú ñ ü ¿ ¡`) are all in the Latin font file that's already preloaded. Tests to add: the smoke test per locale, a unit test that every UI string exists in both languages.
 - **Done when:** every page exists in both languages, links and the switch keep the language, search engines see the alternates, and Lighthouse stays ≥ 90.
+
+## Phase 11 — A CMS (later, Alfonso's idea 2026-11-06)
+
+- **Goal:** manage the site's content from a UI instead of editing files: posts, entries, lists, skills, and images, including **picking the focal point** a crop keeps (cards crop a square from the middle today, see `covers.ts`).
+- **To decide first:** a git-based CMS that writes the same markdown and YAML (Decap, TinaCMS, Keystatic, or Sveltia) versus building a small one in the site as a project. The site is static on GitHub Pages, so whatever it is has to commit to the repo, not to a database.
+- **Prepared for it:** content metadata lives in frontmatter and YAML (a focal point would sit next to `cover:`), and covers are found by folder, so any content type can get one.
 
 ## Ongoing habits
 

@@ -3,6 +3,7 @@ title: Deploying SvelteKit 3 to GitHub Pages, step by step
 date: 2026-10-20
 tags: [sveltekit, github-actions, github-pages, ci]
 description: My GitHub Actions setup for a solo SvelteKit 3 project. PRs run checks, merges to main deploy, and an artifact connects the two jobs.
+cover: Visual representation of the pipelion for deployment.
 ---
 
 My portfolio is a static SvelteKit 3 site hosted on GitHub Pages. Getting the deploy working took a string of `fix:` commits, so this post walks through the final workflow and explains what each piece is for.
@@ -19,7 +20,7 @@ feature branch ──push──► open PR ──► check + lint + build       
                           push to main ──► check + lint + build + deploy
 ```
 
-Something I had backwards at first: you never deploy _from_ a pull request. Deploying on the `pull_request` event would publish code that hasn't been reviewed. You deploy when the PR is **merged**, and to GitHub a merge is just a push to `main`.
+You never deploy _from_ a pull request. Deploying on the `pull_request` event would publish code that hasn't been reviewed. You deploy when the PR is **merged**, and to GitHub a merge is just a push to `main`.
 
 Inside a single run, it looks like this:
 
@@ -30,7 +31,7 @@ Inside a single run, it looks like this:
 └──────────────────────────────────────────┘     └───────────────────────────┘
 ```
 
-The key idea that took me a while to get: **every job runs on its own fresh virtual machine.** When `build` finishes, its machine and the `build/` folder are gone. Jobs don't share a disk.
+The key idea is that: **every job runs on its own fresh virtual machine.** When `build` finishes, its machine and the `build/` folder are gone. Jobs don't share a disk.
 
 ## Triggers and permissions
 
@@ -172,7 +173,7 @@ Most templates include `actions/configure-pages`. It reads the repo's Pages sett
 
 ## Gotcha: the base path
 
-A project repo deploys to `https://<user>.github.io/<repo>/`, not to the domain root. SvelteKit needs to know that through `paths.base`, and links must use `resolve()` from `$app/paths` instead of hard-coded `/about/` URLs. Otherwise the CSS loads (asset paths are relative by default), but internal links 404. <!-- TODO: link the post/Bitácora entry where I fix this -->
+A project repo deploys to `https://<user>.github.io/<repo>/`, not to the domain root. SvelteKit needs to know that through `paths.base`, and links must use `resolve()` from `$app/paths` instead of hard-coded `/about/` URLs. Otherwise the CSS loads (asset paths are relative by default), but internal links 404. [Read more](/bitacora/2026-10-21-layout-routing-base-path/) about how this configuration works in the [devlog](/bitacora/).
 
 ## What's next
 

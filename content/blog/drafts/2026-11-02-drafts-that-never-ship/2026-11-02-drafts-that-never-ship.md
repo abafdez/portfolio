@@ -23,7 +23,7 @@ So the filter hid the links and the pages, but every draft's body still ended up
 
 ## Drafts are a folder
 
-Now a draft is a draft because of where it lives: `content/blog/drafts/`. Publishing a post means moving the file up one folder. The `draft` flag comes from the path, so there's no frontmatter to forget:
+Now a draft is a draft because of where it lives: `content/blog/drafts/`, next to `content/blog/published/`. Each post is a folder with its images, and publishing one means moving its folder from one to the other (`git mv content/blog/drafts/<slug> content/blog/published/`). The `draft` flag comes from the path, so there's no frontmatter to forget:
 
 ```ts
 const draft = path.includes('/drafts/');
@@ -35,12 +35,14 @@ The drafts get their own glob, behind `import.meta.env.DEV`:
 
 ```ts
 const bodies = {
-	...import.meta.glob<Component>('/content/blog/*.md', { import: 'default' }),
+	...import.meta.glob<Component>('/content/blog/published/*/*.md', { import: 'default' }),
 	...(import.meta.env.DEV
-		? import.meta.glob<Component>('/content/blog/drafts/*.md', { import: 'default' })
+		? import.meta.glob<Component>('/content/blog/drafts/*/*.md', { import: 'default' })
 		: {})
 };
 ```
+
+(`*/*.md`: every post sits in a folder with its own name, next to its images.)
 
 In a build, Vite replaces `import.meta.env.DEV` with `false`. The condition becomes `false ? … : {}`, the bundler sees that the first branch can never run, and removes it, glob included. With no glob, no chunk is made and no draft is read.
 

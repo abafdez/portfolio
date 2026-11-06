@@ -266,6 +266,36 @@
 			border-inline-start: var(--border-size-2) solid var(--brand);
 			color: var(--text-2);
 		}
+
+		/* Images and videos next to the post (see enhance-media.ts). They come with
+		   width and height, so their space is kept while they load; block-size: auto
+		   keeps the proportions when max-inline-size makes them narrower. */
+		& :is(img, video) {
+			block-size: auto;
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-2);
+		}
+
+		/* Every heading is a link to itself (rehype-autolink-headings in vite.config.ts),
+		   so a section can be shared. It still looks like a heading; a # appears on
+		   hover and focus, with empty alt text (after the /) so it isn't read out. */
+		& :is(h2, h3, h4) > a[href^='#'] {
+			color: inherit;
+			text-decoration: none;
+
+			&:is(:hover, :focus-visible)::after {
+				content: '#' / '';
+				margin-inline-start: 0.3em;
+				color: var(--brand);
+			}
+		}
+
+		/* ![alt](./x.png "Caption"): the caption under the image, small and muted. */
+		& figcaption {
+			margin-block-start: var(--size-2);
+			font-size: var(--font-size-0);
+			color: var(--text-2);
+		}
 	}
 }
 

@@ -3,7 +3,7 @@
 Every post is still a draft in `content/blog/drafts/`. Publishing one is Alfonso's call:
 
 ```sh
-git mv content/blog/drafts/<slug>.md content/blog/
+git mv content/blog/drafts/<slug> content/blog/published/
 ```
 
 Before moving a draft:
@@ -15,7 +15,9 @@ Before moving a draft:
 
 After the first post is live, remove the `handleUnseenRoutes` exceptions in `vite.config.ts`.
 
-Update this list as posts go up, or regenerate it: `grep -n '<!-- TODO' content/blog/drafts/*.md` for the TODOs, `grep -o '](\./[^)]*)' content/blog/drafts/*.md` for the links.
+Update this list as posts go up, or regenerate it: `grep -n '<!-- TODO' content/blog/drafts/*/*.md` for the TODOs, `grep -o '](\./[^)]*)' content/blog/drafts/*/*.md` for the links.
+
+The how-to for images, links and the publishing checklist is in `content/blog/published/README.md`.
 
 ## Ready (no TODOs, no links to drafts)
 
@@ -95,6 +97,9 @@ These need that whole group live first:
 **Markdown and code** (Phase 7):
 
 - `2026-10-31-markdown-with-mdsvex` (3: why mdsvex; what I tried; the Network tab) → markdown links, Shiki
+- `2026-11-06-linkable-headings-in-markdown` (3: the link I wanted to write; what a screen reader said; the hover-click-copy exercise) → markdown with mdsvex
+- `2026-11-06-images-next-to-the-post` (2: which post needed an image first; deleting an alt and reading the error) → markdown with mdsvex, drafts that never ship
+- `2026-11-06-videos-in-markdown-posts` (2: the hashed name the build wrote for my first video; the sizes of my first clip, raw, MP4 and WebM) → images next to the post, pages that jump
 - `2026-11-02-shiki-with-design-tokens` (3: light and dark screenshots; a token from the inspector; how I checked contrast) → code block frame
 - `2026-11-02-tag-pages-from-frontmatter` (2: the unseen-routes error; a screenshot of the tag index) → drafts that never ship
 
@@ -116,7 +121,10 @@ These need that whole group live first:
 
 **SEO and tests** (Phase 9):
 
-- `2026-11-04-seo-on-a-github-pages-project-site` (3: what I decided about indexing and why; a link preview screenshot once deployed; the sitemap in Search Console) → unit tests with Vitest
+- `2026-11-04-seo-on-a-github-pages-project-site` (3: what I decided about indexing and why; a link preview screenshot once deployed; the sitemap in Search Console) → unit tests with Vitest, cover images
+- `2026-11-06-does-a-deploy-bust-the-cache` (1: what I expected before the diff) → caching between runs
+- `2026-11-06-caching-between-github-actions-runs` (2: a screenshot of the Caches page; the build times with and without the cache, once there are images) → does a deploy bust the cache, GitHub Pages workflow
+- `2026-11-06-cover-images-and-cards` (3: a screenshot of /blog with covers; what a screen reader said on a card; the tab-and-click exercise) → images next to the post, SEO
 - `2026-11-04-unit-tests-with-vitest` (2: what I watched first and what clicked; breaking summary() on purpose in watch mode). Links to no draft.
 - `2026-11-06-a-smoke-test-with-playwright` (2: what I used to check by hand before each merge; breaking a page and reading the trace) → unit tests with Vitest
 - `2026-11-06-pages-that-jump` (3: a recording of the Awesome list jumping; what my fonts are for; the DevTools Performance panel exercise) → filters in a Svelte class

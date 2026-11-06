@@ -5,11 +5,14 @@ import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
 import adapter from '@sveltejs/adapter-static'; //for SSG
 import { enhancedImages } from '@sveltejs/enhanced-img';
-import { compile } from 'mdsvex'; //markdown to Svelte markup
+import { compile, type MdsvexCompileOptions } from 'mdsvex'; //markdown to Svelte markup
 import OpenProps from 'open-props'; //Styling
 import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
 import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki'; //code blocks
 import { codeTheme } from './src/lib/code-theme.ts';
+import { enhanceMedia } from './src/lib/enhance-media.ts'; // images and videos next to a post
+import rehypeSlug from 'rehype-slug'; //an id on every heading
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'; //and a link to it
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -48,6 +51,17 @@ async function highlight(code: string, lang: string | null | undefined) {
 	return `<Components.CodeBlock lang="${language}">{@html \`${escaped}\`}</Components.CodeBlock>`;
 }
 
+// Every heading gets an id from its text ('## The base path' -> #the-base-path, a
+// repeated one gets -1), and its text becomes a link to itself, so any section can be
+// linked to. 'wrap' keeps the heading's name as it is for screen readers: "The base
+// path, link", nothing added. The prerender crawler checks #links against these ids.
+// mdsvex 0.12's types come from an older unified (v9) than these plugins' (v11); the
+// trees they work on are the same, so only the types disagree, hence the cast.
+const rehypePlugins = [
+	rehypeSlug,
+	[rehypeAutolinkHeadings, { behavior: 'wrap' }]
+] as unknown as MdsvexCompileOptions['rehypePlugins'];
+
 // The layout every .md file is wrapped in. mdsvex reads it from disk (to see which
 // elements it replaces), so it needs a file path, not a URL.
 const layout = fileURLToPath(
@@ -72,6 +86,7 @@ function markdown(): Plugin {
 					filename: id,
 					extensions: ['.md'],
 					highlight: { highlighter: highlight },
+					rehypePlugins,
 					layout
 				});
 				if (!out) return;
@@ -81,7 +96,7 @@ function markdown(): Plugin {
 				// The empty map says "no sourcemap on purpose": markdown -> HTML has no
 				// useful line-by-line mapping, and without it the build warns per file.
 				return {
-					code: out.code
+					code: enhanceMedia(out.code, id)
 						.replace('<script context="module">', '<script module>')
 						.replace('{...$$props}', ''),
 					map: { mappings: '' }

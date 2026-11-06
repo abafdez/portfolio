@@ -110,11 +110,11 @@ The prerenderer only finds pages that something links to. Nothing linked to an e
 `+page.ts` adds the body. It has to be a universal load because server data is saved as JSON next to the page, and a component is a function, which JSON can't hold:
 
 ```ts
-const bodies = import.meta.glob<Component>('/content/bitacora/*.md', { import: 'default' });
+const bodies = import.meta.glob<Component>('/content/bitacora/*/*.md', { import: 'default' });
 
 export const load: PageLoad = async ({ data, params }) => ({
 	...data,
-	Body: await bodies[`/content/bitacora/${params.slug}.md`]()
+	Body: await bodies[`/content/bitacora/${params.slug}/${params.slug}.md`]()
 });
 ```
 
