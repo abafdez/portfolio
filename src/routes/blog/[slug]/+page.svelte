@@ -19,6 +19,11 @@
 />
 
 <article>
-	<ArticleHeader {...post} coverImage={cover?.picture} tagHref={blogTag} />
+	<ArticleHeader
+		{...post}
+		coverImage={cover?.picture}
+		status={post.draft ? 'draft' : 'published'}
+		tagHref={blogTag}
+	/>
 	<div class="prose"><Body /></div>
 </article>

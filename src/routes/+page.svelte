@@ -71,6 +71,7 @@
 						{...post}
 						href={resolve('/blog/[slug]', { slug: post.slug })}
 						thumbnail={thumbnailOf(post)}
+						status={post.draft ? 'draft' : 'published'}
 						tagHref={blogTag}
 					/>
 				{:else}

@@ -62,13 +62,13 @@ const log = import.meta.glob<string>('/content/bitacora/*/*.md', {
 	import: 'default'
 });
 
-// The cover images (cover.png, .jpg or .webp next to a post's or an entry's markdown).
+// The cover images (cover.avif, .png, .jpg or .webp next to a post's or an entry's markdown).
 // Only their paths are used here, to check each one has its alt text: not eager, so
 // no image is read. covers.ts imports them for the pages. Drafts only in dev.
 const coverFiles = Object.keys({
-	...import.meta.glob(['/content/**/cover.{png,jpg,jpeg,webp}', '!/content/blog/drafts/**']),
+	...import.meta.glob(['/content/**/cover.{avif,png,jpg,jpeg,webp}', '!/content/blog/drafts/**']),
 	...(import.meta.env.DEV
-		? import.meta.glob('/content/blog/drafts/*/cover.{png,jpg,jpeg,webp}')
+		? import.meta.glob('/content/blog/drafts/*/cover.{avif,png,jpg,jpeg,webp}')
 		: {})
 });
 
@@ -83,7 +83,7 @@ export function checkCover(path: string, alt: unknown, files: string[] = coverFi
 		throw new Error(`${file}: a cover needs alt text in the frontmatter: cover: What it shows`);
 	}
 	if (!file && alt !== undefined) {
-		throw new Error(`${path}: has cover: but no cover.png, .jpg or .webp next to it`);
+		throw new Error(`${path}: has cover: but no cover.avif, .png, .jpg or .webp next to it`);
 	}
 }
 

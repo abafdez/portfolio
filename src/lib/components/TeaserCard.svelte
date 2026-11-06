@@ -2,6 +2,7 @@
 	import type { ResolvedPathname } from '$app/types';
 	import type { Cover } from '#lib/covers.ts';
 	import TagList from './TagList.svelte';
+	import PostStatus from './PostStatus.svelte';
 
 	// Exported so pages can type their lists: const posts: Teaser[] = [...]
 	export interface Teaser {
@@ -21,11 +22,14 @@
 		// A picture, for content with covers (thumbnailOf() in covers.ts): the cover, or
 		// without one a tile with the label.
 		thumbnail?: { cover?: Cover; label: string };
+		// Blog posts: a draft or published badge, shown in dev only (PostStatus).
+		status?: 'draft' | 'published';
 	}
 </script>
 
 <script lang="ts">
-	let { title, description, date, minutes, tags, href, tagHref, thumbnail }: Teaser = $props();
+	let { title, description, date, minutes, tags, href, tagHref, thumbnail, status }: Teaser =
+		$props();
 </script>
 
 <article class:linked={href}>
@@ -61,6 +65,7 @@
 				<div class="meta">
 					<time datetime={date}>{date}</time>
 					{#if minutes}· {minutes} min read{/if}
+					{#if status}<PostStatus {status} />{/if}
 				</div>
 			{/if}
 			<h3>

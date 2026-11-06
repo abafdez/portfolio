@@ -2,6 +2,7 @@
 	import type { ResolvedPathname } from '$app/types';
 	import type { Picture } from '@sveltejs/enhanced-img';
 	import TagList from './TagList.svelte';
+	import PostStatus from './PostStatus.svelte';
 
 	// The top of a Bitácora entry or a blog post, from its frontmatter.
 	interface Props {
@@ -11,8 +12,8 @@
 		description?: string;
 		// Reading time, from content.ts.
 		minutes?: number;
-		// Only in dev: drafts don't exist in a build (see content.ts).
-		draft?: boolean;
+		// Blog posts: a draft or published badge, shown in dev only (PostStatus).
+		status?: 'draft' | 'published';
 		// Links each tag to its page (see TagList).
 		tagHref?: (tag: string) => ResolvedPathname;
 		// A post's cover image (covers.ts) and its alt text, the frontmatter's cover:.
@@ -20,7 +21,7 @@
 		cover?: string;
 	}
 
-	let { title, date, minutes, tags, description, draft, tagHref, coverImage, cover }: Props =
+	let { title, date, minutes, tags, description, status, tagHref, coverImage, cover }: Props =
 		$props();
 </script>
 
@@ -29,8 +30,8 @@
 	{#if minutes}
 		<span class="minutes">· {minutes} min read</span>
 	{/if}
-	{#if draft}
-		<span class="draft">draft</span>
+	{#if status}
+		<PostStatus {status} />
 	{/if}
 	<h1>{title}</h1>
 	{#if description}
@@ -58,18 +59,10 @@
 	}
 
 	time,
-	.minutes,
-	.draft {
+	.minutes {
 		font-family: var(--font-label);
 		font-size: var(--font-size-0);
 		color: var(--text-2);
-	}
-
-	.draft {
-		margin-inline-start: var(--size-2);
-		padding-inline: var(--size-1);
-		border: var(--border-size-1) solid currentColor;
-		border-radius: var(--radius-2);
 	}
 
 	.cover {

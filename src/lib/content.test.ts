@@ -169,7 +169,7 @@ describe('checkCover', () => {
 
 	test('rejects alt text without a cover', () => {
 		expect(() => checkCover(post, 'A diagram', [other])).toThrow(
-			`${post}: has cover: but no cover.png`
+			`${post}: has cover: but no cover.avif`
 		);
 	});
 });
