@@ -10,7 +10,7 @@ import OpenProps from 'open-props'; //Styling
 import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
 import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki'; //code blocks
 import { codeTheme } from './src/lib/code-theme.ts';
-import { enhanceImages } from './src/lib/enhance-images.ts'; //images next to a post
+import { enhanceMedia } from './src/lib/enhance-media.ts'; // images and videos next to a post
 import rehypeSlug from 'rehype-slug'; //an id on every heading
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'; //and a link to it
 
@@ -96,7 +96,7 @@ function markdown(): Plugin {
 				// The empty map says "no sourcemap on purpose": markdown -> HTML has no
 				// useful line-by-line mapping, and without it the build warns per file.
 				return {
-					code: enhanceImages(out.code, id)
+					code: enhanceMedia(out.code, id)
 						.replace('<script context="module">', '<script module>')
 						.replace('{...$$props}', ''),
 					map: { mappings: '' }

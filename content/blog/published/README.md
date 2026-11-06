@@ -69,11 +69,58 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 
 - **Name:** lowercase, words joined by `-`, saying what it is: `workflow-run.png`, `ruleset-settings.png`. Not `Screenshot 2026-11-06 at 13.42.png` (spaces, and it says nothing).
 - **Width:** about **twice the width it's shown at**. The text column is about 740 px wide, so up to about 1500 px wide. Smaller is fine: it's never stretched bigger than the file.
-- **Format:** **AVIF** is a good default: the smallest file in git for the same quality. Export it at a **high quality (70 or more)**: the build compresses it again for the page, and a file that's already heavily compressed loses detail twice. **PNG** is fine for screenshots and diagrams (text, flat colours), **JPEG** for photos, WebP too. Not SVG or GIF: the image step doesn't handle them yet (ask Claude).
+- **Format:** **AVIF** is a good default: the smallest file in git for the same quality. Export it at a **high quality (70 or more)**: the build compresses it again for the page, and a file that's already heavily compressed loses detail twice. **PNG** is fine for screenshots and diagrams (text, flat colours), **JPEG** for photos, WebP too. Not SVG: the image step doesn't handle it yet (ask Claude). Not animated GIF either: only its first frame is kept. Use a video (below).
 - **File size:** git keeps every version of every file forever, even after you delete it. Crop to what matters, and keep originals under about 1 MB.
 - **Alt text is required**: the build fails without it. It says what the image shows, for someone who can't see it. Don't start with "Image of…".
 - **A caption** (the quoted part) is for everyone: context, a source, what to notice. Don't repeat the alt text in it.
 - **Screenshots: check for personal data before committing**: open tabs, notifications, email addresses, the CV builder with real details. Once it's pushed, it's public.
+
+### Videos
+
+Markdown has no syntax for video, so write the HTML. Paths start with `./` like images, and the build turns them into real URLs:
+
+```html
+<figure>
+	<video
+		width="1280"
+		height="720"
+		controls
+		muted
+		playsinline
+		preload="metadata"
+		poster="./awesome-list-shift.png"
+	>
+		<source src="./awesome-list-shift.webm" type="video/webm" />
+		<source src="./awesome-list-shift.mp4" type="video/mp4" />
+	</video>
+	<figcaption>The filters appear after the list has loaded, and push it down.</figcaption>
+</figure>
+```
+
+One file is fine too: `<video src="./clip.mp4" width="1280" height="720" controls muted playsinline preload="metadata"></video>`.
+
+- **Format:** **MP4** (H.264) plays in every browser; if you make one file, make that one. **WebM** (VP9) is usually smaller for the same quality. With both, put WebM first: the browser plays the first `<source>` it can.
+- **`width` and `height` are required** (the build fails without them): the size you exported at. Like an image, the video's space is kept before the file arrives, so the page doesn't jump.
+- **Short and small:** a few seconds, 1280 px wide, under about 1 MB per file. Unlike images, videos are used as they are: the build doesn't compress them, so compress before committing (below).
+- **No sound, no autoplay.** `controls` lets a reader play and pause it (WCAG asks that anything moving can be paused), `muted` says there's no sound (Svelte asks for captions, a `<track>`, on a video with sound), and without `autoplay` nothing moves until the reader asks, which also respects reduced motion.
+- **`preload="metadata"`** downloads only the start of the file (size, length) until it's played. **`poster`** (optional) is the image shown before that; it's used as it is, so export it at the video's size.
+- **Say what it shows**, in a `<figcaption>` or in the text around it: a video has no alt text.
+- **In the vault:** copy the files to `_attachments/` and embed with `![[clip.mp4]]`.
+
+Recording and compressing (install once with `sudo apt install ffmpeg`): record with Snipping Tool (Win+Shift+R) or Game Bar (Win+Alt+R), then:
+
+```sh
+# MP4: 1280 px wide, no audio, starts playing before it has fully downloaded
+ffmpeg -i raw.mp4 -vf "scale=1280:-2" -c:v libx264 -crf 28 -preset slow -an -movflags +faststart clip.mp4
+# WebM (optional, smaller)
+ffmpeg -i raw.mp4 -vf "scale=1280:-2" -c:v libvpx-vp9 -crf 40 -b:v 0 -row-mt 1 -an clip.webm
+# A poster from the first frame (optional)
+ffmpeg -i clip.mp4 -frames:v 1 clip.png
+# Its width and height, for the <video> tag
+ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 clip.mp4
+```
+
+Higher `-crf` means a smaller file and lower quality; raise it if a file is too big.
 
 ## Links
 
@@ -110,7 +157,7 @@ The cover is used four times: the card's thumbnail (square), the top of the post
    ```sh
    BASE_PATH=/portfolio pnpm build && BASE_PATH=/portfolio pnpm preview
    ```
-   The build fails on a link to a missing page, a missing image or a missing alt text, and names the file.
+   The build fails on a link to a missing page, a missing image or video, a missing alt text, or a video without width and height, and names the file.
 8. Commit on a branch and open a PR as usual. Update `.claude/drafts-to-publish.md`.
 
 The first post to go up also needs a small change in `vite.config.ts` (the `handleUnseenRoutes` exceptions for `/blog/[slug]` and `/blog/tags/[tag]`): ask Claude.
