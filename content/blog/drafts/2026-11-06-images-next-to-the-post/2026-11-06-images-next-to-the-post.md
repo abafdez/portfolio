@@ -85,18 +85,21 @@ An import is resolved by Vite from the file's own folder, so `./` means what I m
 I didn't want a script block in every post, so the step that compiles markdown writes it. After mdsvex has made the HTML, every local `<img>` becomes an import and an `<enhanced:img>`:
 
 ```ts
-const localImage = /<img src="(\.\/[^"]+)"([^>]*?)\s*\/?>/g;
+const localImage = /<img\s+src="(\.\/[^"]+)"([^>]*?)\s*\/?>/g;
+const captioned = /<p>(<img\s+src="\.\/[^"]+"[^>]*?)\s+title="([^"]*)"\s*\/?><\/p>/g;
 
-function enhanceImages(code: string, id: string): string {
+export function enhanceImages(code: string, id: string): string {
 	const imports: string[] = [];
-	const html = code.replace(localImage, (_, src: string, attributes: string) => {
-		if (!/\salt="[^"]+"/.test(attributes)) {
-			throw new Error(`${id}: ${src} needs alt text: ![What it shows](${src})`);
-		}
-		const name = `__image${imports.length}`;
-		imports.push(`import ${name} from '${src}?enhanced';`);
-		return `<enhanced:img src={${name}}${attributes} />`;
-	});
+	const html = code
+		.replace(captioned, '<figure>$1><figcaption>$2</figcaption></figure>')
+		.replace(localImage, (_, src: string, attributes: string) => {
+			if (!/\salt="[^"]+"/.test(attributes)) {
+				throw new Error(`${id}: ${src} needs alt text: ![What it shows](${src})`);
+			}
+			const name = `__image${imports.length}`;
+			imports.push(`import ${name} from '${src}?enhanced';`);
+			return `<enhanced:img src={${name}}${attributes} loading="lazy" />`;
+		});
 	return imports.length ? html.replace('<script>', `<script>\n\t${imports.join('\n\t')}`) : code;
 }
 ```
@@ -104,6 +107,24 @@ function enhanceImages(code: string, id: string): string {
 - `localImage` only matches sources starting with `./`, so an image from another site stays as it is.
 - mdsvex leaves `alt` out completely when it's empty, so a missing description is easy to spot. I made it a build error: every image in a post should say what it shows.
 - The imports go into the component's own `<script>`, which mdsvex always writes.
+- An image with a title, `![alt](./x.png "What it shows")`, becomes a `<figure>` with the title as its `<figcaption>`. It replaces the whole `<p>`, because a `<figure>` can't go inside a paragraph.
+- `loading="lazy"`: an image further down the post is only downloaded when you scroll near it.
+
+### The bug my first test missed
+
+My first version had `<img src=` with a single space. It worked on my test image, and failed on the next one: its description was longer, and when a tag gets long, mdsvex puts each attribute on its own line:
+
+```html
+<p>
+	<img
+		src="./screenshot.png"
+		alt="A purple test image with the words a screenshot"
+		title="A caption under the image"
+	/>
+</p>
+```
+
+The regex didn't match, the image stayed a plain `<img src="./screenshot.png">`, and the browser asked for a file that wasn't there. `\s+` matches any whitespace, line breaks included. The function now lives in its own file, `enhance-images.ts`, so Vitest can test it with real mdsvex output, the long tag included.
 
 <!-- TODO: try it: add an image to a draft, then delete its alt text and read the error -->
 

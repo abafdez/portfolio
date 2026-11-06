@@ -54,7 +54,7 @@ Every page had its own `<svelte:head>` with a title, and some had a description.
 
 A page with a `published` date is an `article` with `article:published_time`, the rest are `website`. `noindex` is a prop, so `/mascot` is just `<Seo … noindex />`.
 
-There's no `og:image` yet. Previews need a PNG or JPG (not SVG), so for now they're text cards.
+I started without an `og:image`, so previews were text cards. (Previews need a PNG or JPG, not SVG.) Later, posts got [cover images](./2026-11-06-cover-images-and-cards), and a post with a cover now uses it as its `og:image`, with `twitter:card` set to `summary_large_image`, the big card.
 
 <!-- TODO: a screenshot of a link preview, from a messaging app or an OG preview tool, once it's deployed -->
 
