@@ -137,15 +137,10 @@ export default defineConfig({
 				// '*' is every page the crawler finds from the home page (the default).
 				// /logos.svg is only used by <use href>, and nothing links to /sitemap.xml
 				// (search engines are told about it), so the crawler finds neither.
-				entries: ['*', '/logos.svg', '/sitemap.xml'],
-				// A route nobody links to fails the build, which catches broken links. The
-				// exceptions: the post and tag pages have no pages while every post is a
-				// draft (drafts don't exist in a build). Once a post is published,
-				// entries() makes them.
-				handleUnseenRoutes: ({ routes, message }) => {
-					const draftOnly = ['/blog/[slug]', '/blog/tags/[tag]'];
-					if (routes.some((route) => !draftOnly.includes(route))) throw new Error(message);
-				}
+				entries: ['*', '/logos.svg', '/sitemap.xml']
+				// A route nobody links to fails the build (SvelteKit's default for
+				// handleUnseenRoutes). Until the first post was published, /blog/[slug] and
+				// /blog/tags/[tag] had no pages in a build and needed an exception.
 			}
 		})
 	],
