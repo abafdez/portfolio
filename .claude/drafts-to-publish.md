@@ -3,7 +3,7 @@
 Every post is still a draft in `content/blog/drafts/`. Publishing one is Alfonso's call:
 
 ```sh
-git mv content/blog/drafts/<slug>.md content/blog/
+git mv content/blog/drafts/<slug> content/blog/published/
 ```
 
 Before moving a draft:
@@ -95,6 +95,7 @@ These need that whole group live first:
 **Markdown and code** (Phase 7):
 
 - `2026-10-31-markdown-with-mdsvex` (3: why mdsvex; what I tried; the Network tab) → markdown links, Shiki
+- `2026-11-06-images-next-to-the-post` (2: which post needed an image first; deleting an alt and reading the error) → markdown with mdsvex, drafts that never ship
 - `2026-11-02-shiki-with-design-tokens` (3: light and dark screenshots; a token from the inspector; how I checked contrast) → code block frame
 - `2026-11-02-tag-pages-from-frontmatter` (2: the unseen-routes error; a screenshot of the tag index) → drafts that never ship
 

@@ -27,7 +27,7 @@ My site reads each markdown file in two ways.
 `content.ts` reads every file as plain text, with a `?raw` glob, to get its frontmatter. It only runs in `+page.server.ts` files, so only while the site builds:
 
 ```ts
-const posts = import.meta.glob<string>('/content/blog/*.md', {
+const posts = import.meta.glob<string>('/content/blog/published/*/*.md', {
 	eager: true,
 	query: '?raw',
 	import: 'default'
