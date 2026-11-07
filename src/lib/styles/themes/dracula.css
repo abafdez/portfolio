@@ -1,0 +1,47 @@
+/* Dracula. Dracula (dark) and Alucard (its light variant), from the spec at https://draculatheme.com/spec
+   MIT License, Copyright (c) 2023 Dracula Theme. https://github.com/dracula/dracula-theme
+
+   Overrides the semantic tokens like every theme (palettes.ts, tokens.css), with
+   light-dark(light, dark).
+   Dark: cards are its darker background #21222c, borders the selection #44475a.
+   Light: Alucard's cream #fffbeb, cards a shade darker (#f5f0db), borders its selection #cfcfde.
+   Brand is purple; code: pink keywords, yellow strings, green functions, purple constants, cyan types.
+
+   Contrast: every text colour is at least 4.5:1 on what it really sits on (text, brand
+   and --text-2 on all three surfaces and on the spotlight's brightest point; error on
+   the page and cards; code and callouts on --surface-2). A colour that failed kept
+   its hue and chroma and only changed lightness until it passed:
+     light --brand: #644ac9 -> #5c40bf
+     light --text-2: #6c664b -> #5e583d
+     light --error: #cb3a2a -> #c73627
+     light --code-string: #846e15 -> #806a0d
+     light --callout-caution: #cb3a2a -> #c73627
+     dark  --brand: #bd93f9 -> #cbaaff
+     dark  --text-2: #6272a4 -> #a5b7ed
+     dark  --error: #ff5555 -> #fe5a59
+   Comments are --text-2, as in every theme. */
+
+:root[data-palette='dracula'],
+[data-palette='dracula'] [data-theme],
+[data-theme][data-palette='dracula'] {
+	--surface-1: light-dark(#fffbeb, #282a36);
+	--surface-2: light-dark(#f5f0db, #21222c);
+	--surface-3: light-dark(#cfcfde, #44475a);
+	--text-1: light-dark(#1f1f1f, #f8f8f2);
+	--text-2: light-dark(#5e583d, #a5b7ed);
+	--brand: light-dark(#5c40bf, #cbaaff);
+	--error: light-dark(#c73627, #fe5a59);
+
+	--code-string: light-dark(#806a0d, #f1fa8c);
+	--code-keyword: light-dark(#a3144d, #ff79c6);
+	--code-function: light-dark(#14710a, #50fa7b);
+	--code-constant: light-dark(#644ac9, #bd93f9);
+	--code-type: light-dark(#036a96, #8be9fd);
+	--code-tag: light-dark(#a3144d, #ff79c6);
+
+	--callout-note: light-dark(#036a96, #8be9fd);
+	--callout-tip: light-dark(#14710a, #50fa7b);
+	--callout-important: light-dark(#644ac9, #bd93f9);
+	--callout-warning: light-dark(#a34d14, #ffb86c);
+	--callout-caution: light-dark(#c73627, #ff5555);
+}

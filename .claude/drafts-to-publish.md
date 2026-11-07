@@ -99,7 +99,7 @@ These need that whole group live first:
 - `2026-10-31-markdown-with-mdsvex` (3: why mdsvex; what I tried; the Network tab) → markdown links, Shiki
 - `2026-11-06-linkable-headings-in-markdown` (3: the link I wanted to write; what a screen reader said; the hover-click-copy exercise) → markdown with mdsvex
 - `2026-11-06-images-next-to-the-post` (2: which post needed an image first; deleting an alt and reading the error) → markdown with mdsvex, drafts that never ship
-- `2026-11-07-colour-themes-as-token-overrides` (2: a Phosphor vs Tokyo Night screenshot; which theme next) → design tokens, dark mode, decoration under text needs contrast
+- `2026-11-07-colour-themes-as-token-overrides` (2: a Phosphor vs Tokyo Night screenshot; my favourite of the six) → design tokens, dark mode, decoration under text needs contrast
 - `2026-11-07-components-in-code-blocks` (1: the next field or component I want) → videos in markdown posts, markdown with mdsvex. Its clip (`awesome-filter.webm`, 960×540, 580 KB) was recorded with Playwright: replace it with my own recording if I want.
 - `2026-11-07-callouts-that-read-well-everywhere` (1: the part of the plugin I found most interesting) → linkable headings, markdown with mdsvex
 - `2026-11-06-videos-in-markdown-posts` (2: the hashed name the build wrote for my first video; the sizes of my first clip, raw, MP4 and WebM) → images next to the post, pages that jump

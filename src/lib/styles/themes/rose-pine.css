@@ -1,0 +1,53 @@
+/* Rosé Pine. Dawn (light) and Main (dark), from the official palette: https://github.com/rose-pine/palette
+   MIT License, Copyright (c) mvllow. https://rosepinetheme.com
+
+   Overrides the semantic tokens like every theme (palettes.ts, tokens.css), with
+   light-dark(light, dark).
+   Surfaces: base (page), surface (cards), overlay (borders). Brand is rose; text-2 is subtle.
+   Code: pine keywords, gold strings and constants, rose functions, foam types and tags.
+
+   Contrast: every text colour is at least 4.5:1 on what it really sits on (text, brand
+   and --text-2 on all three surfaces and on the spotlight's brightest point; error on
+   the page and cards; code and callouts on --surface-2). A colour that failed kept
+   its hue and chroma and only changed lightness until it passed:
+     light --brand: #d7827e -> #934544
+     light --text-2: #797593 -> #5c5875
+     light --error: #b4637a -> #a5566d
+     light --code-string: #ea9d34 -> #9f6402
+     light --code-function: #d7827e -> #ac5b58
+     light --code-constant: #ea9d34 -> #9f6402
+     light --code-type: #56949f -> #3c7a85
+     light --code-tag: #56949f -> #3c7a85
+     light --callout-tip: #56949f -> #3c7a85
+     light --callout-important: #907aa9 -> #7e6896
+     light --callout-warning: #ea9d34 -> #9f6402
+     light --callout-caution: #b4637a -> #a95970
+     dark  --text-2: #908caa -> #a4a0bf
+     dark  --code-keyword: #31748f -> #4f91ad
+     dark  --callout-note: #31748f -> #4f91ad
+   Comments are --text-2, as in every theme. */
+
+:root[data-palette='rose-pine'],
+[data-palette='rose-pine'] [data-theme],
+[data-theme][data-palette='rose-pine'] {
+	--surface-1: light-dark(#faf4ed, #191724);
+	--surface-2: light-dark(#fffaf3, #1f1d2e);
+	--surface-3: light-dark(#f2e9e1, #26233a);
+	--text-1: light-dark(#464261, #e0def4);
+	--text-2: light-dark(#5c5875, #a4a0bf);
+	--brand: light-dark(#934544, #ebbcba);
+	--error: light-dark(#a5566d, #eb6f92);
+
+	--code-string: light-dark(#9f6402, #f6c177);
+	--code-keyword: light-dark(#286983, #4f91ad);
+	--code-function: light-dark(#ac5b58, #ebbcba);
+	--code-constant: light-dark(#9f6402, #f6c177);
+	--code-type: light-dark(#3c7a85, #9ccfd8);
+	--code-tag: light-dark(#3c7a85, #9ccfd8);
+
+	--callout-note: light-dark(#286983, #4f91ad);
+	--callout-tip: light-dark(#3c7a85, #9ccfd8);
+	--callout-important: light-dark(#7e6896, #c4a7e7);
+	--callout-warning: light-dark(#9f6402, #f6c177);
+	--callout-caution: light-dark(#a95970, #eb6f92);
+}

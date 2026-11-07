@@ -1,0 +1,69 @@
+/* Solarized. Its light and dark modes from the same 16 colours: https://ethanschoonover.com/solarized/
+   MIT License, Copyright (c) 2011 Ethan Schoonover. https://github.com/altercation/solarized
+
+   Overrides the semantic tokens like every theme (palettes.ts, tokens.css), with
+   light-dark(light, dark).
+   Dark: base03 page, base02 cards, borders #0d4555 (between them; not a Solarized colour).
+   Light: base3 page, base2 cards, borders #e4dcc5 (a shade darker; not a Solarized colour).
+   Solarized's accents are mid-tones meant to work on both backgrounds, so here they are
+   lighter in dark and darker in light.
+
+   Contrast: every text colour is at least 4.5:1 on what it really sits on (text, brand
+   and --text-2 on all three surfaces and on the spotlight's brightest point; error on
+   the page and cards; code and callouts on --surface-2). A colour that failed kept
+   its hue and chroma and only changed lightness until it passed:
+     light --brand: #268bd2 -> #00619a
+     light --text-2: #586e75 -> #4a6067
+     light --error: #dc322f -> #ca1a1e
+     light --code-string: #2aa198 -> #05726b
+     light --code-keyword: #859900 -> #5e6d03
+     light --code-function: #268bd2 -> #026ba9
+     light --code-constant: #d33682 -> #bf1f72
+     light --code-type: #b58900 -> #826204
+     light --code-tag: #cb4b16 -> #b73d02
+     light --callout-note: #268bd2 -> #026ba9
+     light --callout-tip: #859900 -> #5e6d03
+     light --callout-important: #6c71c4 -> #5b5fb0
+     light --callout-warning: #b58900 -> #826204
+     light --callout-caution: #dc322f -> #ca1a1e
+     dark  --brand: #268bd2 -> #54b3fc
+     dark  --text-1: #93a1a1 -> #a1afaf
+     dark  --text-2: #839496 -> #9eb0b2
+     dark  --error: #dc322f -> #ff6d61
+     dark  --code-string: #2aa198 -> #39aca3
+     dark  --code-keyword: #859900 -> #8fa41c
+     dark  --code-function: #268bd2 -> #41a1ea
+     dark  --code-constant: #d33682 -> #fe60a6
+     dark  --code-type: #b58900 -> #c0941c
+     dark  --code-tag: #cb4b16 -> #f77345
+     dark  --callout-note: #268bd2 -> #41a1ea
+     dark  --callout-tip: #859900 -> #8fa41c
+     dark  --callout-important: #6c71c4 -> #8c93e9
+     dark  --callout-warning: #b58900 -> #c0941c
+     dark  --callout-caution: #dc322f -> #ff6d61
+   Comments are --text-2, as in every theme. */
+
+:root[data-palette='solarized'],
+[data-palette='solarized'] [data-theme],
+[data-theme][data-palette='solarized'] {
+	--surface-1: light-dark(#fdf6e3, #002b36);
+	--surface-2: light-dark(#eee8d5, #073642);
+	--surface-3: light-dark(#e4dcc5, #0d4555);
+	--text-1: light-dark(#073642, #a1afaf);
+	--text-2: light-dark(#4a6067, #9eb0b2);
+	--brand: light-dark(#00619a, #54b3fc);
+	--error: light-dark(#ca1a1e, #ff6d61);
+
+	--code-string: light-dark(#05726b, #39aca3);
+	--code-keyword: light-dark(#5e6d03, #8fa41c);
+	--code-function: light-dark(#026ba9, #41a1ea);
+	--code-constant: light-dark(#bf1f72, #fe60a6);
+	--code-type: light-dark(#826204, #c0941c);
+	--code-tag: light-dark(#b73d02, #f77345);
+
+	--callout-note: light-dark(#026ba9, #41a1ea);
+	--callout-tip: light-dark(#5e6d03, #8fa41c);
+	--callout-important: light-dark(#5b5fb0, #8c93e9);
+	--callout-warning: light-dark(#826204, #c0941c);
+	--callout-caution: light-dark(#ca1a1e, #ff6d61);
+}

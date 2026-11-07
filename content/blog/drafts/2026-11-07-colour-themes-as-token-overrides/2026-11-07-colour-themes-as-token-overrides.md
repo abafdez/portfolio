@@ -1,11 +1,11 @@
 ---
-title: 'Colour themes as token overrides'
+title: 'Six colour themes as token overrides'
 date: 2026-11-07
 tags: [css, design-tokens, accessibility]
-description: My site now has Tokyo Night as a colour theme. It took one CSS file and no change to any component, because every component already used semantic tokens.
+description: My site now has six colour themes, from Tokyo Night to Solarized. Each is one CSS file, no component changed, and a unit test checks every theme's contrast.
 ---
 
-My site has a light and a dark mode. Now it also has colour themes: a palette button in the header switches the whole site to [Tokyo Night](https://github.com/enkia/tokyo-night-vscode-theme), in light and in dark. Adding it didn't touch a single component.
+My site has a light and a dark mode. Now it also has colour themes: a palette button in the header switches the whole site to Tokyo Night, Dracula, Catppuccin, Rosé Pine, Gruvbox or Solarized, each in light and in dark. Adding them didn't touch a single component.
 
 ## Why it was cheap
 
@@ -61,7 +61,15 @@ background-color: color-mix(in oklch, var(--surface-1) 75%, transparent);
 
 Chrome mixed `#e6e7ed` (an almost-grey) in OKLCH and gave back `oklch(0.93 0.008 none)`: the hue was gone. A missing hue counts as 0, and hue 0 is pink. My own greys are written in `oklch()` with a hue, so it never happened before. Mixing in OKLab, which has no hue at all, fixed it. Mixing with `transparent` only changes the opacity, so the colour space doesn't matter for the result, and OKLab is the safe one.
 
-<!-- TODO: Alfonso, which theme should come next. -->
+## Five more, and a test
+
+The others came from each theme's official palette. I picked ones with an official light _and_ dark variant, since every token needs both: Dracula has Alucard, Catppuccin has Latte and Mocha, Rosé Pine has Dawn and Main, and Gruvbox and Solarized were designed as pairs.
+
+Most of their light variants failed contrast somewhere: editor themes use mid-tone accents that read fine as code on a big screen, but not as body text at WCAG's 4.5:1. I didn't want to swap colours for others, so a colour that fails keeps its hue and chroma, and only its lightness moves (darker in light, lighter in dark) until it passes. Every theme file lists what changed, original and new. Solarized changed the most: its accents were made to sit on both backgrounds, so they're right in the middle.
+
+Then I turned the checks into a unit test. For every theme and both halves, it reads the colours out of the CSS and checks the pairs the site really draws, spotlight included. The first run failed, on Tokyo Night, the theme I'd already shipped: its light brand colour was 4.23:1 when a link sat on the spotlight. Lighthouse had given that page 100, because the spotlight wasn't under a link when it ran. A test doesn't depend on where the mouse is.
+
+<!-- TODO: Alfonso, your favourite of the six, and why. -->
 
 ## Links
 

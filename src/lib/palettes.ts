@@ -20,6 +20,31 @@ export const palettes = [
 		id: 'tokyo-night',
 		name: 'Tokyo Night',
 		credit: { by: 'Enkia', url: 'https://github.com/enkia/tokyo-night-vscode-theme' }
+	},
+	{
+		id: 'dracula',
+		name: 'Dracula',
+		credit: { by: 'Dracula Theme', url: 'https://draculatheme.com' }
+	},
+	{
+		id: 'catppuccin',
+		name: 'Catppuccin',
+		credit: { by: 'Catppuccin', url: 'https://catppuccin.com' }
+	},
+	{
+		id: 'rose-pine',
+		name: 'Rosé Pine',
+		credit: { by: 'Rosé Pine', url: 'https://rosepinetheme.com' }
+	},
+	{
+		id: 'gruvbox',
+		name: 'Gruvbox',
+		credit: { by: 'morhetz', url: 'https://github.com/morhetz/gruvbox' }
+	},
+	{
+		id: 'solarized',
+		name: 'Solarized',
+		credit: { by: 'Ethan Schoonover', url: 'https://ethanschoonover.com/solarized/' }
 	}
 ] as const satisfies readonly Palette[];
 
