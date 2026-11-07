@@ -71,6 +71,17 @@ Then I turned the checks into a unit test. For every theme and both halves, it r
 
 <!-- TODO: Alfonso, your favourite of the six, and why. -->
 
+## A transition for every switch
+
+Switching themes shouldn't just snap. The light/dark toggle already had a circle that grows from the button (a view transition). The colour themes got two effects of their own, picked at random each time:
+
+- **Grid ripple:** the squares of my blueprint background flip to the new theme one by one, in a wave from where you clicked. The new page is shown through a mask: an SVG with one square per grid cell, each fading in a little later the farther it is. An SVG used as a CSS image runs its own `<animate>` elements, so the mask animates itself.
+- **Glitch:** for less than half a second, the new theme shows up in random horizontal bands that jump sideways, with the red channel pulled one way and green and blue the other, then it settles. `steps()` timing makes every frame a jump instead of a fade.
+
+Both are off for anyone who prefers reduced motion: the colours just change.
+
+<!-- TODO: Alfonso, which of the two you like better, and a recording of it (see the publishing guide's Videos section). -->
+
 ## Links
 
 - [Tokyo Night for VS Code](https://github.com/enkia/tokyo-night-vscode-theme) (MIT, by Enkia)
