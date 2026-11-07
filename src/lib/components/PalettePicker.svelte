@@ -1,0 +1,147 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import PaletteIcon from '@lucide/svelte/icons/palette';
+	import { palettes, defaultPalette, isPalette, type PaletteId } from '#lib/palettes.ts';
+
+	// Unknown until mounted: the prerendered HTML can't know the visitor's choice.
+	let current = $state<PaletteId>();
+
+	onMount(() => {
+		// app.html has already put a saved palette on <html>, before the first paint.
+		const saved = document.documentElement.dataset.palette;
+		current = isPalette(saved) ? saved : defaultPalette;
+	});
+
+	// Like the light/dark toggle: the default removes the attribute and the saved value.
+	function save(id: PaletteId) {
+		const root = document.documentElement;
+		try {
+			if (id === defaultPalette) {
+				delete root.dataset.palette;
+				localStorage.removeItem('palette');
+			} else {
+				root.dataset.palette = id;
+				localStorage.setItem('palette', id);
+			}
+		} catch {
+			// Storage blocked (private mode): the palette still applies for this visit.
+		}
+	}
+</script>
+
+<!-- popovertarget opens and closes the menu with no JS of ours: the Popover API. It
+     also closes on Escape or a click outside, and focus goes back to the button. -->
+<button
+	type="button"
+	popovertarget="palettes"
+	aria-label="Color theme"
+	title="Color theme"
+	disabled={!current}
+>
+	<PaletteIcon aria-hidden="true" />
+</button>
+
+<div id="palettes" class="menu" popover>
+	<!-- Disabled until mounted: without JS, choosing would do nothing. -->
+	<fieldset disabled={!current}>
+		<legend>Color theme</legend>
+		{#each palettes as palette (palette.id)}
+			<label>
+				<input
+					type="radio"
+					name="palette"
+					value={palette.id}
+					bind:group={current}
+					onchange={() => save(palette.id)}
+				/>
+				{palette.name}
+			</label>
+			<!-- Outside the label: a link inside it would also pick the radio. -->
+			{#if 'credit' in palette}
+				<p class="credit">by <a href={palette.credit.url}>{palette.credit.by}</a></p>
+			{/if}
+		{/each}
+	</fieldset>
+</div>
+
+<style>
+	button {
+		display: grid;
+		place-items: center;
+		inline-size: var(--size-8);
+		block-size: var(--size-8);
+		padding: var(--size-2);
+		color: var(--text-2);
+		background: none;
+		border: none;
+		border-radius: var(--radius-round);
+		cursor: pointer;
+		/* The menu is placed against this button (anchor positioning, below). */
+		anchor-name: --palette-button;
+
+		&:is(:hover, :focus-visible) {
+			color: var(--text-1);
+		}
+
+		& :global(svg) {
+			inline-size: 100%;
+			block-size: 100%;
+		}
+	}
+
+	/* A popover lives in the top layer, above everything, centred by default. Anchor
+	   positioning puts it under the button instead, lined up with its end edge. */
+	.menu {
+		position-anchor: --palette-button;
+		position-area: block-end span-inline-start;
+		inset: auto;
+		margin: var(--size-2) 0 0;
+		padding: var(--size-3) var(--size-4);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
+		background-color: var(--surface-2);
+		color: var(--text-1);
+		box-shadow: var(--shadow-float);
+	}
+
+	/* Without anchor positioning: the top-right corner, under the header. */
+	@supports not (position-area: block-end) {
+		.menu {
+			inset: var(--header-space) var(--size-3) auto auto;
+			margin: 0;
+		}
+	}
+
+	fieldset {
+		display: grid;
+		gap: var(--size-1);
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	legend {
+		margin-block-end: var(--size-2);
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		color: var(--text-2);
+	}
+
+	label {
+		display: flex;
+		align-items: center;
+		gap: var(--size-2);
+		cursor: pointer;
+	}
+
+	input {
+		accent-color: var(--brand);
+	}
+
+	.credit {
+		margin-block-start: calc(-1 * var(--size-1));
+		padding-inline-start: var(--size-5);
+		font-size: var(--font-size-0);
+		color: var(--text-2);
+	}
+</style>

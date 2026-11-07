@@ -5,6 +5,9 @@
 	import '@fontsource-variable/fira-code';
 	import '@fontsource-variable/shantell-sans';
 	import '#lib/styles/tokens.css';
+	// Colour themes: each file overrides the tokens under [data-palette] (palettes.ts).
+	// A glob, so a new theme is a new file here and an entry in palettes.ts.
+	import.meta.glob('/src/lib/styles/themes/*.css', { eager: true });
 	import '#lib/styles/global.css';
 	import type { Snippet } from 'svelte';
 	import { afterNavigate, onNavigate } from '$app/navigation';

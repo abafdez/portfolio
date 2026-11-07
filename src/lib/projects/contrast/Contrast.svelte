@@ -33,6 +33,13 @@
 		text = texts.find((t) => t === params.get('text')) ?? text;
 		surface = surfaces.find((s) => s === params.get('surface')) ?? surface;
 		colors = readColors();
+
+		// Another colour theme picked while this page is open (PalettePicker sets
+		// data-palette on <html>): read the tokens again. A MutationObserver calls us
+		// back when that attribute changes, and only that one.
+		const observer = new MutationObserver(() => (colors = readColors()));
+		observer.observe(document.documentElement, { attributeFilter: ['data-palette'] });
+		return () => observer.disconnect();
 	});
 
 	// When a select changes. An event handler, not an $effect: we react to what the user
