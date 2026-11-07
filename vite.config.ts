@@ -125,6 +125,22 @@ export default defineConfig({
 		sveltekit({
 			// Compile .md files as components too (after markdown() above has run).
 			extensions: ['.svelte', '.md'],
+			// A tag written in the text of a post or an entry, like <profile>, fails the build
+			// (and shows the error in dev). Markdown passes HTML through, so it becomes an
+			// element that never closes, and Svelte's warning would scroll past among the
+			// file sizes. Every other warning is printed as usual.
+			onwarn(warning, warn) {
+				if (!warning.filename?.endsWith('.md') || warning.code !== 'element_implicitly_closed') {
+					return warn(warning);
+				}
+				// "…closed by the following `</li>`… Add an explicit `</profile>`…"
+				const tag = /explicit `<\/([\w:-]+)>`/.exec(warning.message)?.[1] ?? 'tag';
+				// No line number: Svelte counts lines in mdsvex's output, not in the .md.
+				// The frame shows the text around the problem instead.
+				throw new Error(
+					`${warning.filename}: <${tag}> is in the text. Put it in backticks: \`<${tag}>\`.\n${warning.frame ?? ''}`
+				);
+			},
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>

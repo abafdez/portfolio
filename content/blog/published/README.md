@@ -163,6 +163,15 @@ A box for a note, a tip or a warning. It's a blockquote whose first line is `[!t
 - **Folding** (Obsidian's `[!note]-`) is accepted, but the box is always shown open.
 - **Use them sparingly**: one or two per post. When everything is a callout, nothing stands out.
 
+## Tags and code in the text
+
+**Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. Markdown passes HTML through as it is, so outside backticks:
+
+- a made-up tag like `<profile>` becomes an element that never closes, and the text after it may vanish. **The build fails** on it, naming the post and the tag;
+- a real one like `<aside>` quietly becomes real markup, with no warning at all.
+
+The same goes for `{` and `}` outside backticks: Svelte reads them as code. Frontmatter (`title`, `description`) is plain text, so no backticks there: they'd show as they are.
+
 ## Links
 
 | To                          | Write                                                   | Notes                                                                                               |

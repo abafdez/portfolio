@@ -7,7 +7,7 @@ tags: [svelte, runes, forms, local-storage]
 
 ## What we did
 
-- A "Skills" section in the CV builder: every group as a `<details>` (closed), every skill of every profile with a checkbox ("on the CV") and its wording in a text field, then my own skills with Add and Remove, and "Reset the skills for <profile>".
+- A "Skills" section in the CV builder: every group as a `<details>` (closed), every skill of every profile with a checkbox ("on the CV") and its wording in a text field, then my own skills with Add and Remove, and "Reset the skills for `<profile>`".
 - The changes are per profile (the mainframe CV can leave out what the web CV keeps), in `SkillEdits` (`edits.svelte.ts`), saved to their own `localStorage` key, `cv-builder-skills`.
 - They're stored as changes to the YAML, not a copy of it: `on` and `off` (skill names that differ from the YAML), `labels` (my wording), `added` (mine, by group). A skill added to the YAML later still shows up, and Reset just forgets the changes. Switching a skill back to what the YAML says removes it from `on`/`off`.
 - Export puts the edits in the file under `skills`, and import reads them back.
