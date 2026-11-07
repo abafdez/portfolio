@@ -12,6 +12,7 @@ import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki
 import { codeTheme } from './src/lib/code-theme.ts';
 import { enhanceMedia } from './src/lib/enhance-media.ts'; // images and videos next to a post
 import { rehypeCallouts } from './src/lib/callouts.ts'; // > [!note] boxes
+import { renderBlock } from './src/lib/blocks.ts'; // ```video and other components
 import rehypeSlug from 'rehype-slug'; //an id on every heading
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'; //and a link to it
 
@@ -29,13 +30,20 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 // loaded the first time a code block uses it.
 const shiki = createHighlighter({ themes: [codeTheme], langs: [] });
 
-async function highlight(code: string, lang: string | null | undefined) {
+// Called for every code block, with its language and the .md file it's in (the
+// markdown() plugin below passes the file). A block named after one of our components
+// (```video, see blocks.ts) becomes that component; any other is highlighted code.
+async function highlight(code: string, lang: string | null | undefined, file: string) {
+	const component = renderBlock(lang, code, file);
+	if (component !== undefined) return component;
+
 	const highlighter = await shiki;
 	let language = 'text';
 	if (lang && lang in bundledLanguages) {
 		await highlighter.loadLanguage(lang as BundledLanguage);
 		language = lang;
-	} else if (lang) {
+	} else if (lang && lang !== 'text') {
+		// ```text is plain on purpose (an error message, a terminal's output).
 		console.warn(`Shiki has no language "${lang}"; that block is shown as plain text.`);
 	}
 	const html = highlighter.codeToHtml(code, {
@@ -89,7 +97,7 @@ function markdown(): Plugin {
 				const out = await compile(code, {
 					filename: id,
 					extensions: ['.md'],
-					highlight: { highlighter: highlight },
+					highlight: { highlighter: (code, lang) => highlight(code, lang, id) },
 					rehypePlugins,
 					layout
 				});

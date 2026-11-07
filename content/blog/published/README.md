@@ -77,7 +77,31 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 
 ### Videos
 
-Markdown has no syntax for video, so write the HTML. Paths start with `./` like images, and the build turns them into real URLs:
+Markdown has no syntax for video, so write a `video` block: a code block whose language is `video`, with fields in YAML. On the site it becomes the `<video>` below; in Obsidian and on GitHub it reads as five lines of YAML.
+
+````md
+```video
+src: ./awesome-list-shift.mp4
+webm: ./awesome-list-shift.webm
+poster: ./awesome-list-shift.png
+width: 1280
+height: 720
+caption: The filters appear after the list has loaded, and push it down.
+```
+````
+
+| Field     | Required | What                                                            |
+| --------- | -------- | --------------------------------------------------------------- |
+| `src`     | yes      | The video, next to the post (`./`). MP4 plays everywhere.       |
+| `width`   | yes      | The size you exported at, in pixels.                            |
+| `height`  | yes      | Same.                                                           |
+| `webm`    | no       | A smaller WebM copy; browsers that can play it get it first.    |
+| `poster`  | no       | An image shown before it plays, at the video's size.            |
+| `caption` | no       | What it shows (a video has no alt text). Makes it a `<figure>`. |
+
+The build fails on a missing required field, a field that isn't in the table (`autoplay` included, on purpose), a size that isn't a number, or a file without `./`, naming the post. The block always adds `controls muted playsinline preload="metadata"` (why each one, below).
+
+The HTML it makes, which you can also write by hand when you need something the block doesn't do. Paths start with `./` like images, and the build turns them into real URLs:
 
 ```html
 <figure>
