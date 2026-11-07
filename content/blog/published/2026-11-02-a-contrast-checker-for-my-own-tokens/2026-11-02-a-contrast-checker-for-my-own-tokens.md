@@ -3,6 +3,7 @@ title: 'A contrast checker that reads its own design tokens'
 date: 2026-11-02
 tags: [accessibility, design-tokens, css, sveltekit]
 description: Reading CSS custom properties in the browser, turning any CSS color into sRGB with a canvas, and the light-dark() surprise along the way.
+cover: A machine that evaluates contrast.
 ---
 
 My site's colors are design tokens: `--text-1`, `--surface-2`, `--brand` and a few more, each one a `light-dark()` pair. Every time I add a pair, I check its contrast. I wanted a tool that checks all of them at once, in both themes, and that will keep working when I add named themes later.
@@ -83,4 +84,4 @@ onNavigate((navigation) => {
 
 All the pairs I use pass AA in both themes. Two I don't use don't: in the light theme, `--code-constant` and `--code-type` on `--surface-3` reach only 4.34 and 4.39, enough for large text only. Code sits on `--surface-2`, so for now that's a note, not a bug.
 
-<!-- TODO: link to the tool once it's live, and a screenshot of the tables -->
+Check it out [here](/projects/contrast/)

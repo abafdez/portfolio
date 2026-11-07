@@ -3,6 +3,7 @@ title: 'Designing dark first: an oklch palette and monospace type'
 date: 2026-10-31
 tags: [css, oklch, design-tokens, dark-mode, typography]
 description: I replaced Open Props' grays with my own blue-gray scale in oklch, picked a terminal green, and designed the dark theme first. Why oklch makes a scale even, and what "dark first" means in light-dark().
+cover: Random elements with dark style.
 ---
 
 My site used Open Props' grays and blues. They're fine, but they looked like every other site. For a technical look (terminal, blueprints, code) I wanted a cool blue-gray and a phosphor green, like an old monitor. And since most developers I know browse in dark mode, I designed the dark theme first.

@@ -3,6 +3,7 @@ title: 'A code block frame: line numbers, wrapping and a copy button'
 date: 2026-11-02
 tags: [css, svelte, a11y]
 description: Wrapping long lines, numbering them with a CSS counter and adding a copy button that only shows up when it works, around Shiki's HTML.
+cover: A code block with line numbers.
 ---
 
 My code blocks were cut off. The reading column was 60 characters wide, so most lines didn't fit, and on a desktop the site felt like reading on a phone. I wanted four things: a wider column, lines that wrap instead of scrolling, line numbers, and a bar with the language and a copy button.

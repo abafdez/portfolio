@@ -3,6 +3,7 @@ title: 'Page transitions in SvelteKit, and letting each route pick its layout'
 date: 2026-10-31
 tags: [sveltekit, view-transitions, css, typescript]
 description: View transitions between routes with onNavigate, a nav marker that slides to the new page, and a typed way for each route to tell the root layout how to arrange it.
+cover: A css page vs a svelte page using transitions.
 ---
 
 My theme toggle already used a [view transition](./2026-10-30-theme-toggle-view-transition). This post adds them between pages: the header stays still, the content fades into the new page, and the green bar under the current nav link slides to the new one. Then a small system for each route to choose its own layout, which the transition handles for free.

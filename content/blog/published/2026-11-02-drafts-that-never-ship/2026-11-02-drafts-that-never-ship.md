@@ -3,6 +3,7 @@ title: 'Draft posts that never ship: a glob, import.meta.env.DEV and dead code'
 date: 2026-11-02
 tags: [sveltekit, vite, blog]
 description: Why filtering out draft posts wasn't enough on a static SvelteKit blog, and how a dev-only glob keeps every draft out of the build.
+cover: A funel filtering posts.
 ---
 
 My blog started with every post marked `draft: true` in its frontmatter, and a filter that hid drafts outside of dev. It looked fine: no draft showed up on the built site. But the drafts were still in the build, and anyone could read them.

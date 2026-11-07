@@ -3,11 +3,10 @@ title: 'A blueprint grid in pure CSS, with a cursor spotlight'
 date: 2026-10-31
 tags: [css, backgrounds, masks, svelte]
 description: A graph-paper background made of four gradients, plus marks drawn with a mask, and a spotlight that lights up the grid around your mouse. One fixed layer, no images, and it follows the theme.
+cover: A spotlight on a grid.
 ---
 
 My site's look is "technical": terminal, code, blueprints. So the background is a blueprint grid: faint lines, stronger lines every few cells, a small "+" where the strong ones cross, and, if you have a mouse, a green glow that follows it.
-
-<!-- TODO: a screenshot of the grid, and a short GIF of the spotlight -->
 
 It's all one Svelte component, `Blueprint.svelte`, mounted once in the root layout.
 
@@ -129,8 +128,6 @@ Touch has no hover, so a finger on a phone shouldn't drag a glow around. Two gua
 - in CSS, the spotlight only exists inside `@media (hover: hover) and (pointer: fine)`.
 
 When the mouse leaves the window, `mouseout` fires with `relatedTarget` set to `null` (it isn't going to another element), and the spotlight fades out.
-
-<!-- TODO: try it: change --grid-size in DevTools, or the 14rem radius, and describe what looked best -->
 
 ## Links
 
