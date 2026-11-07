@@ -267,6 +267,57 @@
 			color: var(--text-2);
 		}
 
+		/* Callouts (> [!note], see callouts.ts): a box with a bar in its type's colour,
+		   and an icon and title in that colour too. The title says the type in words,
+		   so the colour is never the only hint. */
+		& .callout {
+			--callout: var(--callout-note);
+			padding: var(--size-3) var(--size-4);
+			border-inline-start: var(--border-size-3) solid var(--callout);
+			border-radius: var(--radius-2);
+			background-color: var(--surface-2);
+
+			& > * + * {
+				margin-block-start: var(--size-2);
+			}
+
+			/* Inline code would vanish on the same surface as the box. */
+			& :not(pre) > code {
+				background-color: var(--surface-3);
+			}
+		}
+
+		& .callout[data-callout='tip'] {
+			--callout: var(--callout-tip);
+		}
+
+		& .callout[data-callout='important'] {
+			--callout: var(--callout-important);
+		}
+
+		& .callout[data-callout='warning'] {
+			--callout: var(--callout-warning);
+		}
+
+		& .callout[data-callout='caution'] {
+			--callout: var(--callout-caution);
+		}
+
+		& .callout-title {
+			display: flex;
+			align-items: center;
+			gap: var(--size-2);
+			font-family: var(--font-label);
+			font-weight: var(--font-weight-6);
+			color: var(--callout);
+
+			& svg {
+				flex: none;
+				inline-size: 1.2em;
+				block-size: 1.2em;
+			}
+		}
+
 		/* Images and videos next to the post (see enhance-media.ts). They come with
 		   width and height, so their space is kept while they load; block-size: auto
 		   keeps the proportions when max-inline-size makes them narrower. */

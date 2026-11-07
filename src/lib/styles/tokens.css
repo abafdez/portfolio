@@ -106,6 +106,15 @@
 	--code-type: light-dark(var(--teal-dark), var(--teal-bright));
 	--code-tag: light-dark(var(--red-dark), var(--red-bright));
 
+	/* Callouts in markdown (> [!note], callouts.ts): the border, icon and title of each
+	   type. GitHub's colours for them, from our syntax steps. On --surface-2 (the
+	   callout's background): light ≥ 5.40:1 (warning), dark ≥ 7.45:1 (caution). */
+	--callout-note: light-dark(var(--blue-dark), var(--blue-bright));
+	--callout-tip: var(--brand);
+	--callout-important: light-dark(var(--violet-dark), var(--violet-bright));
+	--callout-warning: light-dark(var(--amber-dark), var(--amber-bright));
+	--callout-caution: light-dark(var(--red-dark), var(--red-bright));
+
 	/* Floating things (the detached header, the footer hint). */
 	--shadow-float: 0 var(--size-2) var(--size-6) color-mix(in oklch, var(--ink-8) 35%, transparent);
 

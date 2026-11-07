@@ -122,6 +122,23 @@ ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p
 
 Higher `-crf` means a smaller file and lower quality; raise it if a file is too big.
 
+## Callouts
+
+A box for a note, a tip or a warning. It's a blockquote whose first line is `[!type]`, the same syntax GitHub ("alerts") and Obsidian ("callouts") draw, so the file reads well in both:
+
+```md
+> [!tip]
+> Test the production build, not dev.
+
+> [!warning] Not on GitHub Pages
+> The rest of the first line is a title of your own.
+```
+
+- **Five types**, GitHub's: `note`, `tip`, `important`, `warning`, `caution` (any case). Any other `[!type]` fails the build, naming the file: Obsidian's extra types (`info`, `bug`…) would be plain blockquotes on GitHub.
+- **The title** says the type ("Tip") unless you write your own; a screen reader still hears the type first ("Warning: Not on GitHub Pages").
+- **Folding** (Obsidian's `[!note]-`) is accepted, but the box is always shown open.
+- **Use them sparingly**: one or two per post. When everything is a callout, nothing stands out.
+
 ## Links
 
 | To                          | Write                                                   | Notes                                                                                               |

@@ -11,6 +11,7 @@ import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
 import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki'; //code blocks
 import { codeTheme } from './src/lib/code-theme.ts';
 import { enhanceMedia } from './src/lib/enhance-media.ts'; // images and videos next to a post
+import { rehypeCallouts } from './src/lib/callouts.ts'; // > [!note] boxes
 import rehypeSlug from 'rehype-slug'; //an id on every heading
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'; //and a link to it
 
@@ -55,9 +56,12 @@ async function highlight(code: string, lang: string | null | undefined) {
 // repeated one gets -1), and its text becomes a link to itself, so any section can be
 // linked to. 'wrap' keeps the heading's name as it is for screen readers: "The base
 // path, link", nothing added. The prerender crawler checks #links against these ids.
+// Callouts first (> [!note] becomes an <aside>, see callouts.ts), so the headings
+// plugins see the final tree.
 // mdsvex 0.12's types come from an older unified (v9) than these plugins' (v11); the
 // trees they work on are the same, so only the types disagree, hence the cast.
 const rehypePlugins = [
+	rehypeCallouts,
 	rehypeSlug,
 	[rehypeAutolinkHeadings, { behavior: 'wrap' }]
 ] as unknown as MdsvexCompileOptions['rehypePlugins'];
