@@ -46,7 +46,8 @@
 	<fieldset disabled={!current}>
 		<legend>Color theme</legend>
 		{#each palettes as palette (palette.id)}
-			<label>
+			<!-- Who made it, as a hint on hover (the licence notice is in the theme's CSS). -->
+			<label title={'credit' in palette ? `${palette.name} by ${palette.credit.by}` : undefined}>
 				<input
 					type="radio"
 					name="palette"
@@ -56,10 +57,6 @@
 				/>
 				{palette.name}
 			</label>
-			<!-- Outside the label: a link inside it would also pick the radio. -->
-			{#if 'credit' in palette}
-				<p class="credit">by <a href={palette.credit.url}>{palette.credit.by}</a></p>
-			{/if}
 		{/each}
 	</fieldset>
 </div>
@@ -136,12 +133,5 @@
 
 	input {
 		accent-color: var(--brand);
-	}
-
-	.credit {
-		margin-block-start: calc(-1 * var(--size-1));
-		padding-inline-start: var(--size-5);
-		font-size: var(--font-size-0);
-		color: var(--text-2);
 	}
 </style>

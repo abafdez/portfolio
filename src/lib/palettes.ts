@@ -9,7 +9,8 @@
 export type Palette = {
 	id: string;
 	name: string;
-	// Who made it, when it's someone else's: shown in the picker.
+	// Who made it, when it's someone else's: a hint on hover in the picker. The url is
+	// for us (the licence notice is in the theme's CSS).
 	credit?: { by: string; url: string };
 };
 

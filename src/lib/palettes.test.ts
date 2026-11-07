@@ -8,7 +8,7 @@ import { contrast } from './projects/contrast/contrast';
 const folder = new URL('./styles/themes/', import.meta.url);
 const files = Object.fromEntries(
 	readdirSync(folder)
-		.filter((name) => name.endsWith('.css'))
+		.filter((name) => name.endsWith('.css') && !name.startsWith('_')) // _licences.css
 		.map((name) => [name.replace('.css', ''), readFileSync(new URL(name, folder), 'utf8')])
 );
 
