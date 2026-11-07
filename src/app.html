@@ -5,10 +5,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
 		<script>
-			// Runs before the first paint, so a saved theme never flashes.
+			// Runs before the first paint, so a saved theme or palette never flashes.
 			try {
 				const theme = localStorage.getItem('theme');
 				if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+				// The colour theme (palettes.ts). An id we don't know matches no CSS: default colours.
+				const palette = localStorage.getItem('palette');
+				if (palette && /^[a-z-]+$/.test(palette))
+					document.documentElement.dataset.palette = palette;
 			} catch {}
 		</script>
 		%sveltekit.head%

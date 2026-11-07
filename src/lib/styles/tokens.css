@@ -60,9 +60,12 @@
 	/* The blueprint grid behind the page (Blueprint.svelte): faint text-colored lines,
 	   a minor cell, a major one every 4 cells, and a "+" at major crossings.
 	   Decorative, so no contrast requirement. */
-	--grid-line: color-mix(in oklch, var(--text-1) 3%, transparent);
-	--grid-line-major: color-mix(in oklch, var(--text-1) 6%, transparent);
-	--grid-mark: color-mix(in oklch, var(--text-1) 18%, transparent);
+	/* Every mix with transparent is in oklab, not oklch: Chrome drops the hue of a
+	   near-grey hex colour in oklch (Tokyo Night's #e6e7ed came out oklch(… none)),
+	   and a missing hue is drawn as 0, a pink tint. oklab has no hue to lose. */
+	--grid-line: color-mix(in oklab, var(--text-1) 3%, transparent);
+	--grid-line-major: color-mix(in oklab, var(--text-1) 6%, transparent);
+	--grid-mark: color-mix(in oklab, var(--text-1) 18%, transparent);
 	--grid-size: 1.5rem;
 
 	/* The spotlight: the same grid lit in the brand color around the mouse, plus a
@@ -70,9 +73,9 @@
 	   letters, so it counts as their background. At the spot's center (glow + major
 	   line, the brightest point) --text-2 keeps 4.89:1 dark, 4.83:1 light; on a minor
 	   line 5.77:1 and 5.40:1. A theme that changes --brand must re-check these. */
-	--grid-spot-line: color-mix(in oklch, var(--brand) 8%, transparent);
-	--grid-spot-line-major: color-mix(in oklch, var(--brand) 15%, transparent);
-	--grid-spot-glow: color-mix(in oklch, var(--brand) 4%, transparent);
+	--grid-spot-line: color-mix(in oklab, var(--brand) 8%, transparent);
+	--grid-spot-line-major: color-mix(in oklab, var(--brand) 15%, transparent);
+	--grid-spot-glow: color-mix(in oklab, var(--brand) 4%, transparent);
 
 	/* Skill icons (/about): only this color's lightness is used. Each brand logo keeps
 	   its own hue and chroma at this lightness (oklch(from var(--icon-tone) l c h) in
@@ -91,7 +94,7 @@
 	--mascot-cloth: var(--ink-5);
 	--mascot-light: var(--ink-0);
 	--mascot-blush: var(--pink-soft);
-	--mascot-shadow: color-mix(in oklch, var(--text-1) 15%, transparent);
+	--mascot-shadow: color-mix(in oklab, var(--text-1) 15%, transparent);
 
 	/* Code blocks. Our Shiki theme (src/lib/code-theme.ts) colors every token with one
 	   of these. All ≥ 5.3:1 on --surface-2 (the code block) in both themes. */
@@ -106,8 +109,17 @@
 	--code-type: light-dark(var(--teal-dark), var(--teal-bright));
 	--code-tag: light-dark(var(--red-dark), var(--red-bright));
 
+	/* Callouts in markdown (> [!note], callouts.ts): the border, icon and title of each
+	   type. GitHub's colours for them, from our syntax steps. On --surface-2 (the
+	   callout's background): light ≥ 5.40:1 (warning), dark ≥ 7.45:1 (caution). */
+	--callout-note: light-dark(var(--blue-dark), var(--blue-bright));
+	--callout-tip: var(--brand);
+	--callout-important: light-dark(var(--violet-dark), var(--violet-bright));
+	--callout-warning: light-dark(var(--amber-dark), var(--amber-bright));
+	--callout-caution: light-dark(var(--red-dark), var(--red-bright));
+
 	/* Floating things (the detached header, the footer hint). */
-	--shadow-float: 0 var(--size-2) var(--size-6) color-mix(in oklch, var(--ink-8) 35%, transparent);
+	--shadow-float: 0 var(--size-2) var(--size-6) color-mix(in oklab, var(--ink-8) 35%, transparent);
 
 	/* Layout: the header, main and footer share one content width. */
 	--content-width: 70rem;

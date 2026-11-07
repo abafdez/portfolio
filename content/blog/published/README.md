@@ -77,7 +77,31 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 
 ### Videos
 
-Markdown has no syntax for video, so write the HTML. Paths start with `./` like images, and the build turns them into real URLs:
+Markdown has no syntax for video, so write a `video` block: a code block whose language is `video`, with fields in YAML. On the site it becomes the `<video>` below; in Obsidian and on GitHub it reads as five lines of YAML.
+
+````md
+```video
+src: ./awesome-list-shift.mp4
+webm: ./awesome-list-shift.webm
+poster: ./awesome-list-shift.png
+width: 1280
+height: 720
+caption: The filters appear after the list has loaded, and push it down.
+```
+````
+
+| Field     | Required | What                                                            |
+| --------- | -------- | --------------------------------------------------------------- |
+| `src`     | yes      | The video, next to the post (`./`). MP4 plays everywhere.       |
+| `width`   | yes      | The size you exported at, in pixels.                            |
+| `height`  | yes      | Same.                                                           |
+| `webm`    | no       | A smaller WebM copy; browsers that can play it get it first.    |
+| `poster`  | no       | An image shown before it plays, at the video's size.            |
+| `caption` | no       | What it shows (a video has no alt text). Makes it a `<figure>`. |
+
+The build fails on a missing required field, a field that isn't in the table (`autoplay` included, on purpose), a size that isn't a number, or a file without `./`, naming the post. The block always adds `controls muted playsinline preload="metadata"` (why each one, below).
+
+The HTML it makes, which you can also write by hand when you need something the block doesn't do. Paths start with `./` like images, and the build turns them into real URLs:
 
 ```html
 <figure>
@@ -121,6 +145,32 @@ ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p
 ```
 
 Higher `-crf` means a smaller file and lower quality; raise it if a file is too big.
+
+## Callouts
+
+A box for a note, a tip or a warning. It's a blockquote whose first line is `[!type]`, the same syntax GitHub ("alerts") and Obsidian ("callouts") draw, so the file reads well in both:
+
+```md
+> [!tip]
+> Test the production build, not dev.
+
+> [!warning] Not on GitHub Pages
+> The rest of the first line is a title of your own.
+```
+
+- **Five types**, GitHub's: `note`, `tip`, `important`, `warning`, `caution` (any case). Any other `[!type]` fails the build, naming the file: Obsidian's extra types (`info`, `bug`…) would be plain blockquotes on GitHub.
+- **The title** says the type ("Tip") unless you write your own; a screen reader still hears the type first ("Warning: Not on GitHub Pages").
+- **Folding** (Obsidian's `[!note]-`) is accepted, but the box is always shown open.
+- **Use them sparingly**: one or two per post. When everything is a callout, nothing stands out.
+
+## Tags and code in the text
+
+**Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. Markdown passes HTML through as it is, so outside backticks:
+
+- a made-up tag like `<profile>` becomes an element that never closes, and the text after it may vanish. **The build fails** on it, naming the post and the tag;
+- a real one like `<aside>` quietly becomes real markup, with no warning at all.
+
+The same goes for `{` and `}` outside backticks: Svelte reads them as code. Frontmatter (`title`, `description`) is plain text, so no backticks there: they'd show as they are.
 
 ## Links
 

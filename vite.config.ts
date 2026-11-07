@@ -11,6 +11,8 @@ import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
 import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki'; //code blocks
 import { codeTheme } from './src/lib/code-theme.ts';
 import { enhanceMedia } from './src/lib/enhance-media.ts'; // images and videos next to a post
+import { rehypeCallouts } from './src/lib/callouts.ts'; // > [!note] boxes
+import { renderBlock } from './src/lib/blocks.ts'; // ```video and other components
 import rehypeSlug from 'rehype-slug'; //an id on every heading
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'; //and a link to it
 
@@ -28,13 +30,20 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 // loaded the first time a code block uses it.
 const shiki = createHighlighter({ themes: [codeTheme], langs: [] });
 
-async function highlight(code: string, lang: string | null | undefined) {
+// Called for every code block, with its language and the .md file it's in (the
+// markdown() plugin below passes the file). A block named after one of our components
+// (```video, see blocks.ts) becomes that component; any other is highlighted code.
+async function highlight(code: string, lang: string | null | undefined, file: string) {
+	const component = renderBlock(lang, code, file);
+	if (component !== undefined) return component;
+
 	const highlighter = await shiki;
 	let language = 'text';
 	if (lang && lang in bundledLanguages) {
 		await highlighter.loadLanguage(lang as BundledLanguage);
 		language = lang;
-	} else if (lang) {
+	} else if (lang && lang !== 'text') {
+		// ```text is plain on purpose (an error message, a terminal's output).
 		console.warn(`Shiki has no language "${lang}"; that block is shown as plain text.`);
 	}
 	const html = highlighter.codeToHtml(code, {
@@ -55,9 +64,12 @@ async function highlight(code: string, lang: string | null | undefined) {
 // repeated one gets -1), and its text becomes a link to itself, so any section can be
 // linked to. 'wrap' keeps the heading's name as it is for screen readers: "The base
 // path, link", nothing added. The prerender crawler checks #links against these ids.
+// Callouts first (> [!note] becomes an <aside>, see callouts.ts), so the headings
+// plugins see the final tree.
 // mdsvex 0.12's types come from an older unified (v9) than these plugins' (v11); the
 // trees they work on are the same, so only the types disagree, hence the cast.
 const rehypePlugins = [
+	rehypeCallouts,
 	rehypeSlug,
 	[rehypeAutolinkHeadings, { behavior: 'wrap' }]
 ] as unknown as MdsvexCompileOptions['rehypePlugins'];
@@ -85,7 +97,7 @@ function markdown(): Plugin {
 				const out = await compile(code, {
 					filename: id,
 					extensions: ['.md'],
-					highlight: { highlighter: highlight },
+					highlight: { highlighter: (code, lang) => highlight(code, lang, id) },
 					rehypePlugins,
 					layout
 				});
@@ -113,6 +125,22 @@ export default defineConfig({
 		sveltekit({
 			// Compile .md files as components too (after markdown() above has run).
 			extensions: ['.svelte', '.md'],
+			// A tag written in the text of a post or an entry, like <profile>, fails the build
+			// (and shows the error in dev). Markdown passes HTML through, so it becomes an
+			// element that never closes, and Svelte's warning would scroll past among the
+			// file sizes. Every other warning is printed as usual.
+			onwarn(warning, warn) {
+				if (!warning.filename?.endsWith('.md') || warning.code !== 'element_implicitly_closed') {
+					return warn(warning);
+				}
+				// "…closed by the following `</li>`… Add an explicit `</profile>`…"
+				const tag = /explicit `<\/([\w:-]+)>`/.exec(warning.message)?.[1] ?? 'tag';
+				// No line number: Svelte counts lines in mdsvex's output, not in the .md.
+				// The frame shows the text around the problem instead.
+				throw new Error(
+					`${warning.filename}: <${tag}> is in the text. Put it in backticks: \`<${tag}>\`.\n${warning.frame ?? ''}`
+				);
+			},
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>

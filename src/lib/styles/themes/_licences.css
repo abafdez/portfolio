@@ -1,0 +1,13 @@
+/*! Colour themes in this folder, from their authors' palettes:
+   Catppuccin colours: MIT License, Copyright (c) 2021 Catppuccin. https://catppuccin.com
+   Dracula colours: MIT License, Copyright (c) 2023 Dracula Theme. https://draculatheme.com
+   Gruvbox colours: MIT/X11 License, by morhetz. https://github.com/morhetz/gruvbox
+   Rosé Pine colours: MIT License, Copyright (c) mvllow. https://rosepinetheme.com
+   Solarized colours: MIT License, Copyright (c) 2011 Ethan Schoonover. https://ethanschoonover.com/solarized/
+   Tokyo Night colours: MIT License, Copyright (c) 2018-present Enkia. https://github.com/enkia/tokyo-night-vscode-theme */
+
+/* Only the licence notices, no rules. /*! makes the comment above a "legal comment":
+   the build keeps it while removing every other comment, but only at the very start
+   of the CSS bundle. The layout loads this folder with a glob, in name order, and Vite
+   puts those imports first, so this file (the _ sorts before any theme) opens the
+   bundle. Not a palette: palettes.test.ts skips files starting with _. */

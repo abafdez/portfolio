@@ -1,0 +1,52 @@
+/* Catppuccin. Latte (light) and Mocha (dark), from the official palette: https://github.com/catppuccin/palette
+   MIT License, Copyright (c) 2021 Catppuccin.
+
+   Overrides the semantic tokens like every theme (palettes.ts, tokens.css), with
+   light-dark(light, dark).
+   Surfaces: base (page), mantle (cards), surface0 (borders). Brand is mauve; text-2 is subtext0.
+   Latte's accents are bright mid-tones, made for a code editor, so most are darker here.
+
+   Contrast: every text colour is at least 4.5:1 on what it really sits on (text, brand
+   and --text-2 on all three surfaces and on the spotlight's brightest point; error on
+   the page and cards; code and callouts on --surface-2). A colour that failed kept
+   its hue and chroma and only changed lightness until it passed:
+     light --brand: #8839ef -> #761ad8
+     light --text-2: #6c6f85 -> #53566b
+     light --error: #d20f39 -> #ce0436
+     light --code-string: #40a02b -> #1f7803
+     light --code-keyword: #8839ef -> #8535eb
+     light --code-function: #1e66f5 -> #135cea
+     light --code-constant: #fe640b -> #b34403
+     light --code-type: #df8e1d -> #935a02
+     light --code-tag: #d20f39 -> #ce0436
+     light --callout-note: #1e66f5 -> #135cea
+     light --callout-tip: #40a02b -> #1f7803
+     light --callout-important: #8839ef -> #8535eb
+     light --callout-warning: #df8e1d -> #935a02
+     light --callout-caution: #d20f39 -> #ce0436
+   Comments are --text-2, as in every theme. */
+
+:root[data-palette='catppuccin'],
+[data-palette='catppuccin'] [data-theme],
+[data-theme][data-palette='catppuccin'] {
+	--surface-1: light-dark(#eff1f5, #1e1e2e);
+	--surface-2: light-dark(#e6e9ef, #181825);
+	--surface-3: light-dark(#ccd0da, #313244);
+	--text-1: light-dark(#4c4f69, #cdd6f4);
+	--text-2: light-dark(#53566b, #a6adc8);
+	--brand: light-dark(#761ad8, #cba6f7);
+	--error: light-dark(#ce0436, #f38ba8);
+
+	--code-string: light-dark(#1f7803, #a6e3a1);
+	--code-keyword: light-dark(#8535eb, #cba6f7);
+	--code-function: light-dark(#135cea, #89b4fa);
+	--code-constant: light-dark(#b34403, #fab387);
+	--code-type: light-dark(#935a02, #f9e2af);
+	--code-tag: light-dark(#ce0436, #f38ba8);
+
+	--callout-note: light-dark(#135cea, #89b4fa);
+	--callout-tip: light-dark(#1f7803, #a6e3a1);
+	--callout-important: light-dark(#8535eb, #cba6f7);
+	--callout-warning: light-dark(#935a02, #f9e2af);
+	--callout-caution: light-dark(#ce0436, #f38ba8);
+}

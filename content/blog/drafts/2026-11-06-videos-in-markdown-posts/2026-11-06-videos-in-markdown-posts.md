@@ -95,6 +95,10 @@ const context = await browser.newContext({
 
 A page with a counter, two seconds, and I had a real video file to put in a throwaway post. Built, played in the preview at 320 px and on a desktop: both kept their 16:9 box, played, and nothing scrolled sideways.
 
+## Later: a video block
+
+All of this HTML is now one block in my posts: a code block whose language is `video`, with the file, the size and a caption as YAML. The build writes the same `<video>` and checks every field. That's [its own post](./2026-11-07-components-in-code-blocks).
+
 ## Links
 
 - [MDN: the video element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video)

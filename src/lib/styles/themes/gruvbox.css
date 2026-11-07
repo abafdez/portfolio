@@ -1,0 +1,50 @@
+/* Gruvbox. Its light and dark modes, from https://github.com/morhetz/gruvbox (colors/gruvbox.vim)
+   MIT/X11 License (the project's README), by morhetz.
+
+   Overrides the semantic tokens like every theme (palettes.ts, tokens.css), with
+   light-dark(light, dark).
+   Dark: bg0 page, bg0_soft cards, bg1 borders (bg2 made the orange fail); bright colours.
+   Light: bg0 page, bg0_soft cards, bg1 borders; the "faded" colours. Brand is orange.
+
+   Contrast: every text colour is at least 4.5:1 on what it really sits on (text, brand
+   and --text-2 on all three surfaces and on the spotlight's brightest point; error on
+   the page and cards; code and callouts on --surface-2). A colour that failed kept
+   its hue and chroma and only changed lightness until it passed:
+     light --brand: #af3a03 -> #9f3301
+     light --text-2: #7c6f64 -> #63574c
+     light --code-string: #79740e -> #6c6702
+     light --code-function: #427b58 -> #366f4d
+     light --code-type: #b57614 -> #8e5a03
+     light --callout-tip: #79740e -> #6c6702
+     light --callout-warning: #b57614 -> #8e5a03
+     dark  --brand: #fe8019 -> #fe9148
+     dark  --text-2: #a89984 -> #b9aa95
+     dark  --error: #fb4934 -> #ff6954
+     dark  --code-keyword: #fb4934 -> #ff6954
+     dark  --callout-caution: #fb4934 -> #ff6954
+   Comments are --text-2, as in every theme. */
+
+:root[data-palette='gruvbox'],
+[data-palette='gruvbox'] [data-theme],
+[data-theme][data-palette='gruvbox'] {
+	--surface-1: light-dark(#fbf1c7, #282828);
+	--surface-2: light-dark(#f2e5bc, #32302f);
+	--surface-3: light-dark(#ebdbb2, #3c3836);
+	--text-1: light-dark(#3c3836, #ebdbb2);
+	--text-2: light-dark(#63574c, #b9aa95);
+	--brand: light-dark(#9f3301, #fe9148);
+	--error: light-dark(#9d0006, #ff6954);
+
+	--code-string: light-dark(#6c6702, #b8bb26);
+	--code-keyword: light-dark(#9d0006, #ff6954);
+	--code-function: light-dark(#366f4d, #8ec07c);
+	--code-constant: light-dark(#8f3f71, #d3869b);
+	--code-type: light-dark(#8e5a03, #fabd2f);
+	--code-tag: light-dark(#076678, #83a598);
+
+	--callout-note: light-dark(#076678, #83a598);
+	--callout-tip: light-dark(#6c6702, #b8bb26);
+	--callout-important: light-dark(#8f3f71, #d3869b);
+	--callout-warning: light-dark(#8e5a03, #fabd2f);
+	--callout-caution: light-dark(#9d0006, #ff6954);
+}

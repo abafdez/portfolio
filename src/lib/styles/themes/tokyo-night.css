@@ -1,0 +1,47 @@
+/* Tokyo Night, by Enkia: https://github.com/enkia/tokyo-night-vscode-theme
+   MIT License, Copyright (c) 2018-present Enkia. Colours from its "Tokyo Night"
+   (dark) and "Tokyo Night Light" theme files.
+
+   A theme only overrides semantic tokens (tokens.css); components never see the
+   difference. light-dark(light, dark) like tokens.css: the toggle still picks the half.
+
+   Where it differs from the original, for contrast (all text ≥ 4.5:1 where it's used):
+   - Comments are --text-2, not Tokyo Night's dim #51597d (2.5:1) / #888b94 (2.8:1).
+   - Light: cards and code (--surface-2) are a lighter tint of the editor background
+     (#f1f2f6), and borders (--surface-3) the sidebar's #d6d8df, not the darker #c1c2c7.
+   - Light --text-2 is #4f5367, a little darker than the theme's #565a6e: on the
+     spotlight's brightest point (tokens.css, a blue line over the page) that one was
+     4.26:1; this one is 4.75:1 (dark: 5.85:1).
+   - Light --brand is #2252a2, a little darker than #2959aa, for the same reason: a link
+     on the spotlight (made from the brand itself) was 4.23:1; now 4.65:1. Code and
+     the note callout keep #2959aa: they sit on --surface-2 (6.05:1).
+   Code and callout colours only sit on --surface-2. Lowest: light 4.97:1 (warning),
+   dark 5.33:1 (blue on --surface-3). */
+
+/* On <html> (the picker sets data-palette there), and on any [data-theme] element
+   inside it or with its own data-palette: tokens.css declares the tokens again on
+   those, so they need this theme's values too (the contrast checker's probe). */
+:root[data-palette='tokyo-night'],
+[data-palette='tokyo-night'] [data-theme],
+[data-theme][data-palette='tokyo-night'] {
+	--surface-1: light-dark(#e6e7ed, #1a1b26);
+	--surface-2: light-dark(#f1f2f6, #16161e);
+	--surface-3: light-dark(#d6d8df, #292e42);
+	--text-1: light-dark(#343b58, #c0caf5);
+	--text-2: light-dark(#4f5367, #a9b1d6);
+	--brand: light-dark(#2252a2, #7aa2f7);
+	--error: light-dark(#8c4351, #f7768e);
+
+	--code-string: light-dark(#385f0d, #9ece6a);
+	--code-keyword: light-dark(#65359d, #bb9af7);
+	--code-function: light-dark(#2959aa, #7aa2f7);
+	--code-constant: light-dark(#965027, #ff9e64);
+	--code-type: light-dark(#006c86, #0db9d7);
+	--code-tag: light-dark(#8c4351, #f7768e);
+
+	--callout-note: light-dark(#2959aa, #7aa2f7);
+	--callout-tip: light-dark(#385f0d, #9ece6a);
+	--callout-important: light-dark(#65359d, #bb9af7);
+	--callout-warning: light-dark(#8f5e15, #e0af68);
+	--callout-caution: light-dark(#8c4351, #f7768e);
+}

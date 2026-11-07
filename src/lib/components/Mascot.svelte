@@ -168,7 +168,7 @@
 		stroke-width: 3.5;
 
 		& rect {
-			fill: color-mix(in oklch, var(--mascot-light) 25%, transparent);
+			fill: color-mix(in oklab, var(--mascot-light) 25%, transparent);
 		}
 	}
 

@@ -75,7 +75,13 @@
 
 		// flushSync: the browser takes its "after" picture when update() returns, so Svelte
 		// must apply aria-pressed now instead of in its next batch.
-		document.startViewTransition({ update: () => flushSync(flip), types: ['theme'] });
+		const transition = document.startViewTransition({
+			update: () => flushSync(flip),
+			types: ['theme']
+		});
+		// Two quick clicks: the browser skips the first transition and rejects its `ready`
+		// promise. Expected, so it's caught instead of showing up as a console error.
+		transition.ready.catch(() => {});
 	}
 </script>
 

@@ -2,13 +2,14 @@
 	import { resolve } from '$app/paths';
 	import Nav from '#lib/components/Nav.svelte';
 	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
+	import PalettePicker from '#lib/components/PalettePicker.svelte';
 </script>
 
 <header class="site-header">
 	<div class="inner">
 		<a class="site-name" href={resolve('/')}>Alfonso Baeza</a>
 		<div class="nav"><Nav /></div>
-		<div class="toggle"><ThemeToggle duration={500} blur={50} /></div>
+		<div class="toggle"><PalettePicker /><ThemeToggle duration={500} blur={50} /></div>
 	</div>
 </header>
 
@@ -23,7 +24,7 @@
 	.inner {
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-3);
-		background-color: color-mix(in oklch, var(--surface-1) 75%, transparent);
+		background-color: color-mix(in oklab, var(--surface-1) 75%, transparent);
 		backdrop-filter: blur(12px);
 		box-shadow: var(--shadow-float);
 	}
@@ -97,6 +98,9 @@
 
 	.toggle {
 		grid-area: toggle;
+		display: flex;
+		align-items: center;
+		gap: var(--size-1);
 	}
 
 	/* Not printed: the site nav means nothing on paper. */

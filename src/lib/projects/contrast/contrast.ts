@@ -12,7 +12,12 @@ export const texts = [
 	'code-function',
 	'code-constant',
 	'code-type',
-	'code-tag'
+	'code-tag',
+	'callout-note',
+	'callout-tip',
+	'callout-important',
+	'callout-warning',
+	'callout-caution'
 ] as const;
 export const surfaces = ['surface-1', 'surface-2', 'surface-3'] as const;
 // Dark first, like the site.
