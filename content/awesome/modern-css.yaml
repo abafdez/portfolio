@@ -2,124 +2,192 @@
 # Every url must be https:// and every tag lowercase kebab-case, or the build fails
 # (src/lib/awesome/awesome.ts). Tags cut across categories: what a link is
 # (docs, article, tool, site) and what it's about.
-title: Modern CSS
-description: The CSS references I keep going back to while building this site, from color and dark mode to motion and layout.
+# In Spanish: a text is plain (the same in every language) or { en: …, es: … }. Once the
+# list's description is in both, every link's description must be too (else the build
+# fails: the Spanish page would be half English); names and titles can stay plain.
+# Link titles are the sources' own, so they stay as their authors wrote them.
+title:
+  en: Modern CSS
+  es: CSS moderno
+description:
+  en: The CSS references I keep going back to while building this site, from color and dark mode to motion and layout.
+  es: Las referencias de CSS a las que vuelvo una y otra vez mientras construyo este sitio, del color y el modo oscuro al movimiento y la maquetación.
 updated: 2026-11-02
 categories:
   - name: Color
     links:
       - title: oklch.com
         url: https://oklch.com
-        description: Pick OKLCH colors and see which ones fit in sRGB and P3.
+        description:
+          en: Pick OKLCH colors and see which ones fit in sRGB and P3.
+          es: Elige colores OKLCH y mira cuáles caben en sRGB y P3.
         tags: [tool, oklch]
       - title: 'OKLCH in CSS: why we moved from RGB and HSL'
         url: https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl
-        description: Evil Martians on why OKLCH makes palettes easier to reason about than RGB or HSL.
+        description:
+          en: Evil Martians on why OKLCH makes palettes easier to reason about than RGB or HSL.
+          es: Evil Martians explica por qué con OKLCH es más fácil razonar sobre una paleta que con RGB o HSL.
         tags: [article, oklch]
       - title: light-dark()
         url: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark
-        description: One color for each color scheme, picked by the element's color-scheme.
+        description:
+          en: One color for each color scheme, picked by the element's color-scheme.
+          es: Un color para cada esquema de color, elegido según el color-scheme del elemento.
         tags: [docs, dark-mode]
       - title: 'WCAG: Contrast (minimum)'
         url: https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
-        description: The 4.5:1 and 3:1 rules for text, and what counts as large text.
+        description:
+          en: The 4.5:1 and 3:1 rules for text, and what counts as large text.
+          es: Las reglas de 4,5:1 y 3:1 para el texto, y qué cuenta como texto grande.
         tags: [docs, accessibility]
 
-  - name: Dark mode
+  - name:
+      en: Dark mode
+      es: Modo oscuro
     links:
       - title: Your dark mode toggle is broken
         url: https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/
-        description: Kilian Valkhof argues a theme toggle needs a way back to the system setting.
+        description:
+          en: Kilian Valkhof argues a theme toggle needs a way back to the system setting.
+          es: Kilian Valkhof defiende que un selector de tema necesita una forma de volver a la preferencia del sistema.
         tags: [article, dark-mode]
       - title: 'Dark mode toggles: two states are enough'
         url: https://lea.verou.me/blog/2026/dark-mode-toggles/
-        description: Lea Verou makes the case for two visible states, the system theme and its opposite.
+        description:
+          en: Lea Verou makes the case for two visible states, the system theme and its opposite.
+          es: Lea Verou defiende dos estados visibles, el tema del sistema y su contrario.
         tags: [article, dark-mode]
       - title: The best dark mode toggle is probably none
         url: https://lea.verou.me/blog/2026/dark-mode-toggles-2/
-        description: Lea Verou's follow-up, on why most sites don't need a toggle at all.
+        description:
+          en: Lea Verou's follow-up, on why most sites don't need a toggle at all.
+          es: La continuación de Lea Verou, sobre por qué la mayoría de los sitios no necesitan ningún selector.
         tags: [article, dark-mode]
       - title: The case for tri-state dark mode toggles
         url: https://www.bram.us/2026/08/18/the-case-for-tri-state-dark-mode-toggles/
-        description: Bramus argues for showing all three states, system, light and dark.
+        description:
+          en: Bramus argues for showing all three states, system, light and dark.
+          es: Bramus defiende mostrar los tres estados, sistema, claro y oscuro.
         tags: [article, dark-mode]
       - title: Building a theme switch component
         url: https://web.dev/articles/building/a-theme-switch-component
-        description: Adam Argyle builds an accessible light and dark switch, step by step.
+        description:
+          en: Adam Argyle builds an accessible light and dark switch, step by step.
+          es: Adam Argyle construye paso a paso un interruptor accesible entre claro y oscuro.
         tags: [article, dark-mode, accessibility]
 
-  - name: Motion
+  - name:
+      en: Motion
+      es: Movimiento
     links:
       - title: scroll-driven-animations.style
         url: https://scroll-driven-animations.style
-        description: Demos and tools for animations driven by scrolling instead of time.
+        description:
+          en: Demos and tools for animations driven by scrolling instead of time.
+          es: Demos y herramientas para animaciones que avanzan con el scroll en vez de con el tiempo.
         tags: [site, motion]
       - title: CSS scroll-driven animations
         url: https://developer.mozilla.org/docs/Web/CSS/CSS_scroll-driven_animations
-        description: The reference for animation-timeline, scroll() and view().
+        description:
+          en: The reference for animation-timeline, scroll() and view().
+          es: La referencia de animation-timeline, scroll() y view().
         tags: [docs, motion]
       - title: View Transition API
         url: https://developer.mozilla.org/docs/Web/API/View_Transition_API
-        description: Animated changes between two states of a page, or between pages.
+        description:
+          en: Animated changes between two states of a page, or between pages.
+          es: Cambios animados entre dos estados de una página, o entre páginas.
         tags: [docs, motion]
       - title: Unlocking view transitions in SvelteKit
         url: https://svelte.dev/blog/view-transitions
-        description: How to run SvelteKit's navigations inside a view transition with onNavigate.
+        description:
+          en: How to run SvelteKit's navigations inside a view transition with onNavigate.
+          es: Cómo meter las navegaciones de SvelteKit en una view transition con onNavigate.
         tags: [article, motion, svelte]
       - title: prefers-reduced-motion
         url: https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
-        description: The media feature that tells you someone asked for less motion.
+        description:
+          en: The media feature that tells you someone asked for less motion.
+          es: La media feature que te dice que alguien ha pedido menos movimiento.
         tags: [docs, motion, accessibility]
 
-  - name: Layout
+  - name:
+      en: Layout
+      es: Maquetación
     links:
       - title: Container queries
         url: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries
-        description: Styles that respond to the size of a container instead of the viewport.
+        description:
+          en: Styles that respond to the size of a container instead of the viewport.
+          es: Estilos que responden al tamaño de un contenedor en vez de al del viewport.
         tags: [docs, layout]
       - title: grid-template-areas
         url: https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas
-        description: Name the areas of a grid and place items by name.
+        description:
+          en: Name the areas of a grid and place items by name.
+          es: Pon nombre a las áreas de una rejilla y coloca los elementos por su nombre.
         tags: [docs, layout]
       - title: auto-fill vs auto-fit
         url: https://developer.mozilla.org/en-US/docs/Web/CSS/repeat#auto-fill
-        description: The two ways repeat() fills a row, and why auto-fit stretches the cards.
+        description:
+          en: The two ways repeat() fills a row, and why auto-fit stretches the cards.
+          es: Las dos formas en que repeat() llena una fila, y por qué auto-fit estira las tarjetas.
         tags: [docs, layout]
       - title: position sticky
         url: https://developer.mozilla.org/docs/Web/CSS/position#sticky_positioning
-        description: An element that scrolls with the page until it reaches an edge, then stays.
+        description:
+          en: An element that scrolls with the page until it reaches an edge, then stays.
+          es: Un elemento que se desplaza con la página hasta llegar a un borde y luego se queda ahí.
         tags: [docs, layout]
 
-  - name: Foundations
+  - name:
+      en: Foundations
+      es: Fundamentos
     links:
       - title: A Modern CSS Reset
         url: https://www.joshwcomeau.com/css/custom-css-reset/
-        description: Josh Comeau's small reset, with the reason for every line.
+        description:
+          en: Josh Comeau's small reset, with the reason for every line.
+          es: El pequeño reset de Josh Comeau, con el motivo de cada línea.
         tags: [article]
       - title: '@layer'
         url: https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
-        description: Cascade layers, where the order of the layers beats specificity.
+        description:
+          en: Cascade layers, where the order of the layers beats specificity.
+          es: Las cascade layers, donde el orden de las capas gana a la especificidad.
         tags: [docs]
       - title: Using CSS custom properties
         url: https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
-        description: Variables in CSS, how they inherit and how var() falls back.
+        description:
+          en: Variables in CSS, how they inherit and how var() falls back.
+          es: Las variables de CSS, cómo se heredan y cómo funciona el valor por defecto de var().
         tags: [docs]
       - title: Open Props
         url: https://open-props.style/
-        description: Ready-made design tokens as custom properties, the base of this site's tokens.
+        description:
+          en: Ready-made design tokens as custom properties, the base of this site's tokens.
+          es: Design tokens listos para usar como custom properties, la base de los tokens de este sitio.
         tags: [tool]
 
-  - name: Inspiration
+  - name:
+      en: Inspiration
+      es: Inspiración
     links:
       - title: nerdy.dev
         url: https://nerdy.dev
-        description: Adam Argyle's site. This site's theme toggle reveal started here.
+        description:
+          en: Adam Argyle's site. This site's theme toggle reveal started here.
+          es: El sitio de Adam Argyle. La animación del cambio de tema de este sitio empezó aquí.
         tags: [site, motion]
       - title: brittanychiang.com
         url: https://brittanychiang.com
-        description: The sticky intro beside scrolling sections that this site's landing borrows.
+        description:
+          en: The sticky intro beside scrolling sections that this site's landing borrows.
+          es: La introducción fija junto a secciones que se desplazan, que toma prestada la portada de este sitio.
         tags: [site, layout]
       - title: julibe.com
         url: https://julibe.com
-        description: Where the colored scrollbar, the detaching header and the footer hint came from.
+        description:
+          en: Where the colored scrollbar, the detaching header and the footer hint came from.
+          es: De aquí salieron la barra de desplazamiento de color, la cabecera que se despega y la pista del pie.
         tags: [site]
