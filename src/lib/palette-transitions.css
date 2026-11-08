@@ -1,0 +1,228 @@
+/* The colour-theme transitions (palette-transitions.ts). During a "palette" view
+   transition the browser shows two pictures of the page: the old one
+   (::view-transition-old) under the new one (::view-transition-new), both inside
+   ::view-transition-group(root). Each effect is a view transition type too, so its
+   rules below only apply while it plays.
+
+   Not in a cascade layer: these are the only rules for these pseudo-elements, and
+   unlayered rules beat the layered ones in global.css anyway. */
+
+/* --- Shared by every effect --------------------------------------------------------- */
+/* By default the old picture fades out and the new one fades in, and the two are
+   blended with plus-lighter, made for that cross-fade: with both pictures fully
+   visible it brightens the page, so: normal. The old one stays still; the new one
+   runs for as long as the effect needs (--palette-duration, set from JS). An effect
+   below can change any of this (same specificity, later in the file wins). */
+:root:active-view-transition-type(palette) {
+	&::view-transition-old(root) {
+		animation: none;
+		mix-blend-mode: normal;
+	}
+
+	&::view-transition-new(root) {
+		animation-duration: var(--palette-duration);
+		animation-fill-mode: both;
+		mix-blend-mode: normal;
+	}
+}
+
+/* --- Shared by ripple, dither and rain: a self-animating SVG mask ------------------- */
+/* The new page is drawn through --palette-mask, an SVG that animates itself (built in
+   palette-transitions.ts). The animation here only keeps the picture there until the
+   mask has finished. --palette-mask-size: the dither's mask is a small tile, repeated;
+   the others are one screen-sized image. Removing one of these effects: take its name
+   out of the list. */
+:root:active-view-transition-type(ripple, dither, rain)::view-transition-new(root) {
+	mask: var(--palette-mask) 0 0 / var(--palette-mask-size, 100% 100%) repeat;
+	animation-name: palette-hold;
+	animation-timing-function: linear;
+}
+
+@keyframes palette-hold {
+	from,
+	to {
+		opacity: 1;
+	}
+}
+
+/* --- Effect: glitch ----------------------------------------------------------------- */
+/* Random bands of the new page, shifted sideways, some frames with the colour split
+   (the #palette-rgb-split filter is an SVG in PalettePicker.svelte), then a last flash
+   of the whole page split before it settles. steps() makes every frame a jump, not a
+   fade: that's what makes it look broken. */
+:root:active-view-transition-type(glitch)::view-transition-new(root) {
+	animation-name: palette-glitch;
+	animation-timing-function: steps(1, end);
+}
+
+@keyframes palette-glitch {
+	0% {
+		mask-image: var(--glitch-bands-1);
+		translate: var(--glitch-shift-1) 0;
+		filter: url(#palette-rgb-split);
+	}
+	14% {
+		mask-image: var(--glitch-bands-2);
+		translate: var(--glitch-shift-2) 0;
+		filter: none;
+	}
+	28% {
+		mask-image: var(--glitch-bands-3);
+		translate: var(--glitch-shift-3) 0;
+		filter: url(#palette-rgb-split);
+	}
+	42% {
+		mask-image: var(--glitch-bands-4);
+		translate: var(--glitch-shift-4) 0;
+		filter: hue-rotate(90deg);
+	}
+	56% {
+		mask-image: var(--glitch-bands-5);
+		translate: var(--glitch-shift-5) 0;
+		filter: url(#palette-rgb-split);
+	}
+	70% {
+		mask-image: none;
+		translate: 0;
+		filter: url(#palette-rgb-split);
+	}
+	85% {
+		mask-image: none;
+		translate: 0;
+		filter: none;
+	}
+	100% {
+		mask-image: none;
+		translate: 0;
+		filter: none;
+	}
+}
+
+/* --- Effect: scanline redraw -------------------------------------------------------- */
+/* --palette-scan is where the line is, from above the top of the screen to below the
+   bottom. Registered as a percentage so keyframes can move it (an unregistered custom
+   property is just text, and text can't be tweened).
+   The new picture shows above the line and fades out just before it; the old picture
+   shows below and fades in just after it. Right at the line both are see-through, so
+   the group's background, the brand colour, shows there: that's the glowing line. Its
+   glow is longer above (the new page) than below, like a CRT beam's afterglow.
+   The new page also gets faint scanlines while it's drawn (a second mask layer,
+   intersected with the first: every third pixel row a little see-through), then a
+   short flicker after the sweep. */
+@property --palette-scan {
+	syntax: '<percentage>';
+	inherits: false;
+	initial-value: 0%;
+}
+
+:root:active-view-transition-type(scanline) {
+	&::view-transition-group(root) {
+		background: var(--brand);
+	}
+
+	&::view-transition-old(root) {
+		mask: linear-gradient(transparent var(--palette-scan), #000 calc(var(--palette-scan) + 0.5rem));
+		animation: palette-scan var(--palette-duration) linear both;
+	}
+
+	&::view-transition-new(root) {
+		mask:
+			linear-gradient(#000 calc(var(--palette-scan) - 3rem), transparent var(--palette-scan)),
+			repeating-linear-gradient(#000 0 2px, #000d 2px 3px);
+		mask-composite: intersect;
+		/* The flicker starts when the sweep ends. No fill mode, so its first frame
+		   doesn't apply during the sweep. */
+		animation:
+			palette-scan var(--palette-duration) linear both,
+			palette-flicker 180ms var(--palette-duration) steps(1, end);
+	}
+}
+
+@keyframes palette-scan {
+	from {
+		--palette-scan: -10%;
+	}
+	to {
+		--palette-scan: 110%;
+	}
+}
+
+@keyframes palette-flicker {
+	0% {
+		filter: brightness(1.3);
+	}
+	33% {
+		filter: brightness(0.85);
+	}
+	66% {
+		filter: brightness(1.15);
+	}
+	100% {
+		filter: none;
+	}
+}
+
+/* --- Effect: CRT switch-off --------------------------------------------------------- */
+/* The group's background is the black of a switched-off screen (--ink-8, the darkest
+   ink). The old picture squashes to a thin bright line (scale's second value is the
+   height), then shrinks to a dot and fades; the new one starts as a dot, grows into
+   the line, then opens out to the full screen. brightness() and contrast() make the
+   line glow white-ish, whatever the page's colours. */
+:root:active-view-transition-type(crt) {
+	&::view-transition-group(root) {
+		background: var(--ink-8);
+	}
+
+	&::view-transition-old(root) {
+		animation: palette-crt-off var(--palette-duration) both;
+	}
+
+	&::view-transition-new(root) {
+		animation: palette-crt-on var(--palette-duration) both;
+	}
+}
+
+@keyframes palette-crt-off {
+	0% {
+		scale: 1 1;
+		filter: none;
+		animation-timing-function: var(--ease-in-3);
+	}
+	30% {
+		scale: 1 0.006;
+		filter: brightness(8) contrast(2);
+		animation-timing-function: var(--ease-in-3);
+	}
+	40%,
+	100% {
+		scale: 0 0.006;
+		opacity: 0;
+		filter: brightness(8) contrast(2);
+	}
+}
+
+@keyframes palette-crt-on {
+	0%,
+	45% {
+		scale: 0 0.006;
+		opacity: 0;
+		filter: brightness(8) contrast(2);
+		animation-timing-function: var(--ease-out-3);
+	}
+	60% {
+		scale: 1 0.006;
+		opacity: 1;
+		filter: brightness(8) contrast(2);
+		animation-timing-function: var(--ease-out-4);
+	}
+	/* The glow fades fast as it opens (only filter here: scale keeps going from 60% to
+	   100%), or the whole screen would flash. */
+	70% {
+		filter: brightness(1.4);
+	}
+	100% {
+		scale: 1 1;
+		opacity: 1;
+		filter: none;
+	}
+}
