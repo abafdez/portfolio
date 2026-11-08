@@ -1,144 +1,171 @@
-# Drafts to publish
+# TODOs left in published posts
 
-Every post is still a draft in `content/blog/drafts/`. Publishing one is Alfonso's call:
+Every post was published on 2026-11-08 (Alfonso's call), all 57 with covers. The `<!-- TODO -->`s Claude left for Alfonso's own part are still in 45 of them, 118 in all. Svelte drops HTML comments, so readers don't see a TODO, only the gap where it goes. Each TODO is in the Spanish file (`<slug>.es.md`) too.
 
-```sh
-git mv content/blog/drafts/<slug> content/blog/published/
-```
+When one is filled (or deleted), remove it here. Regenerate the list with `grep -n '<!-- TODO' content/blog/published/*/*[!s].md`.
 
-Before moving a draft:
+New posts start as drafts in `content/blog/drafts/<slug>/` (dev only). Publishing one is `git mv content/blog/drafts/<slug> content/blog/published/`; a published post that links to a draft fails the build (`prerender_http_error … was linked from …`). The how-to for images, links and the publishing checklist is in `content/blog/published/README.md`.
 
-1. Read it through: Claude wrote these in Alfonso's voice.
-2. Fill or delete its `<!-- TODO -->`s. Svelte drops HTML comments, so readers wouldn't see a TODO, only the gap where Alfonso's part goes.
-3. Publish (or unlink) every draft it links to. A published post that links to a draft fails the build (`prerender_http_error … was linked from …`).
-4. Decide on the date: keep the draft's, or use the day it goes live.
-5. Its Spanish file (`<slug>.es.md`, since Phase 10; every draft has one): still says what the English one says, and read (`reviewed: true`). The TODOs are in both files.
-
-After the first post is live, remove the `handleUnseenRoutes` exceptions in `vite.config.ts`.
-
-Update this list as posts go up, or regenerate it: `grep -n '<!-- TODO' content/blog/drafts/*/*.md` for the TODOs, `grep -o '](\./[^)]*)' content/blog/drafts/*/*.md` for the links.
-
-The how-to for images, links and the publishing checklist is in `content/blog/published/README.md`.
-
-## Ready (no TODOs, no links to drafts)
-
-- `2026-10-29-enhanced-img`
-- `2026-10-29-page-controlled-animations`
-- `2026-10-29-responsive-without-breakpoints`
-- `2026-10-29-typed-component-props`
-
-## Standalone, with TODOs
-
-These link to no other draft.
-
-- `2026-10-20-sveltekit-3-github-pages-workflow`
-  - link the post or Bitácora entry where the base path is fixed (it's a Devlog entry: `/devlog/2026-10-21-layout-routing-base-path`)
+- `2026-10-30-theme-toggle-view-transition`
+  - the values I picked for the header, and why
+  - a short demo video or GIF of the reveal
+- `2026-10-31-dark-first-palette`
+  - a screenshot of the ink scale, or a swatch strip
+  - the contrast table: each pair and its ratio, in both themes
+  - what I'd still change, e.g. one --ink-hue variable instead of repeating 250 nine times
+- `2026-10-31-markdown-with-mdsvex`
+  - why I picked mdsvex
+  - what I tried before I understood this
+  - what I saw in the Network tab moving between two entries
+- `2026-10-31-route-transitions-composition`
+  - a short video clicking through the nav
+  - the durations I tried, and what felt right
 - `2026-10-31-scroll-driven-header-footer`
   - a short video of scrolling the home page, top to bottom
-  - try `animation-range: 0 50vh` in DevTools and describe the difference
+  - try animation-range: 0 50vh in DevTools and describe the difference
+- `2026-10-31-sticky-intro-scroll-spy`
+  - a short video of scrolling the home page on desktop
+  - what I tried for the line, and why a third of the way down
 - `2026-11-01-svelte-scoped-styles`
-  - try it in the Svelte playground and say what surprised me
-  - when I'd pick `:global()` in a component instead of a global class
-- `2026-11-02-drafts-that-never-ship`
-  - what I found in `build/` before the fix
-  - try it: `pnpm build`, then grep a draft's title in `build/`
-  - the first post I published, and whether I removed the exception
-- `2026-11-02-markdown-links-with-an-mdsvex-layout`
-  - how I noticed (dev has no base path, so it only broke in the build)
-  - the error message the build gave me
-  - anything else I'd replace with the layout (images? heading anchors?)
-- `2026-11-02-reading-time-at-build-time`
-  - does 200 wpm feel right? Time myself reading one of my posts
-  - what I found in `build/` when I looked for "minutes"
+  - try it yourself in the Svelte playground and say what surprised me
+  - when I'd pick :global() in a component instead of a global class
+- `2026-11-01-svelte-styling-resources`
+  - my verdict on each one after going through it
+  - check whether the course is free (the page answered 402 to a script)
+  - which video was worth it
+  - what surprised me in each experiment
 - `2026-11-02-a-code-block-frame`
-  - why one column
+  - why one column (it reads better? simpler?)
   - a screenshot of the overlapping numbers, or of the empty lines
-  - what a screen reader said when I pressed the copy button
+  - what a screen reader said when I pressed the button
 - `2026-11-02-a-contrast-checker-for-my-own-tokens`
-  - add `data-theme="light"` to an element in DevTools and describe what happened
-  - a link to the tool once it's live, and a screenshot of the tables
+  - try it in DevTools: add data-theme="light" to an element on the dark page and describe what happened
+- `2026-11-02-drafts-that-never-ship`
+  - what I found in the build output (grep a draft's title in build/) before the fix
+  - try it: `pnpm build`, then `grep -rl "<a draft's title>" build/` finds nothing; `pnpm dev` shows the drafts
+  - the first post I published, and whether I removed the exception
 - `2026-11-02-filters-in-a-svelte-class`
-  - whether AND felt right for tags, or OR
-  - what a screen reader said when toggling a tag and typing a search
+  - did AND feel right when I used it, or would I rather have tags as OR?
+  - what a screen reader said when I toggled a tag and typed a search
+- `2026-11-02-markdown-links-with-an-mdsvex-layout`
+  - how I noticed (the dev server has no base path, so it only broke in the build)
+  - the error message the build gave me
+  - anything else I'd replace with the layout (images? headings with anchor links?)
+- `2026-11-02-reading-time-at-build-time`
+  - does 200 feel right? Time myself reading one of my posts
+  - what I found in build/ when I looked for "minutes"
+- `2026-11-02-shiki-with-design-tokens`
+  - screenshots of the same block in light and dark
+  - a token I looked up with the inspector, and the rule I changed because of it
+  - how I checked contrast (DevTools color picker) and which color needed the most tries
+- `2026-11-02-tag-pages-from-frontmatter`
+  - the "unseen routes" error I got, if I saw it
+  - a screenshot of the tag index on /blog
+- `2026-11-03-a-form-that-remembers`
+  - a screenshot of the form and the CV next to it (with made-up data)
+  - put junk in localStorage in DevTools, reload, and describe what read() kept
+  - what I'd have done to find the select bug without being told
+- `2026-11-03-an-accordion-without-javascript`
+  - a short recording of the sections opening and closing
+  - try it with a screen reader: what does it say on a summary, open and closed?
+  - which browsers support name on details today? Check and add a line
+- `2026-11-03-brand-colors-at-my-themes-lightness`
+  - a screenshot of the icons in their raw brand colors on the dark theme, next to the final version
+  - open DevTools, change --icon-tone on :root to another color, and describe what happens to the logos
+  - which logo surprised me most after the change
+- `2026-11-03-form-validation-without-a-library`
+  - a screenshot of a field with a problem, in both themes
+  - what does :user-invalid alone look like? Try it in DevTools
+  - what a screen reader said on a field with a problem
+- `2026-11-03-htop-bars-and-a-border-spotlight`
+  - a short video: the bars filling on load, scrolling a window in, pointing at a few rows
+  - the three showcases (terminal, spotlight, orbit), and why I kept the first two
+  - what happened when I tried a stepped fill (steps(var(--ticks))) instead of the smooth one
+  - the network tab: logos.svg loaded once, then cached on the next visit
+- `2026-11-03-icons-as-data-and-an-svg-sprite`
+  - add or change a skill in the YAML, and say how it felt compared to the TypeScript file
+  - break the YAML on purpose (a logo that doesn't exist) and paste the error the build gave me
+- `2026-11-03-printing-a-cv-from-a-web-page`
+  - a screenshot of the print preview next to the page
+  - try the rule in global.css instead, and say what printed
+  - edit a line, print, then change a field: describe what happened
+  - open the PDF, select all, paste it in a text editor: is it in order?
+- `2026-11-03-radio-buttons-for-a-filter`
+  - a screenshot of the page with one profile picked
+  - what a screen reader actually said, moving through the group
+  - remove opacity: 0 in DevTools and describe what's under the labels
+  - was there a flash of every skill before the filter applied? Did it bother me?
 - `2026-11-03-smooth-scroll-only-where-you-mean-it`
-  - a recording of the glide before the fix
-  - whether the jump feels better than a glide or a fade
-
+  - a short screen recording of the glide, before the fix
+  - does the jump feel better, or would a fade between pages be nicer?
+- `2026-11-03-store-the-changes-not-the-copy`
+  - a screenshot of the editor with a skill unticked and one of my own
+  - open DevTools → Application → Local Storage and paste what my edits look like
+  - did I understand why before reading this? Try the broken version in the playground
+- `2026-11-03-windows-that-collapse-and-still-search`
+  - a short video: scrolling down as windows open, collapsing one, reloading
+  - try it: collapse a window, press Ctrl+F, search for a skill inside it
+  - collapse a window with the Animations panel in DevTools open, and slow it down
+  - what a screen reader says on the title bar, collapsed and open
 - `2026-11-04-breadcrumbs-from-route-ids`
   - a screenshot of the breadcrumbs and the nav marker on /projects/cv
-  - what a screen reader said on the breadcrumbs
-  - try it: the relative hrefs in `build/projects/cv.html`, and the marker with JS off
-
-- `2026-11-08-a-second-language-without-a-library` (with its `.es.md`)
-  - a screenshot of /es/blog next to /blog
-  - check one page in Search Console's URL inspection once deployed
-  - would I use Paraglide next time?
-- `2026-11-08-translations-next-to-the-post` (with its `.es.md`)
-  - how many translations I had to change, and what I changed most
-  - a screenshot of an untranslated post on the Spanish site
-
-## Groups that go up together
-
-A post needs every draft it links to, and those drafts need theirs.
-
-**Design system** (Phases 2–4.5). 14 TODOs in all, from the posts marked with a number:
-
-- `2026-10-27-design-tokens` → cascade layers, dark-first palette
-- `2026-10-29-cascade-layers` → design tokens, dark mode
-- `2026-10-29-dark-mode` → design tokens, theme toggle
-- `2026-10-30-theme-toggle-view-transition` (2: the header values and why; a demo GIF) → dark mode, route transitions
-- `2026-10-31-route-transitions-composition` (2: a video of the nav; the durations tried) → theme toggle
-- `2026-10-31-dark-first-palette` (3: an ink scale screenshot; the contrast table; what I'd still change) → design tokens, dark mode, blueprint
-- `2026-10-31-blueprint-background` (2: a screenshot and GIF; a DevTools experiment) → scroll-driven header and footer, decoration under text
-- `2026-11-04-decoration-under-text-needs-contrast` (3: a before/after screenshot; how light feels now; the 45% experiment in DevTools) → blueprint, contrast checker
-- `2026-10-31-scroll-driven-header-footer` (see above)
-
-These need that whole group live first:
-
-- `2026-10-22-open-props-jit-vite` → design tokens
-- `2026-10-29-self-hosted-fonts` → design tokens, dark-first palette
-- `2026-10-31-sticky-intro-scroll-spy` (2: a desktop video; where the line goes and why a third of the way down) → route transitions, scroll-driven header and footer
-
-**Svelte styles:**
-
-- `2026-11-01-svelte-styling-resources` (4: a verdict on each; whether the Joy of Code course is free; the video worth it; the experiments) → scoped styles
-
-**Markdown and code** (Phase 7):
-
-- `2026-10-31-markdown-with-mdsvex` (3: why mdsvex; what I tried; the Network tab) → markdown links, Shiki
-- `2026-11-06-linkable-headings-in-markdown` (3: the link I wanted to write; what a screen reader said; the hover-click-copy exercise) → markdown with mdsvex
-- `2026-11-06-images-next-to-the-post` (2: which post needed an image first; deleting an alt and reading the error) → markdown with mdsvex, drafts that never ship
-- `2026-11-07-colour-themes-as-token-overrides` (3: a Phosphor vs Tokyo Night screenshot; my favourite of the six; which transition and a recording) → design tokens, dark mode, decoration under text needs contrast
-- `2026-11-07-components-in-code-blocks` (1: the next field or component I want) → videos in markdown posts, markdown with mdsvex. Its clip (`awesome-filter.webm`, 960×540, 580 KB) was recorded with Playwright: replace it with my own recording if I want.
-- `2026-11-07-callouts-that-read-well-everywhere` (1: the part of the plugin I found most interesting) → linkable headings, markdown with mdsvex
-- `2026-11-08-a-tag-sidebar-that-fades-out` (3: a before/after screenshot of /blog; where focus goes after opening; my favourite tag colour). Links to no draft.
-- `2026-11-08-cards-that-become-the-page` (3: a recording /blog → a post → Back; clicking during a running transition; how it feels on a phone). Links to no draft.
-- `2026-11-06-videos-in-markdown-posts` (2: the hashed name the build wrote for my first video; the sizes of my first clip, raw, MP4 and WebM) → images next to the post, pages that jump
-- `2026-11-02-shiki-with-design-tokens` (3: light and dark screenshots; a token from the inspector; how I checked contrast) → code block frame
-- `2026-11-02-tag-pages-from-frontmatter` (2: the unseen-routes error; a screenshot of the tag index) → drafts that never ship
-
-**About page** (Phase 5):
-
-- `2026-11-03-brand-colors-at-my-themes-lightness` (3: raw vs final screenshot; changing `--icon-tone` in DevTools; the logo that surprised me) → contrast checker
-- `2026-11-03-icons-as-data-and-an-svg-sprite` (2: editing the YAML vs the TypeScript; the build error from a wrong logo) → filters in a Svelte class
-- `2026-11-03-windows-that-collapse-and-still-search` (4: a video of windows opening and collapsing; the collapse slowed down in the Animations panel; Ctrl+F inside a collapsed window; what a screen reader says on the title bar)
-- `2026-11-03-htop-bars-and-a-border-spotlight` (4: a video of the bars and the glow; the three showcases and why terminal and spotlight; a stepped fill next to the smooth one; logos.svg in the Network tab) → icons as data and an SVG sprite
-
-**CV builder** (Phase 5.5):
-
-- `2026-11-03-radio-buttons-for-a-filter` (4: a screenshot with a profile picked; what a screen reader said; the inputs without `opacity: 0`; the flash before the filter) → filters in a Svelte class
-- `2026-11-03-a-form-that-remembers` (3: a screenshot with made-up data; junk in localStorage and what `read()` kept; how I'd have found the select bug). Links to no draft.
-- `2026-11-03-printing-a-cv-from-a-web-page` (3: a print preview screenshot; the print rule tried in global.css; select-all from the PDF). Links to no draft.
-- `2026-11-03-form-validation-without-a-library` (3: screenshots in both themes; `:user-invalid` alone in DevTools; what a screen reader said). Links to no draft.
-- `2026-11-03-store-the-changes-not-the-copy` (3: a screenshot of the editor; my edits as stored in DevTools; the broken `??=` in the playground). Links to no draft.
-- `2026-11-03-an-accordion-without-javascript` (3: a recording of the sections; what a screen reader says on a summary; browser support for `name` on details). Links to no draft.
-
-**SEO and tests** (Phase 9):
-
-- `2026-11-04-seo-on-a-github-pages-project-site` (3: what I decided about indexing and why; a link preview screenshot once deployed; the sitemap in Search Console) → unit tests with Vitest, cover images
-- `2026-11-06-does-a-deploy-bust-the-cache` (1: what I expected before the diff) → caching between runs
-- `2026-11-06-caching-between-github-actions-runs` (2: a screenshot of the Caches page; the build times with and without the cache, once there are images) → does a deploy bust the cache, GitHub Pages workflow
-- `2026-11-06-cover-images-and-cards` (3: a screenshot of /blog with covers; what a screen reader said on a card; the tab-and-click exercise) → images next to the post, SEO
-- `2026-11-04-unit-tests-with-vitest` (2: what I watched first and what clicked; breaking summary() on purpose in watch mode). Links to no draft.
-- `2026-11-06-a-smoke-test-with-playwright` (2: what I used to check by hand before each merge; breaking a page and reading the trace) → unit tests with Vitest
-- `2026-11-06-pages-that-jump` (3: a recording of the Awesome list jumping; what my fonts are for; the DevTools Performance panel exercise) → filters in a Svelte class
+  - what a screen reader actually said on the breadcrumbs
+  - try it: build with BASE_PATH=/portfolio, open build/projects/cv.html and look at the nav's hrefs. Then turn JavaScript off in DevTools and check the marker is still there
+- `2026-11-04-decoration-under-text-needs-contrast`
+  - a before/after screenshot, the grey intro line on /bitacora with the mouse on it
+  - how the light theme feels now, and whether it needs its own values
+  - try it: in DevTools, set --line-major on .blueprint .spot back to 45% and hover the intro line on /bitacora. Describe what happens to the letters
+- `2026-11-04-seo-on-a-github-pages-project-site`
+  - what I decided, and why: findable, because a portfolio is meant to be found
+  - a screenshot of a link preview, from a messaging app or an OG preview tool, once it's deployed
+  - submitting the sitemap in Search Console, and what it reported
+- `2026-11-04-unit-tests-with-vitest`
+  - what I watched first, and what clicked (Net Ninja's crash course, below)
+  - try it: break summary() on purpose (delete the codeBlock line) and run pnpm test:watch. What does the report say?
+- `2026-11-06-a-smoke-test-with-playwright`
+  - what I used to check by hand before each merge
+  - try it: break a page yourself and read the failure, then open the trace (pnpm exec playwright show-trace …)
+- `2026-11-06-caching-between-github-actions-runs`
+  - a screenshot of the Caches page once there is one
+  - once there are images: add the step, and compare the Build step's time with and without the cache
+- `2026-11-06-cover-images-and-cards`
+  - a screenshot of /blog with covers and placeholders
+  - what my screen reader said on a card before and after
+  - which option I'd pick if a CMS let me choose the focal point
+  - try it: tab through /blog, then click a card's description and a tag
+- `2026-11-06-does-a-deploy-bust-the-cache`
+  - what I expected before running the diff
+- `2026-11-06-images-next-to-the-post`
+  - why I wanted images in the first place (which post needed one)
+  - try it: add an image to a draft, then delete its alt text and read the error
+- `2026-11-06-linkable-headings-in-markdown`
+  - which link to a section I wanted to write in the first place
+  - what my screen reader said for a heading, with wrap
+  - try it: hover a heading in a post, click it, and copy the address
+- `2026-11-06-videos-in-markdown-posts`
+  - what the build wrote for my first video (the hashed file name)
+  - the sizes of my first clip: raw, MP4, WebM
+- `2026-11-07-callouts-that-read-well-everywhere`
+  - Alfonso, the part of the plugin you found most interesting, in your words.
+- `2026-11-07-colour-themes-as-token-overrides`
+  - Alfonso, a screenshot of the same page in Phosphor and Tokyo Night, dark.
+  - Alfonso, your favourite of the six, and why.
+  - Alfonso, which ones you kept, which one you like best, and a recording of it (see the publishing guide's Videos section).
+- `2026-11-07-components-in-code-blocks`
+  - Alfonso, which field you'd add next, or the next component you want (a before/after compare? a live demo?).
+- `2026-11-08-a-second-language-without-a-library`
+  - Alfonso, a screenshot of /es/blog next to /blog.
+  - which effect suits a language change best, and a recording
+  - Alfonso, check one page in Search Console's URL inspection once it's deployed.
+  - Alfonso, your answer. Mine would be: for a site that's mostly interface, yes; for a site that's mostly content, the hook and a typed object were enough.
+- `2026-11-08-a-tag-sidebar-that-fades-out`
+  - Alfonso, a before and after screenshot of /blog.
+  - Alfonso, tab through the folded list, then open it: where does focus go?
+  - Alfonso, the tag colour you like most.
+- `2026-11-08-cards-that-become-the-page`
+  - a recording: /blog → a post with a cover → Back
+  - what happened when I clicked a card while a transition was still running (and why only the latest transition cleans up now)
+  - Alfonso, how it felt on a phone, and whether the timing needs tuning
+- `2026-11-08-translations-next-to-the-post`
+  - Alfonso, how many did you have to change, and what did you change most?
+  - Alfonso, a screenshot of an untranslated post on the Spanish site.

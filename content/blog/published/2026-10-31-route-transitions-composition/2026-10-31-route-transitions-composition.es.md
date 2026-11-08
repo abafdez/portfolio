@@ -132,7 +132,7 @@ Ir de la portada (1120px de ancho) al blog (60 caracteres de ancho) no necesitó
 }
 ```
 
-**Actualización:** lo de "donde estaba" no era del todo cierto. La foto antigua se coloca donde empieza el contenido _nuevo_, y al volver atrás SvelteKit desplaza la lista hasta donde estabas, así que el artículo antiguo se veía desde la mitad mientras se desvanecía. Ahora el layout mide dónde empieza el contenido antes y después del cambio y mueve la foto antigua la diferencia: `translate: -50% var(--route-shift, 0px)`. No se notaba hasta que las tarjetas empezaron a convertirse en sus páginas.
+**Actualización:** lo de "donde estaba" no era del todo cierto. La foto antigua se coloca donde empieza el contenido _nuevo_, y al volver atrás SvelteKit desplaza la lista hasta donde estabas, así que el artículo antiguo se veía desde la mitad mientras se desvanecía. Ahora el layout mide dónde empieza el contenido antes y después del cambio y mueve la foto antigua la diferencia: `translate: -50% var(--route-shift, 0px)`. No se notaba hasta que [las tarjetas empezaron a convertirse en sus páginas](./2026-11-08-cards-that-become-the-page).
 
 ## Un bug que esto encontró
 

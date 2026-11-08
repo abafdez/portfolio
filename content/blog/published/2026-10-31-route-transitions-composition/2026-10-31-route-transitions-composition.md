@@ -133,7 +133,7 @@ Going from the home page (1120px wide) to the blog (60 characters wide) needed n
 }
 ```
 
-**Update:** "where it was" wasn't quite true. The old picture sits where the _new_ content starts, and going Back, SvelteKit scrolls the list to where you were, so the old article showed from its middle as it faded out. The layout now measures the content's top before and after the change and moves the old picture by the difference: `translate: -50% var(--route-shift, 0px)`. It didn't show until cards started turning into their pages.
+**Update:** "where it was" wasn't quite true. The old picture sits where the _new_ content starts, and going Back, SvelteKit scrolls the list to where you were, so the old article showed from its middle as it faded out. The layout now measures the content's top before and after the change and moves the old picture by the difference: `translate: -50% var(--route-shift, 0px)`. It didn't show until [cards started turning into their pages](./2026-11-08-cards-that-become-the-page).
 
 ## A bug this found
 
