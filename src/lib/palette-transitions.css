@@ -26,14 +26,13 @@
 	}
 }
 
-/* --- Shared by ripple, dither and rain: a self-animating SVG mask ------------------- */
+/* --- Shared by ripple and rain: a self-animating SVG mask --------------------------- */
 /* The new page is drawn through --palette-mask, an SVG that animates itself (built in
-   palette-transitions.ts). The animation here only keeps the picture there until the
-   mask has finished. --palette-mask-size: the dither's mask is a small tile, repeated;
-   the others are one screen-sized image. Removing one of these effects: take its name
-   out of the list. */
-:root:active-view-transition-type(ripple, dither, rain)::view-transition-new(root) {
-	mask: var(--palette-mask) 0 0 / var(--palette-mask-size, 100% 100%) repeat;
+   palette-transitions.ts), one screen-sized image. The animation here only keeps the
+   picture there until the mask has finished. Removing one of these effects: take its
+   name out of the list. */
+:root:active-view-transition-type(ripple, rain)::view-transition-new(root) {
+	mask: var(--palette-mask) 0 0 / 100% 100% no-repeat;
 	animation-name: palette-hold;
 	animation-timing-function: linear;
 }
@@ -158,71 +157,6 @@
 		filter: brightness(1.15);
 	}
 	100% {
-		filter: none;
-	}
-}
-
-/* --- Effect: CRT switch-off --------------------------------------------------------- */
-/* The group's background is the black of a switched-off screen (--ink-8, the darkest
-   ink). The old picture squashes to a thin bright line (scale's second value is the
-   height), then shrinks to a dot and fades; the new one starts as a dot, grows into
-   the line, then opens out to the full screen. brightness() and contrast() make the
-   line glow white-ish, whatever the page's colours. */
-:root:active-view-transition-type(crt) {
-	&::view-transition-group(root) {
-		background: var(--ink-8);
-	}
-
-	&::view-transition-old(root) {
-		animation: palette-crt-off var(--palette-duration) both;
-	}
-
-	&::view-transition-new(root) {
-		animation: palette-crt-on var(--palette-duration) both;
-	}
-}
-
-@keyframes palette-crt-off {
-	0% {
-		scale: 1 1;
-		filter: none;
-		animation-timing-function: var(--ease-in-3);
-	}
-	30% {
-		scale: 1 0.006;
-		filter: brightness(8) contrast(2);
-		animation-timing-function: var(--ease-in-3);
-	}
-	40%,
-	100% {
-		scale: 0 0.006;
-		opacity: 0;
-		filter: brightness(8) contrast(2);
-	}
-}
-
-@keyframes palette-crt-on {
-	0%,
-	45% {
-		scale: 0 0.006;
-		opacity: 0;
-		filter: brightness(8) contrast(2);
-		animation-timing-function: var(--ease-out-3);
-	}
-	60% {
-		scale: 1 0.006;
-		opacity: 1;
-		filter: brightness(8) contrast(2);
-		animation-timing-function: var(--ease-out-4);
-	}
-	/* The glow fades fast as it opens (only filter here: scale keeps going from 60% to
-	   100%), or the whole screen would flash. */
-	70% {
-		filter: brightness(1.4);
-	}
-	100% {
-		scale: 1 1;
-		opacity: 1;
 		filter: none;
 	}
 }

@@ -73,13 +73,11 @@ Then I turned the checks into a unit test. For every theme and both halves, it r
 
 ## A transition for every switch
 
-Switching themes shouldn't just snap. The light/dark toggle already had a circle that grows from the button (a view transition). The colour themes got effects of their own, six of them, taking turns:
+Switching themes shouldn't just snap. The light/dark toggle already had a circle that grows from the button (a view transition). The colour themes got effects of their own, four of them, taking turns:
 
 - **Grid ripple:** the squares of my blueprint background flip to the new theme one by one, in a wave from where you clicked. The new page is shown through a mask: an SVG with one square per grid cell, each fading in a little later the farther it is. An SVG used as a CSS image runs its own `<animate>` elements, so the mask animates itself.
 - **Glitch:** for less than half a second, the new theme shows up in random horizontal bands that jump sideways, with the red channel pulled one way and green and blue the other, then it settles. `steps()` timing makes every frame a jump instead of a fade.
 - **Scanline redraw:** a glowing line sweeps down the screen and draws the new theme above it. Nothing draws the line: the new picture fades out just above it and the old one just below, so right at the line you see what's behind both, which is the brand colour.
-- **CRT switch-off:** the old page squashes into a bright line and a dot, like an old TV, and the new one opens out of the line.
-- **Dither dissolve:** the new theme appears pixel by pixel through an ordered (Bayer) dither, like a 1-bit screen.
 - **Column rain:** every grid column drops the new theme in from the top at its own moment.
 
 All of them are off for anyone who prefers reduced motion: the colours just change.
