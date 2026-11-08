@@ -7,8 +7,6 @@ reviewed: false
 
 El formulario de mi generador de CV necesitaba validación: un CV sin nombre ni correo no es un CV. No añadí ninguna librería. HTML ya tiene `required`, `type="email"` y `pattern`, y cada campo dice qué opina de su valor en `field.validity`.
 
-<!-- TODO: una captura de un campo con un problema, en los dos temas -->
-
 ## Decide el navegador
 
 ```ts
@@ -27,8 +25,6 @@ export function problem(field: HTMLInputElement): string {
 
 Ponerse en rojo mientras todavía estás escribiendo tu correo es de mala educación. Así que un campo se comprueba por primera vez cuando sales de él, con un único manejador `focusout` en el formulario (sube por el árbol; `blur`, no). A partir de ahí se comprueba con cada tecla, así que el mensaje desaparece en cuanto el valor está bien. CSS tiene exactamente esta regla de serie, `:user-invalid`, pero yo necesitaba el mensaje como texto, así que es JS.
 
-<!-- TODO: ¿cómo se ve :user-invalid solo? Probarlo en DevTools -->
-
 ## No solo rojo
 
 Un borde rojo no le dice nada a quien no distingue el rojo. Cada problema también lleva un mensaje, fuera del `<label>` (dentro, pasaría a formar parte del nombre del campo), enlazado con `aria-describedby`. El borde reacciona a `aria-invalid="true"`, el mismo atributo que oye un lector de pantalla:
@@ -41,8 +37,6 @@ Un borde rojo no le dice nada a quien no distingue el rojo. Cada problema tambi�
 ```
 
 La sombra hace que el borde parezca el doble de grueso sin mover nada.
-
-<!-- TODO: qué dijo un lector de pantalla en un campo con un problema -->
 
 ## Una trampa: los patrones en modo v
 

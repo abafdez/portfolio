@@ -25,8 +25,6 @@ El hash de un nombre de archivo se calcula a partir del **contenido** del archiv
 
 Las páginas cambian porque SvelteKit marca cada build con una versión, por defecto la hora del build, y la escribe en cada página. La usa para darse cuenta de que se ha desplegado una versión nueva mientras alguien tiene el sitio abierto.
 
-<!-- TODO: qué esperaba antes de ejecutar el diff -->
-
 ## Lo que envía GitHub Pages
 
 Luego miré las cabeceras que envía el sitio publicado para uno de esos archivos:

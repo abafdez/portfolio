@@ -102,7 +102,3 @@ The paths stay in the file, never in the page: not in the HTML, and not in the d
 | The page's JS (gzipped)       | ~44 KB | ~5 KB  |
 | `logos.svg` (gzipped, cached) | none   | 31 KB  |
 | Lighthouse performance        | 91     | 96     |
-
-<!-- TODO: add or change a skill in the YAML, and say how it felt compared to the TypeScript file -->
-
-<!-- TODO: break the YAML on purpose (a logo that doesn't exist) and paste the error the build gave me -->

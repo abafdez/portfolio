@@ -9,8 +9,6 @@ Mi página sobre mí agrupa mis habilidades en ventanas de terminal, diez, con u
 
 La forma habitual de plegar cosas es `<details>`. Aquí no la usé: el summary tendría que contener el encabezado, y algunos lectores de pantalla pierden el rol de un encabezado dentro de un summary, que es un botón. En su lugar, la barra de título es un `<button>` de verdad con `aria-expanded`. Entonces tuve que hacer lo que `<details>` da gratis, y unas cuantas cosas que no da.
 
-<!-- TODO: un vídeo corto: hacer scroll mientras se abren las ventanas, plegar una, recargar -->
-
 ## Sin JavaScript, todo está abierto
 
 El botón necesita JavaScript, así que sin él nada debería parecer plegable. Los estilos de plegado solo existen dentro de `@media (scripting: enabled)`, y la pista se oculta en `(scripting: none)`:
@@ -51,8 +49,6 @@ const openOnFind: Attachment<HTMLElement> = (list) => {
 
 `ready` importa: el atributo solo se pone cuando se ejecuta el JavaScript. Antes, una lista plegada solo está en una fila de altura cero (más sobre eso abajo). Y nunca un `display: none` desde el CSS: se impondría a `until-found`, y la búsqueda no encontraría nada.
 
-<!-- TODO: probarlo: plegar una ventana, pulsar Ctrl+F y buscar una habilidad que haya dentro -->
-
 ## Animar desde y hacia la nada
 
 CSS no puede animar `height: auto`. Sí puede animar una fila de grid de `1fr` (tan alta como su contenido) a `0fr` (nada):
@@ -91,8 +87,6 @@ function collapsed(event: TransitionEvent) {
 
 `transitionend` sube por el árbol, y la lista está llena de transiciones (una barra crece cuando la señalas), así que solo escucha a su propia fila. Con reducción de movimiento no hay nada que esperar, y la lista se oculta en el acto.
 
-<!-- TODO: plegar una ventana con el panel Animations de DevTools abierto, y ralentizarlo -->
-
 ## La barra de título
 
 Las luces dicen el estado: verde (zoom) mientras una ventana está abierta y amarilla (minimizar) mientras está plegada, con una curva de muelle para que la luz que se enciende dé un pequeño salto.
@@ -130,8 +124,6 @@ function toggle() {
 ```
 
 Mi primera versión también guardaba cada elección en `localStorage`, para la siguiente visita. Lo quité: volver a una página con la mitad de las ventanas cerradas, sin recordar haberlas cerrado, parecía que estaba roto. Ahora una recarga empieza de cero.
-
-<!-- TODO: qué dice un lector de pantalla en la barra de título, plegada y abierta -->
 
 ## Un efecto secundario
 

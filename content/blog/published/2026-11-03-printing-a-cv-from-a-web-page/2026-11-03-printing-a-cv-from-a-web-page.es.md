@@ -7,8 +7,6 @@ reviewed: false
 
 Mi generador de CV no genera PDFs. Ya lo hace el navegador: "Guardar como PDF" en el diálogo de impresión da un PDF con texto de verdad, que se puede seleccionar, que es lo que necesitan los sistemas de seguimiento de candidaturas (ATS). Mi trabajo es una hoja de estilos de impresión que deje solo el CV en la página.
 
-<!-- TODO: una captura de la vista previa de impresión junto a la página -->
-
 ## Ocultar el sitio
 
 La cabecera, el pie y la rejilla del fondo se ocultan solos:
@@ -22,8 +20,6 @@ La cabecera, el pie y la rejilla del fondo se ocultan solos:
 ```
 
 Cada uno en su propio componente, no en mi hoja de estilos global. Mi CSS global vive en cascade layers, y los estilos de los componentes no tienen capa, así que ganan a cualquier capa, sea cual sea la especificidad. Un `display: none` global perdería ante cualquier `display` que un componente se ponga a sí mismo.
-
-<!-- TODO: probar la regla en global.css y contar qué se imprimió -->
 
 ## El papel es blanco
 
@@ -79,7 +75,3 @@ Pero Svelte no sabe nada de lo que escribo ahí. Cuando cambia el formulario, so
 `shown` es una cadena JSON con todo lo que muestra el CV. Cualquier cambio en el formulario la cambia, y `{#key}` tira el CV anterior. La pista bajo los botones lo dice.
 
 Quería `contenteditable="plaintext-only"`, que ya hace que lo pegado desde Word sea texto plano. Pero entonces Chrome fuerza `white-space: pre-wrap` en todo lo que hay dentro, incluso por encima de un `!important` en línea, y los saltos de línea entre los bloques de mi plantilla se imprimían como líneas en blanco. Así que es `"true"`, más un manejador del pegado que inserta solo el texto plano del portapapeles.
-
-<!-- TODO: editar una línea, imprimir y luego cambiar un campo: contar qué pasó -->
-
-<!-- TODO: abrir el PDF, seleccionarlo todo y pegarlo en un editor de texto: ¿está en orden? -->

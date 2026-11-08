@@ -10,8 +10,6 @@ I'd never written a test. My site had type checks (`pnpm check`) and a formatter
 
 A **unit test** tries those inputs for me. It calls one small piece of code (a unit, usually a function) with an input I choose, and checks that the output is what I expect. Then it does that every time I run the tests, so a change that breaks it can't slip by.
 
-<!-- TODO: what I watched first, and what clicked (Net Ninja's crash course, below) -->
-
 ## What to test first
 
 The easiest code to test is a **pure function**: same input, same output, and it doesn't change anything outside itself. My `content.ts` has three:
@@ -125,8 +123,6 @@ const codeBlock = /^(`{3,})[^\n]*\n[\s\S]*?^\1/gm;
 ```
 
 ``(`{3,})`` captures the opening fence (three backticks or more), and `\1` means "the same thing again", so the block ends at a fence with as many backticks. A four-backtick block that shows a three-backtick one inside it goes whole too. And that got its own test.
-
-<!-- TODO: try it: break summary() on purpose (delete the codeBlock line) and run pnpm test:watch. What does the report say? -->
 
 ## A test over the real content
 

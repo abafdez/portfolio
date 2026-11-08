@@ -68,8 +68,6 @@ Dos detalles en los que tuve que pensar:
 
 Tiene que coincidir cada palabra, y cada etiqueta elegida. Cada cosa que añades estrecha la lista.
 
-<!-- TODO: ¿me pareció bien el Y cuando lo usé, o preferiría las etiquetas como O? -->
-
 ## A la URL y de vuelta
 
 El filtro se convierte a sí mismo en parámetros (`?q=grid&tag=docs&tag=layout`) y los vuelve a leer. Pero la página está prerenderizada, y al construir el sitio no hay ninguna URL de visitante que leer. Así que el componente la lee en `onMount`, que solo se ejecuta en el navegador:
@@ -130,5 +128,3 @@ search:not(.ready) {
 - Los botones de etiqueta se activan y desactivan: `aria-pressed` hace que los lectores de pantalla digan "presionado", y el relleno lo muestra a todos los demás. (**Actualización:** ahora son las mismas fichas de etiqueta del blog, del mismo componente `TagCloud`; una elegida tiene un anillo de su color y una marca.)
 - El contador ("3 de 25 enlaces") es un `role="status"`, así que se anuncia cuando cambia.
 - "Quitar filtros" desaparece cuando ya no hay nada que quitar, y con él el foco caía al principio de la página. Ahora, al quitar los filtros, el foco pasa al cuadro de búsqueda.
-
-<!-- TODO: qué dijo un lector de pantalla al activar una etiqueta y escribir una búsqueda -->

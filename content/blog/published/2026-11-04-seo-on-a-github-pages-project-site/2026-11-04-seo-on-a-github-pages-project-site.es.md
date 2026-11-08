@@ -32,8 +32,6 @@ La raíz de `abafdez.github.io` pertenece a otro repositorio (`abafdez.github.io
 
 De todas formas no significan lo mismo. `Disallow` dice "no rastrees esto", pero una URL que enlazan otros sitios puede seguir apareciendo en los resultados, sin descripción. `noindex` dice "no listes esta página", y el rastreador tiene que poder entrar para leerlo.
 
-<!-- TODO: qué decidí, y por qué: que se pueda encontrar, porque un portfolio está para que lo encuentren -->
-
 Decidí que el sitio se pudiera encontrar. El archivo ya no está, y la única página que no está lista (la hoja de revisión de la mascota) dice `noindex`.
 
 ## Un componente para la cabecera de cada página
@@ -55,8 +53,6 @@ Cada página tenía su propio `<svelte:head>` con un título, y algunas con una 
 Una página con fecha de `published` es un `article` con `article:published_time`, y el resto son `website`. `noindex` es una prop, así que `/mascot` es solo `<Seo … noindex />`.
 
 Empecé sin `og:image`, así que las vistas previas eran tarjetas de texto. (Las vistas previas necesitan un PNG o un JPG, no un SVG.) Más tarde, los artículos tuvieron [imágenes de portada](./2026-11-06-cover-images-and-cards), y un artículo con portada la usa ahora como su `og:image`, con `twitter:card` en `summary_large_image`, la tarjeta grande.
-
-<!-- TODO: una captura de la vista previa de un enlace, en una app de mensajería o en una herramienta de vista previa de OG, cuando esté desplegado -->
 
 ## URLs absolutas al prerenderizar
 
@@ -122,8 +118,6 @@ const pages: Page[] = [
 Un artículo o una entrada nueva aparece en él sin tocar este archivo. Nada lo enlaza, así que va en `prerender.entries`, como mi sprite SVG.
 
 Normalmente, `robots.txt` dice dónde está el sitemap. En mi caso no, mira arriba. Así que lo envío a mano en Google Search Console.
-
-<!-- TODO: enviar el sitemap en Search Console, y qué informó -->
 
 ## Enlaces
 

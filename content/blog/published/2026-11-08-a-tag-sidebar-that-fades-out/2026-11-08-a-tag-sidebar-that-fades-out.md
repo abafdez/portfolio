@@ -8,8 +8,6 @@ cover: Coloured tag pills arranged around a glowing sphere.
 
 The first thing you saw on my blog page was a wall of words: every tag, A to Z, 55 of them. More than half were on a single post.
 
-<!-- TODO: Alfonso, a before and after screenshot of /blog. -->
-
 ## How others do it
 
 Before styling anything, I looked at a few blogs I like:
@@ -29,8 +27,6 @@ A fade has a catch. A tag you can barely see is still a link: the keyboard can s
 
 When the list opens, focus moves to the first tag that was hidden, since that's what you asked to see.
 
-<!-- TODO: Alfonso, tab through the folded list, then open it: where does focus go? -->
-
 ## No JavaScript, no jump
 
 The fold is in the CSS from the start, under `@media (scripting: enabled)`. If I added it once the JavaScript ran, the page would load with every tag showing and then jump up as the list folded. Without JavaScript, the media query doesn't match: every tag shows and the button stays hidden, because nothing could open it.
@@ -40,8 +36,6 @@ The fold is in the CSS from the start, under `@media (scripting: enabled)`. If I
 Each tag gets a hue from a small hash of its name, so `css` is always the same colour. Its lightness comes from the theme's brand colour, so the tags fit every theme and both modes. The colour shows as a stripe on the chip's edge, a faint tint behind it, and a ring that lights up near the pointer.
 
 A tint is a new background, so it needs its own contrast check. I checked the text on every hue in steps of three degrees, in every colour theme, light and dark. The worst was 4.81:1, above the 4.5:1 that body text needs, so a new tag can't break it.
-
-<!-- TODO: Alfonso, the tag colour you like most. -->
 
 **Update:** the sidebar is a component now, `TagColumns.svelte`, and the Devlog has one too. The Awesome lists use the same chips as their filters: `TagCloud` makes links or, given `pressed` and `ontoggle`, toggle buttons.
 

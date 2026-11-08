@@ -7,8 +7,6 @@ reviewed: false
 
 Mi sitio se sirve desde `/portfolio`, porque ahí es donde GitHub Pages pone un sitio de proyecto. En mis componentes Svelte, cada enlace pasa por el `resolve()` de SvelteKit, que añade esa ruta base. Pero mis artículos son markdown, y un enlace de markdown a `/about` es solo `<a href="/about">`. Apunta a la raíz del dominio, fuera de mi sitio, y da un 404.
 
-<!-- TODO: cómo me di cuenta (el servidor de desarrollo no tiene ruta base, así que solo se rompía en el build) -->
-
 ## Un layout para cada archivo markdown
 
 mdsvex puede envolver cada archivo en un componente Svelte, su layout. Es una opción de `compile`, y tiene que ser una ruta de archivo, porque mdsvex lee el archivo:
@@ -77,8 +75,6 @@ Tres tipos de enlaces:
 
 Eso renuncia a una comprobación, así que otra cosa tiene que hacerla. La hace el rastreador del prerenderizado: sigue cada enlace mientras construye el sitio, y un enlace a una página que no existe hace fallar el build. Lo probé con un enlace a `/nope`, y el build se detuvo.
 
-<!-- TODO: el mensaje de error que me dio el build -->
-
 ## Fuera `nofollow`
 
 mdsvex añade `rel="nofollow"` a cada enlace. Les dice a los buscadores que no respondo de la página que enlazo. Eso está pensado para enlaces que no controlo, como los comentarios. Los enlaces de mis artículos son enlaces que recomiendo, así que `MarkdownLink` nunca lee la prop `rel`, y desaparece.
@@ -86,5 +82,3 @@ mdsvex añade `rel="nofollow"` a cada enlace. Les dice a los buscadores que no r
 ## Un reemplazo más
 
 mdsvex 0.12 todavía escribe sintaxis de Svelte 4, y con un layout añade `{...$$props}` a la llamada al layout. El modo runes no tiene `$$props`, y de todas formas nada le pasa props a un artículo, así que mi plugin de Vite lo quita con un `replace` más.
-
-<!-- TODO: algo más que sustituiría con el layout (¿imágenes? ¿encabezados con enlaces ancla?) -->

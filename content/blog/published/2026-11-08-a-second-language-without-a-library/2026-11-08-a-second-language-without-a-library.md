@@ -39,8 +39,6 @@ export const reroute: Reroute = ({ url }) => delocalize(url.pathname);
 
 The URL doesn't change, so `page.url` still has the `/es`, and that's where the root layout reads the language from. The route id doesn't change either, which mattered more than I expected: my breadcrumbs and my nav compare route ids, and they kept working without a line changed.
 
-<!-- TODO: Alfonso, a screenshot of /es/blog next to /blog. -->
-
 ## The one rule: every link goes through route()
 
 The spike's surprise. While SvelteKit prerenders a page, `resolve()` writes links relative to that page's real URL. On `/es/blog`, `resolve('/blog/[slug]')` gives `../blog/x`, and that's the English post.
@@ -57,8 +55,6 @@ One more trap: `/blog` and `/es/blog` are the same route, so switching language 
 
 The switch is a link in the header to the same page in the other language, with `hreflang` and `lang` set to where it goes. Since the whole page changes in place, it plays the same effects as my colour themes (a ripple, a glitch, a scanline or rain, taking turns), started from the root layout's `onNavigate` when the old and new URLs are in different languages. `data-sveltekit-reset="false"` keeps you where you were reading instead of jumping to the top.
 
-<!-- TODO: which effect suits a language change best, and a recording -->
-
 ## Search engines
 
 Each page lists itself in both languages, so Google can send Spanish searchers to the Spanish page:
@@ -71,8 +67,4 @@ Each page lists itself in both languages, so Google can send Spanish searchers t
 
 The sitemap says the same, and `<html lang>` says which language each page is in, so a screen reader picks the right voice.
 
-<!-- TODO: Alfonso, check one page in Search Console's URL inspection once it's deployed. -->
-
 ## Would I use Paraglide next time?
-
-<!-- TODO: Alfonso, your answer. Mine would be: for a site that's mostly interface, yes; for a site that's mostly content, the hook and a typed object were enough. -->

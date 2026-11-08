@@ -61,8 +61,6 @@ La solución fue un selector en `tokens.css`. Los tokens se vuelven a declarar e
 
 Ahora cualquier parte de una página puede estar en el otro tema. Las muestras del comprobador lo usan para dibujar cada par en los dos temas solo con CSS, y los temas con nombre también podrán usarlo.
 
-<!-- TODO: probarlo en DevTools: añadir data-theme="light" a un elemento de la página oscura y contar qué pasó -->
-
 ## Un par que se puede compartir, en una página prerenderizada
 
 El par que eliges va en la URL, para poder compartirlo. Dos detalles de SvelteKit:

@@ -47,8 +47,6 @@ async function highlight(code: string, lang: string | null | undefined, file: st
 
 Cada componente del registro lista sus campos y tiene un `render()` que devuelve marcado. El del vídeo es HTML sin más: el mismo `<video>` que antes escribía a mano, con todos los atributos que si no se me olvidarían (`controls`, `muted`, `playsinline`, `preload="metadata"`). Un componente que necesite JavaScript podría devolver un componente Svelte.
 
-<!-- TODO: Alfonso, qué campo añadirías después, o el siguiente componente que quieres (¿una comparación de antes y después? ¿una demo en vivo?). -->
-
 ## El build comprueba el YAML
 
 Una errata en un bloque de código es fácil de pasar por alto: simplemente mostraría lo que no es, o nada. Así que el build lee el YAML y falla, nombrando el artículo, cuando:

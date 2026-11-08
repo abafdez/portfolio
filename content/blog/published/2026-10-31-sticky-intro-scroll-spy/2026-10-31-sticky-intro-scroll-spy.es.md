@@ -7,8 +7,6 @@ reviewed: false
 
 Me encanta la maquetación del [sitio de Brittany Chiang](https://brittanychiang.com): en una pantalla ancha, la introducción se queda a la izquierda mientras el contenido se desplaza a la derecha, y un pequeño menú bajo la introducción ilumina la sección que estás leyendo. Este artículo cuenta cómo hice mi versión: la columna fija, el seguimiento del scroll y un anclaje suave.
 
-<!-- TODO: un vídeo corto haciendo scroll por la portada en escritorio -->
-
 ## La columna fija
 
 A partir de 64rem de ancho, la página es una rejilla de dos columnas:
@@ -82,8 +80,6 @@ El efecto lo ejecuta cuando la página ya está en el DOM, así que una recarga 
 Mi primera versión usaba un `IntersectionObserver` con `rootMargin: '-33% 0px -67% 0px'`, que reduce la zona vigilada a esa misma línea fina. Parece más limpio: no hay que medir con cada scroll, el navegador te avisa cuando una sección cruza la línea. Pero un observer solo informa de _cambios_. Cuando hacía scroll rápido, el scroll podía detenerse con la línea en el hueco entre dos secciones; nada la tocaba, no llegaba ningún evento y la sección anterior seguía resaltada. Medir diez secciones en cada scroll no cuesta nada, y los navegadores lanzan `scroll` como mucho una vez por fotograma, así que cambié la versión limpia por una que no puede desacompasarse.
 
 El enlace actual recibe `aria-current="location"`, el valor pensado para "dónde estás dentro de esta página", junto al `"page"` de la página actual en el menú principal.
-
-<!-- TODO: qué probé para la línea, y por qué a un tercio de la pantalla -->
 
 ## Anclaje, pero suave
 

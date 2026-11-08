@@ -52,8 +52,6 @@ const localFile = /\b(src|poster)="(\.\/[^"]+)"/g;
 
 A plain `import clip from './clip.mp4'` is enough: [Vite](https://vite.dev/guide/assets) knows `.mp4`, `.webm` and `.vtt` as assets. It copies the file into the build with a hash in its name and gives back that URL. Unlike images, nothing is re-encoded: the file is used as it is, so I compress it before committing.
 
-<!-- TODO: what the build wrote for my first video (the hashed file name) -->
-
 ## The attributes
 
 Each one is there for a reason:
@@ -81,8 +79,6 @@ ffmpeg -i raw.mp4 -vf "scale=1280:-2" -c:v libvpx-vp9 -crf 40 -b:v 0 -row-mt 1 -
 - `-crf`: quality; higher is smaller and worse.
 - `-an`: no audio track.
 - `+faststart`: the MP4's index goes at the start of the file, so it can start playing before it has all downloaded.
-
-<!-- TODO: the sizes of my first clip: raw, MP4, WebM -->
 
 ## Testing it without a recording
 

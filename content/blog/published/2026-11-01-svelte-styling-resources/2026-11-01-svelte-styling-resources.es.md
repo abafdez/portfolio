@@ -9,8 +9,6 @@ Los estilos con ámbito de Svelte me confundieron durante un tiempo. ¿Por qué 
 
 El ámbito funciona igual desde Svelte 3, así que el material antiguo sigue valiendo. El único cambio en Svelte 5 es la especificidad: las partes extra de un selector con ámbito van envueltas en `:where()`, así que no suman nada.
 
-<!-- TODO: mi opinión de cada uno después de repasarlo -->
-
 ## Empieza aquí
 
 - **[Tutorial de Svelte: Styling](https://svelte.dev/tutorial/svelte/styling).** El tutorial interactivo oficial. Cada paso es un pequeño editor con el resultado al lado, y las lecciones siguientes tratan `:global`, el atributo `class` y cómo pasar estilos a los componentes.
@@ -18,8 +16,6 @@ El ámbito funciona igual desde Svelte 3, así que el material antiguo sigue val
 - **[Documentación de Svelte: Custom properties](https://svelte.dev/docs/svelte/custom-properties).** Pasar valores como `--accent="red"` a un componente, y el elemento envoltorio que los contiene.
 
 ## Un curso
-
-<!-- TODO: comprobar si el curso es gratis (la página le respondió con un 402 a un script) -->
 
 - **[Joy of Code: The Complete Svelte 5 Course](https://joyofcode.xyz/learn-svelte).** Escrito, no en vídeo, y al día con Svelte 5. Su parte de estilos trata los estilos con ámbito, `:global`, el bloque anidado `:global { … }` y `article :global { … }` para dar estilo a todo lo que hay dentro de un elemento.
 
@@ -30,8 +26,6 @@ El ámbito funciona igual desde Svelte 3, así que el material antiguo sigue val
 - **["Svelte - Global CSS"](https://www.youtube.com/watch?v=v7s6pb0jrhI).** Corto, solo sobre `:global`.
 - **["Master Styling In Svelte 5"](https://m.youtube.com/watch?v=EfpJDs4MdXo).** Más largo, y específico de Svelte 5.
 
-<!-- TODO: qué vídeo mereció la pena -->
-
 ## Pruébalo tú
 
 Lo que me hizo entenderlo fue el [playground de Svelte](https://svelte.dev/playground). Compila mientras escribes, y las pestañas **CSS output** y **JS output** muestran exactamente qué ha hecho el compilador. Tres experimentos:
@@ -39,8 +33,6 @@ Lo que me hizo entenderlo fue el [playground de Svelte](https://svelte.dev/playg
 1. **Dónde va la clase.** Una página con un `<p>` y un componente hijo que muestra un `<h2>`. Añade una regla para cada uno en el `<style>` de la página. La regla del `h2` sale marcada como `(unused)`: el encabezado está escrito en el hijo, así que nunca recibe la clase de la página.
 2. **Los hijos pertenecen al padre.** Pásale `<span class="new">` a una tarjeta como hijo. Una regla `.new` en la página le da estilo, aunque aparezca dentro de la tarjeta. Mueve la regla a la tarjeta y deja de funcionar.
 3. **Custom properties.** Muestra la misma tarjeta con `--accent="red"` y con `--accent="blue"`, y haz que la tarjeta use `var(--accent, orange)`. Inspecciona el resultado: las dos tarjetas tienen la misma clase con ámbito, y cada una está dentro de un `<svelte-css-wrapper style="display: contents; --accent: …">`. El ámbito decide con qué elementos coincide una regla; la custom property solo cambia un valor que usa.
-
-<!-- TODO: qué me sorprendió en cada experimento -->
 
 ## Relacionado, no específico de Svelte
 

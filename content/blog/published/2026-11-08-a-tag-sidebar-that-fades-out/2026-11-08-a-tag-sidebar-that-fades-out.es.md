@@ -7,8 +7,6 @@ reviewed: false
 
 Lo primero que se veía en la página de mi blog era una pared de palabras: todas las etiquetas, de la A a la Z, 55. Más de la mitad estaban en un solo artículo.
 
-<!-- TODO: Alfonso, una captura de /blog antes y después. -->
-
 ## Cómo lo hacen otros
 
 Antes de dar estilo a nada, miré unos cuantos blogs que me gustan:
@@ -28,8 +26,6 @@ Un desvanecido tiene una pega. Una etiqueta que casi no se ve sigue siendo un en
 
 Cuando se abre la lista, el foco pasa a la primera etiqueta que estaba oculta, porque eso es lo que pediste ver.
 
-<!-- TODO: Alfonso, recorrer con el tabulador la lista plegada y luego abrirla: ¿adónde va el foco? -->
-
 ## Sin JavaScript, sin saltos
 
 El pliegue está en el CSS desde el principio, bajo `@media (scripting: enabled)`. Si lo añadiera cuando se ejecuta el JavaScript, la página cargaría con todas las etiquetas a la vista y luego daría un salto hacia arriba al plegarse la lista. Sin JavaScript, la media query no coincide: se ven todas las etiquetas y el botón sigue oculto, porque nada podría abrirlo.
@@ -39,8 +35,6 @@ El pliegue está en el CSS desde el principio, bajo `@media (scripting: enabled)
 Cada etiqueta recibe un tono sacado de un pequeño hash de su nombre, así que `css` siempre es del mismo color. Su luminosidad sale del color de marca del tema, así que las etiquetas encajan en todos los temas y en los dos modos. El color se ve como una franja en el borde del chip, un tinte tenue detrás y un anillo que se ilumina cerca del puntero.
 
 Un tinte es un fondo nuevo, así que necesita su propia comprobación de contraste. Comprobé el texto sobre cada tono en pasos de tres grados, en cada tema de color, claro y oscuro. El peor dio 4,81:1, por encima del 4,5:1 que necesita el texto normal, así que una etiqueta nueva no puede romperlo.
-
-<!-- TODO: Alfonso, el color de etiqueta que más te gusta. -->
 
 **Actualización:** la barra lateral ya es un componente, `TagColumns.svelte`, y el Devlog también tiene una. Las listas Awesome usan las mismas fichas como filtros: `TagCloud` crea enlaces o, si recibe `pressed` y `ontoggle`, botones que se activan y desactivan.
 

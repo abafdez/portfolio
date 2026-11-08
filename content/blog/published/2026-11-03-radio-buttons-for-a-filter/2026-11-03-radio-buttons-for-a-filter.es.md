@@ -7,8 +7,6 @@ reviewed: false
 
 Me presento a distintos tipos de empleo: desarrollo web, soporte informático, mainframe. Mi página sobre mí lista todas mis habilidades, y para un empleo de soporte la mitad son ruido. Así que la página tiene un filtro: `/about?profile=support` muestra solo las habilidades que importan para soporte, y ese es un enlace que puedo enviar.
 
-<!-- TODO: una captura de la página con un perfil elegido -->
-
 ## ¿Botones que se activan o radios?
 
 Mis listas Awesome ya tienen un filtro: botones de etiqueta con `aria-pressed`, con los que puedes elegir varias etiquetas a la vez ([cómo funciona ese](./2026-11-02-filters-in-a-svelte-class)). Aquí eliges un perfil cada vez, y el navegador ya tiene un control justo para eso:
@@ -34,8 +32,6 @@ El mismo `name`, y los inputs se convierten en un grupo. Lo que viene con eso, s
 - El tabulador entra en el grupo una vez y sale una vez, en vez de pararse en cada opción.
 - Las flechas del teclado se mueven entre las opciones y las van eligiendo.
 - Un lector de pantalla dice el nombre del grupo y luego "botón de opción, 2 de 4".
-
-<!-- TODO: qué dijo de verdad un lector de pantalla al moverse por el grupo -->
 
 ## Ocultar el círculo, no el input
 
@@ -66,8 +62,6 @@ label:has(:focus-visible) {
 ```
 
 Antes de `:has()`, esto necesitaba el input justo antes de la etiqueta, fuera de ella, para que el CSS pudiera llegar a la etiqueta con `input:checked + label`.
-
-<!-- TODO: quitar opacity: 0 en DevTools y describir qué hay debajo de las etiquetas -->
 
 ## Un solo estado
 
@@ -102,5 +96,3 @@ onMount(() => {
 ```
 
 Solo los ids que declaran los datos: `?profile=nope` lo muestra todo en vez de no mostrar nada. Sin JavaScript, la página muestra todas las habilidades y ningún filtro, que es la alternativa correcta: un filtro que no puede filtrar no debería estar.
-
-<!-- TODO: ¿se veían un momento todas las habilidades antes de aplicarse el filtro? ¿Me molestó? -->

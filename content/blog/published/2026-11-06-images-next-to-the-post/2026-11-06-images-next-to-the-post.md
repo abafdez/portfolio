@@ -34,8 +34,6 @@ content/blog/
 
 Everything about a post is in one place. Publishing is one move, and deleting a post deletes its images. While I was at it, drafts and published posts got a folder each, so where a post stands is obvious from its path.
 
-<!-- TODO: why I wanted images in the first place (which post needed one) -->
-
 ## The globs
 
 My site finds the posts with Vite's `import.meta.glob`. With a folder each, the pattern goes one level deeper:
@@ -128,8 +126,6 @@ My first version had `<img src=` with a single space. It worked on my test image
 ```
 
 The regex didn't match, the image stayed a plain `<img src="./screenshot.png">`, and the browser asked for a file that wasn't there. `\s+` matches any whitespace, line breaks included. The function now lives in its own file, so Vitest can test it with real mdsvex output, the long tag included. (Today it's `enhance-media.ts`, `enhanceMedia()`: it handles [videos](./2026-11-06-videos-in-markdown-posts) too.)
-
-<!-- TODO: try it: add an image to a draft, then delete its alt text and read the error -->
 
 ## One line of CSS
 

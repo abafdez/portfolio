@@ -48,8 +48,6 @@ async function highlight(code: string, lang: string | null | undefined, file: st
 
 Each component in the registry lists its fields and has a `render()` that returns markup. The video's is plain HTML: the same `<video>` I used to write by hand, with every attribute I'd otherwise forget (`controls`, `muted`, `playsinline`, `preload="metadata"`). A component that needs JavaScript could return a Svelte component instead.
 
-<!-- TODO: Alfonso, which field you'd add next, or the next component you want (a before/after compare? a live demo?). -->
-
 ## The build checks the YAML
 
 A typo in a code block is easy to miss: it would just show the wrong thing, or nothing. So the build reads the YAML and fails, naming the post, when:

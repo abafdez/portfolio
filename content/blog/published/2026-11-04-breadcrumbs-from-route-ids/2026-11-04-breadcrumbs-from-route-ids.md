@@ -15,8 +15,6 @@ Home / Projects / CV builder
 Home / Blog / #css
 ```
 
-<!-- TODO: a screenshot of the breadcrumbs and the nav marker on /projects/cv -->
-
 ## What a page needs to say
 
 Every nested page on my site belongs to one section, and the section is the first part of its route: `/projects/cv` is in Projects, `/blog/tags/[tag]` is in Blog. My nav already has the list of sections, so I moved it to `links.ts` and both components use it:
@@ -68,8 +66,6 @@ li + li::before {
 
 The part after the second `/` is the alternative text for the generated content. It's empty, so a screen reader skips the slash instead of reading "slash" between every item.
 
-<!-- TODO: what a screen reader actually said on the breadcrumbs -->
-
 ## The bug: a marker that was never in the HTML
 
 To mark the section in the nav, I first matched URLs, like the nav always had:
@@ -105,8 +101,6 @@ export const isInside = (href: RouteWithoutParams, route: string | null) =>
 (`null` is a page with no route, like a 404. Home is left out because every route starts with `/`.)
 
 The nav now says `aria-current="page"` on a section's own page and `aria-current="true"` on a page inside it. `"true"` means "the current item in this set", which is exactly what Projects is while I'm on the CV builder.
-
-<!-- TODO: try it: build with BASE_PATH=/portfolio, open build/projects/cv.html and look at the nav's hrefs. Then turn JavaScript off in DevTools and check the marker is still there -->
 
 ## Links
 

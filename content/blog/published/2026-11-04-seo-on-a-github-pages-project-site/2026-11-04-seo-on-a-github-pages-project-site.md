@@ -33,8 +33,6 @@ The root of `abafdez.github.io` belongs to a different repository (`abafdez.gith
 
 They don't mean the same thing anyway. `Disallow` says "don't crawl this", but a URL other sites link to can still show up in results, without a description. `noindex` says "don't list this page", and the crawler has to be allowed in to read it.
 
-<!-- TODO: what I decided, and why: findable, because a portfolio is meant to be found -->
-
 I decided to make the site findable. The file is gone, and the one page that isn't ready (the mascot's review sheet) says `noindex`.
 
 ## One component for every page's head
@@ -56,8 +54,6 @@ Every page had its own `<svelte:head>` with a title, and some had a description.
 A page with a `published` date is an `article` with `article:published_time`, the rest are `website`. `noindex` is a prop, so `/mascot` is just `<Seo … noindex />`.
 
 I started without an `og:image`, so previews were text cards. (Previews need a PNG or JPG, not SVG.) Later, posts got [cover images](./2026-11-06-cover-images-and-cards), and a post with a cover now uses it as its `og:image`, with `twitter:card` set to `summary_large_image`, the big card.
-
-<!-- TODO: a screenshot of a link preview, from a messaging app or an OG preview tool, once it's deployed -->
 
 ## Absolute URLs while prerendering
 
@@ -123,8 +119,6 @@ const pages: Page[] = [
 A new post or entry is in it without touching this file. Nothing links to it, so it goes in `prerender.entries`, like my SVG sprite.
 
 Normally `robots.txt` says where the sitemap is. Not for me, see above. So I submit it by hand in Google Search Console.
-
-<!-- TODO: submitting the sitemap in Search Console, and what it reported -->
 
 ## Links
 

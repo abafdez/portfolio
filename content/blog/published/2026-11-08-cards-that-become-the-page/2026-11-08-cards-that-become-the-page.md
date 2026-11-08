@@ -8,8 +8,6 @@ cover: A grid of cards with one lifting out and growing into a full article.
 
 Until now, opening a post from my blog list was a fade: the list went, the post came. Now the card you click turns into the page. Its title grows into the post's heading, its thumbnail into the cover, and the date, description and tags slide to where the post has them, while the other cards drop away. Back plays it in reverse.
 
-<!-- TODO: a recording: /blog → a post with a cover → Back -->
-
 ## Two elements, one name
 
 My site already runs every navigation inside a view transition (SvelteKit's `onNavigate` plus `document.startViewTransition`). The browser takes a picture of the page before the change and one after, and animates between them.
@@ -51,8 +49,6 @@ The parts are marked in the markup (`data-morph="title"`, `"picture"`, `"meta"`,
 
 The other end is marked in the transition's `update()`, after SvelteKit has put the new page in, and before the browser takes its "after" picture. Going back, it's the other way round: the post's header is marked first, and the card is only found once the list is back on screen.
 
-<!-- TODO: what happened when I clicked a card while a transition was still running (and why only the latest transition cleans up now) -->
-
 ## Four things that made it look right
 
 **Text as wide as its words.** A heading is a block: as wide as the column, mostly empty. Scaling that picture from a card's width to the post's width scales the empty space, not the words. During the transition the parts get `inline-size: fit-content`, so each picture is mostly text.
@@ -79,8 +75,6 @@ await Promise.race([Promise.all(images.map((img) => img.decode().catch(() => {})
 ## The rest of the page
 
 Everything without a name is still in the page's picture, so the other cards leave together: they drop a little and fade (220ms), and the post's body rises in after a short delay (250ms), once the moving parts are on their way. A part with nothing to land on, like a project card's date, leaves with the rest.
-
-<!-- TODO: Alfonso, how it felt on a phone, and whether the timing needs tuning -->
 
 People who prefer reduced motion get no transition at all, like every other effect on the site.
 

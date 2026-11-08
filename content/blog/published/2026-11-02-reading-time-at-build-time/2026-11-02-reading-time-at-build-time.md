@@ -19,8 +19,6 @@ function readingTime(text: string): number {
 
 It removes the frontmatter, counts everything between spaces as a word, and divides by 200 words a minute. Studies put silent reading of non-fiction at about 238 words a minute. Mine are technical posts full of code, so I went a bit lower.
 
-<!-- TODO: does 200 feel right? Time myself reading one of my posts -->
-
 ## Who has the text
 
 My site reads each markdown file in two ways.
@@ -54,8 +52,6 @@ const entry = {
 ```
 
 Every page gets it as data. The pages are prerendered, so it ends up in the HTML and in a few bytes of `__data.json`. No markdown reaches the browser to get it.
-
-<!-- TODO: what I found in build/ when I looked for "minutes" -->
 
 ## The rule
 

@@ -33,8 +33,6 @@ content/blog/
 
 Todo lo de un artículo está en un sitio. Publicar es un solo movimiento, y borrar un artículo borra sus imágenes. Ya puestos, los borradores y los artículos publicados tienen cada uno su carpeta, así que la ruta deja claro en qué estado está un artículo.
 
-<!-- TODO: por qué quería imágenes en primer lugar (qué artículo necesitaba una) -->
-
 ## Los globs
 
 Mi sitio encuentra los artículos con el `import.meta.glob` de Vite. Con una carpeta para cada uno, el patrón baja un nivel:
@@ -127,8 +125,6 @@ Mi primera versión tenía `<img src=` con un solo espacio. Funcionó con mi ima
 ```
 
 La expresión regular no coincidía, la imagen se quedaba como un `<img src="./screenshot.png">` normal y el navegador pedía un archivo que no estaba ahí. `\s+` coincide con cualquier espacio en blanco, saltos de línea incluidos. La función vive ahora en su propio archivo, para que Vitest pueda probarla con la salida real de mdsvex, la etiqueta larga incluida. (Hoy es `enhance-media.ts`, `enhanceMedia()`: también se encarga de los [vídeos](./2026-11-06-videos-in-markdown-posts).)
-
-<!-- TODO: probarlo: añadir una imagen a un borrador, luego borrar su texto alternativo y leer el error -->
 
 ## Una línea de CSS
 

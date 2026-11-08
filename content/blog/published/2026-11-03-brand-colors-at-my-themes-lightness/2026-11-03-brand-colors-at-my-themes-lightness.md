@@ -10,8 +10,6 @@ My about page lists what I work with, and each skill has its logo: Svelte, Larav
 
 What I wanted: each logo keeps its brand's _hue_ (Svelte stays orange, Tailwind stays cyan), but its _lightness_ comes from my theme, like the text does. Then every icon has the same contrast as the text around it, in both themes.
 
-<!-- TODO: a screenshot of the icons in their raw brand colors on the dark theme, next to the final version -->
-
 ## Two icon libraries
 
 - **[Lucide](https://lucide.dev)** for generic icons (a globe, a database, a bot). `@lucide/svelte` gives each icon as a Svelte component. Import them one file each, `@lucide/svelte/icons/globe`: importing from the package's index loads all 2,000 icons in dev.
@@ -90,10 +88,6 @@ It's a custom property on the row because the icon isn't the only thing that use
 
 `--icon-tone` lives in `tokens.css` with the other semantic tokens, so a future theme can change how light the icons are without touching the component.
 
-<!-- TODO: open DevTools, change --icon-tone on :root to another color, and describe what happens to the logos -->
-
 ## The result
 
 Every logo is as readable as the text next to it, in both themes, and still looks like itself. GitHub's black logo becomes a light gray on dark (black has almost no chroma, so whatever its hue, it stays gray), and JavaScript's yellow turns a dark gold on light.
-
-<!-- TODO: which logo surprised me most after the change -->

@@ -10,8 +10,6 @@ My unit tests check small functions. They can't tell me whether the site works: 
 
 The smallest useful one is a **smoke test**. The name comes from hardware: switch the new board on, and if smoke comes out, don't bother testing anything else. Mine asks one question: does every page in the nav load?
 
-<!-- TODO: what I used to check by hand before each merge -->
-
 ## What the build already checks
 
 SvelteKit prerenders my site: at build time it starts from the home page, follows every link, and writes each page as an HTML file. A link to a page that doesn't exist fails the build. So broken links are already covered.
@@ -119,8 +117,6 @@ To check that the test can fail, I broke a page on purpose:
 ```
 
 The build passed. Both tests failed, with `/portfolio/projects: Error: broken on purpose`. A test you've never seen fail hasn't proved anything yet.
-
-<!-- TODO: try it: break a page yourself and read the failure, then open the trace (pnpm exec playwright show-trace …) -->
 
 ## In CI
 

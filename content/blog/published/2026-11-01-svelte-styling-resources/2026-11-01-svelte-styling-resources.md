@@ -10,8 +10,6 @@ Svelte's scoped styles confused me for a while. Why did a rule in my page not re
 
 Scoping works the same way since Svelte 3, so older material still applies. The one change in Svelte 5 is specificity: the extra parts of a scoped selector are wrapped in `:where()`, so they add nothing.
 
-<!-- TODO: my verdict on each one after going through it -->
-
 ## Start here
 
 - **[Svelte tutorial: Styling](https://svelte.dev/tutorial/svelte/styling).** The official interactive tutorial. Every step is a small editor with a result next to it, and the lessons that follow cover `:global`, the `class` attribute and passing styles to components.
@@ -19,8 +17,6 @@ Scoping works the same way since Svelte 3, so older material still applies. The 
 - **[Svelte docs: Custom properties](https://svelte.dev/docs/svelte/custom-properties).** Passing values like `--accent="red"` to a component, and the wrapper element that holds them.
 
 ## A course
-
-<!-- TODO: check whether the course is free (the page answered 402 to a script) -->
 
 - **[Joy of Code: The Complete Svelte 5 Course](https://joyofcode.xyz/learn-svelte).** Written, not a video, and up to date with Svelte 5. Its styling part covers scoped styles, `:global`, the nested `:global { … }` block, and `article :global { … }` to style everything inside one element.
 
@@ -31,8 +27,6 @@ Scoping works the same way since Svelte 3, so older material still applies. The 
 - **["Svelte - Global CSS"](https://www.youtube.com/watch?v=v7s6pb0jrhI).** Short, only about `:global`.
 - **["Master Styling In Svelte 5"](https://m.youtube.com/watch?v=EfpJDs4MdXo).** Longer, and Svelte 5 specific.
 
-<!-- TODO: which video was worth it -->
-
 ## Try it yourself
 
 What made it click was the [Svelte playground](https://svelte.dev/playground). It compiles as you type, and the **CSS output** and **JS output** tabs show exactly what the compiler did. Three experiments:
@@ -40,8 +34,6 @@ What made it click was the [Svelte playground](https://svelte.dev/playground). I
 1. **Where the class goes.** A page with a `<p>` and a child component that renders an `<h2>`. Add a rule for each in the page's `<style>`. The `h2` rule is marked `(unused)`: the heading is written in the child, so it never gets the page's class.
 2. **Children belong to the parent.** Pass `<span class="new">` into a card as children. A `.new` rule in the page styles it, even though it shows up inside the card. Move the rule into the card and it stops working.
 3. **Custom properties.** Render the same card with `--accent="red"` and `--accent="blue"`, and have the card use `var(--accent, orange)`. Inspect the result: both cards have the same scoped class, and each sits in a `<svelte-css-wrapper style="display: contents; --accent: …">`. Scoping decides which elements a rule matches; the custom property only changes a value it uses.
-
-<!-- TODO: what surprised me in each experiment -->
 
 ## Related, not Svelte-specific
 

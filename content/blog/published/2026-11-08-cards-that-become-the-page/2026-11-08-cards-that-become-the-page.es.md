@@ -7,8 +7,6 @@ reviewed: false
 
 Hasta ahora, abrir un artículo desde la lista del blog era un fundido: la lista se iba y el artículo llegaba. Ahora la tarjeta que pulsas se convierte en la página. Su título crece hasta ser el encabezado del artículo, su miniatura se convierte en la portada, y la fecha, la descripción y las etiquetas se deslizan hasta donde las tiene el artículo, mientras las demás tarjetas caen. Volver atrás lo reproduce al revés.
 
-<!-- TODO: una grabación: /blog → un artículo con portada → Atrás -->
-
 ## Dos elementos, un nombre
 
 Mi sitio ya hace cada navegación dentro de una view transition (el `onNavigate` de SvelteKit más `document.startViewTransition`). El navegador toma una imagen de la página antes del cambio y otra después, y anima entre las dos.
@@ -50,8 +48,6 @@ Las partes están marcadas en el HTML (`data-morph="title"`, `"picture"`, `"meta
 
 El otro extremo se marca en el `update()` de la transición, cuando SvelteKit ya ha puesto la página nueva y antes de que el navegador tome su imagen del "después". Al volver atrás es al revés: primero se marca la cabecera del artículo, y la tarjeta solo se encuentra cuando la lista vuelve a estar en pantalla.
 
-<!-- TODO: qué pasó cuando pulsé una tarjeta con una transición todavía en marcha (y por qué ahora solo limpia la última transición) -->
-
 ## Cuatro cosas que hicieron que se viera bien
 
 **Texto tan ancho como sus palabras.** Un encabezado es un bloque: tan ancho como la columna, casi todo vacío. Escalar esa imagen del ancho de una tarjeta al del artículo escala el espacio vacío, no las palabras. Durante la transición las partes reciben `inline-size: fit-content`, así que cada imagen es casi todo texto.
@@ -78,8 +74,6 @@ await Promise.race([Promise.all(images.map((img) => img.decode().catch(() => {})
 ## El resto de la página
 
 Todo lo que no tiene nombre sigue en la imagen de la página, así que las demás tarjetas se van juntas: caen un poco y se desvanecen (220ms), y el cuerpo del artículo sube tras un pequeño retraso (250ms), cuando las partes ya van de camino. Una parte que no tiene dónde aterrizar, como la fecha de la tarjeta de un proyecto, se va con el resto.
-
-<!-- TODO: Alfonso, qué tal en el móvil, y si hay que ajustar los tiempos -->
 
 Quien prefiere menos movimiento no ve ninguna transición, como con todos los demás efectos del sitio.
 

@@ -8,10 +8,6 @@ cover: A tablet showing htop-style CPU and memory bars, with UI panels around it
 
 My about page shows my skills as rows in terminal windows, and each level is an htop-style bar: `[||||||......]`. I tried three different looks on three branches before picking this one. This post is about the effects that made it in, and especially the bugs, because each one taught me something.
 
-<!-- TODO: a short video: the bars filling on load, scrolling a window in, pointing at a few rows -->
-
-<!-- TODO: the three showcases (terminal, spotlight, orbit), and why I kept the first two -->
-
 ## The bar is text
 
 The bar is characters in the code font, so `1ch` is exactly one tick:
@@ -99,8 +95,6 @@ The CSS:
 - **`:global()`**: `data-filling` is set by JavaScript, not in the template, so Svelte thinks the rule matches nothing and removes it from the CSS. `:global()` keeps it.
 - **90ms per tick**: every bar fills at the same speed, so a longer one takes longer.
 
-<!-- TODO: what happened when I tried a stepped fill (steps(var(--ticks))) instead of the smooth one -->
-
 ## A border that follows the pointer
 
 When you point at a list, the borders near the pointer light up, each row in its own brand color. Another attachment sets `--x` and `--y` on every row on each `pointermove`: the pointer's position relative to that row. Because every row gets them, the light reaches the rows above and below.
@@ -158,5 +152,3 @@ So now no path is in the page at all. Every logo lives in one file, `logos.svg`,
 The browser downloads that file once and caches it. The page went from 351 KB to 152 KB, and Lighthouse's performance score from 91 to 96. (How the file is made is in [its own post](./2026-11-03-icons-as-data-and-an-svg-sprite).)
 
 One more thing about the strip: `contain: inline-size` keeps the page from measuring the whole track. Without it, the page grew 800px wider on a phone. `overflow: hidden` alone doesn't stop that.
-
-<!-- TODO: the network tab: logos.svg loaded once, then cached on the next visit -->

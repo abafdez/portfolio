@@ -33,8 +33,6 @@ Una caché guardada no se puede cambiar nunca. Un contenido nuevo siempre necesi
 
 No en el repositorio. Una caché se guarda en el servicio de caché de GitHub, junto al repositorio pero no dentro: no está en git, ni en el historial, ni en un clon, y no cuenta para el tamaño del repositorio. La página **Actions → Caches** del repositorio las lista, con su tamaño y cuándo se usaron por última vez, y tiene un botón para borrar cada una. Borrar una siempre es seguro: la siguiente ejecución simplemente vuelve a hacer el trabajo.
 
-<!-- TODO: una captura de la página de Caches cuando haya alguna -->
-
 Tampoco es lo mismo que un **artefacto**. Mi workflow ya usa uno: el job de build sube `build/` como artefacto, y el job de deploy lo publica. Un artefacto pasa archivos **dentro de una ejecución**, de un job a otro, y se conserva durante un tiempo fijo. Una caché pasa archivos **entre ejecuciones**, y puede desaparecer cuando GitHub necesite el espacio.
 
 ## Cuánto dura
@@ -79,8 +77,6 @@ La solución: que la versión de la librería de imágenes forme parte de la cla
 La carpeta de la caché solo crece: imagetools guarda cada resultado para siempre por defecto, así que los archivos de una imagen borrada se quedan en ella. Para empezar de cero, cambia el nombre del prefijo (`images-v2-`) o borra las cachés en la página de Caches.
 
 El paso va después del que instala las dependencias y antes del build.
-
-<!-- TODO: cuando haya imágenes: añadir el paso y comparar el tiempo del paso Build con y sin la caché -->
 
 ## ¿Volver a procesar cambia los archivos?
 

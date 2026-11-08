@@ -12,8 +12,6 @@ En cuanto mis artículos pudieron tener imágenes, la lista de artículos se ve�
 - la **imagen principal** arriba del artículo;
 - la **og:image**, la imagen que muestran LinkedIn o Slack cuando alguien comparte el enlace.
 
-<!-- TODO: una captura de /blog con portadas y sustitutos -->
-
 ## La convención
 
 Una portada es un archivo llamado `cover.png` (o `.jpg`, `.webp`) en la carpeta del artículo, junto al markdown. Su texto alternativo va en el frontmatter:
@@ -76,8 +74,6 @@ La misma imagen recibe un texto alternativo distinto en sitios distintos:
 - **En una tarjeta, `alt=""`.** El título está justo al lado. Un lector de pantalla leería la descripción de la imagen y luego el título, las dos sobre el mismo artículo. Un alt vacío dice "decorativa, sáltatela".
 - **Arriba del artículo, la descripción de verdad.** Ahí es contenido: muestra algo de lo que habla el texto.
 
-<!-- TODO: qué dijo mi lector de pantalla en una tarjeta antes y después -->
-
 ## La tarjeta
 
 Probé tres maquetaciones: una miniatura junto al texto, un banner arriba y la imagen dentro de un marco de ventana de terminal. Me quedé con la miniatura al lado: la lista sigue siendo compacta.
@@ -131,8 +127,6 @@ En una tarjeta estrecha, el cuadrado sería enorme, así que ahí va encima la v
 
 Las dos son `loading="lazy"`, y una imagen diferida con `display: none` nunca entra en pantalla, así que el navegador nunca la descarga. Lo comprobé: en `/blog` solo se descargó el cuadrado.
 
-<!-- TODO: qué opción elegiría si un CMS me dejara elegir el punto focal -->
-
 ### Todavía sin portada
 
 Ninguno de mis artículos tiene portada todavía. Las tarjetas solo de texto junto a tarjetas con imagen se verían desiguales, así que un artículo sin portada recibe un mosaico dibujado con CSS: la rejilla de planos de mi sitio con la primera etiqueta del artículo.
@@ -184,8 +178,6 @@ article:has(h3 a:focus-visible) {
 	outline: var(--border-size-2) solid var(--brand);
 }
 ```
-
-<!-- TODO: probarlo: recorrer /blog con el tabulador, y luego pulsar la descripción de una tarjeta y una etiqueta -->
 
 ## Figuras en un artículo
 

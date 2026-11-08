@@ -49,8 +49,6 @@ Cuando se ejecuta, `> [!tip]` ya es esto:
 
 Así que el plugin busca las citas cuyo primer párrafo empieza con `[!type]` y las convierte en un `<aside>`: primero el tipo (o el título propio), y luego el resto.
 
-<!-- TODO: Alfonso, la parte del plugin que te pareció más interesante, con tus palabras. -->
-
 > [!note] Una sorpresa en el árbol
 > El analizador antiguo lee `[!tip]` como un enlace a una referencia llamada `!tip`. No hay ninguna, así que devuelve el texto, pero como un nodo de texto propio. El plugin junta el texto del principio del párrafo antes de mirarlo.
 

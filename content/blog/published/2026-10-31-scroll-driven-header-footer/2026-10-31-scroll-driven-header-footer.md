@@ -8,8 +8,6 @@ cover: A scrollbar with a finger pulling down.
 
 I found [julibe.com](https://julibe.com) and loved three details: the top menu detaches from the page as you scroll, the footer stays hidden but a little animation hints that there's more below, and the scrollbar is in the accent color. All three are pure CSS now.
 
-<!-- TODO: a short video of scrolling the home page, top to bottom -->
-
 ## The idea: a timeline that isn't time
 
 A normal CSS animation runs from 0% to 100% over a duration, like `1s`. A **scroll-driven** animation runs over something else:
@@ -64,8 +62,6 @@ With no `to`, the browser animates toward the element's own styles. Then I tie i
 Why make the floating bar the default? Because the animation is a progressive enhancement. In a browser without scroll-driven animations, or for someone with reduced motion, the animation doesn't run, and the header just looks finished.
 
 The header is `position: sticky` only from 48rem wide. On a phone it's two rows tall and would take too much of the screen, so it scrolls away.
-
-<!-- TODO: try animation-range: 0 50vh in DevTools and describe the difference -->
 
 ## The footer hints
 

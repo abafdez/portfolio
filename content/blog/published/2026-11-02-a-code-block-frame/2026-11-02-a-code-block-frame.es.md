@@ -17,8 +17,6 @@ La columna ahora es un solo token:
 
 `ch` es el ancho del "0" en la fuente actual. 80ch de mi fuente de texto caben unos 90 caracteres de texto y 80 de código. Pensé en una maquetación en la que el código se saliera de la columna, con el texto a 60ch y el código más ancho, y también en los 70rem enteros de la cabecera. Me quedé con una columna para los dos.
 
-<!-- TODO: por qué una sola columna (¿se lee mejor? ¿es más simple?) -->
-
 ## El marco
 
 Mi resaltador con Shiki envuelve cada bloque en un componente:
@@ -73,8 +71,6 @@ Antes fallaron dos intentos:
 - **Líneas con `display: block`.** Shiki pone un salto de línea entre los span de cada línea, y un `<pre>` muestra los saltos de línea, así que cada línea tenía una vacía detrás. `inline-block` a todo el ancho ocupa la fila entera sin eso.
 - **Números con `position: absolute`.** Una línea vacía no tenía altura para sostener su número, y los números se solapaban. Dentro del flujo, el propio número le da altura a una línea vacía.
 
-<!-- TODO: una captura de los números solapados, o de las líneas vacías -->
-
 Un bloque de una sola línea, como un único comando, no necesita número. `:only-child` solo cuenta elementos, no el texto del salto de línea, así que los encuentra:
 
 ```css
@@ -98,5 +94,3 @@ El botón necesita JavaScript y la API del portapapeles. Sin ellos, sería un bo
 ```
 
 Copia el `textContent` del `<code>`: el código tal como está escrito, sin los números, y con una línea partida que sigue siendo una línea. Un span con `role="status"` a su lado dice "copiado" (o "no se pudo copiar") durante dos segundos, y los lectores de pantalla lo anuncian cuando cambia.
-
-<!-- TODO: qué dijo un lector de pantalla cuando pulsé el botón -->

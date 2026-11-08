@@ -21,8 +21,6 @@ My CV builder's form got long: my details, then ten groups of skills. Once I've 
 
 Same `name`, and opening one closes the others. No JavaScript, no `aria-expanded` to keep in sync: the browser tells screen readers whether each one is open.
 
-<!-- TODO: a short recording of the sections opening and closing -->
-
 ## A summary that says how it's doing
 
 A closed section shouldn't hide that something's wrong in it. Each summary carries a status, computed from the form:
@@ -47,8 +45,6 @@ function reveal(field: HTMLElement) {
 
 Opening it through `open` respects the accordion too: the other section closes.
 
-<!-- TODO: try it with a screen reader: what does it say on a summary, open and closed? -->
-
 ## One more: the marker
 
 I made the summary a flex row, to put the status next to the title. That takes the little triangle away: the marker belongs to `display: list-item`, which is what `<summary>` is by default. So with `display: flex` I draw my own:
@@ -62,5 +58,3 @@ details[open] > summary::before {
 	content: '▾';
 }
 ```
-
-<!-- TODO: which browsers support name on details today? Check and add a line -->

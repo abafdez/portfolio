@@ -27,15 +27,11 @@ El resultado:
 <h2 id="the-base-path"><a href="#the-base-path">The base path</a></h2>
 ```
 
-<!-- TODO: qué enlace a una sección quería escribir en primer lugar -->
-
 ## Envolver, no añadir
 
 `rehype-autolink-headings` puede poner el enlace en varios sitios. El aspecto habitual, un pequeño `#` junto al encabezado, es `behavior: 'append'`: un enlace aparte dentro del encabezado. Pero el nombre accesible de un encabezado es todo el texto que tiene dentro, así que un lector de pantalla oiría "La ruta base #", o con una etiqueta en el enlace, "La ruta base, Enlace a esta sección". En cada encabezado, cada vez.
 
 Con `behavior: 'wrap'`, el propio texto del encabezado es el enlace. Su nombre no cambia: "La ruta base", anunciado como encabezado y como enlace. Nada extra que leer.
-
-<!-- TODO: qué dijo mi lector de pantalla en un encabezado, con wrap -->
 
 Aun así quería el `#` como pista visual, así que lo dibuja el CSS, solo al pasar el ratón y con el foco del teclado:
 
@@ -86,8 +82,6 @@ html {
 ```
 
 `scroll-padding` le dice al navegador que deje ese espacio arriba cada vez que hace scroll para mostrar algo, un `#encabezado` incluido.
-
-<!-- TODO: probarlo: pasar el ratón por un encabezado de un artículo, pulsarlo y copiar la dirección -->
 
 ## Enlaces
 

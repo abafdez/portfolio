@@ -51,8 +51,6 @@ const localFile = /\b(src|poster)="(\.\/[^"]+)"/g;
 
 Basta con un `import clip from './clip.mp4'` sin más: [Vite](https://vite.dev/guide/assets) conoce `.mp4`, `.webm` y `.vtt` como recursos. Copia el archivo en el build con un hash en el nombre y devuelve esa URL. A diferencia de las imágenes, no se vuelve a codificar nada: el archivo se usa tal cual, así que lo comprimo antes de subirlo.
 
-<!-- TODO: qué escribió el build para mi primer vídeo (el nombre del archivo con hash) -->
-
 ## Los atributos
 
 Cada uno está por un motivo:
@@ -80,8 +78,6 @@ ffmpeg -i raw.mp4 -vf "scale=1280:-2" -c:v libvpx-vp9 -crf 40 -b:v 0 -row-mt 1 -
 - `-crf`: la calidad; más alto es más pequeño y peor.
 - `-an`: sin pista de audio.
 - `+faststart`: el índice del MP4 va al principio del archivo, para que pueda empezar a reproducirse antes de haberse descargado entero.
-
-<!-- TODO: los tamaños de mi primer fragmento: en bruto, MP4 y WebM -->
 
 ## Probarlo sin una grabación
 

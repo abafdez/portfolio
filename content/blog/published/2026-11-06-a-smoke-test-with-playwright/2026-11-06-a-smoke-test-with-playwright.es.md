@@ -9,8 +9,6 @@ Mis tests unitarios comprueban funciones pequeñas. No pueden decirme si el siti
 
 El más pequeño que sirve de algo es una **prueba de humo**. El nombre viene del hardware: enciendes la placa nueva y, si sale humo, no te molestas en probar nada más. La mía hace una sola pregunta: ¿carga cada página del menú?
 
-<!-- TODO: qué comprobaba a mano antes de cada fusión -->
-
 ## Lo que ya comprueba el build
 
 SvelteKit prerenderiza mi sitio: al construirlo empieza por la portada, sigue cada enlace y escribe cada página como un archivo HTML. Un enlace a una página que no existe hace fallar el build. Así que los enlaces rotos ya están cubiertos.
@@ -118,8 +116,6 @@ Para comprobar que el test puede fallar, rompí una página a propósito:
 ```
 
 El build pasó. Los dos tests fallaron, con `/portfolio/projects: Error: broken on purpose`. Un test que nunca has visto fallar todavía no ha demostrado nada.
-
-<!-- TODO: probarlo: romper tú una página y leer el fallo, y luego abrir la traza (pnpm exec playwright show-trace …) -->
 
 ## En la CI
 

@@ -14,8 +14,6 @@ Inicio / Proyectos / Generador de CV
 Inicio / Blog / #css
 ```
 
-<!-- TODO: una captura de las migas de pan y del marcador del menú en /projects/cv -->
-
 ## Lo que tiene que decir una página
 
 Cada página anidada de mi sitio pertenece a una sección, y la sección es la primera parte de su ruta: `/projects/cv` está en Proyectos, `/blog/tags/[tag]` está en Blog. Mi menú ya tenía la lista de secciones, así que la moví a `links.ts` y la usan los dos componentes:
@@ -67,8 +65,6 @@ li + li::before {
 
 La parte que va después de la segunda `/` es el texto alternativo del contenido generado. Está vacío, así que un lector de pantalla se salta la barra en vez de leer "barra" entre cada elemento.
 
-<!-- TODO: qué dijo de verdad un lector de pantalla en las migas de pan -->
-
 ## El bug: un marcador que nunca estuvo en el HTML
 
 Para marcar la sección en el menú, primero comparé URLs, como siempre había hecho el menú:
@@ -104,8 +100,6 @@ export const isInside = (href: RouteWithoutParams, route: string | null) =>
 (`null` es una página sin ruta, como un 404. Inicio se deja fuera porque todas las rutas empiezan por `/`.)
 
 Ahora el menú dice `aria-current="page"` en la propia página de una sección y `aria-current="true"` en una página que hay dentro. `"true"` significa "el elemento actual de este conjunto", que es justo lo que es Proyectos mientras estoy en el generador de CV.
-
-<!-- TODO: probarlo: construir con BASE_PATH=/portfolio, abrir build/projects/cv.html y mirar los href del menú. Luego desactivar JavaScript en DevTools y comprobar que el marcador sigue ahí -->
 
 ## Enlaces
 

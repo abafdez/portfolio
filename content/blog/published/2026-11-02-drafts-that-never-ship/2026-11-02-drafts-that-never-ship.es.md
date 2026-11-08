@@ -19,8 +19,6 @@ const bodies = import.meta.glob<Component>('/content/blog/*.md', { import: 'defa
 
 Así que el filtro ocultaba los enlaces y las páginas, pero el cuerpo de cada borrador seguía acabando en `build/_app/immutable/` como un archivo `.js`, listo para abrirlo por su URL.
 
-<!-- TODO: qué encontré en el resultado del build (buscar con grep el título de un borrador en build/) antes del arreglo -->
-
 ## Los borradores son una carpeta
 
 Ahora un borrador es un borrador por dónde vive: `content/blog/drafts/`, junto a `content/blog/published/`. Cada artículo es una carpeta con sus imágenes, y publicar uno significa mover su carpeta de una a la otra (`git mv content/blog/drafts/<slug> content/blog/published/`). La marca `draft` sale de la ruta, así que no hay frontmatter que olvidar:
@@ -48,8 +46,6 @@ En un build, Vite sustituye `import.meta.env.DEV` por `false`. La condición se 
 
 La lista de artículos (solo el frontmatter) funciona igual en `content.ts`, así que `/blog` y la portada tampoco listan nunca un borrador en un build.
 
-<!-- TODO: probarlo: `pnpm build` y luego `grep -rl "<el título de un borrador>" build/` no encuentra nada; `pnpm dev` muestra los borradores -->
-
 ## El cuerpo viene de un load universal
 
 La página del artículo tiene dos archivos load. El frontmatter viene de `+page.server.ts`, y el cuerpo de `+page.ts`. Un `load` de servidor envía sus datos al navegador serializados, y un componente es una función, que no se puede serializar. Un `load` universal también se ejecuta en el navegador, así que puede hacer `import()` del chunk directamente.
@@ -69,5 +65,3 @@ sveltekit({
 ```
 
 Cualquier otra ruta sin visitar sigue haciendo fallar el build. En cuanto publique un artículo, `entries()` lo devuelve, la ruta tiene una página y la excepción deja de importar.
-
-<!-- TODO: el primer artículo que publiqué, y si quité la excepción -->

@@ -10,8 +10,6 @@ My site has a [blueprint grid behind every page](./2026-10-31-blueprint-backgrou
 
 That was true for the plain grid. It wasn't true for the spotlight.
 
-<!-- TODO: a before/after screenshot, the grey intro line on /bitacora with the mouse on it -->
-
 ## Where it went wrong
 
 The spotlight is the same grid, drawn again in the brand color and masked to a circle around the mouse:
@@ -87,8 +85,6 @@ Since muted text has the least room, I measured `--text-2` over a range of line 
 
 The spotlight is quieter now. In dark it still reads as a green grid following the mouse. In light it's nearly gone: the text is dark and the brand green is dark too, so a lit line costs more contrast there.
 
-<!-- TODO: how the light theme feels now, and whether it needs its own values -->
-
 ## Why they're tokens
 
 The three values moved from the component to `tokens.css`, next to the other grid tokens:
@@ -100,8 +96,6 @@ The three values moved from the component to `tokens.css`, next to the other gri
 ```
 
 I'm planning named themes (Tokyo Night, Dracula…) as overrides of my tokens. A theme with a different `--brand` changes every ratio above, so the values have to live where a theme can override them, with a comment that says to re-check them.
-
-<!-- TODO: try it: in DevTools, set --line-major on .blueprint .spot back to 45% and hover the intro line on /bitacora. Describe what happens to the letters -->
 
 ## Links
 

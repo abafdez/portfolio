@@ -10,8 +10,6 @@ My about page groups my skills into terminal windows, ten of them, about ninety 
 
 The usual way to collapse things is `<details>`. I didn't use it here: the summary would have to hold the heading, and some screen readers drop a heading's role inside a summary, which is a button. Instead, the title bar is a real `<button>` with `aria-expanded`. Then I had to do what `<details>` gives for free, and a few things it doesn't.
 
-<!-- TODO: a short video: scrolling down as windows open, collapsing one, reloading -->
-
 ## Without JavaScript, everything is open
 
 The button needs JavaScript, so without it nothing should look collapsible. Collapsed styles only exist inside `@media (scripting: enabled)`, and the hint is hidden in `(scripting: none)`:
@@ -52,8 +50,6 @@ const openOnFind: Attachment<HTMLElement> = (list) => {
 
 `ready` matters: the attribute only goes on once the JavaScript runs. Before that, a collapsed list just sits in a row of height zero (more on that below). And never a `display: none` from the CSS: it would override `until-found`, and the search would find nothing.
 
-<!-- TODO: try it: collapse a window, press Ctrl+F, search for a skill inside it -->
-
 ## Animating to and from nothing
 
 CSS can't animate `height: auto`. It can animate a grid row from `1fr` (as tall as its content) to `0fr` (nothing):
@@ -92,8 +88,6 @@ function collapsed(event: TransitionEvent) {
 
 `transitionend` bubbles, and the list is full of transitions (a bar grows when you point at it), so it only listens to its own row. With reduced motion there's nothing to wait for, and the list is hidden straight away.
 
-<!-- TODO: collapse a window with the Animations panel in DevTools open, and slow it down -->
-
 ## The title bar
 
 The lights say the state: green (zoom) while a window is open, yellow (minimize) while it's collapsed, with a spring easing so the light that turns on pops a little.
@@ -131,8 +125,6 @@ function toggle() {
 ```
 
 My first version also saved each choice in `localStorage`, for the next visit. I took it out: coming back to a page with half its windows closed, and no memory of closing them, felt broken. Now a reload starts fresh.
-
-<!-- TODO: what a screen reader says on the title bar, collapsed and open -->
 
 ## One side effect
 

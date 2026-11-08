@@ -34,8 +34,6 @@ A saved cache can never be changed. New contents always need a new key. That's w
 
 Not in the repository. A cache is stored in GitHub's cache service, next to the repo but not in it: it's not in git, not in the history, not in a clone, and it doesn't count towards the repo's size. The repo's **Actions → Caches** page lists them, with their sizes and when they were last used, and has a button to delete each one. Deleting one is always safe: the next run just does the work again.
 
-<!-- TODO: a screenshot of the Caches page once there is one -->
-
 It's also not the same as an **artifact**. My workflow already uses one: the build job uploads `build/` as an artifact, and the deploy job publishes it. An artifact passes files **within one run**, from job to job, and is kept for a fixed time. A cache passes files **between runs**, and may disappear whenever GitHub needs the space.
 
 ## How long it lasts
@@ -80,8 +78,6 @@ The fix: make the image library's version part of the key and of the restore pre
 The cache folder only grows: imagetools keeps every result forever by default, so a deleted image's files stay in it. To start fresh, rename the prefix (`images-v2-`) or delete the caches on the Caches page.
 
 The step goes after the one that installs dependencies and before the build.
-
-<!-- TODO: once there are images: add the step, and compare the Build step's time with and without the cache -->
 
 ## Does reprocessing change the files?
 

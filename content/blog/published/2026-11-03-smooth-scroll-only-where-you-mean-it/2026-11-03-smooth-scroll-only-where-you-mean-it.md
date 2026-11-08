@@ -18,8 +18,6 @@ I had this in my global CSS, so in-page links (my "on this page" nav, a "scroll 
 
 It worked for those links. It also did something I didn't notice for a while: when I went from a page scrolled halfway down to another page, the new page appeared halfway down too, and then glided up to the top.
 
-<!-- TODO: a short screen recording of the glide, before the fix -->
-
 ## Why
 
 When SvelteKit navigates, it scrolls the window itself: to the top of the new page, or back to where you were if you reload or go back. `scroll-behavior` applies to every scroll that doesn't ask for a behavior of its own, so SvelteKit's jump became a smooth scroll that started on the old position.
@@ -53,5 +51,3 @@ afterNavigate(() => {
 `onNavigate` runs before the page changes. `afterNavigate` runs once the new page is in place, and also after the very first load. SvelteKit has done its scrolling by then, and the `requestAnimationFrame` waits one more frame to be sure. The first load never had the attribute, so a reload halfway down jumps straight back to where you were.
 
 Links inside a page aren't SvelteKit navigations, so they still glide. After the fix, the same measurement: 1047, 0.
-
-<!-- TODO: does the jump feel better, or would a fade between pages be nicer? -->

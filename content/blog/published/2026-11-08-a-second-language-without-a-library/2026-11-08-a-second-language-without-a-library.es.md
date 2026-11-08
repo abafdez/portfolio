@@ -38,8 +38,6 @@ export const reroute: Reroute = ({ url }) => delocalize(url.pathname);
 
 La URL no cambia, así que `page.url` sigue teniendo el `/es`, y de ahí lee el idioma el layout raíz. El id de la ruta tampoco cambia, y eso importó más de lo que esperaba: mis migas de pan y mi menú comparan ids de ruta, y siguieron funcionando sin tocar una línea.
 
-<!-- TODO: Alfonso, una captura de /es/blog junto a /blog. -->
-
 ## La única regla: todos los enlaces pasan por route()
 
 La sorpresa de la prueba. Mientras SvelteKit prerenderiza una página, `resolve()` escribe los enlaces relativos a la URL real de esa página. En `/es/blog`, `resolve('/blog/[slug]')` da `../blog/x`, y ese es el artículo en inglés.
@@ -56,8 +54,6 @@ Una trampa más: `/blog` y `/es/blog` son la misma ruta, así que cambiar de idi
 
 El selector es un enlace en la cabecera a la misma página en el otro idioma, con `hreflang` y `lang` puestos al idioma al que lleva. Como toda la página cambia en el sitio, reproduce los mismos efectos que mis temas de color (una onda, un glitch, una línea de barrido o lluvia, por turnos), que arranca el `onNavigate` del layout raíz cuando la URL antigua y la nueva están en idiomas distintos. `data-sveltekit-reset="false"` te deja donde estabas leyendo en vez de saltar arriba del todo.
 
-<!-- TODO: qué efecto le va mejor a un cambio de idioma, y una grabación -->
-
 ## Los buscadores
 
 Cada página se lista a sí misma en los dos idiomas, para que Google mande a quien busca en español a la página en español:
@@ -70,8 +66,4 @@ Cada página se lista a sí misma en los dos idiomas, para que Google mande a qu
 
 El sitemap dice lo mismo, y `<html lang>` dice en qué idioma está cada página, para que un lector de pantalla elija la voz correcta.
 
-<!-- TODO: Alfonso, comprobar una página con la inspección de URLs de Search Console cuando esté desplegado. -->
-
 ## ¿Usaría Paraglide la próxima vez?
-
-<!-- TODO: Alfonso, tu respuesta. La mía sería: para un sitio que es sobre todo interfaz, sí; para uno que es sobre todo contenido, el hook y un objeto tipado fueron suficientes. -->

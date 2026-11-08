@@ -7,10 +7,6 @@ reviewed: false
 
 Mi página sobre mí muestra mis habilidades como filas en ventanas de terminal, y cada nivel es una barra al estilo de htop: `[||||||......]`. Probé tres aspectos distintos en tres ramas antes de elegir este. Este artículo trata de los efectos que llegaron al final, y sobre todo de los bugs, porque cada uno me enseñó algo.
 
-<!-- TODO: un vídeo corto: las barras llenándose al cargar, una ventana entrando con el scroll, señalar unas cuantas filas -->
-
-<!-- TODO: los tres prototipos (terminal, foco, órbita), y por qué me quedé con los dos primeros -->
-
 ## La barra es texto
 
 La barra son caracteres en la fuente del código, así que `1ch` es exactamente una marca:
@@ -98,8 +94,6 @@ El CSS:
 - **`:global()`**: `data-filling` lo pone el JavaScript, no la plantilla, así que Svelte cree que la regla no coincide con nada y la quita del CSS. `:global()` la conserva.
 - **90ms por marca**: todas las barras se llenan a la misma velocidad, así que una más larga tarda más.
 
-<!-- TODO: qué pasó cuando probé un relleno por pasos (steps(var(--ticks))) en vez del continuo -->
-
 ## Un borde que sigue al puntero
 
 Cuando señalas una lista, los bordes que hay cerca del puntero se iluminan, cada fila en su propio color de marca. Otro attachment pone `--x` e `--y` en cada fila con cada `pointermove`: la posición del puntero respecto a esa fila. Como las reciben todas las filas, la luz llega a las de arriba y a las de abajo.
@@ -157,5 +151,3 @@ Así que ahora no hay ningún trazado en la página. Todos los logos viven en un
 El navegador descarga ese archivo una vez y lo guarda en caché. La página pasó de 351 KB a 152 KB, y la puntuación de rendimiento de Lighthouse de 91 a 96. (Cómo se genera el archivo está en [su propio artículo](./2026-11-03-icons-as-data-and-an-svg-sprite).)
 
 Una cosa más sobre la franja: `contain: inline-size` impide que la página mida toda la pista. Sin él, la página se ensanchaba 800px en el móvil. `overflow: hidden` solo no lo impide.
-
-<!-- TODO: la pestaña Network: logos.svg cargado una vez y luego desde la caché en la siguiente visita -->

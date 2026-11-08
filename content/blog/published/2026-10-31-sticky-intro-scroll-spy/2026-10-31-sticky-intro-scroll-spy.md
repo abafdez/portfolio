@@ -8,8 +8,6 @@ cover: A sticky table of contents beside a page, with a line marking the section
 
 I love the layout of [Brittany Chiang's site](https://brittanychiang.com): on a wide screen, the intro stays on the left while the content scrolls on the right, and a small nav under the intro lights up the section you're reading. This post is how I built my version: the sticky column, the scroll-spy, and some gentle snapping.
 
-<!-- TODO: a short video of scrolling the home page on desktop -->
-
 ## The sticky column
 
 From 64rem wide, the page is a two-column grid:
@@ -83,8 +81,6 @@ The effect runs it once the page is in the DOM, so a reload halfway down highlig
 My first version used an `IntersectionObserver` with `rootMargin: '-33% 0px -67% 0px'`, which shrinks the watched area to that same thin line. It looks neater: no measuring on every scroll, the browser tells you when a section crosses the line. But an observer only reports _changes_. When I scrolled fast, the scroll could stop with the line in the gap between two sections; nothing was touching it, no event came, and the old section stayed highlighted. Measuring ten sections per scroll costs nothing, and browsers fire `scroll` at most once per frame, so I traded the neat version for one that can't fall out of step.
 
 The current link gets `aria-current="location"`, the value meant for "where you are inside this page", next to `"page"` for the current page in the main nav.
-
-<!-- TODO: what I tried for the line, and why a third of the way down -->
 
 ## Snapping, but gently
 

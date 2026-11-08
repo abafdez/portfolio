@@ -9,8 +9,6 @@ Nunca había escrito un test. Mi sitio tenía comprobación de tipos (`pnpm chec
 
 Un **test unitario** prueba esas entradas por mí. Llama a un trozo pequeño de código (una unidad, normalmente una función) con una entrada que elijo yo y comprueba que la salida es la que espero. Y lo hace cada vez que ejecuto los tests, así que un cambio que lo rompa no puede colarse.
 
-<!-- TODO: qué vi primero, y qué me hizo entenderlo (el curso intensivo de Net Ninja, abajo) -->
-
 ## Qué probar primero
 
 El código más fácil de probar es una **función pura**: misma entrada, misma salida, y no cambia nada fuera de sí misma. Mi `content.ts` tiene tres:
@@ -124,8 +122,6 @@ const codeBlock = /^(`{3,})[^\n]*\n[\s\S]*?^\1/gm;
 ```
 
 ``(`{3,})`` captura la valla de apertura (tres comillas invertidas o más), y `\1` significa "lo mismo otra vez", así que el bloque termina en una valla con tantas comillas como la de apertura. Un bloque de cuatro comillas que muestra dentro uno de tres también se va entero. Y eso tuvo su propio test.
-
-<!-- TODO: probarlo: romper summary() a propósito (borrar la línea de codeBlock) y ejecutar pnpm test:watch. ¿Qué dice el informe? -->
 
 ## Un test sobre el contenido real
 

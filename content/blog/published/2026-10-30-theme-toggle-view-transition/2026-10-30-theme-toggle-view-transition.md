@@ -157,8 +157,6 @@ root.style.setProperty('--reveal-duration', `${duration}ms`);
 root.style.setProperty('--reveal-blur', `${blur}px`);
 ```
 
-<!-- TODO: the values I picked for the header, and why -->
-
 I tried all this first in a CodePen with sliders for the duration, easing, blur and blend mode. One thing I learned there: with a blend mode other than `normal`, the reveal's last frame is the two pictures blended, so the page snaps to the real new theme when the transition ends. That's a flash.
 
 The click handler works out where the circle starts and how big it must get. It starts at the button's center and has to reach the farthest corner of the screen:
@@ -210,5 +208,3 @@ aria-pressed={theme ? theme === 'dark' : undefined}
 
 - Open the Animations panel in DevTools, slow it down to 10%, and click the toggle.
 - In the console, run `document.documentElement.style.setProperty('--dark', 1)` and watch the icon change on its own.
-
-<!-- TODO: a short demo video or GIF of the reveal -->

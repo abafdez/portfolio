@@ -17,8 +17,6 @@ There are two ways to get HTML out of markdown in SvelteKit:
 - **Render it yourself** in a server `load`, with a markdown library, and put the HTML string on the page with `{@html}`.
 - **mdsvex**, which turns each markdown file into a Svelte component. You import it and render it like any other component, and the markdown can use Svelte components too.
 
-<!-- TODO: why I picked mdsvex -->
-
 mdsvex has two versions right now: 0.12, the stable one, and a `1.0.0-next` rewrite that is still a prerelease. I'm using 0.12.
 
 ## The usual setup, and how it broke
@@ -52,8 +50,6 @@ I thought the order of the `plugins` array decided who runs first. It does, but 
 3. Every hook with `order: 'post'`.
 
 The order in the array (and a plugin's `enforce`) only matters inside each group. enhanced-img's hook is `'pre'`. The hook that runs preprocessors isn't. So enhanced-img always went first, wherever I put it in the array.
-
-<!-- TODO: what I tried before I understood this -->
 
 ## A tiny plugin of my own
 
@@ -122,8 +118,6 @@ export const load: PageLoad = async ({ data, params }) => ({
 The glob isn't eager: each value is a function that imports one file. Every entry gets its own small JS chunk, and the browser only downloads the one it shows.
 
 **Update:** an entry can now be in two files, English and Spanish, so the server load picks the file for the page's language and the body comes from it: `bodies[data.entry.path]()`.
-
-<!-- TODO: what I saw in the Network tab moving between two entries -->
 
 The page renders `<Body />` under a header with the date, title and tags.
 

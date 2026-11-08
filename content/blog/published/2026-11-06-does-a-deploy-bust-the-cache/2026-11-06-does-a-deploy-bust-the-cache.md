@@ -26,8 +26,6 @@ The hash in a file name is made from the file's **content**. Same content, same 
 
 The pages change because SvelteKit stamps each build with a version, the build time by default, and writes it into every page. It uses it to notice when a new version is deployed while someone has the site open.
 
-<!-- TODO: what I expected before running the diff -->
-
 ## What GitHub Pages sends
 
 Then I looked at the headers the live site sends for one of those files:

@@ -37,8 +37,6 @@ La fecha y las etiquetas salen del archivo en inglés. Si la traducción pudiera
 
 `reviewed` está ahí porque al principio las traducciones no son mías: las escribe Claude y yo las leo. Hasta que lo pongo a `true`, el artículo muestra una etiqueta "sin revisar", solo en desarrollo.
 
-<!-- TODO: Alfonso, ¿cuántas tuviste que cambiar y qué cambiaste más? -->
-
 ## Se localiza donde se cargan los datos
 
 El sitio lee el frontmatter de cada artículo al construirse. Las listas siguen en inglés, cada artículo sabe qué idiomas tiene, y una página pide cada artículo en su propio idioma:
@@ -59,8 +57,6 @@ Hasta que un artículo está traducido, su página en español muestra el artíc
 
 - `lang="en"` en el artículo, para que un lector de pantalla lo lea con voz inglesa en vez de pronunciarlo mal en español.
 - Un enlace canónico a la página en inglés, para que los buscadores no indexen el mismo texto dos veces en dos direcciones. Solo cuando hay traducción la página en español lista las dos versiones con `hreflang`.
-
-<!-- TODO: Alfonso, una captura de un artículo sin traducir en el sitio en español. -->
 
 ## Una trampa: las claves no son etiquetas
 

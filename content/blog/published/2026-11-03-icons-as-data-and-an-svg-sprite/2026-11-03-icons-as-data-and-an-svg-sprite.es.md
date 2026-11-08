@@ -101,7 +101,3 @@ Los trazados se quedan en el archivo, nunca en la página: ni en el HTML ni en l
 | El JS de la página (comprimido)    | ~44 KB | ~5 KB   |
 | `logos.svg` (comprimido, en caché) | nada   | 31 KB   |
 | Rendimiento en Lighthouse          | 91     | 96      |
-
-<!-- TODO: añadir o cambiar una habilidad en el YAML, y contar qué tal comparado con el archivo TypeScript -->
-
-<!-- TODO: romper el YAML a propósito (un logo que no existe) y pegar el error que dio el build -->

@@ -62,8 +62,6 @@ The fix was one selector in `tokens.css`. The tokens are declared again on any e
 
 Now any part of a page can be in the other theme. The checker's samples use it to draw each pair in both themes with CSS only, and named themes will be able to use it too.
 
-<!-- TODO: try it in DevTools: add data-theme="light" to an element on the dark page and describe what happened -->
-
 ## A shareable pair, on a prerendered page
 
 The pair you pick goes in the URL, so it can be shared. Two SvelteKit details:

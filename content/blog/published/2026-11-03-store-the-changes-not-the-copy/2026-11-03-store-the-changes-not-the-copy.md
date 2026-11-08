@@ -8,8 +8,6 @@ cover: A broken form being repaired, wired to client-side storage and sync.
 
 My CV builder takes its skills from my site's data, a YAML file. For a real application I want to change them: leave one out of the mainframe CV, word another differently, add one that isn't on the site. Those edits are mine, so they live in the browser, like the rest of the form.
 
-<!-- TODO: a screenshot of the editor with a skill unticked and one of my own -->
-
 ## Changes, not a copy
 
 The easy way would be to copy the list into `localStorage` and edit the copy. But then the YAML stops mattering: a skill I add to the site next month never reaches the CV. So I store only what differs, per profile:
@@ -39,8 +37,6 @@ Switching a skill back to what the YAML says removes it from both lists, so "Res
 
 **Update:** the edits used to be stored by the skill's name. When the site got a Spanish version, a skill's name started to depend on the language, so each skill now has a `key`, its English name, for storing, and `name` is only what's shown. Edits saved before still match, because the key is the name they were saved under.
 
-<!-- TODO: open DevTools → Application → Local Storage and paste what my edits look like -->
-
 ## The ??= that didn't work
 
 The first time I change a profile, its edits object has to be created:
@@ -55,8 +51,6 @@ That looks right, but it wouldn't update the page. `this.all` is `$state`, a dee
 this.all[profile] ??= empty();
 return this.all[profile];
 ```
-
-<!-- TODO: did I understand why before reading this? Try the broken version in the playground -->
 
 ## A checkbox bound to a computation
 

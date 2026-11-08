@@ -28,15 +28,11 @@ The result:
 <h2 id="the-base-path"><a href="#the-base-path">The base path</a></h2>
 ```
 
-<!-- TODO: which link to a section I wanted to write in the first place -->
-
 ## Wrap, don't append
 
 `rehype-autolink-headings` can put the link in several places. The common look, a little `#` next to the heading, is `behavior: 'append'`: a separate link inside the heading. But a heading's accessible name is all the text inside it, so a screen reader would hear "The base path #", or with a label on the link, "The base path, Link to this section". Every heading, every time.
 
 With `behavior: 'wrap'`, the heading's own text is the link. Its name doesn't change: "The base path", announced as a heading and a link. Nothing extra to read.
-
-<!-- TODO: what my screen reader said for a heading, with wrap -->
 
 I still wanted the `#` as a visual hint, so it's drawn by CSS, only on hover and keyboard focus:
 
@@ -87,8 +83,6 @@ html {
 ```
 
 `scroll-padding` tells the browser to leave that much room at the top whenever it scrolls something into view, a `#heading` included.
-
-<!-- TODO: try it: hover a heading in a post, click it, and copy the address -->
 
 ## Links
 

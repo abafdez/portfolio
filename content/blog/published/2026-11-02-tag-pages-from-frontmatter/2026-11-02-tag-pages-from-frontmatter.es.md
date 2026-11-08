@@ -39,8 +39,6 @@ export const load: PageServerLoad = ({ params }) => {
 
 Mientras todos los artículos eran borradores, un build no tenía etiquetas, así que la ruta no tenía páginas y nada la enlazaba. El rastreador de SvelteKit informa de una ruta así como "sin visitar" y hace fallar el build. Le hice una excepción en `handleUnseenRoutes`. En cuanto se publica un artículo, su tarjeta enlaza a sus etiquetas, así que sus páginas ya no pueden quedar sin visitar.
 
-<!-- TODO: el error de "unseen routes" que me salió, si lo vi -->
-
 ## Enlaces solo donde hay página
 
 La misma lista de etiquetas aparece en las tarjetas del blog, en la cabecera del artículo y en el Devlog (mi diario de desarrollo). Las etiquetas del Devlog no tienen páginas. Una etiqueta como `planning` solo se usa ahí, y un enlace a `/blog/tags/planning` sería un 404.
@@ -97,5 +95,3 @@ Una etiqueta que la incumple detiene el build y dice en qué archivo está. Solo
 
 - **El tamaño del objetivo.** Las etiquetas son enlaces pequeños en una lista, no dentro de una frase, así que las WCAG piden al menos 24 por 24 píxeles. Un poco de `padding-block` las deja en 26px de alto.
 - **El orden de los encabezados.** Lighthouse le dio un 98 a la primera versión de la página de etiqueta: pasaba del `h1` directamente a los `h3` de las tarjetas. Agrupar los artículos por año, como hace `/blog`, pone un `h2` en medio.
-
-<!-- TODO: una captura del índice de etiquetas en /blog -->

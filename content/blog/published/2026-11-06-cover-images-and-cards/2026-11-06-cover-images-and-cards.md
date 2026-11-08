@@ -13,8 +13,6 @@ Once my posts could have images, the list of posts looked bare: every card was a
 - the **hero** at the top of the post;
 - the **og:image**, the picture LinkedIn or Slack show when someone shares the link.
 
-<!-- TODO: a screenshot of /blog with covers and placeholders -->
-
 ## The convention
 
 A cover is a file called `cover.png` (or `.jpg`, `.webp`) in the post's folder, next to the markdown. Its alt text goes in the frontmatter:
@@ -77,8 +75,6 @@ The same image gets different alt text in different places:
 - **In a card, `alt=""`.** The title is right next to it. A screen reader would read the image's description, then the title, both about the same post. An empty alt says "decorative, skip it".
 - **At the top of the post, the real description.** There it's content: it shows something the text talks about.
 
-<!-- TODO: what my screen reader said on a card before and after -->
-
 ## The card
 
 I tried three layouts: a thumbnail beside the text, a banner on top, and the image in a terminal window frame. I went for the thumbnail beside: the list stays compact.
@@ -132,8 +128,6 @@ On a narrow card the square would be huge, so there the 16:9 version sits on top
 
 Both are `loading="lazy"`, and a lazy image that's `display: none` never comes into view, so the browser never downloads it. I checked: on `/blog` only the square was fetched.
 
-<!-- TODO: which option I'd pick if a CMS let me choose the focal point -->
-
 ### No cover yet
 
 None of my posts has a cover yet. Text-only cards next to cards with images would look uneven, so a post without a cover gets a tile drawn in CSS: my site's blueprint grid with the post's first tag.
@@ -185,8 +179,6 @@ article:has(h3 a:focus-visible) {
 	outline: var(--border-size-2) solid var(--brand);
 }
 ```
-
-<!-- TODO: try it: tab through /blog, then click a card's description and a tag -->
 
 ## Figures in a post
 

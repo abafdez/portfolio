@@ -9,8 +9,6 @@ Mi página sobre mí lista con qué trabajo, y cada habilidad tiene su logo: Sve
 
 Lo que quería: que cada logo conservara el _tono_ de su marca (Svelte sigue siendo naranja, Tailwind sigue siendo cian), pero que su _luminosidad_ saliera de mi tema, como la del texto. Así cada icono tiene el mismo contraste que el texto que lo rodea, en los dos temas.
 
-<!-- TODO: una captura de los iconos con sus colores de marca sin tocar en el tema oscuro, junto a la versión final -->
-
 ## Dos librerías de iconos
 
 - **[Lucide](https://lucide.dev)** para los iconos genéricos (un globo, una base de datos, un robot). `@lucide/svelte` da cada icono como un componente Svelte. Hay que importarlos de uno en uno, `@lucide/svelte/icons/globe`: importar desde el índice del paquete carga los 2.000 iconos en desarrollo.
@@ -89,10 +87,6 @@ Es una custom property en la fila porque el icono no es lo único que la usa: el
 
 `--icon-tone` vive en `tokens.css` con los demás tokens semánticos, así que un tema futuro puede cambiar lo claros que son los iconos sin tocar el componente.
 
-<!-- TODO: abrir DevTools, cambiar --icon-tone en :root a otro color y describir qué les pasa a los logos -->
-
 ## El resultado
 
 Cada logo se lee tan bien como el texto que tiene al lado, en los dos temas, y sigue pareciéndose a sí mismo. El logo negro de GitHub pasa a ser un gris claro en oscuro (el negro casi no tiene croma, así que sea cual sea su tono se queda en gris), y el amarillo de JavaScript se convierte en un dorado oscuro en claro.
-
-<!-- TODO: qué logo me sorprendió más después del cambio -->

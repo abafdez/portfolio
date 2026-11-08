@@ -8,8 +8,6 @@ cover: A css page vs a svelte page using transitions.
 
 My theme toggle already used a [view transition](./2026-10-30-theme-toggle-view-transition). This post adds them between pages: the header stays still, the content fades into the new page, and the green bar under the current nav link slides to the new one. Then a small system for each route to choose its own layout, which the transition handles for free.
 
-<!-- TODO: a short video clicking through the nav -->
-
 ## Starting the transition
 
 SvelteKit routes in the browser, without reloading the page, so the browser can't know when a "page change" happens. SvelteKit tells us with `onNavigate`:
@@ -70,8 +68,6 @@ Then the content: the old page fades out fast, the new one fades in and rises a 
 	animation: route-in 300ms var(--ease-out-3) both;
 }
 ```
-
-<!-- TODO: the durations I tried, and what felt right -->
 
 ## The sliding marker
 

@@ -29,8 +29,6 @@ Así que un tema no es más que otro conjunto de valores para los mismos tokens:
 
 El selector de claro y oscuro sigue eligiendo qué mitad de `light-dark()` recibes. El tema elige lo que hay en las dos mitades. Las cosas que había hecho a partir de otros tokens, como la rejilla de planos (de `--text-1`) y el foco que sigue al ratón (de `--brand`), cambiaron de color solas.
 
-<!-- TODO: Alfonso, una captura de la misma página en Phosphor y en Tokyo Night, en oscuro. -->
-
 ## ¿Tema o paleta?
 
 En mi código, "tema" ya significaba claro u oscuro (`data-theme`, el componente `ThemeToggle`). Llamar tema también a lo nuevo habría hecho ambigua cada línea, así que en el código es una **paleta** (`data-palette`). Los visitantes ven "Tema de color", porque es la palabra que conocen.
@@ -69,8 +67,6 @@ Casi todas sus variantes claras fallaban el contraste en algún sitio: los temas
 
 Luego convertí las comprobaciones en un test unitario. Para cada tema y en sus dos mitades, lee los colores del CSS y comprueba los pares que el sitio dibuja de verdad, el foco incluido. La primera ejecución falló, en Tokyo Night, el tema que ya había publicado: su color de marca claro daba 4,23:1 cuando un enlace quedaba sobre el foco. Lighthouse le había dado un 100 a esa página, porque el foco no estaba bajo un enlace cuando se ejecutó. Un test no depende de dónde esté el ratón.
 
-<!-- TODO: Alfonso, tu favorito de los seis, y por qué. -->
-
 ## Una transición para cada cambio
 
 Cambiar de tema no debería ser un simple salto. El selector de claro y oscuro ya tenía un círculo que crece desde el botón (una view transition). Los temas de color recibieron sus propios efectos, cuatro, que van por turnos:
@@ -81,8 +77,6 @@ Cambiar de tema no debería ser un simple salto. El selector de claro y oscuro y
 - **Lluvia de columnas:** cada columna de la rejilla deja caer el tema nuevo desde arriba en su propio momento.
 
 Todos están desactivados para quien prefiere reducir el movimiento: los colores simplemente cambian.
-
-<!-- TODO: Alfonso, cuáles conservaste, cuál te gusta más y una grabación de él (mira la sección de Vídeos de la guía de publicación). -->
 
 ## Enlaces
 

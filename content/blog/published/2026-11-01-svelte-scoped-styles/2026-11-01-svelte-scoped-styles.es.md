@@ -57,8 +57,6 @@ Y este CSS:
 
 Más dos avisos: `Unused CSS selector "h2"` y `Unused CSS selector ".prose p"`.
 
-<!-- TODO: probarlo en el playground de Svelte y contar qué me sorprendió -->
-
 ## Paso 1: una clase en los elementos
 
 Cada elemento escrito en el marcado del componente recibe una clase extra, `svelte-70xyc3`. Ese es todo el truco: un nombre de clase que no usa nadie más. El `<div>` y el `<p>` la reciben. Lo que muestra `<Body />`, no: esos elementos están escritos en `Body.svelte`, así que reciben la clase de `Body`.
@@ -124,8 +122,6 @@ De todas formas, en este sitio la especificidad casi nunca decide nada. Mis esti
 ## Cuál usé
 
 El markdown de una entrada del Devlog viene de otro componente, y el blog va a necesitar los mismos estilos. Así que no usé `:global()` en la página. Hice una clase global `.prose` en la capa `components` de `global.css`. Cualquier página puede ponérsela al div que rodea su markdown.
-
-<!-- TODO: cuándo elegiría :global() en un componente en vez de una clase global -->
 
 ## Enlaces
 

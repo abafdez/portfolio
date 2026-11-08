@@ -30,8 +30,6 @@ So a theme is just another set of values for the same tokens:
 
 The light/dark toggle still chooses which half of `light-dark()` you get. The theme chooses what's in both halves. Things I'd made from other tokens, like the blueprint grid (from `--text-1`) and the spotlight that follows the mouse (from `--brand`), changed colour on their own.
 
-<!-- TODO: Alfonso, a screenshot of the same page in Phosphor and Tokyo Night, dark. -->
-
 ## Theme or palette?
 
 In my code "theme" already meant light or dark (`data-theme`, the `ThemeToggle` component). Calling the new thing a theme too would have made every line ambiguous, so in code it's a **palette** (`data-palette`). Visitors see "Color theme", because that's the word they know.
@@ -70,8 +68,6 @@ Most of their light variants failed contrast somewhere: editor themes use mid-to
 
 Then I turned the checks into a unit test. For every theme and both halves, it reads the colours out of the CSS and checks the pairs the site really draws, spotlight included. The first run failed, on Tokyo Night, the theme I'd already shipped: its light brand colour was 4.23:1 when a link sat on the spotlight. Lighthouse had given that page 100, because the spotlight wasn't under a link when it ran. A test doesn't depend on where the mouse is.
 
-<!-- TODO: Alfonso, your favourite of the six, and why. -->
-
 ## A transition for every switch
 
 Switching themes shouldn't just snap. The light/dark toggle already had a circle that grows from the button (a view transition). The colour themes got effects of their own, four of them, taking turns:
@@ -82,8 +78,6 @@ Switching themes shouldn't just snap. The light/dark toggle already had a circle
 - **Column rain:** every grid column drops the new theme in from the top at its own moment.
 
 All of them are off for anyone who prefers reduced motion: the colours just change.
-
-<!-- TODO: Alfonso, which ones you kept, which one you like best, and a recording of it (see the publishing guide's Videos section). -->
 
 ## Links
 

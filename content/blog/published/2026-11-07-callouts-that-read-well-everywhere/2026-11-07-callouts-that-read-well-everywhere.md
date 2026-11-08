@@ -50,8 +50,6 @@ By the time it runs, `> [!tip]` is already this:
 
 So the plugin looks for blockquotes whose first paragraph starts with `[!type]`, and turns them into an `<aside>`: the type (or the custom title) first, then the rest.
 
-<!-- TODO: Alfonso, the part of the plugin you found most interesting, in your words. -->
-
 > [!note] A surprise in the tree
 > The old parser reads `[!tip]` as a link to a reference called `!tip`. There's none, so it puts the text back, but as a text node of its own. The plugin joins the text at the start of the paragraph before looking at it.
 

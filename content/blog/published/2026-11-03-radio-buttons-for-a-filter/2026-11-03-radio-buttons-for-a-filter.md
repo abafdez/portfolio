@@ -8,8 +8,6 @@ cover: Cards passing through a filter, with radio buttons for category and date.
 
 I apply for different kinds of jobs: web development, IT support, mainframe. My about page lists every skill I have, and for a support job, half of them are noise. So the page got a filter: `/about?profile=support` shows only the skills that matter for support, and that's a link I can send.
 
-<!-- TODO: a screenshot of the page with one profile picked -->
-
 ## Toggles or radios?
 
 My Awesome lists already have a filter: tag buttons with `aria-pressed`, where you can pick several tags at once ([how that one works](./2026-11-02-filters-in-a-svelte-class)). Here you pick one profile at a time, and the browser already has a control for exactly that:
@@ -35,8 +33,6 @@ Same `name`, and the inputs become a group. What comes with it, without one line
 - Tab enters the group once and leaves it once, instead of stopping on every option.
 - The arrow keys move between options and pick them as they go.
 - A screen reader says the group's name, then "radio button, 2 of 4".
-
-<!-- TODO: what a screen reader actually said, moving through the group -->
 
 ## Hiding the circle, not the input
 
@@ -67,8 +63,6 @@ label:has(:focus-visible) {
 ```
 
 Before `:has()`, this needed the input right before the label, outside it, so CSS could reach the label with `input:checked + label`.
-
-<!-- TODO: remove opacity: 0 in DevTools and describe what's under the labels -->
 
 ## One piece of state
 
@@ -103,5 +97,3 @@ onMount(() => {
 ```
 
 Only ids the data declares: `?profile=nope` shows everything rather than nothing. Without JavaScript, the page shows every skill and no filter, which is the right fallback: a filter that can't filter shouldn't be there.
-
-<!-- TODO: was there a flash of every skill before the filter applied? Did it bother me? -->

@@ -8,8 +8,6 @@ cover: A CV on a web page coming out of a printer as paper.
 
 My CV builder doesn't generate PDFs. The browser already does: "Save as PDF" in the print dialog gives a PDF with real, selectable text, which is what applicant tracking systems need. My job is a print stylesheet that leaves only the CV on the page.
 
-<!-- TODO: a screenshot of the print preview next to the page -->
-
 ## Hiding the site
 
 The header, the footer and the background grid each hide themselves:
@@ -23,8 +21,6 @@ The header, the footer and the background grid each hide themselves:
 ```
 
 Each one in its own component, not in my global stylesheet. My global CSS lives in cascade layers, and component styles are unlayered, so they win over any layer, whatever the specificity. A global `display: none` would lose to any `display` a component sets for itself.
-
-<!-- TODO: try the rule in global.css instead, and say what printed -->
 
 ## Paper is white
 
@@ -80,7 +76,3 @@ Svelte doesn't know about that typing, though. When the form changes, it updates
 `shown` is a JSON string of everything the CV shows. Any change in the form changes it, and `{#key}` throws the old CV away. The hint under the buttons says so.
 
 I wanted `contenteditable="plaintext-only"`, which keeps a paste from Word as plain text by itself. But Chrome then forces `white-space: pre-wrap` on everything inside, even over an inline `!important`, and the line breaks between my template's blocks printed as blank lines. So it's `"true"`, and a paste handler that inserts only the clipboard's plain text.
-
-<!-- TODO: edit a line, print, then change a field: describe what happened -->
-
-<!-- TODO: open the PDF, select all, paste it in a text editor: is it in order? -->

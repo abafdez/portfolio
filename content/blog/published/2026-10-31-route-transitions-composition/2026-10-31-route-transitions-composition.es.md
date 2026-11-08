@@ -7,8 +7,6 @@ reviewed: false
 
 Mi selector de tema ya usaba una [view transition](./2026-10-30-theme-toggle-view-transition). Este artículo las añade entre páginas: la cabecera se queda quieta, el contenido se funde con la página nueva y la barra verde bajo el enlace actual del menú se desliza hasta el nuevo. Después, un pequeño sistema para que cada ruta elija su propia maquetación, del que la transición se encarga sin coste.
 
-<!-- TODO: un vídeo corto pulsando por el menú -->
-
 ## Empezar la transición
 
 SvelteKit navega en el navegador, sin recargar la página, así que el navegador no puede saber cuándo ocurre un "cambio de página". SvelteKit nos lo dice con `onNavigate`:
@@ -69,8 +67,6 @@ Luego el contenido: la página antigua se desvanece deprisa y la nueva aparece y
 	animation: route-in 300ms var(--ease-out-3) both;
 }
 ```
-
-<!-- TODO: las duraciones que probé y cuál me pareció bien -->
 
 ## El marcador que se desliza
 

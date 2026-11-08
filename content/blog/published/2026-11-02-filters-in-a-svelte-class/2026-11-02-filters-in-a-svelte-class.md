@@ -69,8 +69,6 @@ Two details I had to think about:
 
 Every word must match, and every picked tag must match. Each thing you add narrows the list.
 
-<!-- TODO: did AND feel right when I used it, or would I rather have tags as OR? -->
-
 ## Into the URL and back
 
 The filter turns itself into params (`?q=grid&tag=docs&tag=layout`) and reads them back. The page is prerendered, though, and at build time there's no visitor URL to read. So the component reads it in `onMount`, which only runs in the browser:
@@ -131,5 +129,3 @@ search:not(.ready) {
 - The tag buttons are toggles: `aria-pressed` makes screen readers say "pressed", and the fill shows it for everyone else. (**Update:** they're the blog's tag chips now, from the same `TagCloud` component; a picked one has a ring in its colour and a tick.)
 - The count ("3 of 25 links") is a `role="status"`, so it's announced when it changes.
 - "Clear filters" disappears once there's nothing to clear, and focus fell to the top of the page with it. Clearing now moves focus to the search box.
-
-<!-- TODO: what a screen reader said when I toggled a tag and typed a search -->

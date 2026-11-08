@@ -9,8 +9,6 @@ Mi sitio tiene una [rejilla de planos detrás de cada página](./2026-10-31-blue
 
 Eso era verdad para la rejilla normal. No lo era para el foco.
 
-<!-- TODO: una captura de antes y después, la línea gris de introducción de /bitacora con el ratón encima -->
-
 ## Dónde falló
 
 El foco es la misma rejilla, dibujada otra vez en el color de marca y recortada con una máscara en un círculo alrededor del ratón:
@@ -86,8 +84,6 @@ Como el texto atenuado es el que menos margen tiene, medí `--text-2` con distin
 
 Ahora el foco es más discreto. En oscuro sigue viéndose como una rejilla verde que sigue al ratón. En claro casi ha desaparecido: el texto es oscuro y el verde de marca también, así que una línea encendida cuesta más contraste ahí.
 
-<!-- TODO: cómo se ve ahora el tema claro, y si necesita sus propios valores -->
-
 ## Por qué son tokens
 
 Los tres valores pasaron del componente a `tokens.css`, junto a los demás tokens de la rejilla:
@@ -99,8 +95,6 @@ Los tres valores pasaron del componente a `tokens.css`, junto a los demás token
 ```
 
 Tengo pensados temas con nombre (Tokyo Night, Dracula…) que sobrescriban mis tokens. Un tema con otro `--brand` cambia todos los ratios de arriba, así que los valores tienen que vivir donde un tema pueda sobrescribirlos, con un comentario que diga que hay que volver a comprobarlos.
-
-<!-- TODO: probarlo: en DevTools, volver a poner --line-major de .blueprint .spot al 45% y pasar el ratón por la línea de introducción de /bitacora. Describir qué pasa con las letras -->
 
 ## Enlaces
 

@@ -58,8 +58,6 @@ And this CSS:
 
 Plus two warnings: `Unused CSS selector "h2"` and `Unused CSS selector ".prose p"`.
 
-<!-- TODO: try it yourself in the Svelte playground and say what surprised me -->
-
 ## Step 1: a class on the elements
 
 Every element written in the component's markup gets an extra class, `svelte-70xyc3`. That's the whole trick: a class name nobody else uses. The `<div>` and the `<p>` get it. What `<Body />` renders doesn't: those elements are written in `Body.svelte`, so they get `Body`'s class.
@@ -125,8 +123,6 @@ In this site, specificity rarely decides anything anyway. My global styles are i
 ## Which one I used
 
 The markdown for a Devlog entry comes from another component, and the blog will need the same styles. So I didn't use `:global()` in the page. I made a global `.prose` class in the `components` layer of `global.css`. Any page can put it on the div around its markdown.
-
-<!-- TODO: when I'd pick :global() in a component instead of a global class -->
 
 ## Links
 

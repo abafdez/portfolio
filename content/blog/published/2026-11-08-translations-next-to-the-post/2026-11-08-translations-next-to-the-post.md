@@ -38,8 +38,6 @@ The date and the tags come from the English file. If the translation could have 
 
 `reviewed` is there because the translations aren't mine at first: Claude writes them, and I read them. Until I set it to `true`, the post shows a "sin revisar" badge, only in dev.
 
-<!-- TODO: Alfonso, how many did you have to change, and what did you change most? -->
-
 ## Localize where the data is loaded
 
 The site reads every post's frontmatter at build time. The lists stay English, each post knows which languages it has, and a page asks for each post in its own language:
@@ -60,8 +58,6 @@ Until a post is translated, its Spanish page shows the English post inside the S
 
 - `lang="en"` on the post, so a screen reader reads it with an English voice instead of mispronouncing it in Spanish.
 - A canonical link to the English page, so search engines don't index the same text twice under two addresses. Only once there's a translation does the Spanish page list both versions with `hreflang`.
-
-<!-- TODO: Alfonso, a screenshot of an untranslated post on the Spanish site. -->
 
 ## One trap: keys aren't labels
 

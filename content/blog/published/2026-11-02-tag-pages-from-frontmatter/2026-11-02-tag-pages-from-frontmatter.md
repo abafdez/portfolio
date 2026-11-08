@@ -40,8 +40,6 @@ export const load: PageServerLoad = ({ params }) => {
 
 While every post was a draft, a build had no tags, so the route had no pages and nothing linked to it. SvelteKit's crawler reports a route like that as "unseen" and fails the build. I made an exception for it in `handleUnseenRoutes`. Once a post is published, its card links to its tags, so their pages can't go unseen.
 
-<!-- TODO: the "unseen routes" error I got, if I saw it -->
-
 ## Links only where a page exists
 
 The same tag list shows up on blog cards, the post header, and the Devlog. The Devlog's tags have no pages. A tag like `planning` is only used there, and a link to `/blog/tags/planning` would be a 404.
@@ -98,5 +96,3 @@ A tag that breaks it stops the build and names the file. I'm the only one writin
 
 - **Target size.** Tags are small links in a list, not in a sentence, so WCAG asks for at least 24 by 24 pixels. A bit of `padding-block` makes them 26px tall.
 - **Heading order.** Lighthouse gave the first version of the tag page 98: it went from the `h1` straight to the cards' `h3`s. Grouping the posts by year, like `/blog` does, puts an `h2` in between.
-
-<!-- TODO: a screenshot of the tag index on /blog -->

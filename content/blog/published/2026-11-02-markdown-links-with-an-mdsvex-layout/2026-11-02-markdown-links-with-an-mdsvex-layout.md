@@ -8,8 +8,6 @@ cover: A markdown file with a link icon flowing into a Svelte layout.
 
 My site is served from `/portfolio`, because that's where GitHub Pages puts a project site. In my Svelte components, every link goes through SvelteKit's `resolve()`, which adds that base path. But my posts are markdown, and a markdown link to `/about` is just `<a href="/about">`. It points at the root of the domain, outside my site, and 404s.
 
-<!-- TODO: how I noticed (the dev server has no base path, so it only broke in the build) -->
-
 ## A layout for every markdown file
 
 mdsvex can wrap every file in a Svelte component, its layout. It's an option of `compile`, and it has to be a file path, because mdsvex reads the file:
@@ -78,8 +76,6 @@ Three kinds of links:
 
 That gives up a check, so something else has to do it. The prerender crawler does: it follows every link while it builds the site, and a link to a page that doesn't exist fails the build. I tried it with a link to `/nope`, and the build stopped.
 
-<!-- TODO: the error message the build gave me -->
-
 ## Dropping `nofollow`
 
 mdsvex adds `rel="nofollow"` to every link. It tells search engines I don't vouch for the page I link to. That's meant for links I don't control, like comments. The links in my posts are ones I recommend, so `MarkdownLink` never reads the `rel` prop, and it's gone.
@@ -87,5 +83,3 @@ mdsvex adds `rel="nofollow"` to every link. It tells search engines I don't vouc
 ## One more replace
 
 mdsvex 0.12 still writes Svelte 4 syntax, and with a layout it adds `{...$$props}` to the layout call. Runes mode has no `$$props`, and nothing passes props to a post anyway, so my Vite plugin removes it with one more `replace`.
-
-<!-- TODO: anything else I'd replace with the layout (images? headings with anchor links?) -->
