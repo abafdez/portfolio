@@ -52,6 +52,12 @@ My first idea was a variable, `currentLocale`, set by the switch. It would have 
 
 One more trap: `/blog` and `/es/blog` are the same route, so switching language keeps the page's component and only updates its template. Anything a component worked out once in its script stays in the old language. Wrapping the page in `{#key getLocale()}` builds it again.
 
+## The switch
+
+The switch is a link in the header to the same page in the other language, with `hreflang` and `lang` set to where it goes. Since the whole page changes in place, it plays the same effects as my colour themes (a ripple, a glitch, a scanline or rain, taking turns), started from the root layout's `onNavigate` when the old and new URLs are in different languages. `data-sveltekit-reset="false"` keeps you where you were reading instead of jumping to the top.
+
+<!-- TODO: which effect suits a language change best, and a recording -->
+
 ## Search engines
 
 Each page lists itself in both languages, so Google can send Spanish searchers to the Spanish page:

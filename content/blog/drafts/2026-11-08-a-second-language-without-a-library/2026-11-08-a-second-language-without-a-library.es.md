@@ -51,6 +51,12 @@ Mi primera idea fue una variable, `currentLocale`, que cambiaría el selector. H
 
 Una trampa más: `/blog` y `/es/blog` son la misma ruta, así que cambiar de idioma conserva el componente de la página y solo actualiza su plantilla. Lo que un componente calcula una vez en su script se queda en el idioma anterior. Envolver la página en `{#key getLocale()}` la vuelve a construir.
 
+## El selector
+
+El selector es un enlace en la cabecera a la misma página en el otro idioma, con `hreflang` y `lang` puestos al idioma al que lleva. Como toda la página cambia en el sitio, reproduce los mismos efectos que mis temas de color (una onda, un glitch, una línea de barrido o lluvia, por turnos), que arranca el `onNavigate` del layout raíz cuando la URL antigua y la nueva están en idiomas distintos. `data-sveltekit-reset="false"` te deja donde estabas leyendo en vez de saltar arriba del todo.
+
+<!-- TODO: qué efecto le va mejor a un cambio de idioma, y una grabación -->
+
 ## Los buscadores
 
 Cada página se lista a sí misma en los dos idiomas, para que Google mande a quien busca en español a la página en español:

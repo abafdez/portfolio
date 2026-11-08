@@ -14,6 +14,8 @@
 	import { page } from '$app/state';
 	import { canTransition } from '#lib/view-transitions.ts';
 	import { getLocale, languageTags } from '#lib/i18n/index.ts';
+	import { split } from '#lib/i18n/locales.ts';
+	import { transitionPalette } from '#lib/palette-transitions.ts';
 	import Header from '#lib/components/Header.svelte';
 	import Footer from '#lib/components/Footer.svelte';
 	import Blueprint from '#lib/components/Blueprint.svelte';
@@ -30,6 +32,23 @@
 		// No smooth scrolling while SvelteKit moves to the new page (see global.css).
 		delete document.documentElement.dataset.smoothScroll;
 		if (navigation.shallow || !canTransition()) return;
+
+		// The same page in the other language: the whole page changes in place, like a
+		// colour theme, so it gets the colour themes' effects (palette-transitions.ts),
+		// starting from the language switch.
+		const language = (url?: URL) => url && split(url.pathname).locale;
+		if (language(navigation.from?.url) !== language(navigation.to?.url)) {
+			const button = document.querySelector('[data-language-switch]')?.getBoundingClientRect();
+			const origin = button
+				? { x: button.left + button.width / 2, y: button.top + button.height / 2 }
+				: { x: innerWidth, y: 0 };
+			return new Promise<void>((resolve) => {
+				transitionPalette(async () => {
+					resolve();
+					await navigation.complete;
+				}, origin);
+			});
+		}
 
 		// SvelteKit waits for this promise before it updates the page.
 		return new Promise<void>((resolve) => {
