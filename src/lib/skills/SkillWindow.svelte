@@ -8,7 +8,7 @@
 	import type { Attachment } from 'svelte/attachments';
 	import Icon from './Icon.svelte';
 	import Skill from './Skill.svelte';
-	import { spotlight } from './spotlight.ts';
+	import { spotlight } from '#lib/spotlight.ts';
 	import type { Group } from './skills.ts';
 
 	// open: how the window starts in the prerendered page. The server can't know what's

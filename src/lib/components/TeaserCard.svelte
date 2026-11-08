@@ -24,12 +24,30 @@
 		thumbnail?: { cover?: Cover; label: string };
 		// Blog posts: a draft or published badge, shown in dev only (PostStatus).
 		status?: 'draft' | 'published';
+		// The first card of a list, likely on screen as the page loads: its cover is the
+		// page's largest picture (LCP), so it loads at once and first, not lazily.
+		priority?: boolean;
 	}
 </script>
 
 <script lang="ts">
-	let { title, description, date, minutes, tags, href, tagHref, thumbnail, status }: Teaser =
-		$props();
+	let {
+		title,
+		description,
+		date,
+		minutes,
+		tags,
+		href,
+		tagHref,
+		thumbnail,
+		status,
+		priority = false
+	}: Teaser = $props();
+
+	// The first card's cover: load it at once, and ahead of other images (an image's
+	// default priority is low, so it waits behind fonts and scripts).
+	const loading = $derived(priority ? 'eager' : 'lazy');
+	const fetchpriority = $derived(priority ? 'high' : undefined);
 </script>
 
 <article class:linked={href}>
@@ -41,18 +59,26 @@
 				{#if thumbnail.cover}
 					<!-- Two crops: 16:9 on top of the text, square beside it. The container
 					     query shows one; both are lazy, and a lazy image that isn't shown is
-					     never downloaded. sizes: the card's width (at most 34rem) on top,
+					     never downloaded (with priority, both load: the square is small).
+					     sizes: the card's width (at most 34rem) on top,
 					     12rem beside; the browser picks the smallest copy that's sharp. -->
 					<div class="wide">
 						<enhanced:img
 							src={thumbnail.cover.picture}
 							alt=""
 							sizes="(min-width: 600px) 544px, 100vw"
-							loading="lazy"
+							{loading}
+							{fetchpriority}
 						/>
 					</div>
 					<div class="square">
-						<enhanced:img src={thumbnail.cover.square} alt="" sizes="192px" loading="lazy" />
+						<enhanced:img
+							src={thumbnail.cover.square}
+							alt=""
+							sizes="192px"
+							{loading}
+							{fetchpriority}
+						/>
 					</div>
 				{:else}
 					<div class="tile" aria-hidden="true">{thumbnail.label}</div>

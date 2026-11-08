@@ -1,8 +1,8 @@
 // A Svelte attachment for a list ({@attach spotlight} on the <ul>): as the pointer
 // moves over it, every item gets --x and --y, the pointer's position relative to that
-// item. The CSS (Skill.svelte) draws a glow there. Because every item gets them, not
-// only the one under the pointer, the glow spills onto the borders of the items next
-// to it, like one light moving over the whole list.
+// item. The CSS (Skill.svelte, TagCloud.svelte) draws a glow there. Because every item
+// gets them, not only the one under the pointer, the glow spills onto the borders of
+// the items next to it, like one light moving over the whole list.
 import type { Attachment } from 'svelte/attachments';
 
 export const spotlight: Attachment<HTMLElement> = (list) => {
