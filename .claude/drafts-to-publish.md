@@ -112,6 +112,7 @@ These need that whole group live first:
 - `2026-11-07-components-in-code-blocks` (1: the next field or component I want) → videos in markdown posts, markdown with mdsvex. Its clip (`awesome-filter.webm`, 960×540, 580 KB) was recorded with Playwright: replace it with my own recording if I want.
 - `2026-11-07-callouts-that-read-well-everywhere` (1: the part of the plugin I found most interesting) → linkable headings, markdown with mdsvex
 - `2026-11-08-a-tag-sidebar-that-fades-out` (3: a before/after screenshot of /blog; where focus goes after opening; my favourite tag colour). Links to no draft.
+- `2026-11-08-cards-that-become-the-page` (3: a recording /blog → a post → Back; clicking during a running transition; how it feels on a phone). Links to no draft.
 - `2026-11-06-videos-in-markdown-posts` (2: the hashed name the build wrote for my first video; the sizes of my first clip, raw, MP4 and WebM) → images next to the post, pages that jump
 - `2026-11-02-shiki-with-design-tokens` (3: light and dark screenshots; a token from the inspector; how I checked contrast) → code block frame
 - `2026-11-02-tag-pages-from-frontmatter` (2: the unseen-routes error; a screenshot of the tag index) → drafts that never ship

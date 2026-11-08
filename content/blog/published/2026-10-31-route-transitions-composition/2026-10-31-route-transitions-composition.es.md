@@ -132,6 +132,8 @@ Ir de la portada (1120px de ancho) al blog (60 caracteres de ancho) no necesitó
 }
 ```
 
+**Actualización:** lo de "donde estaba" no era del todo cierto. La foto antigua se coloca donde empieza el contenido _nuevo_, y al volver atrás SvelteKit desplaza la lista hasta donde estabas, así que el artículo antiguo se veía desde la mitad mientras se desvanecía. Ahora el layout mide dónde empieza el contenido antes y después del cambio y mueve la foto antigua la diferencia: `translate: -50% var(--route-shift, 0px)`. No se notaba hasta que las tarjetas empezaron a convertirse en sus páginas.
+
 ## Un bug que esto encontró
 
 Mientras lo probaba, el `main` de la portada medía 876px de ancho en vez de 1120px. En la rejilla de mi body, `margin-inline: auto` impide que un elemento se estire, así que `main` se encogía hasta su contenido. Cada página era tan ancha como su texto. `inline-size: 100%` junto a `max-inline-size` lo arregló, y ahora una composición decide de verdad el ancho.

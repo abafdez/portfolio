@@ -45,27 +45,31 @@
 	const lang = $derived(locale && locale !== getLocale() ? languageTags[locale] : undefined);
 </script>
 
-<header>
-	<time datetime={date}>{date}</time>
-	{#if minutes}
-		<span class="minutes">· {m.minutesRead({ minutes })}</span>
-	{/if}
-	{#if status}
-		<PostStatus {status} />
-	{/if}
-	<TranslationStatus {locale} {reviewed} />
-	<h1 {lang}>{title}</h1>
+<!-- data-morph-*: where a card's parts land when it opens this page (morph.ts). -->
+<header data-morph-page>
+	<div data-morph="meta">
+		<time datetime={date}>{date}</time>
+		{#if minutes}
+			<span class="minutes">· {m.minutesRead({ minutes })}</span>
+		{/if}
+		{#if status}
+			<PostStatus {status} />
+		{/if}
+		<TranslationStatus {locale} {reviewed} />
+	</div>
+	<h1 {lang} data-morph="title">{title}</h1>
 	{#if description}
-		<p class="description" {lang}>{description}</p>
+		<p class="description" {lang} data-morph="description">{description}</p>
 	{/if}
 	{#if tags?.length}
-		<TagList {tags} {tagHref} />
+		<div data-morph="tags"><TagList {tags} {tagHref} /></div>
 	{/if}
 	{#if coverImage}
 		<!-- Usually the biggest thing on the page (its LCP): fetchpriority high, never
 		     lazy. sizes: the reading column (80ch, about 740px) or the screen's width. -->
 		<enhanced:img
 			class="cover"
+			data-morph="picture"
 			src={coverImage}
 			alt={cover}
 			{lang}

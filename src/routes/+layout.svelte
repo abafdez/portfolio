@@ -16,6 +16,7 @@
 	import { getLocale, languageTags } from '#lib/i18n/index.ts';
 	import { split } from '#lib/i18n/locales.ts';
 	import { transitionPalette } from '#lib/palette-transitions.ts';
+	import { cardLinkingTo, mark, pageHeader, picturesReady, unmarkAll } from '#lib/morph.ts';
 	import Header from '#lib/components/Header.svelte';
 	import Footer from '#lib/components/Footer.svelte';
 	import Blueprint from '#lib/components/Blueprint.svelte';
@@ -28,6 +29,8 @@
 	// in global.css). onNavigate runs just before SvelteKit swaps the page.
 	// Shallow navigations (a tool updating its URL params) run it too, but don't swap the
 	// page, so there's nothing to animate.
+	let routeTransitions = 0;
+
 	onNavigate((navigation) => {
 		// No smooth scrolling while SvelteKit moves to the new page (see global.css).
 		delete document.documentElement.dataset.smoothScroll;
@@ -50,16 +53,46 @@
 			});
 		}
 
+		// A card opening its page: the card's parts fly into the page's header (morph.ts).
+		// Coming back from the page (Back, the breadcrumbs), the header flies into its card.
+		// Which card is only known once the list is on screen again, so the other end is
+		// marked in update(), before the browser takes its "after" picture.
+		const card = cardLinkingTo(navigation.to?.url);
+		const header = card ? null : pageHeader();
+		// Marks a skipped transition left behind would give two elements the same name.
+		unmarkAll();
+		mark(card ?? header);
+
+		// Where the page's content starts on screen now. The old content's picture is
+		// placed where the new content starts, which is far off when the new page scrolls
+		// somewhere else (Back restores the list's scroll position), so it's moved back by
+		// the difference (--route-shift, read in global.css).
+		const root = document.documentElement;
+		const top = () => document.querySelector('main')?.getBoundingClientRect().top ?? 0;
+		const oldTop = top();
+
 		// SvelteKit waits for this promise before it updates the page.
 		return new Promise<void>((resolve) => {
-			document.startViewTransition({
+			const transition = document.startViewTransition({
 				// The browser takes its "before" picture, then calls update(). resolve() lets
 				// SvelteKit swap the page, and the "after" picture waits until it's done.
 				update: async () => {
 					resolve();
 					await navigation.complete;
+					root.style.setProperty('--route-shift', `${oldTop - top()}px`);
+					const other = card ? pageHeader() : header && cardLinkingTo(navigation.from?.url);
+					mark(other);
+					await picturesReady(other);
 				},
-				types: ['route']
+				types: card || header ? ['route', 'morph'] : ['route']
+			});
+			// A click during a transition skips it, and its clean-up would remove the marks
+			// the next one has just set: only the latest one cleans up.
+			const mine = ++routeTransitions;
+			transition.finished.finally(() => {
+				if (mine !== routeTransitions) return;
+				unmarkAll();
+				root.style.removeProperty('--route-shift');
 			});
 		});
 	});
