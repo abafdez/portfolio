@@ -6,7 +6,7 @@ reviewed: false
 ## Qué hicimos
 
 - La fase 5 cambió: no hay CV público. Tiene mi teléfono, mi correo y mis empresas, así que lo envío si me lo piden. `/cv` pasó a ser `/about`: con qué trabajo, por grupos (lenguajes, web, bases de datos, mainframe, herramientas, formas de trabajar, flujos con IA, sistemas, multimedia e idiomas), con botones para pedir el CV por LinkedIn o GitHub.
-- Las habilidades son datos en `src/lib/skills/skills.ts`, separados de la página, como `projects.ts`. Cada habilidad tiene un nombre, un icono, un nivel (de 1 Aprendiendo a 4 Podría enseñarlo), una nota y pruebas: enlaces a una entrada de la Bitácora, una herramienta, una lista Awesome o una URL donde se ve.
+- Las habilidades son datos en `src/lib/skills/skills.ts`, separados de la página, como `projects.ts`. Cada habilidad tiene un nombre, un icono, un nivel (de 1 Aprendiendo a 4 Podría enseñarlo), una nota y pruebas: enlaces a una entrada del Devlog, una herramienta, una lista Awesome o una URL donde se ve.
 - Dos librerías de iconos: Lucide (`@lucide/svelte`) para los iconos genéricos y Simple Icons para los logos de marca. Simple Icons da cada logo como datos (un trazado y un color de marca), así que `BrandIcon.svelte` lo dibuja.
 - Cada logo conserva el tono de su marca pero toma la luminosidad del tema (`--icon-tone`), con la sintaxis de color relativo de OKLCH.
 - Una habilidad con más que contar es un `<details>`: su fila es el `<summary>`, y se abre para mostrar la nota y las pruebas.

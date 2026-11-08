@@ -21,7 +21,7 @@ tags: [accessibility, lighthouse, design-tokens]
 ## Problems & fixes
 
 - My first "dark" Lighthouse run was really light. See above.
-- The Bitácora page scores 98 (`heading-order`: `h1` jumps to `h3`). It was already like that, and the page gets rebuilt in Phase 6.
+- The Devlog page scores 98 (`heading-order`: `h1` jumps to `h3`). It was already like that, and the page gets rebuilt in Phase 6.
 
 ## Links
 
@@ -30,4 +30,4 @@ tags: [accessibility, lighthouse, design-tokens]
 
 ## Next
 
-- Fix the Bitácora heading order in Phase 6.
+- Fix the Devlog heading order in Phase 6.

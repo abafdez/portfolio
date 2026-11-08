@@ -5,7 +5,7 @@ reviewed: false
 
 ## Qué hicimos
 
-- Añadí `MarkdownLayout.svelte`, que se le pasa al `compile` de mdsvex como `layout`. Envuelve cada archivo .md (artículos y entradas de la Bitácora) y solo muestra `children`.
+- Añadí `MarkdownLayout.svelte`, que se le pasa al `compile` de mdsvex como `layout`. Envuelve cada archivo .md (artículos y entradas del Devlog) y solo muestra `children`.
 - El script de módulo del layout exporta `a` = `MarkdownLink.svelte`, así que cada enlace del markdown lo pinta ese componente en vez de un `<a>` normal:
   - `/cv` recibe la ruta base mediante `resolve()`, y en el build sale como `href="../cv"`.
   - `https://…` recibe `rel="external"`.

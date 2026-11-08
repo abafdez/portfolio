@@ -173,7 +173,7 @@ Most templates include `actions/configure-pages`. It reads the repo's Pages sett
 
 ## Gotcha: the base path
 
-A project repo deploys to `https://<user>.github.io/<repo>/`, not to the domain root. SvelteKit needs to know that through `paths.base`, and links must use `resolve()` from `$app/paths` instead of hard-coded `/about/` URLs. Otherwise the CSS loads (asset paths are relative by default), but internal links 404. [Read more](/bitacora/2026-10-21-layout-routing-base-path/) about how this configuration works in the [devlog](/bitacora/).
+A project repo deploys to `https://<user>.github.io/<repo>/`, not to the domain root. SvelteKit needs to know that through `paths.base`, and links must use `resolve()` from `$app/paths` instead of hard-coded `/about/` URLs. Otherwise the CSS loads (asset paths are relative by default), but internal links 404. [Read more](/devlog/2026-10-21-layout-routing-base-path/) about how this configuration works in the [devlog](/devlog/).
 
 ## What's next
 

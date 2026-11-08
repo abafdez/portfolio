@@ -8,7 +8,7 @@ cover: Diagram representing layout shift.
 
 You start reading, or reach for a link, and the page jumps. That's a **layout shift**, and Lighthouse measures it as **CLS**, Cumulative Layout Shift: how much visible content moved, and how far. Under 0.1 is good.
 
-I ran Lighthouse on one page of each kind on my site. Accessibility, best practices and SEO were 100 everywhere, and performance mostly 95 to 98. Three pages weren't: a Bitácora entry at 89, an Awesome list at 91, and my contrast checker at 86. All three had the same problem: CLS between 0.14 and 0.24.
+I ran Lighthouse on one page of each kind on my site. Accessibility, best practices and SEO were 100 everywhere, and performance mostly 95 to 98. Three pages weren't: a Devlog entry at 89, an Awesome list at 91, and my contrast checker at 86. All three had the same problem: CLS between 0.14 and 0.24.
 
 ## Finding what moved
 
@@ -108,7 +108,7 @@ For the contrast checker it was even simpler: the score line is always there, wi
 
 | Page                 | CLS before | CLS after | Performance |
 | -------------------- | ---------: | --------: | ----------: |
-| A Bitácora entry     |      0.143 |         0 |     89 → 96 |
+| A Devlog entry       |      0.143 |         0 |     89 → 96 |
 | The Modern CSS list  |      0.162 |         0 |     91 → 97 |
 | The contrast checker |      0.237 |     0.003 |     86 → 96 |
 
@@ -121,4 +121,4 @@ There was a cost. On Lighthouse's throttled mobile network, LCP (when the main c
 - [MDN: rel=preload](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preload)
 - [SvelteKit: the handle hook and preload](https://svelte.dev/docs/kit/hooks#Server-hooks-handle)
 - [MDN: @media scripting](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting)
-- [Bitácora: An Awesome list with filters in the URL](/bitacora/2026-11-02-awesome-list-filters)
+- [Devlog: An Awesome list with filters in the URL](/devlog/2026-11-02-awesome-list-filters)

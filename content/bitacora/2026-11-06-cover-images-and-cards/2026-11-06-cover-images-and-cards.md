@@ -7,7 +7,7 @@ tags: [images, components, seo, testing]
 ## What we did
 
 - A post can have a **cover**: `cover.png` (or `.jpg`, `.webp`) in its folder, with its alt text as `cover:` in the frontmatter. `checkCover()` fails the build when one comes without the other.
-- `src/lib/covers.ts` globs every `cover.*` under `content/` (drafts only in dev) and finds a cover by its folder (`Entry.folder`), so Bitácora entries, Awesome lists and whole sections can get covers later with the same code. Each cover comes as 16:9 (1600, 800, 480 px), a square cropped at build time (480, 240 px), and a 1200 px JPEG for link previews.
+- `src/lib/covers.ts` globs every `cover.*` under `content/` (drafts only in dev) and finds a cover by its folder (`Entry.folder`), so Devlog entries, Awesome lists and whole sections can get covers later with the same code. Each cover comes as 16:9 (1600, 800, 480 px), a square cropped at build time (480, 240 px), and a 1200 px JPEG for link previews.
 - **Cards** (my picks): a square thumbnail beside the text, 12rem and centred on its height; below 34rem of card width (a container query), the 16:9 cover on top. I picked the square after the first 16:9 version left a gap under the image (option C of five). Without a cover, a generated tile: the blueprint grid with the post's first tag, square beside the text, a 4:1 strip on top. The whole card is now the link.
 - **Posts**: the cover at the top (`fetchpriority="high"`). `![alt](./x.png "Caption")` becomes a `<figure>` with a `<figcaption>`, and post images load lazily. Plain figures (my pick).
 - **Link previews**: a post with a cover gets `og:image` and `twitter:card` `summary_large_image`.

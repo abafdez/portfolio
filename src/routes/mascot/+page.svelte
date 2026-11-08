@@ -7,7 +7,7 @@
 		{ section: 'Home' },
 		{ costume: 'suit', section: 'CV' },
 		{ costume: 'glasses', section: 'Projects' },
-		{ costume: 'robe', section: 'Bitácora' },
+		{ costume: 'robe', section: 'Devlog' },
 		{ costume: 'beret', section: 'Blog' },
 		{ costume: 'shades', section: 'Awesome' }
 	];

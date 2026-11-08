@@ -1,7 +1,7 @@
 import type { Component } from 'svelte';
 import type { PageLoad } from './$types';
 
-// Every post as a component, one chunk each (like the Bitácora's [slug] page).
+// Every post as a component, one chunk each (like the Devlog's [slug] page).
 // Vite makes a chunk for every file a glob matches, used or not, so the drafts glob
 // is dev only: in a build the dead branch is removed and no draft ships.
 const bodies = {

@@ -38,7 +38,7 @@ const pages: Page[] = [
 	})),
 	...postTags.map((tag) => ({ path: resolve('/blog/tags/[tag]', { tag }), translated: true })),
 	...allLog.map((entry) => ({
-		path: resolve('/bitacora/[slug]', { slug: entry.slug }),
+		path: resolve('/devlog/[slug]', { slug: entry.slug }),
 		updated: entry.date,
 		translated: isTranslated(entry)
 	}))

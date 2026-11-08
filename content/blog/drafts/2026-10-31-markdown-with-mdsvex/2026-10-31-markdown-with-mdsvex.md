@@ -5,7 +5,7 @@ tags: [sveltekit, mdsvex, markdown, vite]
 description: Turning a folder of markdown files into prerendered SvelteKit pages with mdsvex, why the usual preprocess setup broke on my own posts, and how Vite really orders plugins.
 ---
 
-The Bitácora and this blog are folders of markdown files. Until now the site only read their frontmatter, to list the latest ones on the home page. This post renders the bodies too: every file in `content/bitacora/` becomes its own prerendered page, and adding a file is the only step to publish one.
+The Devlog and this blog are folders of markdown files. Until now the site only read their frontmatter, to list the latest ones on the home page. This post renders the bodies too: every file in `content/bitacora/` becomes its own prerendered page, and adding a file is the only step to publish one.
 
 My first try failed, and the reason turned out to be more interesting than the setup.
 
@@ -31,7 +31,7 @@ sveltekit({
 });
 ```
 
-`extensions` tells Svelte to compile `.md` files as components. The build failed on my own Bitácora entry about images:
+`extensions` tells Svelte to compile `.md` files as components. The build failed on my own Devlog entry about images:
 
 ```
 [plugin vite-plugin-enhanced-img-markup] content/bitacora/2026-10-29-enhanced-img-avatar.md
@@ -91,7 +91,7 @@ The plugin grew a little later. It passes two more options to `compile`: a `high
 
 ## One page per file
 
-The page lives in `src/routes/bitacora/[slug]/` and is split across two load files.
+The page lives in `src/routes/devlog/[slug]/` and is split across two load files.
 
 `+page.server.ts` runs only at build time. It lists the pages to prerender and finds the entry's frontmatter in the same list the home page uses:
 
@@ -100,7 +100,7 @@ export const entries: EntryGenerator = () => allLog.map(({ slug }) => ({ slug })
 
 export const load: PageServerLoad = ({ params }) => {
 	const entry = allLog.find(({ slug }) => slug === params.slug);
-	if (!entry) error(404, 'No Bitácora entry with that name');
+	if (!entry) error(404, 'No Devlog entry with that name');
 	return { entry };
 };
 ```
@@ -128,7 +128,7 @@ The page renders `<Body />` under a header with the date, title and tags.
 
 ## A type that broke
 
-Adding `[slug]` broke `pnpm check` in four components. They all called `resolve(link.route)` with a route typed as `RouteId`, and `RouteId` now includes `'/bitacora/[slug]'`, which `resolve()` can't build without a slug. Those links never point to a route with a parameter, so I said that in the type, with a template literal type:
+Adding `[slug]` broke `pnpm check` in four components. They all called `resolve(link.route)` with a route typed as `RouteId`, and `RouteId` now includes `'/devlog/[slug]'`, which `resolve()` can't build without a slug. Those links never point to a route with a parameter, so I said that in the type, with a template literal type:
 
 ```ts
 export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;

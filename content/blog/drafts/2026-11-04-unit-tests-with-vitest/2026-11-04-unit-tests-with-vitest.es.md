@@ -114,7 +114,7 @@ FAIL  summary > skips a code block at the start, not just its fence
 AssertionError: expected 'const x = 1;' to be 'The text.'
 ```
 
-`summary()` se saltaba las líneas que empiezan por tres comillas invertidas, así que se saltaba la valla y luego cogía la primera línea de código como descripción. Ninguna entrada de la Bitácora empieza todavía con código, así que nada en el sitio lo mostraba. La primera que lo hiciera habría tenido `const x = 1;` como resultado de búsqueda.
+`summary()` se saltaba las líneas que empiezan por tres comillas invertidas, así que se saltaba la valla y luego cogía la primera línea de código como descripción. Ninguna entrada del Devlog empieza todavía con código, así que nada en el sitio lo mostraba. La primera que lo hiciera habría tenido `const x = 1;` como resultado de búsqueda.
 
 El arreglo quita los bloques de código enteros antes de buscar la primera línea:
 
@@ -128,7 +128,7 @@ const codeBlock = /^(`{3,})[^\n]*\n[\s\S]*?^\1/gm;
 
 ## Un test sobre el contenido real
 
-El último test no usa entradas inventadas. Lee mis entradas reales de la Bitácora y comprueba que cada una recibe una descripción de entre 1 y 160 caracteres:
+El último test no usa entradas inventadas. Lee mis entradas reales del Devlog y comprueba que cada una recibe una descripción de entre 1 y 160 caracteres:
 
 ```ts
 test.each(allLog.map((entry) => [entry.slug, entry.description]))(

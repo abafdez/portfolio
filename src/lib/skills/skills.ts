@@ -11,7 +11,7 @@ export type Level = (typeof levels)[number];
 // Where a skill shows on this site (or off it). One key per kind of page, so each
 // href is built by resolve() with its own route, and TypeScript checks the params.
 export type Evidence = { label: string } & (
-	| { entry: string } // a Bitácora entry: /bitacora/<slug>
+	| { entry: string } // a Devlog entry: /devlog/<slug>
 	| { tool: string } // a project: /projects/<tool>
 	| { list: string } // an Awesome list: /awesome/<list>
 	| { url: `https://${string}` }
@@ -73,7 +73,7 @@ export interface Group {
 // Built when the page renders, not here: under a base path, resolve() gives a
 // different (relative) href on each prerendered page.
 export function evidenceHref(evidence: Evidence): string {
-	if ('entry' in evidence) return route('/bitacora/[slug]', { slug: evidence.entry });
+	if ('entry' in evidence) return route('/devlog/[slug]', { slug: evidence.entry });
 	if ('tool' in evidence) return route('/projects/[tool]', { tool: evidence.tool });
 	if ('list' in evidence) return route('/awesome/[list]', { list: evidence.list });
 	return evidence.url;

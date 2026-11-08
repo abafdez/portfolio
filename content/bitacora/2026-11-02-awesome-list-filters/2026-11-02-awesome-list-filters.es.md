@@ -9,7 +9,7 @@ reviewed: false
 - `src/lib/awesome/awesome.ts` las carga al construir el sitio (`import.meta.glob` con `?raw` y el paquete `yaml`, como `content.ts`). Un enlace que no es `https://` o una etiqueta que no está en kebab-case hacen fallar el build. Para esto, `checkTags` ahora se exporta desde `content.ts`.
 - `LinkFilter` (`filter.svelte.ts`) guarda el texto de búsqueda y las etiquetas elegidas como `$state`, y los enlaces que coinciden y su número como `$derived`. Se convierte a sí mismo en parámetros de URL y los vuelve a leer.
 - `AwesomeList.svelte` muestra un cuadro de búsqueda, botones de etiqueta que se activan y desactivan (`aria-pressed`), un contador en vivo (`role="status"`) y un botón de "Quitar filtros". El filtro va en la URL (`?q=grid&tag=docs`), así que una vista filtrada se puede compartir.
-- `/awesome` lista las listas. La primera, CSS moderno, tiene 25 enlaces sacados de la documentación que ya cita esta Bitácora.
+- `/awesome` lista las listas. La primera, CSS moderno, tiene 25 enlaces sacados de la documentación que ya cita este Devlog.
 
 ## Qué aprendí
 

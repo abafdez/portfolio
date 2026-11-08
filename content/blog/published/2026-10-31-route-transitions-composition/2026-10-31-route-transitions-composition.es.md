@@ -54,7 +54,7 @@ Por defecto, toda la página se funde de una a otra. `view-transition-name` le d
 }
 ```
 
-Un nombre tiene que ser único en la página. Mi primera versión decía `& header`, y funcionó hasta que una entrada de la Bitácora tuvo su propio `<header>` para el título. Dos elementos tenían el nombre `site-header`, y el navegador cancelaba la transición con "Unexpected duplicate view-transition-name". Una clase en la cabecera del sitio lo arregló.
+Un nombre tiene que ser único en la página. Mi primera versión decía `& header`, y funcionó hasta que una entrada del Devlog tuvo su propio `<header>` para el título. Dos elementos tenían el nombre `site-header`, y el navegador cancelaba la transición con "Unexpected duplicate view-transition-name". Una clase en la cabecera del sitio lo arregló.
 
 Los nombres solo existen durante las transiciones `route`. La revelación circular de mi selector de tema anima la foto raíz, y un elemento con nombre se recorta de la raíz. Con un nombre permanente, la cabecera quedaría fuera del círculo y cambiaría de tema por su cuenta.
 
@@ -91,7 +91,7 @@ Solo hay un marcador en cada página. Durante una transición de ruta se llama `
 
 ## Cada ruta elige su composición
 
-El blog y la Bitácora son texto largo, y las líneas largas cuestan de leer. Quería una columna estrecha ahí, pero `<main>` pertenece al layout raíz, y los estilos de una página no llegan a él. Así que la página le manda al layout un dato.
+El blog y el Devlog son texto largo, y las líneas largas cuestan de leer. Quería una columna estrecha ahí, pero `<main>` pertenece al layout raíz, y los estilos de una página no llegan a él. Así que la página le manda al layout un dato.
 
 El tipo va en `src/app.d.ts`, para que se conozca en todas partes:
 

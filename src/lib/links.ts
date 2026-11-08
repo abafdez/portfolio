@@ -2,7 +2,7 @@ import type { RouteId } from '$app/types';
 import { m, route } from '#lib/i18n/index.ts';
 
 // The routes resolve() can build from the id alone: those without a [param].
-// '/bitacora/[slug]' needs a slug too, so it's left out.
+// '/devlog/[slug]' needs a slug too, so it's left out.
 export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
 
 // A link is either a route on this site (checked by the type system and passed
@@ -27,7 +27,7 @@ export const sections: { href: RouteWithoutParams; label: () => string }[] = [
 	{ href: '/awesome', label: m.navAwesome },
 	{ href: '/projects', label: m.navProjects },
 	{ href: '/about', label: m.navAbout },
-	{ href: '/bitacora', label: m.navBitacora }
+	{ href: '/devlog', label: m.navDevlog }
 ];
 
 // Is this route a page inside the section, not the section itself? '/projects/cv' and
@@ -40,5 +40,5 @@ export const isInside = (href: RouteWithoutParams, routeId: string | null) =>
 	href !== '/' && !!routeId?.startsWith(`${href}/`);
 
 // A blog tag's page. Cards and headers take this as tagHref to link their tags.
-// Bitácora tags have no pages, so the Bitácora doesn't pass it. In the page's language.
+// Devlog tags have no pages, so the Devlog doesn't pass it. In the page's language.
 export const blogTag = (tag: string) => route('/blog/tags/[tag]', { tag });

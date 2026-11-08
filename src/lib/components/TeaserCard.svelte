@@ -16,7 +16,7 @@
 		minutes?: number;
 		tags?: string[];
 		// Optional: a card can exist before its page does. Already resolved by the
-		// caller (resolve('/bitacora/[slug]', { slug })), so the route and its params
+		// caller (resolve('/devlog/[slug]', { slug })), so the route and its params
 		// are still type-checked there.
 		href?: ResolvedPathname;
 		// Links each tag to its page (see TagList).

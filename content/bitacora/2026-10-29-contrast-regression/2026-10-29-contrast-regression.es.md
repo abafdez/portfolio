@@ -19,7 +19,7 @@ reviewed: false
 ## Problemas y soluciones
 
 - Mi primera pasada "oscura" de Lighthouse en realidad era clara. Mira arriba.
-- La página de la Bitácora saca un 98 (`heading-order`: del `h1` salta a `h3`). Ya estaba así, y la página se rehace en la fase 6.
+- La página del Devlog saca un 98 (`heading-order`: del `h1` salta a `h3`). Ya estaba así, y la página se rehace en la fase 6.
 
 ## Enlaces
 
@@ -28,4 +28,4 @@ reviewed: false
 
 ## Siguiente
 
-- Arreglar el orden de los encabezados de la Bitácora en la fase 6.
+- Arreglar el orden de los encabezados del Devlog en la fase 6.

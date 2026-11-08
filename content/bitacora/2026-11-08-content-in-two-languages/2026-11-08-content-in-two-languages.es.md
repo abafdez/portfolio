@@ -31,4 +31,4 @@ reviewed: false
 
 ## Siguiente
 
-- Traducir el contenido por tandas: sobre mí, habilidades y CV; proyectos y Awesome; artículos; borradores; Bitácora.
+- Traducir el contenido por tandas: sobre mí, habilidades y CV; proyectos y Awesome; artículos; borradores; Devlog.

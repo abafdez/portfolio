@@ -44,7 +44,7 @@ While every post was a draft, a build had no tags, so the route had no pages and
 
 ## Links only where a page exists
 
-The same tag list shows up on blog cards, the post header, and the Bitácora (my dev log). The Bitácora's tags have no pages. A tag like `planning` is only used there, and a link to `/blog/tags/planning` would be a 404.
+The same tag list shows up on blog cards, the post header, and the Devlog. The Devlog's tags have no pages. A tag like `planning` is only used there, and a link to `/blog/tags/planning` would be a 404.
 
 So the list component doesn't build links itself. It takes a function that turns a tag into a link, and without one the tags stay plain text:
 
@@ -73,7 +73,7 @@ So the list component doesn't build links itself. It takes a function that turns
 </ul>
 ```
 
-Blog pages pass `blogTag`, a one-line helper around `resolve('/blog/tags/[tag]', { tag })`. The Bitácora passes nothing. The component never needs to know which routes exist.
+Blog pages pass `blogTag`, a one-line helper around `resolve('/blog/tags/[tag]', { tag })`. The Devlog passes nothing. The component never needs to know which routes exist.
 
 ## A bad tag fails the build
 

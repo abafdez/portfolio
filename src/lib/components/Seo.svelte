@@ -34,7 +34,7 @@
 		description: string;
 		// The section it's in, for the <title>: 'CV builder · Projects · Alfonso Baeza'.
 		section?: string;
-		// 'YYYY-MM-DD' for a post or a Bitácora entry, which makes it an article.
+		// 'YYYY-MM-DD' for a post or a Devlog entry, which makes it an article.
 		published?: string;
 		// The link preview's picture (coverPreviews in covers.ts) and its alt text.
 		image?: { src: string; alt: string };

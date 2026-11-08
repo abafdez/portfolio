@@ -9,7 +9,7 @@ tags: [sveltekit, vite, blog]
 
 - Moved every post to `content/blog/drafts/`. A post is a draft because of where it lives, so `Entry.draft` comes from the path and the `draft: true` frontmatter is gone.
 - Wrapped the drafts glob in `import.meta.env.DEV ? import.meta.glob(…) : {}`, in `content.ts` (frontmatter) and in `blog/[slug]/+page.ts` (bodies).
-- Built `/blog` (posts grouped by year with `Map.groupBy`) and `/blog/[slug]` the same way as the Bitácora. Both `[slug]` pages now share `ArticleHeader.svelte`.
+- Built `/blog` (posts grouped by year with `Map.groupBy`) and `/blog/[slug]` the same way as the Devlog. Both `[slug]` pages now share `ArticleHeader.svelte`.
 - Added a `prerender.handleUnseenRoutes` handler that ignores only `/blog/[slug]`.
 
 ## What I learned

@@ -6,7 +6,7 @@ tags: [markdown, accessibility, images, dx]
 
 ## What we did
 
-- **Headings in markdown have ids now.** `rehype-slug` gives every heading an `id` from its text (`## The base path` → `#the-base-path`, a repeated one gets `-1`), and `rehype-autolink-headings` with `behavior: 'wrap'` makes its text a link to itself. A `#` shows on hover and focus (CSS, with empty alt text so it isn't read out). Posts and Bitácora entries both get them.
+- **Headings in markdown have ids now.** `rehype-slug` gives every heading an `id` from its text (`## The base path` → `#the-base-path`, a repeated one gets `-1`), and `rehype-autolink-headings` with `behavior: 'wrap'` makes its text a link to itself. A `#` shows on hover and focus (CSS, with empty alt text so it isn't read out). Posts and Devlog entries both get them.
 - The svelte pages already had ids on their section headings (13, used by `aria-labelledby` and the section navs), so `#links` to those already worked.
 - **Covers can be AVIF**: `cover.avif` joins `.png`, `.jpg` and `.webp`.
 - **A draft/published badge in dev** (`PostStatus.svelte`) on post cards and post headers: a dashed, muted "draft" or a green "published", each with a Lucide icon. It's not in the build at all.

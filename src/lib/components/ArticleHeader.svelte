@@ -7,7 +7,7 @@
 	import TranslationStatus from './TranslationStatus.svelte';
 	import type { Locale } from '#lib/i18n/locales.ts';
 
-	// The top of a Bitácora entry or a blog post, from its frontmatter.
+	// The top of a Devlog entry or a blog post, from its frontmatter.
 	interface Props {
 		title: string;
 		date: string;

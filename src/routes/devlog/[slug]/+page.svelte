@@ -12,7 +12,7 @@
 
 <Seo
 	title={entry.title}
-	section={m.bitacoraTitle()}
+	section={m.devlogTitle()}
 	description={entry.description}
 	published={entry.date}
 	translated={data.translated}

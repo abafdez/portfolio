@@ -43,7 +43,7 @@ export function checkCover(path: string, alt: unknown, files: string[] = coverFi
 
 ## Un glob, los tamaños adecuados
 
-Las portadas se encuentran con el `import.meta.glob` de Vite y las procesa `@sveltejs/enhanced-img`. Un solo glob cubre todo lo que hay en `content/`, así que el mismo código servirá para las entradas de la Bitácora y las listas Awesome cuando tengan portada. Un patrón con `!` deja los borradores fuera de un build:
+Las portadas se encuentran con el `import.meta.glob` de Vite y las procesa `@sveltejs/enhanced-img`. Un solo glob cubre todo lo que hay en `content/`, así que el mismo código servirá para las entradas del Devlog y las listas Awesome cuando tengan portada. Un patrón con `!` deja los borradores fuera de un build:
 
 ```ts
 const pictures = import.meta.glob<Picture>(

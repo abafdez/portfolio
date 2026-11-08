@@ -1,16 +1,16 @@
 ---
 title: Una fuente distinta para cada parte de mi sitio, todas alojadas en él
-description: Fira Code para el código, una fuente manuscrita para mi bitácora y la fuente del sistema en todo lo demás. Sin Google Fonts y sin coste extra en las páginas que no las usan.
+description: Fira Code para el código, una fuente manuscrita para mi devlog y la fuente del sistema en todo lo demás. Sin Google Fonts y sin coste extra en las páginas que no las usan.
 cover: Una caja con fuentes de texto.
 reviewed: false
 ---
 
-Quería que cada parte de mi portfolio tuviera su propio carácter. El código tenía que parecer código, mi diario de desarrollo (la Bitácora) tenía que parecer un cuaderno, y el resto no tenía que llamar la atención. Además, no quería ninguna petición a terceros.
+Quería que cada parte de mi portfolio tuviera su propio carácter. El código tenía que parecer código, mi diario de desarrollo (el Devlog) tenía que parecer un cuaderno, y el resto no tenía que llamar la atención. Además, no quería ninguna petición a terceros.
 
 ## Las elegidas
 
 - **Código: [Fira Code](https://github.com/tonsky/FiraCode).** Es Fira Mono con ligaduras opcionales, así que `=>` se dibuja como una flecha. Se pueden desactivar con `font-variant-ligatures: none`.
-- **Bitácora: [Shantell Sans](https://shantellsans.com/).** Parece escrita a mano, pero está diseñada para seguir siendo legible en textos largos. Las fuentes caligráficas de verdad quedan genial en un título y cansan después de un párrafo.
+- **Devlog: [Shantell Sans](https://shantellsans.com/).** Parece escrita a mano, pero está diseñada para seguir siendo legible en textos largos. Las fuentes caligráficas de verdad quedan genial en un título y cansan después de un párrafo.
 - **Todo lo demás: la fuente del sistema.** La pila `--font-sans` de Open Props usa la propia fuente del sistema operativo. Es gratis e instantánea, a cambio de verse algo distinta en Windows, macOS y Android.
 
 ## Por qué alojarlas yo
@@ -48,7 +48,7 @@ Me preocupaba que tres fuentes significaran tres descargas en cada página. No e
 | Página                        | Archivos de fuentes descargados            |
 | ----------------------------- | ------------------------------------------ |
 | Portada                       | ninguno                                    |
-| Bitácora                      | Shantell Sans (solo latino)                |
+| Devlog                        | Shantell Sans (solo latino)                |
 | Cualquier página con `<code>` | Fira Code (solo latino), cuando hace falta |
 
 Lo de "solo latino" viene de `unicode-range`. Fontsource divide cada fuente en subconjuntos (latino, latino extendido, cirílico, griego…), y el navegador solo descarga los que necesita para los caracteres de la página.
@@ -84,10 +84,10 @@ samp {
 }
 ```
 
-La Bitácora tiene su propio layout, que solo sobrescribe un token:
+El Devlog tiene su propio layout, que solo sobrescribe un token:
 
 ```svelte
-<!-- src/routes/bitacora/+layout.svelte -->
+<!-- src/routes/devlog/+layout.svelte -->
 <div class="bitacora">{@render children()}</div>
 
 <style>
@@ -111,7 +111,7 @@ Mi primera versión tenía esto en `tokens.css`:
 }
 ```
 
-Parece que `--font-heading` sigue a `--font-body`. No es así. Un `var()` dentro de una custom property **se resuelve en el elemento donde se define la propiedad**, aquí `:root`. Los hijos heredan el resultado, una pila de fuentes normal, no una referencia viva. Así que cuando la Bitácora sobrescribía `--font-body`, `--font-heading` seguía siendo la fuente del sistema, y mis encabezados se quedaban con la fuente equivocada.
+Parece que `--font-heading` sigue a `--font-body`. No es así. Un `var()` dentro de una custom property **se resuelve en el elemento donde se define la propiedad**, aquí `:root`. Los hijos heredan el resultado, una pila de fuentes normal, no una referencia viva. Así que cuando el Devlog sobrescribía `--font-body`, `--font-heading` seguía siendo la fuente del sistema, y mis encabezados se quedaban con la fuente equivocada.
 
 La solución es resolver el valor donde se usa, con un valor de respaldo:
 
@@ -121,6 +121,6 @@ h1 {
 }
 ```
 
-Ahora `--font-body` se busca en el propio `h1`, dentro de la sección, y recoge la sobrescritura. La misma regla explica por qué el envoltorio de la Bitácora vuelve a poner `font-family`: `body` ya calculó su fuente, y los hijos heredan ese valor calculado, no el token.
+Ahora `--font-body` se busca en el propio `h1`, dentro de la sección, y recoge la sobrescritura. La misma regla explica por qué el envoltorio del Devlog vuelve a poner `font-family`: `body` ya calculó su fuente, y los hijos heredan ese valor calculado, no el token.
 
 **Actualización:** más adelante, para la [identidad que empieza por el modo oscuro](./2026-10-31-dark-first-palette), los encabezados pasaron a usar Fira Code en todas partes. Así que `--font-heading` se define ahora en `:root` como `var(--font-code)`, y un nuevo `--font-label` hace lo mismo para el menú, los botones y los textos pequeños de la interfaz. Ninguno de los dos sigue ya a `--font-body`, a propósito, así que esta trampa no puede pillarlos. La regla sigue valiendo para cualquier token construido a partir de otro.

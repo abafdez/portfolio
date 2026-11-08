@@ -7,7 +7,7 @@ tags: [performance, lighthouse, fonts]
 
 ## What we did
 
-- Ran Lighthouse (mobile, the default) on one page of each kind. Accessibility, best practices and SEO were 100 everywhere; performance was 95–98, except three pages: a Bitácora entry (89), the Modern CSS list (91) and the contrast checker (86). All three lost points to **CLS**, content moving after it first appears.
+- Ran Lighthouse (mobile, the default) on one page of each kind. Accessibility, best practices and SEO were 100 everywhere; performance was 95–98, except three pages: a Devlog entry (89), the Modern CSS list (91) and the contrast checker (86). All three lost points to **CLS**, content moving after it first appears.
 - **Fonts:** `src/hooks.server.ts` asks SvelteKit to preload the Latin files of Fira Code and Shantell Sans (`resolve(event, { preload })`), so they download with the HTML instead of after the CSS.
 - **Awesome list:** the filters are in the prerendered HTML now, `visibility: hidden` until `onMount` adds `.ready`, and `display: none` under `@media (scripting: none)`. Before, `{#if ready}` added them later and pushed the list down.
 - **Contrast checker:** the score line is always rendered (a non-breaking space until the tokens are read), so it no longer appears and pushes the page down.

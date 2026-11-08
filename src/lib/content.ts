@@ -108,7 +108,7 @@ export function readingTime(text: string): number {
 	return Math.max(1, Math.ceil(words / 200));
 }
 
-// A description for a file that has none (Bitácora entries): the body's first
+// A description for a file that has none (Devlog entries): the body's first
 // paragraph or list item, as plain text, cut at a word to fit in max characters.
 // Search results show about 160. Headings, HTML comments and code blocks are skipped.
 // A code block goes whole, from its fence to the closing one with as many backticks

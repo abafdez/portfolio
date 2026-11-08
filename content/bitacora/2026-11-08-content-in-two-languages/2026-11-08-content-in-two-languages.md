@@ -33,4 +33,4 @@ tags: [i18n, content, svelte, seo]
 
 ## Next
 
-- Translate the content in batches: about, skills and CV; projects and Awesome; posts; drafts; Bitácora.
+- Translate the content in batches: about, skills and CV; projects and Awesome; posts; drafts; Devlog.

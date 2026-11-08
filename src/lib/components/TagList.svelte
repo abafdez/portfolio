@@ -2,11 +2,11 @@
 	import { m } from '#lib/i18n/index.ts';
 	import type { ResolvedPathname } from '$app/types';
 
-	// The tags of a post or a Bitácora entry (TeaserCard, ArticleHeader).
+	// The tags of a post or a Devlog entry (TeaserCard, ArticleHeader).
 	interface Props {
 		tags: string[];
 		// A tag's page, e.g. blogTag from links.ts. Without it the tags are plain text:
-		// Bitácora tags have no pages.
+		// Devlog tags have no pages.
 		tagHref?: (tag: string) => ResolvedPathname;
 	}
 

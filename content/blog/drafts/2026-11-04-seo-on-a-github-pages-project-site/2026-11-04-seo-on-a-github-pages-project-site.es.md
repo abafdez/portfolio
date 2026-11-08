@@ -86,7 +86,7 @@ paths: {
 
 ## Una descripción para cada página
 
-Los artículos tienen una `description` en su frontmatter. Las entradas de la Bitácora no, y no voy a escribir 47. Así que `content.ts` saca una del cuerpo: el primer párrafo o elemento de lista, como texto sin formato, cortado en una palabra por debajo de 160 caracteres (los resultados de búsqueda cortan más o menos ahí).
+Los artículos tienen una `description` en su frontmatter. Las entradas del Devlog no, y no voy a escribir 47. Así que `content.ts` saca una del cuerpo: el primer párrafo o elemento de lista, como texto sin formato, cortado en una palabra por debajo de 160 caracteres (los resultados de búsqueda cortan más o menos ahí).
 
 ````ts
 export function summary(text: string, max = 160): string {
@@ -111,7 +111,7 @@ Un sitemap lista las páginas que los buscadores deberían conocer. El mío es u
 const pages: Page[] = [
 	...sections.map(({ href }) => ({ path: resolve(href) })),
 	...allLog.map(({ slug, date }) => ({
-		path: resolve('/bitacora/[slug]', { slug }),
+		path: resolve('/devlog/[slug]', { slug }),
 		updated: date
 	}))
 	// …projects, Awesome lists, posts, tags

@@ -7,7 +7,7 @@ reviewed: false
 
 - Moví todos los artículos a `content/blog/drafts/`. Un artículo es un borrador por dónde vive, así que `Entry.draft` sale de la ruta y el `draft: true` del frontmatter ya no está.
 - Envolví el glob de los borradores en `import.meta.env.DEV ? import.meta.glob(…) : {}`, en `content.ts` (el frontmatter) y en `blog/[slug]/+page.ts` (los cuerpos).
-- Construí `/blog` (los artículos agrupados por año con `Map.groupBy`) y `/blog/[slug]` igual que la Bitácora. Las dos páginas `[slug]` comparten ahora `ArticleHeader.svelte`.
+- Construí `/blog` (los artículos agrupados por año con `Map.groupBy`) y `/blog/[slug]` igual que el Devlog. Las dos páginas `[slug]` comparten ahora `ArticleHeader.svelte`.
 - Añadí un manejador `prerender.handleUnseenRoutes` que solo ignora `/blog/[slug]`.
 
 ## Qué aprendí

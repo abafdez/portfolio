@@ -6,8 +6,8 @@ reviewed: false
 ## Qué hicimos
 
 - Revisamos la base de SvelteKit 3: adapter-static, runes obligatorias y CI hacia GitHub Pages.
-- Planificamos 10 fases (0–9): workflow → TypeScript → layout y rutas → Open Props → Hero → CV → Bitácora (mdsvex) → Blog → Subproyectos y Awesome-X → calidad y SEO.
-- Decidido: mdsvex para el markdown, pasar a TypeScript, Bitácora = diario de desarrollo breve (separado del Blog), yo escribo el código y Claude lo revisa.
+- Planificamos 10 fases (0–9): workflow → TypeScript → layout y rutas → Open Props → Hero → CV → Devlog (mdsvex) → Blog → Subproyectos y Awesome-X → calidad y SEO.
+- Decidido: mdsvex para el markdown, pasar a TypeScript, Devlog = diario de desarrollo breve (separado del Blog), yo escribo el código y Claude lo revisa.
 - Creé las carpetas del proyecto: `.claude/` (skills, agentes, guía del proyecto) y `content/{bitacora,blog,awesome}`.
 
 ## Qué aprendí

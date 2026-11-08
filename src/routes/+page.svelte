@@ -10,7 +10,7 @@
 	import { projects as allProjects } from '#lib/projects/projects.ts';
 	import type { PageProps } from './$types';
 
-	// From +page.server.ts: the latest posts and Bitácora entries.
+	// From +page.server.ts: the latest posts and Devlog entries.
 	let { data }: PageProps = $props();
 
 	const links: Link[] = [
@@ -35,7 +35,7 @@
 	// The sections on the right, in order. The intro's nav is built from this list.
 	const sections: Section[] = [
 		{ id: 'posts', label: m.homeLatestPosts() },
-		{ id: 'log', label: m.bitacoraTitle() },
+		{ id: 'log', label: m.devlogTitle() },
 		{ id: 'projects', label: m.homeFeaturedProjects() }
 	];
 
@@ -81,11 +81,11 @@
 		</section>
 
 		<section id="log" style:animation={enter(450)} aria-labelledby="log-title">
-			<h2 id="log-title">{m.bitacoraTitle()}</h2>
+			<h2 id="log-title">{m.devlogTitle()}</h2>
 			<p class="intro-text">{m.homeLogIntro()}</p>
 			<div class="grid">
 				{#each data.log as entry (entry.slug)}
-					<TeaserCard {...entry} href={route('/bitacora/[slug]', { slug: entry.slug })} />
+					<TeaserCard {...entry} href={route('/devlog/[slug]', { slug: entry.slug })} />
 				{:else}
 					<p class="empty">{m.homeNoEntries()}</p>
 				{/each}

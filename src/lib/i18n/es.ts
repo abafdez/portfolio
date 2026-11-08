@@ -18,7 +18,7 @@ export const es = {
 	navAwesome: () => 'Awesome',
 	navProjects: () => 'Proyectos',
 	navAbout: () => 'Sobre mí',
-	navBitacora: () => 'Bitácora',
+	navDevlog: () => 'Devlog',
 	breadcrumbLabel: () => 'Ruta de navegación',
 	sectionNavLabel: () => 'En esta página',
 	footerRights: () => 'Todos los derechos reservados.',
@@ -66,11 +66,11 @@ export const es = {
 			other: `${count} artículos con esta etiqueta.`
 		}),
 
-	bitacoraTitle: () => 'Bitácora',
-	bitacoraDescription: () =>
+	devlogTitle: () => 'Devlog',
+	devlogDescription: () =>
 		'Notas breves de cómo construyo este sitio, paso a paso, las más recientes primero.',
-	bitacoraPhase: ({ phase }: { phase: string }) => `Fase ${phase}`,
-	bitacoraOther: () => 'Otras',
+	devlogPhase: ({ phase }: { phase: string }) => `Fase ${phase}`,
+	devlogOther: () => 'Otras',
 
 	awesomeTitle: () => 'Awesome',
 	awesomeDescription: () =>

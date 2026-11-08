@@ -14,7 +14,7 @@ reviewed: false
 ## Qué aprendí
 
 - ¿Por qué no dar estilo a `main` desde la página? Los estilos de una página tienen ámbito en el componente de la página; `main` pertenece al layout raíz. La página solo puede mandar datos hacia arriba, y el layout decide qué hacer con ellos.
-- Un load en `+layout.ts` se aplica a su ruta y a todo lo que cuelga de ella, así que `/bitacora/[slug]` será `reading` sin hacer nada.
+- Un load en `+layout.ts` se aplica a su ruta y a todo lo que cuelga de ella, así que `/devlog/[slug]` será `reading` sin hacer nada.
 - `satisfies App.PageData` comprueba el valor con el tipo y conserva `'reading'` como ese texto exacto. Sin él, TypeScript lo ensancha a `string`.
 - En un grid, `margin-inline: auto` impide que un elemento se estire: se encoge hasta su contenido. Así que cada página era tan ancha como su texto. `inline-size: 100%` más `max-inline-size` lo arregla.
 - Con las view transitions entre rutas, cambiar de composición (portada de 1120px → blog de 576px) no necesita nada extra: la caja del contenido salta al tamaño nuevo y el contenido nuevo aparece.

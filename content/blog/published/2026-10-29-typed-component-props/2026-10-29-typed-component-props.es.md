@@ -70,7 +70,7 @@ En la plantilla, el operador `in` le dice a TypeScript qué tipo de enlace es:
 
 Dentro de la primera rama, TypeScript sabe que `link.route` existe. Esto se llama estrechamiento (narrowing).
 
-Más tarde, añadir una ruta con un parámetro (`/bitacora/[slug]`) rompió esto. `resolve('/bitacora/[slug]')` también necesita un slug, así que `resolve()` ya no acepta "cualquier `RouteId`" por sí solo. Estos enlaces nunca apuntan a una ruta con parámetros, así que ahora el tipo lo dice:
+Más tarde, añadir una ruta con un parámetro (`/devlog/[slug]`) rompió esto. `resolve('/devlog/[slug]')` también necesita un slug, así que `resolve()` ya no acepta "cualquier `RouteId`" por sí solo. Estos enlaces nunca apuntan a una ruta con parámetros, así que ahora el tipo lo dice:
 
 ```ts
 export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
@@ -110,7 +110,7 @@ Las tarjetas de "últimos artículos" tienen sus propias props. Para que las pá
 </script>
 ```
 
-La tarjeta recibe un enlace ya resuelto. La página que la muestra conoce la ruta exacta, así que llama a `resolve('/bitacora/[slug]', { slug })`, y esa llamada comprueba la ruta y sus parámetros. Dentro de la tarjeta, la ruta podría ser cualquiera, y TypeScript no podría comprobar los parámetros.
+La tarjeta recibe un enlace ya resuelto. La página que la muestra conoce la ruta exacta, así que llama a `resolve('/devlog/[slug]', { slug })`, y esa llamada comprueba la ruta y sus parámetros. Dentro de la tarjeta, la ruta podría ser cualquiera, y TypeScript no podría comprobar los parámetros.
 
 ```ts
 import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';

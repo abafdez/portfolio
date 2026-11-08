@@ -5,7 +5,7 @@ reviewed: false
 
 ## Qué hicimos
 
-- **Los encabezados del markdown ya tienen id.** `rehype-slug` le da a cada encabezado un `id` a partir de su texto (`## The base path` → `#the-base-path`; uno repetido recibe `-1`), y `rehype-autolink-headings` con `behavior: 'wrap'` convierte su texto en un enlace a sí mismo. Al pasar el ratón o al enfocarlo aparece un `#` (CSS, con texto alternativo vacío para que no se lea). Los tienen tanto los artículos como las entradas de la Bitácora.
+- **Los encabezados del markdown ya tienen id.** `rehype-slug` le da a cada encabezado un `id` a partir de su texto (`## The base path` → `#the-base-path`; uno repetido recibe `-1`), y `rehype-autolink-headings` con `behavior: 'wrap'` convierte su texto en un enlace a sí mismo. Al pasar el ratón o al enfocarlo aparece un `#` (CSS, con texto alternativo vacío para que no se lea). Los tienen tanto los artículos como las entradas del Devlog.
 - Las páginas Svelte ya tenían id en los encabezados de sus secciones (13, que usan `aria-labelledby` y los menús de secciones), así que los `#enlaces` a esos ya funcionaban.
 - **Las portadas pueden ser AVIF**: `cover.avif` se une a `.png`, `.jpg` y `.webp`.
 - **Una etiqueta de borrador/publicado en desarrollo** (`PostStatus.svelte`) en las tarjetas y las cabeceras de los artículos: un "borrador" atenuado con borde discontinuo o un "publicado" en verde, cada uno con un icono de Lucide. No está en el build en absoluto.

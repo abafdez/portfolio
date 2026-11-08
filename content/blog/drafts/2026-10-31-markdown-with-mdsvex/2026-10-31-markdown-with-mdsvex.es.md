@@ -4,7 +4,7 @@ description: Convertir una carpeta de archivos markdown en páginas de SvelteKit
 reviewed: false
 ---
 
-La Bitácora y este blog son carpetas de archivos markdown. Hasta ahora, el sitio solo leía su frontmatter, para listar los últimos en la portada. Este artículo también renderiza los cuerpos: cada archivo de `content/bitacora/` se convierte en su propia página prerenderizada, y añadir un archivo es el único paso para publicar uno.
+El Devlog y este blog son carpetas de archivos markdown. Hasta ahora, el sitio solo leía su frontmatter, para listar los últimos en la portada. Este artículo también renderiza los cuerpos: cada archivo de `content/bitacora/` se convierte en su propia página prerenderizada, y añadir un archivo es el único paso para publicar uno.
 
 Mi primer intento falló, y el motivo resultó ser más interesante que la configuración.
 
@@ -30,7 +30,7 @@ sveltekit({
 });
 ```
 
-`extensions` le dice a Svelte que compile los archivos `.md` como componentes. El build falló con mi propia entrada de la Bitácora sobre imágenes:
+`extensions` le dice a Svelte que compile los archivos `.md` como componentes. El build falló con mi propia entrada del Devlog sobre imágenes:
 
 ```
 [plugin vite-plugin-enhanced-img-markup] content/bitacora/2026-10-29-enhanced-img-avatar.md
@@ -90,7 +90,7 @@ Más tarde el plugin creció un poco. Le pasa dos opciones más a `compile`: una
 
 ## Una página por archivo
 
-La página vive en `src/routes/bitacora/[slug]/` y se reparte entre dos archivos load.
+La página vive en `src/routes/devlog/[slug]/` y se reparte entre dos archivos load.
 
 `+page.server.ts` solo se ejecuta al construir el sitio. Lista las páginas que prerenderizar y busca el frontmatter de la entrada en la misma lista que usa la portada:
 
@@ -99,7 +99,7 @@ export const entries: EntryGenerator = () => allLog.map(({ slug }) => ({ slug })
 
 export const load: PageServerLoad = ({ params }) => {
 	const entry = allLog.find(({ slug }) => slug === params.slug);
-	if (!entry) error(404, 'No Bitácora entry with that name');
+	if (!entry) error(404, 'No Devlog entry with that name');
 	return { entry };
 };
 ```
@@ -127,7 +127,7 @@ La página muestra `<Body />` bajo una cabecera con la fecha, el título y las e
 
 ## Un tipo que se rompió
 
-Añadir `[slug]` rompió `pnpm check` en cuatro componentes. Todos llamaban a `resolve(link.route)` con una ruta tipada como `RouteId`, y `RouteId` incluye ahora `'/bitacora/[slug]'`, que `resolve()` no puede construir sin un slug. Esos enlaces nunca apuntan a una ruta con parámetros, así que lo dije en el tipo, con un template literal type:
+Añadir `[slug]` rompió `pnpm check` en cuatro componentes. Todos llamaban a `resolve(link.route)` con una ruta tipada como `RouteId`, y `RouteId` incluye ahora `'/devlog/[slug]'`, que `resolve()` no puede construir sin un slug. Esos enlaces nunca apuntan a una ruta con parámetros, así que lo dije en el tipo, con un template literal type:
 
 ```ts
 export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;

@@ -5,7 +5,7 @@ tags: [svelte, css]
 description: What the Svelte compiler does to a component's style block, why a page's styles couldn't reach my rendered markdown, and when :global() or a global class is the right fix.
 ---
 
-When I rendered my Bitácora entries with mdsvex, the page's own styles didn't reach the text of the entry. An `h2` rule in the page's `<style>` didn't style the entry's headings, and the compiler warned that it was unused. Scoped styles felt like magic to me, so I compiled a tiny component and read what came out. It's three plain steps.
+When I rendered my Devlog entries with mdsvex, the page's own styles didn't reach the text of the entry. An `h2` rule in the page's `<style>` didn't style the entry's headings, and the compiler warned that it was unused. Scoped styles felt like magic to me, so I compiled a tiny component and read what came out. It's three plain steps.
 
 ## The experiment
 
@@ -123,7 +123,7 @@ In this site, specificity rarely decides anything anyway. My global styles are i
 
 ## Which one I used
 
-The markdown for a Bitácora entry comes from another component, and the blog will need the same styles. So I didn't use `:global()` in the page. I made a global `.prose` class in the `components` layer of `global.css`. Any page can put it on the div around its markdown.
+The markdown for a Devlog entry comes from another component, and the blog will need the same styles. So I didn't use `:global()` in the page. I made a global `.prose` class in the `components` layer of `global.css`. Any page can put it on the div around its markdown.
 
 <!-- TODO: when I'd pick :global() in a component instead of a global class -->
 

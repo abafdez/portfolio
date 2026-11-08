@@ -208,7 +208,7 @@ groups:
         profiles: [web]
         note:
           en: This devlog and the blog, with my own code highlighting theme.
-          es: Esta bitácora y el blog, con mi propio tema de resaltado de código.
+          es: Este devlog y el blog, con mi propio tema de resaltado de código.
         evidence:
           - label:
               en: Markdown with mdsvex
@@ -537,7 +537,7 @@ groups:
         profiles: [web, support, mainframe]
         note:
           en: A dev log entry for every topic I learn.
-          es: Una entrada en la bitácora por cada tema que aprendo.
+          es: Una entrada en el devlog por cada tema que aprendo.
         evidence:
           - label:
               en: The learning path
@@ -618,7 +618,7 @@ groups:
         profiles: []
         note:
           en: 'Claude keeps my Obsidian vault: notes, boards and this dev log.'
-          es: 'Claude mantiene mi bóveda de Obsidian: notas, tableros y esta bitácora.'
+          es: 'Claude mantiene mi bóveda de Obsidian: notas, tableros y este devlog.'
       - name: ComfyUI
         icon: wand-sparkles
         level: 1

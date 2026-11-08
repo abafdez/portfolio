@@ -43,7 +43,7 @@ Mientras todos los artículos eran borradores, un build no tenía etiquetas, as�
 
 ## Enlaces solo donde hay página
 
-La misma lista de etiquetas aparece en las tarjetas del blog, en la cabecera del artículo y en la Bitácora (mi diario de desarrollo). Las etiquetas de la Bitácora no tienen páginas. Una etiqueta como `planning` solo se usa ahí, y un enlace a `/blog/tags/planning` sería un 404.
+La misma lista de etiquetas aparece en las tarjetas del blog, en la cabecera del artículo y en el Devlog (mi diario de desarrollo). Las etiquetas del Devlog no tienen páginas. Una etiqueta como `planning` solo se usa ahí, y un enlace a `/blog/tags/planning` sería un 404.
 
 Así que el componente de la lista no construye los enlaces él mismo. Recibe una función que convierte una etiqueta en un enlace, y sin ella las etiquetas se quedan como texto:
 
@@ -72,7 +72,7 @@ Así que el componente de la lista no construye los enlaces él mismo. Recibe un
 </ul>
 ```
 
-Las páginas del blog le pasan `blogTag`, una ayuda de una línea alrededor de `resolve('/blog/tags/[tag]', { tag })`. La Bitácora no le pasa nada. El componente nunca necesita saber qué rutas existen.
+Las páginas del blog le pasan `blogTag`, una ayuda de una línea alrededor de `resolve('/blog/tags/[tag]', { tag })`. El Devlog no le pasa nada. El componente nunca necesita saber qué rutas existen.
 
 ## Una etiqueta mal escrita hace fallar el build
 

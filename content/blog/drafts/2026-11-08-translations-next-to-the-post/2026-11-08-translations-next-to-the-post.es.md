@@ -4,7 +4,7 @@ description: La versión en español de cada artículo es un segundo archivo en 
 reviewed: false
 ---
 
-La interfaz de mi sitio ya está en dos idiomas. El contenido es el trabajo grande: artículos, una bitácora, una lista de habilidades. Así es como un artículo consigue su versión en español, y lo que hace el sitio mientras no la tiene.
+La interfaz de mi sitio ya está en dos idiomas. El contenido es el trabajo grande: artículos, un devlog, una lista de habilidades. Así es como un artículo consigue su versión en español, y lo que hace el sitio mientras no la tiene.
 
 ## Un segundo archivo, en la misma carpeta
 

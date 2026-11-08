@@ -1,5 +1,5 @@
 ---
-title: Las entradas de la Bitácora, renderizadas con mdsvex
+title: Las entradas del Devlog, renderizadas con mdsvex
 reviewed: false
 ---
 
@@ -7,7 +7,7 @@ reviewed: false
 
 - Elegí mdsvex 0.12.8 (la estable) para renderizar el cuerpo del markdown. La reescritura `1.0.0-next` todavía es una versión preliminar.
 - Llamé a mdsvex desde un pequeño plugin de Vite, `markdown()`, en `vite.config.ts`, no desde `preprocess`. `extensions: ['.svelte', '.md']` se queda para que Svelte compile el resultado.
-- Añadí `/bitacora/[slug]`: `entries()` y el frontmatter en `+page.server.ts`, y el componente del cuerpo en `+page.ts`. Las 23 entradas se prerenderizan.
+- Añadí `/devlog/[slug]`: `entries()` y el frontmatter en `+page.server.ts`, y el componente del cuerpo en `+page.ts`. Las 23 entradas se prerenderizan.
 - Añadí `RouteWithoutParams` en `src/lib/links.ts` para los enlaces que pasan solo por `resolve()`.
 
 ## Qué aprendí
@@ -21,10 +21,10 @@ reviewed: false
 
 ## Problemas y soluciones
 
-- ``CompileError: `<enhanced:img>` was left open`` en una entrada de la Bitácora que menciona la etiqueta en el texto. enhanced-img analiza todos los archivos Svelte en un hook `'pre'`, antes de los preprocesadores, así que leía el markdown en bruto. Mi plugin `'pre'` ejecuta mdsvex antes que él, y la etiqueta llega escapada.
+- ``CompileError: `<enhanced:img>` was left open`` en una entrada del Devlog que menciona la etiqueta en el texto. enhanced-img analiza todos los archivos Svelte en un hook `'pre'`, antes de los preprocesadores, así que leía el markdown en bruto. Mi plugin `'pre'` ejecuta mdsvex antes que él, y la etiqueta llega escapada.
 - Un aviso de obsolescencia de `context="module"` por archivo: mdsvex 0.12 escribe sintaxis de Svelte 4. El plugin la reescribe a `<script module>`.
 - Un aviso de sourcemap por archivo. Devolver `map: { mappings: '' }` dice "sin mapa, a propósito".
-- `pnpm check` fallaba en Nav, Hero y TeaserCard: `RouteId` ahora incluye `/bitacora/[slug]`, que `resolve()` no puede construir sin un slug. Lo arreglé con `RouteWithoutParams`.
+- `pnpm check` fallaba en Nav, Hero y TeaserCard: `RouteId` ahora incluye `/devlog/[slug]`, que `resolve()` no puede construir sin un slug. Lo arreglé con `RouteWithoutParams`.
 - Parecía que faltaba el CSS de la página en la previsualización. Una previsualización antigua seguía en el puerto 4173 sirviendo recursos viejos; la nueva se había ido al 4174.
 
 ## Enlaces

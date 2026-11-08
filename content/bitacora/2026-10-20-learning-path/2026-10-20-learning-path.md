@@ -8,8 +8,8 @@ tags: [planning, sveltekit, workflow]
 ## What we did
 
 - Reviewed the SvelteKit 3 scaffold: adapter-static, runes forced, GitHub Pages CI.
-- Planned 10 phases (0–9): workflow → TypeScript → layout/routing → Open Props → Hero → CV → Bitácora (mdsvex) → Blog → Subprojects & Awesome-X → quality/SEO.
-- Decided: mdsvex for markdown, switch to TypeScript, Bitácora = short dev log (separate from Blog), I write the code and Claude reviews.
+- Planned 10 phases (0–9): workflow → TypeScript → layout/routing → Open Props → Hero → CV → Devlog (mdsvex) → Blog → Subprojects & Awesome-X → quality/SEO.
+- Decided: mdsvex for markdown, switch to TypeScript, Devlog = short dev log (separate from Blog), I write the code and Claude reviews.
 - Created project folders: `.claude/` (skills, agents, project guide), `content/{bitacora,blog,awesome}`.
 
 ## What I learned

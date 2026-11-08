@@ -8,7 +8,7 @@ Quería mi sitio también en español: es mi primera lengua, y mi CV me sirve en
 
 ## Por qué no una librería
 
-Casi todo el texto de mi sitio no está en la interfaz. Son artículos, entradas de la bitácora y una lista de habilidades, todo en markdown y YAML, y una librería de mensajes no toca nada de eso. Lo que me daría es la parte de alrededor: en qué idioma está una URL y que los enlaces se queden en él. En SvelteKit, esa parte es un hook.
+Casi todo el texto de mi sitio no está en la interfaz. Son artículos, entradas del devlog y una lista de habilidades, todo en markdown y YAML, y una librería de mensajes no toca nada de eso. Lo que me daría es la parte de alrededor: en qué idioma está una URL y que los enlaces se queden en él. En SvelteKit, esa parte es un hook.
 
 Aun así, mis mensajes se parecen a los de Paraglide, así que podría pasarme más adelante cambiando los imports:
 

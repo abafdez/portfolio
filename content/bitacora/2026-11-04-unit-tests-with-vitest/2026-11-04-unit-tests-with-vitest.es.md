@@ -7,7 +7,7 @@ reviewed: false
 
 - Añadí Vitest 5.1 (`pnpm add -D vitest`), con `pnpm test` (se ejecuta una vez) y `pnpm test:watch` (se vuelve a ejecutar cada vez que guardo).
 - Sin archivo de configuración nuevo: Vitest lee `vite.config.ts`. Ahora importa `defineConfig` desde `vitest/config` (el de Vite, más los tipos de `test`) y tiene `test: { include: ['src/**/*.test.ts'] }`.
-- `src/lib/content.test.ts`: 72 tests para `summary()`, `readingTime()` (que ahora se exporta) y `checkTags()`, más uno por cada entrada real de la Bitácora, que comprueba que cada una recibe una descripción de entre 1 y 160 caracteres.
+- `src/lib/content.test.ts`: 72 tests para `summary()`, `readingTime()` (que ahora se exporta) y `checkTags()`, más uno por cada entrada real del Devlog, que comprueba que cada una recibe una descripción de entre 1 y 160 caracteres.
 - La primera ejecución falló en un test, y era un bug real: un cuerpo que empezaba con un bloque de código recibía como resumen la primera línea del código. Ahora `summary()` quita primero los bloques de código enteros.
 
 ## Qué aprendí

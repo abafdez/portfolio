@@ -1,5 +1,5 @@
 ---
-title: Bitácora entries rendered with mdsvex
+title: Devlog entries rendered with mdsvex
 date: 2026-10-31
 phase: 6
 tags: [mdsvex, markdown, vite, sveltekit]
@@ -9,7 +9,7 @@ tags: [mdsvex, markdown, vite, sveltekit]
 
 - Picked mdsvex 0.12.8 (stable) to render the markdown bodies. The `1.0.0-next` rewrite is still a prerelease.
 - Called mdsvex from a small `markdown()` Vite plugin in `vite.config.ts`, not from `preprocess`. `extensions: ['.svelte', '.md']` stays so Svelte compiles the result.
-- Added `/bitacora/[slug]`: `entries()` and the frontmatter in `+page.server.ts`, the body component in `+page.ts`. All 23 entries prerender.
+- Added `/devlog/[slug]`: `entries()` and the frontmatter in `+page.server.ts`, the body component in `+page.ts`. All 23 entries prerender.
 - Added `RouteWithoutParams` in `src/lib/links.ts` for links that go through `resolve()` alone.
 
 ## What I learned
@@ -23,10 +23,10 @@ tags: [mdsvex, markdown, vite, sveltekit]
 
 ## Problems & fixes
 
-- ``CompileError: `<enhanced:img>` was left open`` on a Bitácora entry that mentions the tag in prose. enhanced-img parses every Svelte file in a `'pre'` hook, before the preprocessors, so it read the raw markdown. My `'pre'` plugin runs mdsvex before it, and the tag arrives escaped.
+- ``CompileError: `<enhanced:img>` was left open`` on a Devlog entry that mentions the tag in prose. enhanced-img parses every Svelte file in a `'pre'` hook, before the preprocessors, so it read the raw markdown. My `'pre'` plugin runs mdsvex before it, and the tag arrives escaped.
 - One `context="module"` deprecation warning per file: mdsvex 0.12 writes Svelte 4 syntax. The plugin rewrites it to `<script module>`.
 - One sourcemap warning per file. Returning `map: { mappings: '' }` says "no map on purpose".
-- `pnpm check` failed in Nav, Hero and TeaserCard: `RouteId` now includes `/bitacora/[slug]`, which `resolve()` can't build without a slug. Fixed with `RouteWithoutParams`.
+- `pnpm check` failed in Nav, Hero and TeaserCard: `RouteId` now includes `/devlog/[slug]`, which `resolve()` can't build without a slug. Fixed with `RouteWithoutParams`.
 - The page's CSS seemed missing in the preview. An old preview was still on port 4173 serving stale assets; the new one had moved to 4174.
 
 ## Links

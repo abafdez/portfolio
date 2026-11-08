@@ -32,7 +32,7 @@ The how-to for images, links and the publishing checklist is in `content/blog/pu
 These link to no other draft.
 
 - `2026-10-20-sveltekit-3-github-pages-workflow`
-  - link the post or Bitácora entry where the base path is fixed (it's a Bitácora entry: `/bitacora/2026-10-21-layout-routing-base-path`)
+  - link the post or Bitácora entry where the base path is fixed (it's a Devlog entry: `/devlog/2026-10-21-layout-routing-base-path`)
 - `2026-10-31-scroll-driven-header-footer`
   - a short video of scrolling the home page, top to bottom
   - try `animation-range: 0 50vh` in DevTools and describe the difference

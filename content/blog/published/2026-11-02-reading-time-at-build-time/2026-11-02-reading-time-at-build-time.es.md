@@ -5,7 +5,7 @@ cover: Un reloj y un documento.
 reviewed: false
 ---
 
-Cada artículo y cada entrada de la bitácora de mi sitio dicen ya cuánto se tarda en leerlos: `· 6 min de lectura`, junto a la fecha. El código es una función pequeña. Lo interesante fue dónde ponerla.
+Cada artículo y cada entrada del devlog de mi sitio dicen ya cuánto se tarda en leerlos: `· 6 min de lectura`, junto a la fecha. El código es una función pequeña. Lo interesante fue dónde ponerla.
 
 ## La función
 

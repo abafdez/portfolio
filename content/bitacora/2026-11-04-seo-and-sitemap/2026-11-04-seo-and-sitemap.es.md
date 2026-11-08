@@ -9,8 +9,8 @@ reviewed: false
 - Quité `static/robots.txt`: nunca había hecho nada (mira abajo).
 - `Seo.svelte`, un componente que usan todas las páginas en vez de su propio `<svelte:head>`: `<title>`, descripción, URL canónica, etiquetas Open Graph y una tarjeta de Twitter. Todavía sin imagen, así que las vistas previas de los enlaces son tarjetas de texto (decisión mía, una imagen puede llegar más tarde).
 - Los títulos terminan en "Alfonso Baeza" en vez de en "AB": `CV builder · Projects · Alfonso Baeza`.
-- `sitemap.xml`, un endpoint prerenderizado construido a partir de las mismas listas que las páginas (secciones, proyectos, listas Awesome, artículos, etiquetas, entradas de la Bitácora), con `lastmod` donde hay fecha.
-- Las entradas de la Bitácora reciben una descripción sacada de su cuerpo: `summary()` en `content.ts` coge el primer párrafo o elemento de lista, como texto sin formato, cortado en una palabra por debajo de 160 caracteres.
+- `sitemap.xml`, un endpoint prerenderizado construido a partir de las mismas listas que las páginas (secciones, proyectos, listas Awesome, artículos, etiquetas, entradas del Devlog), con `lastmod` donde hay fecha.
+- Las entradas del Devlog reciben una descripción sacada de su cuerpo: `summary()` en `content.ts` coge el primer párrafo o elemento de lista, como texto sin formato, cortado en una palabra por debajo de 160 caracteres.
 - SEO, accesibilidad y buenas prácticas de Lighthouse a 100 en la portada, el generador de CV y una entrada. `/mascot` saca un 63 en SEO, a propósito: "blocked from indexing".
 
 ## Qué aprendí

@@ -171,7 +171,7 @@
 	   reveal, which animates the root, still covers the whole page. */
 	:root:active-view-transition-type(route) {
 		/* The site header only, by class: a name must be unique on the page, and pages
-		   have <header>s of their own (a Bitácora entry's title block). */
+		   have <header>s of their own (a Devlog entry's title block). */
 		& .site-header {
 			view-transition-name: site-header;
 		}
@@ -220,7 +220,7 @@
 		white-space: nowrap;
 	}
 
-	/* Rendered markdown (a Bitácora entry, later a blog post). mdsvex makes its HTML in
+	/* Rendered markdown (a Devlog entry, later a blog post). mdsvex makes its HTML in
 	   another component, so a page's scoped styles can't reach it; a global class can.
 	   Space goes between siblings, never before the first one or after the last. */
 	.prose {

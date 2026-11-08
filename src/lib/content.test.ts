@@ -204,7 +204,7 @@ describe('checkTags', () => {
 
 // Not a made-up input: the real entries in content/bitacora. If one gets an empty or
 // too long description, this says which.
-describe('every Bitácora entry', () => {
+describe('every Devlog entry', () => {
 	test.each(allLog.map((entry) => [entry.slug, entry.description]))(
 		'%s has a description of 1 to 160 characters',
 		(_slug, description) => {

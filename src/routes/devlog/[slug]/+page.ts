@@ -2,7 +2,7 @@ import type { Component } from 'svelte';
 import type { PageLoad } from './$types';
 
 // Every entry as a Svelte component (mdsvex compiles the markdown, see vite.config.ts).
-// Each one is content/bitacora/<slug>/<slug>.md, next to its images.
+// Each one is content/devlog/<slug>/<slug>.md, next to its images.
 // Not eager: each value is a function that imports one file, so the browser only
 // downloads the entry it shows.
 const bodies = import.meta.glob<Component>('/content/bitacora/*/*.md', { import: 'default' });

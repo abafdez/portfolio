@@ -22,7 +22,7 @@ export const en = {
 	navAwesome: () => 'Awesome',
 	navProjects: () => 'Projects',
 	navAbout: () => 'About',
-	navBitacora: () => 'Devlog',
+	navDevlog: () => 'Devlog',
 	breadcrumbLabel: () => 'Breadcrumb',
 	sectionNavLabel: () => 'On this page',
 	footerRights: () => 'All rights reserved.',
@@ -71,11 +71,11 @@ export const en = {
 	tagIntro: ({ count }: Count) =>
 		plural('en', count, { one: '1 post with this tag.', other: `${count} posts with this tag.` }),
 
-	// Bitácora.
-	bitacoraTitle: () => 'Devlog',
-	bitacoraDescription: () => 'Short notes from building this site, step by step, newest first.',
-	bitacoraPhase: ({ phase }: { phase: string }) => `Phase ${phase}`,
-	bitacoraOther: () => 'Other',
+	// Devlog.
+	devlogTitle: () => 'Devlog',
+	devlogDescription: () => 'Short notes from building this site, step by step, newest first.',
+	devlogPhase: ({ phase }: { phase: string }) => `Phase ${phase}`,
+	devlogOther: () => 'Other',
 
 	// Awesome.
 	awesomeTitle: () => 'Awesome',

@@ -7,21 +7,21 @@
 	let { data }: PageProps = $props();
 </script>
 
-<Seo title={m.bitacoraTitle()} description={m.bitacoraDescription()} />
+<Seo title={m.devlogTitle()} description={m.devlogDescription()} />
 
-<h1>{m.bitacoraTitle()}</h1>
-<p class="intro">{m.bitacoraDescription()}</p>
+<h1>{m.devlogTitle()}</h1>
+<p class="intro">{m.devlogDescription()}</p>
 
 {#each data.phases as [phase, entries] (phase)}
 	<section aria-labelledby="phase-{phase}">
 		<h2 id="phase-{phase}">
-			{phase === undefined ? m.bitacoraOther() : m.bitacoraPhase({ phase: String(phase) })}
+			{phase === undefined ? m.devlogOther() : m.devlogPhase({ phase: String(phase) })}
 		</h2>
 		<!-- The timeline: a line down the side, a dot for each entry. -->
 		<ol class="timeline">
 			{#each entries as entry (entry.slug)}
 				<li>
-					<TeaserCard {...entry} href={route('/bitacora/[slug]', { slug: entry.slug })} />
+					<TeaserCard {...entry} href={route('/devlog/[slug]', { slug: entry.slug })} />
 				</li>
 			{/each}
 		</ol>

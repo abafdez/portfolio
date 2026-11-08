@@ -7,7 +7,7 @@ reviewed: false
 
 Empiezas a leer, o vas a pulsar un enlace, y la página salta. Eso es un **salto de maquetación** (layout shift), y Lighthouse lo mide como **CLS**, Cumulative Layout Shift: cuánto contenido visible se movió, y cuánto. Por debajo de 0,1 está bien.
 
-Pasé Lighthouse por una página de cada tipo de mi sitio. Accesibilidad, buenas prácticas y SEO daban 100 en todas, y el rendimiento casi siempre entre 95 y 98. Tres páginas no: una entrada de la Bitácora con 89, una lista Awesome con 91 y mi comprobador de contraste con 86. Las tres tenían el mismo problema: un CLS de entre 0,14 y 0,24.
+Pasé Lighthouse por una página de cada tipo de mi sitio. Accesibilidad, buenas prácticas y SEO daban 100 en todas, y el rendimiento casi siempre entre 95 y 98. Tres páginas no: una entrada del Devlog con 89, una lista Awesome con 91 y mi comprobador de contraste con 86. Las tres tenían el mismo problema: un CLS de entre 0,14 y 0,24.
 
 ## Encontrar qué se movía
 
@@ -107,7 +107,7 @@ En el comprobador de contraste fue aún más simple: la línea de la puntuación
 
 | Página                      | CLS antes | CLS después | Rendimiento |
 | --------------------------- | --------: | ----------: | ----------: |
-| Una entrada de la Bitácora  |     0,143 |           0 |     89 → 96 |
+| Una entrada del Devlog      |     0,143 |           0 |     89 → 96 |
 | La lista de CSS moderno     |     0,162 |           0 |     91 → 97 |
 | El comprobador de contraste |     0,237 |       0,003 |     86 → 96 |
 
@@ -120,4 +120,4 @@ Tuvo un coste. En la red móvil ralentizada de Lighthouse, el LCP (cuando aparec
 - [MDN: rel=preload](https://developer.mozilla.org/es/docs/Web/HTML/Reference/Attributes/rel/preload)
 - [SvelteKit: el hook handle y preload](https://svelte.dev/docs/kit/hooks#Server-hooks-handle)
 - [MDN: @media scripting](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting)
-- [Bitácora: una lista Awesome con los filtros en la URL](/bitacora/2026-11-02-awesome-list-filters)
+- [Devlog: una lista Awesome con los filtros en la URL](/devlog/2026-11-02-awesome-list-filters)

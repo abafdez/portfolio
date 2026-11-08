@@ -5,7 +5,7 @@ reviewed: false
 
 ## Qué hicimos
 
-- Pasé Lighthouse (móvil, el modo por defecto) por una página de cada tipo. Accesibilidad, buenas prácticas y SEO daban 100 en todas; el rendimiento, entre 95 y 98, salvo en tres páginas: una entrada de la Bitácora (89), la lista de CSS moderno (91) y el comprobador de contraste (86). Las tres perdían puntos por el **CLS**, contenido que se mueve después de aparecer.
+- Pasé Lighthouse (móvil, el modo por defecto) por una página de cada tipo. Accesibilidad, buenas prácticas y SEO daban 100 en todas; el rendimiento, entre 95 y 98, salvo en tres páginas: una entrada del Devlog (89), la lista de CSS moderno (91) y el comprobador de contraste (86). Las tres perdían puntos por el **CLS**, contenido que se mueve después de aparecer.
 - **Fuentes:** `src/hooks.server.ts` le pide a SvelteKit que precargue los archivos latinos de Fira Code y Shantell Sans (`resolve(event, { preload })`), para que se descarguen con el HTML en vez de después del CSS.
 - **Lista Awesome:** los filtros ya están en el HTML prerenderizado, con `visibility: hidden` hasta que `onMount` añade `.ready`, y `display: none` bajo `@media (scripting: none)`. Antes, `{#if ready}` los añadía más tarde y empujaba la lista hacia abajo.
 - **Comprobador de contraste:** la línea de la puntuación siempre se muestra (un espacio de no separación hasta que se leen los tokens), así que ya no aparece de golpe empujando la página hacia abajo.

@@ -44,7 +44,7 @@ export function checkCover(path: string, alt: unknown, files: string[] = coverFi
 
 ## One glob, the right sizes
 
-The covers are found with Vite's `import.meta.glob`, processed by `@sveltejs/enhanced-img`. One glob covers everything under `content/`, so the same code will serve Bitácora entries and Awesome lists when they get covers. A `!` pattern leaves the drafts out of a build:
+The covers are found with Vite's `import.meta.glob`, processed by `@sveltejs/enhanced-img`. One glob covers everything under `content/`, so the same code will serve Devlog entries and Awesome lists when they get covers. A `!` pattern leaves the drafts out of a build:
 
 ```ts
 const pictures = import.meta.glob<Picture>(

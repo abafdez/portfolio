@@ -4,7 +4,7 @@ description: Qué le hace el compilador de Svelte al bloque de estilos de un com
 reviewed: false
 ---
 
-Cuando renderizaba las entradas de mi Bitácora con mdsvex, los estilos propios de la página no llegaban al texto de la entrada. Una regla `h2` en el `<style>` de la página no daba estilo a los encabezados de la entrada, y el compilador avisaba de que no se usaba. Los estilos con ámbito me parecían magia, así que compilé un componente diminuto y leí lo que salía. Son tres pasos sencillos.
+Cuando renderizaba las entradas de mi Devlog con mdsvex, los estilos propios de la página no llegaban al texto de la entrada. Una regla `h2` en el `<style>` de la página no daba estilo a los encabezados de la entrada, y el compilador avisaba de que no se usaba. Los estilos con ámbito me parecían magia, así que compilé un componente diminuto y leí lo que salía. Son tres pasos sencillos.
 
 ## El experimento
 
@@ -122,7 +122,7 @@ De todas formas, en este sitio la especificidad casi nunca decide nada. Mis esti
 
 ## Cuál usé
 
-El markdown de una entrada de la Bitácora viene de otro componente, y el blog va a necesitar los mismos estilos. Así que no usé `:global()` en la página. Hice una clase global `.prose` en la capa `components` de `global.css`. Cualquier página puede ponérsela al div que rodea su markdown.
+El markdown de una entrada del Devlog viene de otro componente, y el blog va a necesitar los mismos estilos. Así que no usé `:global()` en la página. Hice una clase global `.prose` en la capa `components` de `global.css`. Cualquier página puede ponérsela al div que rodea su markdown.
 
 <!-- TODO: cuándo elegiría :global() en un componente en vez de una clase global -->
 

@@ -6,7 +6,7 @@ description: Where to compute a post's reading time in SvelteKit, and why the an
 cover: A clock and a document.
 ---
 
-Every post and Bitácora entry on my site now says how long it takes to read: `· 6 min read`, next to the date. The code is one small function. The interesting part was where to put it.
+Every post and Devlog entry on my site now says how long it takes to read: `· 6 min read`, next to the date. The code is one small function. The interesting part was where to put it.
 
 ## The function
 
