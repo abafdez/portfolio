@@ -6,6 +6,7 @@ import { icons } from 'lucide';
 import * as simpleIcons from 'simple-icons';
 import { parse } from 'yaml';
 import text from '/content/skills.yaml?raw';
+import { hueOf } from '#lib/hue.ts';
 import { hueAndChroma } from './brand-color.ts';
 import {
 	levels,
@@ -61,15 +62,8 @@ function fail(where: string, message: string): never {
 
 const kebab = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
-// A generic icon has no brand color, so it gets a hue from its skill's name: a small
-// hash, so the same name always gives the same hue, on every build, on the server and
-// in the browser. The chroma is one moderate value for all of them.
-function hueOf(name: string): number {
-	let hash = 0;
-	for (const char of name) hash = (hash * 31 + char.codePointAt(0)!) % 360;
-	return hash;
-}
-
+// A generic icon has no brand color, so it gets a hue from its skill's name (hue.ts).
+// The chroma is one moderate value for all of them.
 const genericChroma = 0.13;
 
 // Simple Icons exports one constant per logo (siSvelte…); look them up by slug.
