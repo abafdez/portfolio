@@ -18,8 +18,6 @@ The column is now one token:
 
 `ch` is the width of the "0" in the current font. 80ch of my body font fits about 90 characters of text and 80 of code. I thought about a breakout layout, with text at 60ch and code wider, and about the full 70rem of the header. I kept one column for both.
 
-<!-- TODO: why one column (it reads better? simpler?) -->
-
 ## The frame
 
 My Shiki highlighter wraps every block in a component:
@@ -74,8 +72,6 @@ Two attempts failed first:
 - **`display: block` lines.** Shiki puts a newline between the line spans, and a `<pre>` shows newlines, so every line got an empty one after it. `inline-block` at full width takes the whole row without that.
 - **`position: absolute` numbers.** An empty line had no height to hold its number, and the numbers overlapped. In the flow, the number itself gives an empty line its height.
 
-<!-- TODO: a screenshot of the overlapping numbers, or of the empty lines -->
-
 A one-line block, like a single command, doesn't need a number. `:only-child` only counts elements, not the newline text, so it finds them:
 
 ```css
@@ -99,5 +95,3 @@ The button needs JavaScript and the Clipboard API. Without them, it would be a b
 ```
 
 It copies the `textContent` of the `<code>`: the code as written, without the numbers, with a wrapped line still one line. A `role="status"` span next to it says "copied" (or "couldn't copy") for two seconds, and screen readers announce it when it changes.
-
-<!-- TODO: what a screen reader said when I pressed the button -->

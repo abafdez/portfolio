@@ -39,6 +39,7 @@ export const sections: { href: RouteWithoutParams; label: () => string }[] = [
 export const isInside = (href: RouteWithoutParams, routeId: string | null) =>
 	href !== '/' && !!routeId?.startsWith(`${href}/`);
 
-// A blog tag's page. Cards and headers take this as tagHref to link their tags.
-// Devlog tags have no pages, so the Devlog doesn't pass it. In the page's language.
+// A tag's page, in the blog or the Devlog. Cards and headers take these as tagHref to
+// link their tags. In the page's language.
 export const blogTag = (tag: string) => route('/blog/tags/[tag]', { tag });
+export const devlogTag = (tag: string) => route('/devlog/tags/[tag]', { tag });

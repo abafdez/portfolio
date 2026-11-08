@@ -40,8 +40,6 @@ export const load: PageServerLoad = ({ params }) => {
 
 While every post was a draft, a build had no tags, so the route had no pages and nothing linked to it. SvelteKit's crawler reports a route like that as "unseen" and fails the build. I made an exception for it in `handleUnseenRoutes`. Once a post is published, its card links to its tags, so their pages can't go unseen.
 
-<!-- TODO: the "unseen routes" error I got, if I saw it -->
-
 ## Links only where a page exists
 
 The same tag list shows up on blog cards, the post header, and the Devlog. The Devlog's tags have no pages. A tag like `planning` is only used there, and a link to `/blog/tags/planning` would be a 404.
@@ -75,6 +73,8 @@ So the list component doesn't build links itself. It takes a function that turns
 
 Blog pages pass `blogTag`, a one-line helper around `resolve('/blog/tags/[tag]', { tag })`. The Devlog passes nothing. The component never needs to know which routes exist.
 
+**Update:** the Devlog has tag pages now too, at `/devlog/tags/[tag]`, so it passes `devlogTag`. On an Awesome list, a link's tags filter the list instead: `tagHref` gives `?tag=css`, and an `onTag` function filters in place when it's clicked.
+
 ## A bad tag fails the build
 
 Each tag becomes part of a URL. `CSS` and `css` would be two tags in the index but one page, and `design tokens` would be a URL with `%20` in it. I could fix tags quietly (lowercase them, swap spaces for hyphens), but then every place that uses a tag has to fix it the same way: the list, the filter, the link, the label.
@@ -96,5 +96,3 @@ A tag that breaks it stops the build and names the file. I'm the only one writin
 
 - **Target size.** Tags are small links in a list, not in a sentence, so WCAG asks for at least 24 by 24 pixels. A bit of `padding-block` makes them 26px tall.
 - **Heading order.** Lighthouse gave the first version of the tag page 98: it went from the `h1` straight to the cards' `h3`s. Grouping the posts by year, like `/blog` does, puts an `h2` in between.
-
-<!-- TODO: a screenshot of the tag index on /blog -->

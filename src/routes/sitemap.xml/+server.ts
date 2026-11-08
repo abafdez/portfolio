@@ -1,7 +1,7 @@
 import { resolve } from '$app/paths';
 import { baseLocale, languageTags, locales, localizePath } from '#lib/i18n/locales.ts';
 import { allLists } from '#lib/awesome/awesome.ts';
-import { allLog, allPosts, isTranslated, postTags } from '#lib/content.ts';
+import { allLog, allPosts, isTranslated, logTags, postTags } from '#lib/content.ts';
 import { sections } from '#lib/links.ts';
 import { projects } from '#lib/projects/projects.ts';
 import type { RequestHandler } from './$types';
@@ -41,7 +41,8 @@ const pages: Page[] = [
 		path: resolve('/devlog/[slug]', { slug: entry.slug }),
 		updated: entry.date,
 		translated: isTranslated(entry)
-	}))
+	})),
+	...logTags.map((tag) => ({ path: resolve('/devlog/tags/[tag]', { tag }), translated: true }))
 ];
 
 // url.origin is the site's public origin while prerendering (paths.origin in

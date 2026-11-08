@@ -18,10 +18,11 @@
 	translated={data.translated}
 />
 
-<header>
-	<h1 {lang}>{list.title}</h1>
-	<p {lang}>{list.description}</p>
-	<p class="meta">
+<!-- data-morph-*: where the list's card lands when it opens this page (morph.ts). -->
+<header data-morph-page>
+	<h1 {lang} data-morph="title">{list.title}</h1>
+	<p {lang} data-morph="description">{list.description}</p>
+	<p class="meta" data-morph="meta">
 		{m.awesomeLinkCount({ count: list.count })} · {m.awesomeUpdated()}
 		<time datetime={list.updated}>{list.updated}</time>
 		<TranslationStatus locale={translated ? getLocale() : 'en'} />

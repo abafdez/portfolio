@@ -7,8 +7,6 @@ reviewed: false
 
 Mi selector de tema ya usaba una [view transition](./2026-10-30-theme-toggle-view-transition). Este artículo las añade entre páginas: la cabecera se queda quieta, el contenido se funde con la página nueva y la barra verde bajo el enlace actual del menú se desliza hasta el nuevo. Después, un pequeño sistema para que cada ruta elija su propia maquetación, del que la transición se encarga sin coste.
 
-<!-- TODO: un vídeo corto pulsando por el menú -->
-
 ## Empezar la transición
 
 SvelteKit navega en el navegador, sin recargar la página, así que el navegador no puede saber cuándo ocurre un "cambio de página". SvelteKit nos lo dice con `onNavigate`:
@@ -70,8 +68,6 @@ Luego el contenido: la página antigua se desvanece deprisa y la nueva aparece y
 }
 ```
 
-<!-- TODO: las duraciones que probé y cuál me pareció bien -->
-
 ## El marcador que se desliza
 
 El enlace actual del menú tenía antes un subrayado grueso. Un subrayado forma parte del texto, así que no puede moverse entre enlaces. Así que lo convertí en un elemento:
@@ -131,6 +127,8 @@ Ir de la portada (1120px de ancho) al blog (60 caracteres de ancho) no necesitó
 	translate: -50% 0;
 }
 ```
+
+**Actualización:** lo de "donde estaba" no era del todo cierto. La foto antigua se coloca donde empieza el contenido _nuevo_, y al volver atrás SvelteKit desplaza la lista hasta donde estabas, así que el artículo antiguo se veía desde la mitad mientras se desvanecía. Ahora el layout mide dónde empieza el contenido antes y después del cambio y mueve la foto antigua la diferencia: `translate: -50% var(--route-shift, 0px)`. No se notaba hasta que [las tarjetas empezaron a convertirse en sus páginas](./2026-11-08-cards-that-become-the-page).
 
 ## Un bug que esto encontró
 

@@ -2,15 +2,20 @@
 	import { m } from '#lib/i18n/index.ts';
 	import type { ResolvedPathname } from '$app/types';
 
-	// The tags of a post or a Devlog entry (TeaserCard, ArticleHeader).
+	// The tags of a post, a Devlog entry or an Awesome link (TeaserCard, ArticleHeader,
+	// AwesomeList).
 	interface Props {
 		tags: string[];
-		// A tag's page, e.g. blogTag from links.ts. Without it the tags are plain text:
-		// Devlog tags have no pages.
-		tagHref?: (tag: string) => ResolvedPathname;
+		// Where a tag leads: its page (blogTag or devlogTag from links.ts), or this page
+		// filtered by it ('?tag=css', an Awesome list). Without it the tags are plain text
+		// (a project's tags: there's no page of projects by tag).
+		tagHref?: (tag: string) => ResolvedPathname | `?${string}`;
+		// Runs on click instead of following the link, e.g. to filter without a
+		// navigation. The link still works when opened in a new tab.
+		onTag?: (tag: string, event: MouseEvent) => void;
 	}
 
-	let { tags, tagHref }: Props = $props();
+	let { tags, tagHref, onTag }: Props = $props();
 </script>
 
 <!-- The space above comes from the parent: <TagList --tags-space="var(--size-3)" />. -->
@@ -18,7 +23,7 @@
 	{#each tags as tag (tag)}
 		<li>
 			{#if tagHref}
-				<a href={tagHref(tag)}>#{tag}</a>
+				<a href={tagHref(tag)} onclick={onTag && ((event) => onTag(tag, event))}>#{tag}</a>
 			{:else}
 				#{tag}
 			{/if}

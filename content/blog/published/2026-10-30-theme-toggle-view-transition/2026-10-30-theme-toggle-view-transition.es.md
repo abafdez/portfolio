@@ -156,8 +156,6 @@ root.style.setProperty('--reveal-duration', `${duration}ms`);
 root.style.setProperty('--reveal-blur', `${blur}px`);
 ```
 
-<!-- TODO: los valores que elegí para la cabecera, y por qué -->
-
 Primero lo probé todo en un CodePen con controles deslizantes para la duración, la curva, el difuminado y el modo de fusión. Una cosa que aprendí ahí: con un modo de fusión distinto de `normal`, el último fotograma de la revelación son las dos fotos mezcladas, así que la página salta al tema nuevo de verdad cuando termina la transición. Eso es un parpadeo.
 
 El manejador del clic calcula dónde empieza el círculo y cuánto tiene que crecer. Empieza en el centro del botón y tiene que llegar a la esquina más lejana de la pantalla:
@@ -209,5 +207,3 @@ aria-pressed={theme ? theme === 'dark' : undefined}
 
 - Abre el panel Animations de DevTools, ralentízalo al 10% y pulsa el selector.
 - En la consola, ejecuta `document.documentElement.style.setProperty('--dark', 1)` y mira cómo el icono cambia solo.
-
-<!-- TODO: un vídeo corto o un GIF de la revelación -->

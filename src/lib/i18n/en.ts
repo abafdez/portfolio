@@ -61,7 +61,7 @@ export const en = {
 	blogTitle: () => 'Blog',
 	blogDescription: () => 'Longer articles about what I learn building this site.',
 	blogEmpty: () => 'No posts yet. The first ones are on their way.',
-	blogTagsTitle: () => 'Browse by tag',
+	tagsBrowse: () => 'Browse by tag',
 	// TagCloud: the hidden end of "#css 26", read as "#css, 26 posts".
 	tagPostCount: ({ count }: Count) => plural('en', count, { one: ' post', other: ' posts' }),
 	tagCloudMore: ({ count }: Count) => `All ${count} tags`,
@@ -76,6 +76,17 @@ export const en = {
 	devlogDescription: () => 'Short notes from building this site, step by step, newest first.',
 	devlogPhase: ({ phase }: { phase: string }) => `Phase ${phase}`,
 	devlogOther: () => 'Other',
+	devlogTagDescription: ({ tag }: { tag: string }) =>
+		`My Devlog entries tagged #${tag}, newest first.`,
+	devlogAllEntries: () => '← All entries',
+	devlogTagIntro: ({ count }: Count) =>
+		plural('en', count, {
+			one: '1 entry with this tag.',
+			other: `${count} entries with this tag.`
+		}),
+	// TagCloud, like tagPostCount.
+	tagEntryCount: ({ count }: Count) => plural('en', count, { one: ' entry', other: ' entries' }),
+	tagLinkCount: ({ count }: Count) => plural('en', count, { one: ' link', other: ' links' }),
 
 	// Awesome.
 	awesomeTitle: () => 'Awesome',

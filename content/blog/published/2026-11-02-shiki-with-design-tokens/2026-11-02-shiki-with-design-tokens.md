@@ -70,8 +70,6 @@ export const codeTheme: ThemeRegistration = {
 
 `light-dark()` picks the color for the current theme, so the dark and light themes need nothing else. A future named theme only overrides the `--code-*` tokens.
 
-<!-- TODO: screenshots of the same block in light and dark -->
-
 ## Which rule wins
 
 A selector matches a scope and everything under it: `entity.name.tag` matches `entity.name.tag.html`, `entity.name.tag.css` and also `entity.name.tag.yaml`, because the YAML grammar calls its keys tags. My YAML keys came out red like HTML tags.
@@ -79,8 +77,6 @@ A selector matches a scope and everything under it: `entity.name.tag` matches `e
 When several rules match, the one that matches more segments wins. So a rule for `entity.name.tag.yaml` makes YAML keys teal, whatever order the rules are in. It works like specificity in CSS. Listing more selectors in one rule doesn't make it stronger: the list only means "any of these".
 
 To find the scope of a token, VS Code's **Developer: Inspect Editor Tokens and Scopes** command shows the same names Shiki sees.
-
-<!-- TODO: a token I looked up with the inspector, and the rule I changed because of it -->
 
 ## Escaping, three times
 
@@ -97,5 +93,3 @@ That's escaping: encoding data so it stays data in a given place. It isn't sanit
 ## Contrast
 
 Every code color has to be readable on the code block's background, in both themes. I checked each pair before using it: the lowest is 5.3:1, above the 4.5:1 WCAG AA asks for normal text. I also kept every color inside the sRGB range, so screens show what I checked.
-
-<!-- TODO: how I checked contrast (DevTools color picker) and which color needed the most tries -->

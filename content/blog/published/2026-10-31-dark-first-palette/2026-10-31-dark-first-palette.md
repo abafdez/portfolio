@@ -29,8 +29,6 @@ That gives me two things:
 
 Every step keeps hue 250, so the whole scale is one consistent blue-gray. Only the lightness changes, plus a touch of chroma in the middle so the grays don't look dead.
 
-<!-- TODO: a screenshot of the ink scale, or a swatch strip -->
-
 ## The accent
 
 Terminal green, in two versions:
@@ -59,8 +57,6 @@ Because components only use semantic tokens, the whole switch happened in `token
 ## Checking contrast
 
 I checked every text/surface pair when I defined it, not when a page first used it (I learned that [the hard way](./2026-10-27-design-tokens)). All pass WCAG AA (4.5:1). The tightest is the dark green on the lightest raised surface, at 4.69:1.
-
-<!-- TODO: the contrast table: each pair and its ratio, in both themes -->
 
 ## Monospace headings
 
@@ -105,7 +101,5 @@ Later I want named themes (Tokyo Night, Dracula…). Each one will be a block th
 ```
 
 This is why components must never use a primitive like `--green-bright`: a component that did would ignore the theme's `--brand` and stay green inside Tokyo Night.
-
-<!-- TODO: what I'd still change, e.g. one --ink-hue variable instead of repeating 250 nine times -->
 
 Next: [the blueprint background](./2026-10-31-blueprint-background).

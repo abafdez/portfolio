@@ -52,7 +52,7 @@ export const es = {
 	blogTitle: () => 'Blog',
 	blogDescription: () => 'Artículos más largos sobre lo que aprendo construyendo este sitio.',
 	blogEmpty: () => 'Aún no hay artículos. Los primeros están en camino.',
-	blogTagsTitle: () => 'Explorar por etiqueta',
+	tagsBrowse: () => 'Explorar por etiqueta',
 	tagPostCount: ({ count }: Count) =>
 		plural('es', count, { one: ' artículo', other: ' artículos' }),
 	tagCloudMore: ({ count }: Count) => `Las ${count} etiquetas`,
@@ -71,6 +71,16 @@ export const es = {
 		'Notas breves de cómo construyo este sitio, paso a paso, las más recientes primero.',
 	devlogPhase: ({ phase }: { phase: string }) => `Fase ${phase}`,
 	devlogOther: () => 'Otras',
+	devlogTagDescription: ({ tag }: { tag: string }) =>
+		`Mis entradas del Devlog con la etiqueta #${tag}, las más recientes primero.`,
+	devlogAllEntries: () => '← Todas las entradas',
+	devlogTagIntro: ({ count }: Count) =>
+		plural('es', count, {
+			one: '1 entrada con esta etiqueta.',
+			other: `${count} entradas con esta etiqueta.`
+		}),
+	tagEntryCount: ({ count }: Count) => plural('es', count, { one: ' entrada', other: ' entradas' }),
+	tagLinkCount: ({ count }: Count) => plural('es', count, { one: ' enlace', other: ' enlaces' }),
 
 	awesomeTitle: () => 'Awesome',
 	awesomeDescription: () =>

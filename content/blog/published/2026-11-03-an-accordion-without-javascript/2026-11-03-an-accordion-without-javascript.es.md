@@ -20,8 +20,6 @@ El formulario de mi generador de CV se hizo largo: mis datos y luego diez grupos
 
 El mismo `name`, y al abrir uno se cierran los demás. Sin JavaScript y sin un `aria-expanded` que mantener sincronizado: el navegador les dice a los lectores de pantalla si cada uno está abierto.
 
-<!-- TODO: una grabación corta de las secciones abriéndose y cerrándose -->
-
 ## Un resumen que dice cómo va
 
 Una sección cerrada no debería esconder que algo va mal dentro. Cada resumen lleva un estado, calculado a partir del formulario:
@@ -46,8 +44,6 @@ function reveal(field: HTMLElement) {
 
 Abrirla mediante `open` también respeta el acordeón: la otra sección se cierra.
 
-<!-- TODO: probarlo con un lector de pantalla: ¿qué dice en un summary, abierto y cerrado? -->
-
 ## Una más: el marcador
 
 Convertí el summary en una fila flex para poner el estado junto al título. Eso hace desaparecer el triangulito: el marcador pertenece a `display: list-item`, que es lo que es `<summary>` por defecto. Así que, con `display: flex`, dibujo el mío:
@@ -61,5 +57,3 @@ details[open] > summary::before {
 	content: '▾';
 }
 ```
-
-<!-- TODO: ¿qué navegadores admiten name en details hoy? Comprobarlo y añadir una línea -->

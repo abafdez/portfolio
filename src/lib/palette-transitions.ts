@@ -1,6 +1,6 @@
-// What you see when the colour theme changes (PalettePicker.svelte): one of these
-// effects, taking turns in the order they're listed in `effects`. The light/dark
-// toggle keeps its circle.
+// What you see when the colour theme changes (PalettePicker.svelte) or the language
+// does (the root layout's onNavigate): one of these effects, taking turns in the order
+// they're listed in `effects`. The light/dark toggle keeps its circle.
 //
 // All of them are view transitions: the browser takes a picture of the page before the
 // change and one after, and we animate between them with CSS (palette-transitions.css,
@@ -40,7 +40,13 @@ let latest = 0;
 // Every property any of them set, so the last one to finish removes them all.
 const used = new Set<string>();
 
-export function transitionPalette(change: () => void, origin: Origin, effect?: Effect) {
+// change: what changes the page. It can be async: the browser waits for it before it
+// takes the "after" picture (a language switch waits for the new page).
+export function transitionPalette(
+	change: () => void | Promise<void>,
+	origin: Origin,
+	effect?: Effect
+) {
 	if (!canTransition()) return change();
 	effect ??= order[turn++ % order.length];
 

@@ -193,17 +193,94 @@
 
 		/* The old content keeps its own size, centered where it was (by default it's
 		   stretched to the group's size, which squeezes it when widths differ), and
-		   fades out quickly. The new content fades in and rises a little. */
+		   fades out quickly. The new content fades in and rises a little.
+		   --route-shift (+layout.svelte): how far the old content's top was from the new
+		   one's, so it stays where it was on screen even when the new page is scrolled
+		   elsewhere. */
 		&::view-transition-old(page) {
 			inline-size: auto;
 			block-size: auto;
 			inset-inline-start: 50%;
-			translate: -50% 0;
+			translate: -50% var(--route-shift, 0px);
 			animation: route-out 150ms ease-in both;
 		}
 
 		&::view-transition-new(page) {
 			animation: route-in 300ms var(--ease-out-3) both;
+		}
+	}
+
+	/* A card opening its page, or the page going back into its card (morph.ts): the
+	   marked card's parts and the page header's get the same names, so each pair turns
+	   into each other. view-transition-class styles all of them at once. */
+	:root:active-view-transition-type(morph) {
+		& [data-morphing] [data-morph] {
+			view-transition-class: morph;
+		}
+
+		/* As wide as their text, not the whole column: the picture of a title is then
+		   mostly words, so the small one scales into the big one cleanly. */
+		& [data-morphing] [data-morph]:not([data-morph='picture']) {
+			inline-size: fit-content;
+		}
+
+		& [data-morphing] [data-morph='title'] {
+			view-transition-name: morph-title;
+		}
+
+		& [data-morphing] [data-morph='meta'] {
+			view-transition-name: morph-meta;
+		}
+
+		& [data-morphing] [data-morph='description'] {
+			view-transition-name: morph-description;
+		}
+
+		& [data-morphing] [data-morph='tags'] {
+			view-transition-name: morph-tags;
+		}
+
+		/* Only a real picture: a card without a cover has a tile, and the page has
+		   nothing for it to become, so it goes with the rest of the card. */
+		& [data-morphing] [data-morph='picture']:is(img, :has(img)) {
+			view-transition-name: morph-picture;
+		}
+
+		/* Each part glides to its new place and size. */
+		&::view-transition-group(.morph) {
+			animation-duration: 450ms;
+			animation-timing-function: var(--ease-in-out-3);
+		}
+
+		/* A square thumbnail becomes a 16:9 cover: both pictures fill the moving box and
+		   are cropped to it, instead of being stretched (by default they keep their
+		   width and overflow or fall short in height). */
+		&::view-transition-old(morph-picture),
+		&::view-transition-new(morph-picture) {
+			block-size: 100%;
+			object-fit: cover;
+			overflow: clip;
+		}
+
+		/* Cropped to the moving box, with rounded corners like the card's thumbnail. */
+		&::view-transition-image-pair(morph-picture) {
+			overflow: clip;
+			border-radius: var(--radius-2);
+		}
+
+		/* Everything else: the other cards drop away and fade, then the new page rises
+		   in once the parts are on their way. A part with nothing to turn into (a
+		   project card's date) leaves with the rest; one that's only on the new page
+		   arrives with it. transform, not translate: the old page already uses
+		   translate to stay centred. */
+		&::view-transition-old(page),
+		&::view-transition-old(.morph):only-child {
+			animation: route-drop 220ms var(--ease-in-2) both;
+		}
+
+		&::view-transition-new(page),
+		&::view-transition-new(.morph):only-child {
+			animation: route-in 350ms var(--ease-out-3) 250ms both;
 		}
 	}
 }
@@ -353,6 +430,13 @@
 @keyframes route-out {
 	to {
 		opacity: 0;
+	}
+}
+
+@keyframes route-drop {
+	to {
+		opacity: 0;
+		transform: translateY(var(--size-8));
 	}
 }
 

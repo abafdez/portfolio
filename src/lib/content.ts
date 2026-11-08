@@ -5,6 +5,7 @@
 // Translations sit next to the English file: <slug>/<slug>.es.md (see toTranslation()).
 import { parse } from 'yaml';
 import { baseLocale, fileLocale, locales, type Locale } from '#lib/i18n/locales.ts';
+import { hueOf } from '#lib/hue.ts';
 
 interface Frontmatter {
 	title: string;
@@ -295,4 +296,31 @@ export const postTags = [...new Set(allPosts.flatMap((post) => post.tags ?? []))
 // The posts with a tag, newest first (allPosts is sorted that way).
 export function postsTagged(tag: string): Entry<PostMeta>[] {
 	return allPosts.filter((post) => post.tags?.includes(tag));
+}
+
+// The same for the Devlog: its tags and an entry list per tag (/devlog/tags/[tag]).
+export const logTags = [...new Set(allLog.flatMap((entry) => entry.tags ?? []))].sort();
+
+export function logTagged(tag: string): Entry<LogMeta>[] {
+	return allLog.filter((entry) => entry.tags?.includes(tag));
+}
+
+// Devlog entries grouped by learning-path phase, newest phase first (entries without one
+// last). Within a phase they keep their order. Map.groupBy keeps it too.
+export function byPhase<T extends { phase?: number }>(entries: T[]) {
+	return [...Map.groupBy(entries, (entry) => entry.phase)].sort(
+		([a], [b]) => (b ?? -1) - (a ?? -1)
+	);
+}
+
+// A section's tags for its TagCloud: each with how many entries use it and a hue for its
+// colour, the most used first (A to Z when they tie).
+export function tagCloud(entries: { tags?: string[] }[]) {
+	const counts = new Map<string, number>();
+	for (const tag of entries.flatMap((entry) => entry.tags ?? [])) {
+		counts.set(tag, (counts.get(tag) ?? 0) + 1);
+	}
+	return [...counts]
+		.map(([tag, count]) => ({ tag, count, hue: hueOf(tag) }))
+		.sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
 }

@@ -8,8 +8,6 @@ cover: A css page vs a svelte page using transitions.
 
 My theme toggle already used a [view transition](./2026-10-30-theme-toggle-view-transition). This post adds them between pages: the header stays still, the content fades into the new page, and the green bar under the current nav link slides to the new one. Then a small system for each route to choose its own layout, which the transition handles for free.
 
-<!-- TODO: a short video clicking through the nav -->
-
 ## Starting the transition
 
 SvelteKit routes in the browser, without reloading the page, so the browser can't know when a "page change" happens. SvelteKit tells us with `onNavigate`:
@@ -71,8 +69,6 @@ Then the content: the old page fades out fast, the new one fades in and rises a 
 }
 ```
 
-<!-- TODO: the durations I tried, and what felt right -->
-
 ## The sliding marker
 
 The current nav link used to have a thick underline. An underline is part of the text, so it can't move between links. So I made it an element:
@@ -132,6 +128,8 @@ Going from the home page (1120px wide) to the blog (60 characters wide) needed n
 	translate: -50% 0;
 }
 ```
+
+**Update:** "where it was" wasn't quite true. The old picture sits where the _new_ content starts, and going Back, SvelteKit scrolls the list to where you were, so the old article showed from its middle as it faded out. The layout now measures the content's top before and after the change and moves the old picture by the difference: `translate: -50% var(--route-shift, 0px)`. It didn't show until [cards started turning into their pages](./2026-11-08-cards-that-become-the-page).
 
 ## A bug this found
 

@@ -39,8 +39,6 @@ export const load: PageServerLoad = ({ params }) => {
 
 Mientras todos los artículos eran borradores, un build no tenía etiquetas, así que la ruta no tenía páginas y nada la enlazaba. El rastreador de SvelteKit informa de una ruta así como "sin visitar" y hace fallar el build. Le hice una excepción en `handleUnseenRoutes`. En cuanto se publica un artículo, su tarjeta enlaza a sus etiquetas, así que sus páginas ya no pueden quedar sin visitar.
 
-<!-- TODO: el error de "unseen routes" que me salió, si lo vi -->
-
 ## Enlaces solo donde hay página
 
 La misma lista de etiquetas aparece en las tarjetas del blog, en la cabecera del artículo y en el Devlog (mi diario de desarrollo). Las etiquetas del Devlog no tienen páginas. Una etiqueta como `planning` solo se usa ahí, y un enlace a `/blog/tags/planning` sería un 404.
@@ -74,6 +72,8 @@ Así que el componente de la lista no construye los enlaces él mismo. Recibe un
 
 Las páginas del blog le pasan `blogTag`, una ayuda de una línea alrededor de `resolve('/blog/tags/[tag]', { tag })`. El Devlog no le pasa nada. El componente nunca necesita saber qué rutas existen.
 
+**Actualización:** el Devlog ya tiene también páginas de etiquetas, en `/devlog/tags/[tag]`, así que pasa `devlogTag`. En una lista Awesome, las etiquetas de un enlace filtran la lista: `tagHref` da `?tag=css`, y una función `onTag` filtra en la misma página cuando se pulsa.
+
 ## Una etiqueta mal escrita hace fallar el build
 
 Cada etiqueta pasa a formar parte de una URL. `CSS` y `css` serían dos etiquetas en el índice pero una sola página, y `design tokens` sería una URL con un `%20` dentro. Podría arreglar las etiquetas en silencio (pasarlas a minúsculas, cambiar los espacios por guiones), pero entonces cada sitio que usa una etiqueta tendría que arreglarla igual: la lista, el filtro, el enlace, el texto.
@@ -95,5 +95,3 @@ Una etiqueta que la incumple detiene el build y dice en qué archivo está. Solo
 
 - **El tamaño del objetivo.** Las etiquetas son enlaces pequeños en una lista, no dentro de una frase, así que las WCAG piden al menos 24 por 24 píxeles. Un poco de `padding-block` las deja en 26px de alto.
 - **El orden de los encabezados.** Lighthouse le dio un 98 a la primera versión de la página de etiqueta: pasaba del `h1` directamente a los `h3` de las tarjetas. Agrupar los artículos por año, como hace `/blog`, pone un `h2` en medio.
-
-<!-- TODO: una captura del índice de etiquetas en /blog -->

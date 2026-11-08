@@ -63,12 +63,13 @@
 	const fetchpriority = $derived(priority ? 'high' : undefined);
 </script>
 
-<article class:linked={href}>
+<!-- data-morph-*: the parts that fly into the page this card opens (morph.ts). -->
+<article class:linked={href} data-morph-card={href ? '' : undefined}>
 	<div class="layout" class:with-thumbnail={thumbnail}>
 		{#if thumbnail}
 			<!-- Decorative here (empty alt, hidden tile): the title next to it already
 			     says what the post is, and a screen reader would hear it twice. -->
-			<div class="thumbnail">
+			<div class="thumbnail" data-morph="picture">
 				{#if thumbnail.cover}
 					<!-- Two crops: 16:9 on top of the text, square beside it. The container
 					     query shows one; both are lazy, and a lazy image that isn't shown is
@@ -101,14 +102,14 @@
 
 		<div class="text">
 			{#if date}
-				<div class="meta">
+				<div class="meta" data-morph="meta">
 					<time datetime={date}>{date}</time>
 					{#if minutes}· {m.minutesRead({ minutes })}{/if}
 					{#if status}<PostStatus {status} />{/if}
 					<TranslationStatus {locale} {reviewed} />
 				</div>
 			{/if}
-			<h3 {lang}>
+			<h3 {lang} data-morph="title">
 				{#if href}
 					<a {href}>{title}</a>
 				{:else}
@@ -116,10 +117,10 @@
 				{/if}
 			</h3>
 			{#if description}
-				<p {lang}>{description}</p>
+				<p {lang} data-morph="description">{description}</p>
 			{/if}
 			{#if tags?.length}
-				<TagList {tags} {tagHref} --tags-space="var(--size-3)" />
+				<div data-morph="tags"><TagList {tags} {tagHref} --tags-space="var(--size-3)" /></div>
 			{/if}
 		</div>
 	</div>

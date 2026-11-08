@@ -8,8 +8,6 @@ cover: A curriculum with arrows to forms.
 
 I'm building a tool on this site that makes a CV for each kind of job I apply for. The skills come from the site's own data. The personal part (name, phone, email, where I live, a short letter) can't go in the repo or the build: this is a public site. So it's typed into a form and stays in the browser, in `localStorage`.
 
-<!-- TODO: a screenshot of the form and the CV next to it (with made-up data) -->
-
 ## One object, not one state per field
 
 The form's values live in a class, as one `$state` object:
@@ -38,8 +36,6 @@ Not in the constructor. The page is prerendered at build time, where `localStora
 
 What `load()` reads goes through `read(data: unknown)`, which keeps only the fields it knows, only strings, and only a profile that still exists. It's my own data, but `localStorage` belongs to the origin, and every project I publish on `abafdez.github.io` shares it.
 
-<!-- TODO: put junk in localStorage in DevTools, reload, and describe what read() kept -->
-
 ## Saving: the bug that made it an $effect
 
 My first version saved from the form:
@@ -59,8 +55,6 @@ $effect(() => {
 ```
 
 `save()` stringifies every field, so the effect depends on all of them and runs again whenever any changes, whatever event changed it. The `if (cv.loaded)` matters: without it, an effect that ran before `load()` would save the empty form over what I had.
-
-<!-- TODO: what I'd have done to find the select bug without being told -->
 
 ## Small things the form does
 

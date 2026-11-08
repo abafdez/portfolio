@@ -69,8 +69,6 @@ export const codeTheme: ThemeRegistration = {
 
 `light-dark()` elige el color del tema actual, así que los temas oscuro y claro no necesitan nada más. Un futuro tema con nombre solo sobrescribe los tokens `--code-*`.
 
-<!-- TODO: capturas del mismo bloque en claro y en oscuro -->
-
 ## Qué regla gana
 
 Un selector coincide con un ámbito y con todo lo que cuelga de él: `entity.name.tag` coincide con `entity.name.tag.html`, con `entity.name.tag.css` y también con `entity.name.tag.yaml`, porque la gramática de YAML llama etiquetas a sus claves. Mis claves de YAML salían en rojo, como las etiquetas HTML.
@@ -78,8 +76,6 @@ Un selector coincide con un ámbito y con todo lo que cuelga de él: `entity.nam
 Cuando coinciden varias reglas, gana la que coincide con más segmentos. Así que una regla para `entity.name.tag.yaml` pone las claves de YAML en verde azulado, sea cual sea el orden de las reglas. Funciona como la especificidad en CSS. Poner más selectores en una regla no la hace más fuerte: la lista solo significa "cualquiera de estos".
 
 Para encontrar el ámbito de un token, el comando de VS Code **Developer: Inspect Editor Tokens and Scopes** muestra los mismos nombres que ve Shiki.
-
-<!-- TODO: un token que busqué con el inspector, y la regla que cambié por él -->
 
 ## Escapar, tres veces
 
@@ -96,5 +92,3 @@ Eso es escapar: codificar datos para que sigan siendo datos en un sitio concreto
 ## Contraste
 
 Cada color de código tiene que leerse bien sobre el fondo del bloque, en los dos temas. Comprobé cada par antes de usarlo: el más bajo es 5,3:1, por encima del 4,5:1 que piden las WCAG AA para el texto normal. También mantuve todos los colores dentro del rango sRGB, para que las pantallas muestren lo que comprobé.
-
-<!-- TODO: cómo comprobé el contraste (el selector de color de DevTools) y qué color necesitó más intentos -->

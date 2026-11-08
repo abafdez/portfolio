@@ -7,8 +7,6 @@ reviewed: false
 
 Estoy construyendo una herramienta en este sitio que genera un CV para cada tipo de empleo al que me presento. Las habilidades salen de los propios datos del sitio. La parte personal (nombre, teléfono, correo, dónde vivo, una carta breve) no puede ir en el repositorio ni en el build: este es un sitio público. Así que se escribe en un formulario y se queda en el navegador, en `localStorage`.
 
-<!-- TODO: una captura del formulario con el CV al lado (con datos inventados) -->
-
 ## Un objeto, no un estado por campo
 
 Los valores del formulario viven en una clase, como un único objeto `$state`:
@@ -37,8 +35,6 @@ No en el constructor. La página se prerenderiza al construir el sitio, donde `l
 
 Lo que lee `load()` pasa por `read(data: unknown)`, que solo se queda con los campos que conoce, solo con texto y solo con un perfil que siga existiendo. Son mis propios datos, pero `localStorage` pertenece al origen, y todos los proyectos que publico en `abafdez.github.io` lo comparten.
 
-<!-- TODO: meter basura en localStorage desde DevTools, recargar y contar qué conservó read() -->
-
 ## Guardar: el bug que lo convirtió en un $effect
 
 Mi primera versión guardaba desde el formulario:
@@ -58,8 +54,6 @@ $effect(() => {
 ```
 
 `save()` convierte todos los campos a texto, así que el efecto depende de todos y vuelve a ejecutarse cuando cambia cualquiera, sea cual sea el evento que lo cambió. El `if (cv.loaded)` es importante: sin él, un efecto que se ejecutara antes de `load()` guardaría el formulario vacío encima de lo que tenía.
-
-<!-- TODO: qué habría hecho para encontrar el bug del select sin que me lo dijeran -->
 
 ## Detalles que hace el formulario
 

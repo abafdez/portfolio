@@ -7,8 +7,6 @@ reviewed: false
 
 Descubrí [julibe.com](https://julibe.com) y me encantaron tres detalles: el menú superior se despega de la página al hacer scroll, el pie se queda oculto pero una pequeña animación avisa de que hay más abajo, y la barra de desplazamiento va en el color de acento. Ahora los tres son solo CSS.
 
-<!-- TODO: un vídeo corto haciendo scroll por la portada, de arriba abajo -->
-
 ## La idea: una línea de tiempo que no es tiempo
 
 Una animación CSS normal va del 0% al 100% a lo largo de una duración, como `1s`. Una animación **ligada al scroll** avanza con otra cosa:
@@ -63,8 +61,6 @@ Sin `to`, el navegador anima hacia los estilos propios del elemento. Luego la at
 ¿Por qué hacer que la barra flotante sea el estado por defecto? Porque la animación es una mejora progresiva. En un navegador sin animaciones ligadas al scroll, o para alguien con la reducción de movimiento activada, la animación no se ejecuta, y la cabecera simplemente se ve terminada.
 
 La cabecera solo es `position: sticky` a partir de 48rem de ancho. En el móvil ocupa dos filas y se comería demasiada pantalla, así que se va con el scroll.
-
-<!-- TODO: probar animation-range: 0 50vh en DevTools y describir la diferencia -->
 
 ## El pie avisa
 

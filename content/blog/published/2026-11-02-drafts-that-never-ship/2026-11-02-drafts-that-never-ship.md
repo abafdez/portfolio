@@ -20,8 +20,6 @@ const bodies = import.meta.glob<Component>('/content/blog/*.md', { import: 'defa
 
 So the filter hid the links and the pages, but every draft's body still ended up in `build/_app/immutable/` as a `.js` file, ready to open by its URL.
 
-<!-- TODO: what I found in the build output (grep a draft's title in build/) before the fix -->
-
 ## Drafts are a folder
 
 Now a draft is a draft because of where it lives: `content/blog/drafts/`, next to `content/blog/published/`. Each post is a folder with its images, and publishing one means moving its folder from one to the other (`git mv content/blog/drafts/<slug> content/blog/published/`). The `draft` flag comes from the path, so there's no frontmatter to forget:
@@ -49,8 +47,6 @@ In a build, Vite replaces `import.meta.env.DEV` with `false`. The condition beco
 
 The list of posts (frontmatter only) works the same way in `content.ts`, so `/blog` and the home page never list a draft in a build either.
 
-<!-- TODO: try it: `pnpm build`, then `grep -rl "<a draft's title>" build/` finds nothing; `pnpm dev` shows the drafts -->
-
 ## The body comes from a universal load
 
 The post page has two load files. The frontmatter comes from `+page.server.ts`, and the body from `+page.ts`. A server `load` sends its data to the browser serialized, and a component is a function, which can't be serialized. A universal `load` runs in the browser too, so it can just `import()` the chunk.
@@ -70,5 +66,3 @@ sveltekit({
 ```
 
 Any other unseen route still fails the build. Once I publish a post, `entries()` returns it, the route gets a page, and the exception stops mattering.
-
-<!-- TODO: the first post I published, and whether I removed the exception -->

@@ -18,8 +18,6 @@ function readingTime(text: string): number {
 
 Quita el frontmatter, cuenta como palabra todo lo que hay entre espacios y divide entre 200 palabras por minuto. Los estudios sitúan la lectura en silencio de textos de no ficción en unas 238 palabras por minuto. Los míos son artículos técnicos llenos de código, así que me quedé un poco por debajo.
 
-<!-- TODO: ¿200 parece razonable? Cronometrarme leyendo uno de mis artículos -->
-
 ## Quién tiene el texto
 
 Mi sitio lee cada archivo markdown de dos maneras.
@@ -53,8 +51,6 @@ const entry = {
 ```
 
 Todas las páginas lo reciben como un dato. Las páginas se prerenderizan, así que acaba en el HTML y en unos pocos bytes de `__data.json`. No llega nada de markdown al navegador para obtenerlo.
-
-<!-- TODO: qué encontré en build/ al buscar "minutes" -->
 
 ## La regla
 

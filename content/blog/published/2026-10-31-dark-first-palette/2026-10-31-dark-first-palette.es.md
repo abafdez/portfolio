@@ -28,8 +28,6 @@ Eso me da dos cosas:
 
 Todos los pasos mantienen el tono 250, así que toda la escala es un único gris azulado coherente. Solo cambia la luminosidad, más un toque de croma en el centro para que los grises no parezcan muertos.
 
-<!-- TODO: una captura de la escala ink, o una tira de muestras -->
-
 ## El color de acento
 
 Verde de terminal, en dos versiones:
@@ -58,8 +56,6 @@ Como los componentes solo usan tokens semánticos, todo el cambio ocurrió en `t
 ## Comprobar el contraste
 
 Comprobé cada par de texto y superficie al definirlo, no cuando una página lo usó por primera vez (eso lo aprendí [por las malas](./2026-10-27-design-tokens)). Todos pasan el nivel AA de las WCAG (4,5:1). El más justo es el verde oscuro sobre la superficie elevada más clara, con 4,69:1.
-
-<!-- TODO: la tabla de contraste: cada par y su ratio, en los dos temas -->
 
 ## Encabezados en monoespaciada
 
@@ -104,7 +100,5 @@ Más adelante quiero temas con nombre (Tokyo Night, Dracula…). Cada uno será 
 ```
 
 Por eso los componentes no deben usar nunca un valor base como `--green-bright`: un componente que lo hiciera ignoraría el `--brand` del tema y seguiría en verde dentro de Tokyo Night.
-
-<!-- TODO: qué cambiaría todavía, por ejemplo una variable --ink-hue en vez de repetir 250 nueve veces -->
 
 Lo siguiente: [el fondo de planos](./2026-10-31-blueprint-background).
