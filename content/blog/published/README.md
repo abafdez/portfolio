@@ -163,6 +163,24 @@ A box for a note, a tip or a warning. It's a blockquote whose first line is `[!t
 - **Folding** (Obsidian's `[!note]-`) is accepted, but the box is always shown open.
 - **Use them sparingly**: one or two per post. When everything is a callout, nothing stands out.
 
+## In Spanish
+
+A post's Spanish version is a second file in the same folder, `<slug>.es.md`, next to `<slug>.md`. It shares the images (`./diagram.png` works from both) and is published with the same `git mv`.
+
+```md
+---
+title: 'Un acordeón sin JavaScript'
+description: One or two sentences, like the English one (optional: without it, the first paragraph).
+cover: The cover's alt text, in Spanish (required if the folder has a cover).
+reviewed: false
+---
+```
+
+- **Only words go in its frontmatter.** `date`, `tags` and `phase` come from the English file, so the two can't disagree; writing them here fails the build.
+- **`reviewed: false`** until you've read it (Claude writes the translations); in dev, the post shows a "sin revisar" badge. Set it to `true` once it reads like you.
+- **Callout titles** come out in Spanish by themselves ("Sugerencia", "Advertencia"). Code stays as it is.
+- **Without a Spanish file**, `/es/blog/<slug>` shows the English post inside the Spanish site, marked "en inglés", and tells search engines the English page is the real one.
+
 ## Tags and code in the text
 
 **Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. Markdown passes HTML through as it is, so outside backticks:
@@ -201,7 +219,7 @@ The same goes for `{` and `}` outside backticks: Svelte reads them as code. Fron
    grep -o '](\./[^)]*)' content/blog/drafts/<slug>/<slug>.md
    ```
 4. Is it still true? Posts describe the site as it was; if something changed since, update it.
-5. Description, tags, date; cover and its `cover:` if it has one.
+5. Description, tags, date; cover and its `cover:` if it has one. The same for the Spanish file, `<slug>.es.md`: does it say what the English one says now, and have you read it (`reviewed: true`)?
 6. Move it: `git mv content/blog/drafts/<slug> content/blog/published/`
 7. Build and look at it as visitors will:
    ```sh

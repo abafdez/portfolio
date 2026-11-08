@@ -11,7 +11,10 @@ const bodies = {
 		: {})
 };
 
-export const load: PageLoad = async ({ data, params }) => {
-	const folder = data.post.draft ? '/content/blog/drafts' : '/content/blog/published';
-	return { ...data, Body: await bodies[`${folder}/${params.slug}/${params.slug}.md`]() };
-};
+// data.post.path is the file the post's text is in: <slug>.md, or <slug>.es.md when the
+// page is Spanish and the post is translated (+page.server.ts picked it). Translations
+// match the globs too, so each is a chunk of its own.
+export const load: PageLoad = async ({ data }) => ({
+	...data,
+	Body: await bodies[data.post.path]()
+});

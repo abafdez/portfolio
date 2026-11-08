@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '#lib/i18n/index.ts';
 	// A code block in markdown: a bar with the language and a copy button, then the
 	// <pre> Shiki made (the highlight() function in vite.config.ts wraps every block in
 	// this). Shiki's HTML comes in as children, through {@html}, so the styles below
@@ -29,9 +30,9 @@
 		const code = figure.querySelector('code')?.textContent ?? '';
 		try {
 			await navigator.clipboard.writeText(code);
-			status = 'copied';
+			status = m.codeCopied();
 		} catch {
-			status = "couldn't copy";
+			status = m.codeCopyFailed();
 		}
 		setTimeout(() => (status = ''), 2000);
 	}
@@ -43,7 +44,7 @@
 		{#if canCopy}
 			<!-- role="status": screen readers announce the text when it changes. -->
 			<span class="status" role="status">{status}</span>
-			<button type="button" onclick={copy}>copy</button>
+			<button type="button" onclick={copy}>{m.codeCopy()}</button>
 		{/if}
 	</figcaption>
 	{@render children()}

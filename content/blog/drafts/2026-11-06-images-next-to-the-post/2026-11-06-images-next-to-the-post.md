@@ -58,6 +58,8 @@ export function slugOf(path: string): string {
 }
 ```
 
+**Update:** a post's Spanish version now sits in the same folder, `<slug>.es.md`, and shares the images. `slugOf()` accepts that `.es` too, so both files have the same slug.
+
 ## Why `![alt](./x.png)` breaks
 
 I wanted to write images the normal markdown way, so they also preview in my editor:

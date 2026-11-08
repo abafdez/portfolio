@@ -120,6 +120,8 @@ export const load: PageLoad = async ({ data, params }) => ({
 
 The glob isn't eager: each value is a function that imports one file. Every entry gets its own small JS chunk, and the browser only downloads the one it shows.
 
+**Update:** an entry can now be in two files, English and Spanish, so the server load picks the file for the page's language and the body comes from it: `bodies[data.entry.path]()`.
+
 <!-- TODO: what I saw in the Network tab moving between two entries -->
 
 The page renders `<Body />` under a header with the date, title and tags.

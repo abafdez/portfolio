@@ -5,7 +5,11 @@
 import type { Profile } from '#lib/skills/skills.ts';
 
 export interface CvSkill {
-	// The skill's name in the YAML: unique, so it's the key my edits use.
+	// The skill's English name in the YAML: unique and the same in every language, so
+	// it's the key my edits use (and edits saved before the site had languages still
+	// match).
+	key: string;
+	// Its name in the page's language.
 	name: string;
 	// The name as the CV prints it: "Svelte", or "Spanish (Native)" for a skill without
 	// a level.
@@ -14,6 +18,8 @@ export interface CvSkill {
 }
 
 export interface CvGroup {
+	// The group's English name: the key for my order and my own skills in it.
+	key: string;
 	name: string;
 	// Strongest first.
 	skills: CvSkill[];

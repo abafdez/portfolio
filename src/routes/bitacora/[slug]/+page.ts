@@ -9,7 +9,8 @@ const bodies = import.meta.glob<Component>('/content/bitacora/*/*.md', { import:
 
 // Runs after +page.server.ts and receives its data. A component can't be serialized,
 // so it has to be loaded here, not on the server.
-export const load: PageLoad = async ({ data, params }) => ({
+// data.entry.path is the file in the page's language (see +page.server.ts).
+export const load: PageLoad = async ({ data }) => ({
 	...data,
-	Body: await bodies[`/content/bitacora/${params.slug}/${params.slug}.md`]()
+	Body: await bodies[data.entry.path]()
 });

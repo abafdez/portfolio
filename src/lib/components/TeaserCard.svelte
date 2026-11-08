@@ -3,6 +3,8 @@
 	import type { Cover } from '#lib/covers.ts';
 	import TagList from './TagList.svelte';
 	import PostStatus from './PostStatus.svelte';
+	import TranslationStatus from './TranslationStatus.svelte';
+	import type { Locale } from '#lib/i18n/locales.ts';
 
 	// Exported so pages can type their lists: const posts: Teaser[] = [...]
 	export interface Teaser {
@@ -24,6 +26,10 @@
 		thumbnail?: { cover?: Cover; label: string };
 		// Blog posts: a draft or published badge, shown in dev only (PostStatus).
 		status?: 'draft' | 'published';
+		// The language of title and description (posts and entries: Entry.locale), when
+		// it can differ from the page's, and whether a translation has been read.
+		locale?: Locale;
+		reviewed?: boolean;
 		// The first card of a list, likely on screen as the page loads: its cover is the
 		// page's largest picture (LCP), so it loads at once and first, not lazily.
 		priority?: boolean;
@@ -31,6 +37,7 @@
 </script>
 
 <script lang="ts">
+	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	let {
 		title,
 		description,
@@ -41,8 +48,14 @@
 		tagHref,
 		thumbnail,
 		status,
+		locale,
+		reviewed,
 		priority = false
 	}: Teaser = $props();
+
+	// Text in another language than the page's says so, so screen readers read it with
+	// the right voice (an English title on a Spanish page).
+	const lang = $derived(locale && locale !== getLocale() ? languageTags[locale] : undefined);
 
 	// The first card's cover: load it at once, and ahead of other images (an image's
 	// default priority is low, so it waits behind fonts and scripts).
@@ -90,11 +103,12 @@
 			{#if date}
 				<div class="meta">
 					<time datetime={date}>{date}</time>
-					{#if minutes}· {minutes} min read{/if}
+					{#if minutes}· {m.minutesRead({ minutes })}{/if}
 					{#if status}<PostStatus {status} />{/if}
+					<TranslationStatus {locale} {reviewed} />
 				</div>
 			{/if}
-			<h3>
+			<h3 {lang}>
 				{#if href}
 					<a {href}>{title}</a>
 				{:else}
@@ -102,7 +116,7 @@
 				{/if}
 			</h3>
 			{#if description}
-				<p>{description}</p>
+				<p {lang}>{description}</p>
 			{/if}
 			{#if tags?.length}
 				<TagList {tags} {tagHref} --tags-space="var(--size-3)" />

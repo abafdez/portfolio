@@ -7,6 +7,7 @@
 </script>
 
 <script lang="ts">
+	import { m } from '#lib/i18n/index.ts';
 	let { sections }: { sections: Section[] } = $props();
 
 	// The id of the section being read. Without JS it stays undefined: the links still
@@ -46,7 +47,7 @@
 
 <svelte:window onscroll={update} onresize={update} />
 
-<nav aria-label="On this page">
+<nav aria-label={m.sectionNavLabel()}>
 	<ul>
 		{#each sections as section (section.id)}
 			<li>

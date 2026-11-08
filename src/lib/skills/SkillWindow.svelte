@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '#lib/i18n/index.ts';
 	// One group of skills as a terminal window that collapses to a preview: its name, a
 	// line about it, a few skills as chips and every icon in the title bar.
 	// Windows start collapsed and open by themselves as they come into view; once the
@@ -128,7 +129,9 @@
 			</span>
 		</span>
 		<span class="hint">
-			<span class="visually-hidden">{group.name}: </span>{open ? 'collapse' : 'expand'}
+			<span class="visually-hidden">{group.name}: </span>{open
+				? m.skillWindowCollapse()
+				: m.skillWindowExpand()}
 			<span aria-hidden="true">{open ? '[-]' : '[+]'}</span>
 		</span>
 	</button>
@@ -150,7 +153,7 @@
 						</li>
 					{/each}
 					{#if group.skills.length > preview}
-						<li class="more">+{group.skills.length - preview} more</li>
+						<li class="more">{m.skillWindowMore({ count: group.skills.length - preview })}</li>
 					{/if}
 				</ul>
 			</div>

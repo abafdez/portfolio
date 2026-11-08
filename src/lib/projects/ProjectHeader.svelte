@@ -4,17 +4,22 @@
 	// Shared by /projects/[tool] and the tools with a route of their own (/projects/cv).
 	import TagList from '#lib/components/TagList.svelte';
 	import type { Project } from './projects.ts';
+	import { m, text } from '#lib/i18n/index.ts';
 
 	let { project }: { project: Project } = $props();
 </script>
 
-<Seo title={project.title} section="Projects" description={project.description} />
+<Seo
+	title={text(project.title)}
+	section={m.projectsTitle()}
+	description={text(project.description)}
+/>
 
 <!-- The page owns the heading; the tool is only the app, so it could live elsewhere too
      (inside a blog post, say). -->
 <header>
-	<h1>{project.title}</h1>
-	<p>{project.description}</p>
+	<h1>{text(project.title)}</h1>
+	<p>{text(project.description)}</p>
 	<TagList tags={project.tags} />
 </header>
 

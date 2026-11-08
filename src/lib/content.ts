@@ -2,7 +2,9 @@
 // Only import this from +page.server.ts files: there it runs at build time, so the
 // markdown is read once and never ships to the browser.
 // Only the frontmatter is read here; the bodies are rendered by each [slug] page.
+// Translations sit next to the English file: <slug>/<slug>.es.md (see toTranslation()).
 import { parse } from 'yaml';
+import { baseLocale, fileLocale, locales, type Locale } from '#lib/i18n/locales.ts';
 
 interface Frontmatter {
 	title: string;
@@ -26,14 +28,21 @@ export interface LogMeta extends Frontmatter {
 // draft: the file is in a drafts/ folder (only possible in dev, see below).
 // folder: where the file and its images are, e.g. /content/blog/published/<slug>
 // (covers.ts finds a cover by it).
+// path: the markdown file this text is in; the [slug] page renders its body.
 // minutes: reading time, from the words in the file (see readingTime()).
 // description: the frontmatter's, or one taken from the body (see summary()).
+// locale: the language this text is in. locales: every language the entry exists in.
+// reviewed: translations only, false until I've read it (a badge in dev says so).
 export type Entry<T extends Frontmatter> = T & {
 	slug: string;
 	folder: string;
+	path: string;
 	draft: boolean;
 	minutes: number;
 	description: string;
+	locale: Locale;
+	locales: Locale[];
+	reviewed?: boolean;
 };
 
 // import.meta.glob is a Vite feature: it finds the files at build time and imports
@@ -157,28 +166,106 @@ export function readFrontmatter<T>(path: string, text: string): T {
 // Exported for its tests (content.test.ts).
 export function slugOf(path: string): string {
 	const [folder, file] = path.split('/').slice(-2);
-	const slug = file.replace(/\.md$/, '');
+	// <slug>.md, or <slug>.es.md for a translation.
+	const locale = fileLocale(path);
+	const slug = file.slice(0, -(locale === baseLocale ? '.md' : `.${locale}.md`).length);
 	if (folder !== slug) throw new Error(`${path}: the folder and the file must have the same name`);
 	return slug;
 }
 
-function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[] {
-	return Object.entries(files)
-		.map(([path, text]) => {
-			const meta = readFrontmatter<T>(path, text);
-			checkTags(path, meta.tags);
-			checkCover(path, meta.cover);
-			return {
-				...meta,
-				slug: slugOf(path),
-				folder: path.slice(0, path.lastIndexOf('/')),
-				draft: path.includes('/drafts/'),
-				minutes: readingTime(text),
-				description: meta.description ?? summary(text)
-			};
-		})
-		.sort((a, b) => b.date.localeCompare(a.date) || b.slug.localeCompare(a.slug));
+const folderOf = (path: string) => path.slice(0, path.lastIndexOf('/'));
+
+function toEntry<T extends Frontmatter>(path: string, text: string): Entry<T> {
+	const meta = readFrontmatter<T>(path, text);
+	checkTags(path, meta.tags);
+	checkCover(path, meta.cover);
+	return {
+		...meta,
+		slug: slugOf(path),
+		folder: folderOf(path),
+		path,
+		draft: path.includes('/drafts/'),
+		minutes: readingTime(text),
+		description: meta.description ?? summary(text),
+		locale: baseLocale,
+		locales: [baseLocale]
+	};
 }
+
+// A translation only has what's written in words; the rest (date, tags, phase, the
+// cover file) comes from the English file next to it, so the two can't disagree.
+// reviewed is required: false until I've read the translation, then true.
+const translationKeys = ['title', 'description', 'cover', 'reviewed'];
+
+// Exported for its tests (content.test.ts).
+export function toTranslation<T extends Frontmatter>(
+	path: string,
+	text: string,
+	original: Entry<T>,
+	locale: Locale
+): Entry<T> {
+	const meta = readFrontmatter<Record<string, unknown> | null>(path, text) ?? {};
+	const extra = Object.keys(meta).filter((key) => !translationKeys.includes(key));
+	if (extra.length) {
+		throw new Error(
+			`${path}: ${extra.join(', ')}: a translation takes these from the English file. It only has ${translationKeys.join(', ')}`
+		);
+	}
+	if (typeof meta.title !== 'string' || !meta.title.trim()) {
+		throw new Error(`${path}: needs a title`);
+	}
+	if (typeof meta.reviewed !== 'boolean') {
+		throw new Error(`${path}: needs reviewed: false (true once it's been read)`);
+	}
+	checkCover(path, meta.cover);
+	return {
+		...original,
+		title: meta.title,
+		cover: meta.cover as string | undefined,
+		description: typeof meta.description === 'string' ? meta.description : summary(text),
+		path,
+		minutes: readingTime(text),
+		locale,
+		reviewed: meta.reviewed
+	};
+}
+
+// Translations, by folder and language. Only content.ts reads it, through inLocale():
+// the lists below are English, and a page asks for each entry in its language.
+const translations = new Map<string, Entry<Frontmatter>>();
+const translationKey = (folder: string, locale: Locale) => `${folder}:${locale}`;
+
+function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[] {
+	const paths = Object.keys(files);
+	const list = paths
+		.filter((path) => fileLocale(path) === baseLocale)
+		.map((path) => toEntry<T>(path, files[path]));
+	for (const path of paths) {
+		const locale = fileLocale(path);
+		if (locale === baseLocale) continue;
+		slugOf(path); // the same folder and file name rule
+		const original = list.find(({ folder }) => folder === folderOf(path));
+		if (!original) throw new Error(`${path}: a translation needs the English file next to it`);
+		// The same array in both, so each knows every language once they're all read.
+		original.locales.push(locale);
+		translations.set(
+			translationKey(original.folder, locale),
+			toTranslation(path, files[path], original, locale)
+		);
+	}
+	return list.sort((a, b) => b.date.localeCompare(a.date) || b.slug.localeCompare(a.slug));
+}
+
+// An entry in a language: its translation if there is one, or the English entry itself
+// (locale says which, so the page can mark it "in English").
+export function inLocale<T extends Frontmatter>(entry: Entry<T>, locale: Locale): Entry<T> {
+	return (translations.get(translationKey(entry.folder, locale)) as Entry<T>) ?? entry;
+}
+
+// Whether an entry exists in every language: only then is its /es/ page a Spanish page
+// for search engines (Seo.svelte, the sitemap).
+export const isTranslated = (entry: { locales: Locale[] }) =>
+	entry.locales.length === locales.length;
 
 // A slug is a URL, so it can only be used once: a post copied to published/ instead of
 // moved there would be in both folders, and two pages would want the same address.
@@ -193,7 +280,10 @@ export function checkUniqueSlugs(paths: string[]) {
 	}
 }
 
-checkUniqueSlugs([...Object.keys(posts), ...Object.keys(drafts)]);
+// Translations share their English file's slug on purpose, so only English files count.
+checkUniqueSlugs(
+	[...Object.keys(posts), ...Object.keys(drafts)].filter((path) => fileLocale(path) === baseLocale)
+);
 
 export const allPosts = toList<PostMeta>({ ...posts, ...drafts });
 export const allLog = toList<LogMeta>(log);

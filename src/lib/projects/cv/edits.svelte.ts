@@ -108,41 +108,39 @@ export class SkillEdits {
 
 	included(skill: CvSkill, profile: string): boolean {
 		const { on, off } = this.get(profile);
-		return (
-			on.includes(skill.name) || (skill.profiles.includes(profile) && !off.includes(skill.name))
-		);
+		return on.includes(skill.key) || (skill.profiles.includes(profile) && !off.includes(skill.key));
 	}
 
 	// Only a difference from the YAML is stored: switching a skill back to what the YAML
 	// says removes it from on and off.
 	include(skill: CvSkill, profile: string, value: boolean) {
 		const edits = this.#edit(profile);
-		edits.on = edits.on.filter((name) => name !== skill.name);
-		edits.off = edits.off.filter((name) => name !== skill.name);
+		edits.on = edits.on.filter((key) => key !== skill.key);
+		edits.off = edits.off.filter((key) => key !== skill.key);
 		if (value === skill.profiles.includes(profile)) return;
-		(value ? edits.on : edits.off).push(skill.name);
+		(value ? edits.on : edits.off).push(skill.key);
 	}
 
 	label(skill: CvSkill, profile: string): string {
-		return this.get(profile).labels[skill.name] ?? skill.label;
+		return this.get(profile).labels[skill.key] ?? skill.label;
 	}
 
 	// The same wording as the YAML isn't a change, so it isn't stored. An empty one is
 	// (while I'm typing), but the CV falls back to the YAML's.
 	relabel(skill: CvSkill, profile: string, text: string) {
 		const { labels } = this.#edit(profile);
-		if (text === skill.label) delete labels[skill.name];
-		else labels[skill.name] = text;
+		if (text === skill.label) delete labels[skill.key];
+		else labels[skill.key] = text;
 	}
 
 	// A group's rows in my order: the ones I've placed first, as placed, then the rest
 	// as they come (the YAML's skills strongest first, then mine).
 	items(group: CvGroup, profile: string): Item[] {
 		const edits = this.get(profile);
-		const order = edits.order[group.name] ?? [];
+		const order = edits.order[group.key] ?? [];
 		const rows: Item[] = [
-			...group.skills.map((skill) => ({ key: skill.name, skill })),
-			...(edits.added[group.name] ?? []).map((own) => ({ key: own.id, own }))
+			...group.skills.map((skill) => ({ key: skill.key, skill })),
+			...(edits.added[group.key] ?? []).map((own) => ({ key: own.id, own }))
 		];
 		const rank = (row: Item) => {
 			const index = order.indexOf(row.key);
@@ -159,7 +157,7 @@ export class SkillEdits {
 		const to = from + by;
 		if (from === -1 || to < 0 || to >= keys.length) return;
 		[keys[from], keys[to]] = [keys[to], keys[from]];
-		this.#edit(profile).order[group.name] = keys;
+		this.#edit(profile).order[group.key] = keys;
 	}
 
 	// A new, empty skill of my own at the end of the group. Returns its id, so the editor

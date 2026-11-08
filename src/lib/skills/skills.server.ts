@@ -2,11 +2,14 @@
 // .server in the name: SvelteKit refuses to put this file in browser code, so only
 // +page.server.ts files can import it. The icon libraries (thousands of icons) stay on
 // the build machine, and a page gets only the icons it uses, as data.
+// Text (names, descriptions, notes, evidence labels) can be in both languages (readText
+// in locales.ts); the data is built once per language, and a page asks for its own.
 import { icons } from 'lucide';
 import * as simpleIcons from 'simple-icons';
 import { parse } from 'yaml';
 import text from '/content/skills.yaml?raw';
 import { hueOf } from '#lib/hue.ts';
+import { locales, readText, type Locale } from '#lib/i18n/locales.ts';
 import { hueAndChroma } from './brand-color.ts';
 import {
 	levels,
@@ -19,27 +22,29 @@ import {
 	type Skill
 } from './skills.ts';
 
-// The file as written: icons by name, a level as a plain number.
+// The file as written: icons by name, a level as a plain number, text as plain text
+// or { en, es } (unknown until readText has checked it).
 interface SkillFile {
-	name: string;
+	name: unknown;
 	logo?: string;
 	icon?: string;
 	level?: number;
 	profiles?: string[];
-	note?: string;
-	evidence?: Evidence[];
+	note?: unknown;
+	// One of entry, tool, list or url (checked below), and a label.
+	evidence?: (Record<string, unknown> & { label: unknown })[];
 }
 
 interface GroupFile {
-	name: string;
+	name: unknown;
 	id: string;
-	description: string;
+	description: unknown;
 	icon: string;
 	skills: SkillFile[];
 }
 
 interface SkillsFile {
-	profiles: Profile[];
+	profiles: { id: string; name: unknown }[];
 	groups: GroupFile[];
 }
 
@@ -77,8 +82,14 @@ function lucide(where: string, name: string): IconData {
 	return { node: node as [string, Record<string, string>][] };
 }
 
-function load(): Omit<SkillData, 'logos'> & { logos: LogoPath[] } {
+// The skills in one language. The checks run for each language, which costs nothing
+// at build time and keeps one function for all of it.
+function load(locale: Locale): Omit<SkillData, 'logos'> & { logos: LogoPath[] } {
 	const file = parse(text) as SkillsFile;
+	// A text field in this language; English for the key and for error messages.
+	const read = (value: unknown, where: string) => readText(value, `content/skills.yaml, ${where}`);
+	const tr = (value: unknown, where: string) => read(value, where).text[locale];
+	const en = (value: unknown, where: string) => read(value, where).text.en;
 	const profileIds = new Set(file.profiles.map(({ id }) => id));
 	const logos = new Map<string, LogoPath>();
 	const names = new Set<string>();
@@ -88,31 +99,45 @@ function load(): Omit<SkillData, 'logos'> & { logos: LogoPath[] } {
 	}
 
 	function skill(group: string, entry: SkillFile): Skill {
-		const where = `"${entry.name}" (${group})`;
-		const { logo, icon, level, profiles = [], evidence, ...rest } = entry;
+		const key = en(entry.name, `a skill in ${group}`);
+		const where = `"${key}" (${group})`;
+		const { logo, icon, level, profiles = [], evidence } = entry;
 
-		// Keyed by name on the page, so two skills can't share one.
-		if (names.has(entry.name)) fail(where, 'two skills with this name');
-		names.add(entry.name);
+		// Keyed by its English name (the CV stores edits by it), so two can't share one.
+		if (names.has(key)) fail(where, 'two skills with this name');
+		names.add(key);
 
 		if (logo && icon) fail(where, 'a logo or an icon, not both');
-		if (level !== undefined && !(level in levels)) fail(where, `level ${level} isn't 1 to 4`);
+		if (level !== undefined && !(levels as readonly number[]).includes(level))
+			fail(where, `level ${level} isn't 1 to 4`);
 		for (const id of profiles) {
 			if (!profileIds.has(id)) fail(where, `"${id}" isn't one of the profiles at the top`);
 		}
 		for (const link of evidence ?? []) {
+			const label = en(link.label, `${where} evidence`);
 			const kinds = ['entry', 'tool', 'list', 'url'].filter((kind) => kind in link);
-			if (kinds.length !== 1) fail(where, `"${link.label}" needs one of entry, tool, list or url`);
-			if ('url' in link && !link.url.startsWith('https://')) {
-				fail(where, `"${link.label}" needs an https:// url`);
+			if (kinds.length !== 1) fail(where, `"${label}" needs one of entry, tool, list or url`);
+			if ('url' in link && !(typeof link.url === 'string' && link.url.startsWith('https://'))) {
+				fail(where, `"${label}" needs an https:// url`);
 			}
 		}
 
-		const result: Skill = { ...rest, profiles, evidence, level: level as Level | undefined };
+		const result: Skill = {
+			key,
+			name: tr(entry.name, where),
+			profiles,
+			level: level as Level | undefined,
+			note: entry.note === undefined ? undefined : tr(entry.note, `${where} note`),
+			evidence: evidence?.map((link) => ({
+				...link,
+				label: tr(link.label, `${where} evidence`)
+			})) as Evidence[] | undefined
+		};
 		if (icon) {
 			Object.assign(result, {
 				icon: lucide(where, icon),
-				hue: hueOf(entry.name),
+				// From the key, so the colour is the same in every language.
+				hue: hueOf(key),
 				chroma: genericChroma
 			});
 		}
@@ -128,25 +153,37 @@ function load(): Omit<SkillData, 'logos'> & { logos: LogoPath[] } {
 	}
 
 	const groups = file.groups.map((group) => {
-		if (!kebab.test(group.id)) fail(`group "${group.name}"`, 'ids are kebab-case');
-		if (!group.description) fail(`group "${group.name}"`, 'needs a description');
+		const key = en(group.name, `group "${group.id}"`);
+		const where = `group "${key}"`;
+		if (!kebab.test(group.id)) fail(where, 'ids are kebab-case');
+		if (!group.description) fail(where, 'needs a description');
 		return {
-			name: group.name,
+			key,
+			name: tr(group.name, where),
 			id: group.id,
-			description: group.description,
-			icon: lucide(`group "${group.name}"`, group.icon),
-			skills: group.skills.map((entry) => skill(group.name, entry))
+			description: tr(group.description, `${where} description`),
+			icon: lucide(where, group.icon),
+			skills: group.skills.map((entry) => skill(key, entry))
 		};
 	});
 
-	return { profiles: file.profiles, groups, logos: [...logos.values()] };
+	const profilesIn = file.profiles.map(({ id, name }) => ({
+		id,
+		name: tr(name, `profile "${id}"`)
+	}));
+	return { profiles: profilesIn, groups, logos: [...logos.values()] };
 }
 
-const { logos, ...rest } = load();
+const byLocale = Object.fromEntries(locales.map((locale) => [locale, load(locale)])) as Record<
+	Locale,
+	ReturnType<typeof load>
+>;
 
-// For the pages: the logos without their paths (those are only in the sprite).
-export const skillData: SkillData = {
-	...rest,
-	logos: logos.map(({ path: _path, ...logo }) => logo)
-};
-export const logoPaths: LogoPath[] = logos;
+// For the pages, in their language: the logos without their paths (those are only in
+// the sprite).
+export function skillDataIn(locale: Locale): SkillData {
+	const { logos, ...rest } = byLocale[locale];
+	return { ...rest, logos: logos.map(({ path: _path, ...logo }) => logo) };
+}
+// For the sprite: the same logos in every language.
+export const logoPaths: LogoPath[] = byLocale.en.logos;

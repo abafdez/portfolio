@@ -3,7 +3,8 @@
 	// a <details> that opens to how I use it and where it shows.
 	import { fillOnView } from './fill.ts';
 	import Icon from './Icon.svelte';
-	import { evidenceHref, levels, type Skill } from './skills.ts';
+	import { evidenceHref, type Skill } from './skills.ts';
+	import { m } from '#lib/i18n/index.ts';
 
 	let { skill }: { skill: Skill } = $props();
 
@@ -25,7 +26,7 @@
 			<span class="bar" style:--ticks={skill.level * 3} aria-hidden="true" {@attach fillOnView}
 				>[<span class="track"><span class="fill">||||||||||||</span></span>]</span
 			>
-			<span><span class="visually-hidden">, </span>{levels[skill.level]}</span>
+			<span><span class="visually-hidden">, </span>{m.skillLevel({ level: skill.level })}</span>
 		</span>
 	{/if}
 {/snippet}

@@ -25,6 +25,8 @@ cover: The Performance panel in DevTools, with the layout shifts track highlight
 ---
 ```
 
+(**Update:** a post's Spanish version, `<slug>.es.md` in the same folder, shares the image and has its own `cover:` in Spanish.)
+
 The two go together, and the build checks it. A cover nobody described fails, and so does alt text with no image:
 
 ```ts

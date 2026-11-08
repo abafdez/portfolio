@@ -1,4 +1,5 @@
-import { allPosts, postsTagged, postTags } from '#lib/content.ts';
+import { allPosts, inLocale, postsTagged, postTags } from '#lib/content.ts';
+import { localeOf } from '#lib/i18n/locales.ts';
 import { hueOf } from '#lib/hue.ts';
 import type { PageServerLoad } from './$types';
 
@@ -8,9 +9,14 @@ import type { PageServerLoad } from './$types';
 // tags) are only in these lists in dev.
 // composition: this page isn't one column of text like the posts under it
 // (/blog/+layout.ts says 'reading'): it has posts and the tags side by side.
-export const load: PageServerLoad = () => ({
+export const load: PageServerLoad = ({ url }) => ({
 	composition: 'default' as const,
-	years: [...Map.groupBy(allPosts, (post) => post.date.slice(0, 4))],
+	years: [
+		...Map.groupBy(
+			allPosts.map((post) => inLocale(post, localeOf(url))),
+			(post) => post.date.slice(0, 4)
+		)
+	],
 	tags: postTags
 		.map((tag) => ({ tag, count: postsTagged(tag).length, hue: hueOf(tag) }))
 		.sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))

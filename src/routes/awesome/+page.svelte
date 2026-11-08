@@ -1,29 +1,27 @@
 <script lang="ts">
 	import Seo from '#lib/components/Seo.svelte';
-	import { resolve } from '$app/paths';
+	import { m, route } from '#lib/i18n/index.ts';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 </script>
 
-<Seo
-	title="Awesome"
-	description="Curated lists of links I keep going back to, each one searchable by tag."
-/>
+<Seo title={m.awesomeTitle()} description={m.awesomeDescription()} />
 
-<h1>Awesome</h1>
-<p class="intro">Curated lists of links I keep going back to, each one searchable by tag.</p>
+<h1>{m.awesomeTitle()}</h1>
+<p class="intro">{m.awesomeDescription()}</p>
 
 <section aria-labelledby="lists-title">
-	<h2 id="lists-title">Lists</h2>
+	<h2 id="lists-title">{m.awesomeLists()}</h2>
 	<div class="grid">
-		{#each data.lists as { slug, title, description, updated } (slug)}
+		{#each data.lists as { slug, title, description, updated, locale } (slug)}
 			<TeaserCard
 				{title}
 				{description}
+				{locale}
 				date={updated}
-				href={resolve('/awesome/[list]', { list: slug })}
+				href={route('/awesome/[list]', { list: slug })}
 			/>
 		{/each}
 	</div>

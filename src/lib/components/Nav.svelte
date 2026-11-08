@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { resolve } from '$app/paths';
+	import { m, route } from '#lib/i18n/index.ts';
 	import { isInside, sections } from '#lib/links.ts';
 </script>
 
-<nav aria-label="Main navigation">
+<nav aria-label={m.navLabel()}>
 	<ul>
 		{#each sections as link (link.href)}
 			<!-- 'page' on the section's own page; 'true' on a page inside it (a post is in
@@ -17,8 +17,8 @@
 						? 'true'
 						: undefined}
 			<li>
-				<a href={resolve(link.href)} aria-current={current}>
-					{link.label}
+				<a href={route(link.href)} aria-current={current}>
+					{link.label()}
 					{#if current}
 						<span class="marker" aria-hidden="true"></span>
 					{/if}

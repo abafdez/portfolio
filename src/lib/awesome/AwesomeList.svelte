@@ -8,8 +8,10 @@
 	import TagList from '#lib/components/TagList.svelte';
 	import type { AwesomeList } from './awesome.ts';
 	import { LinkFilter } from './filter.svelte.ts';
+	import { m } from '#lib/i18n/index.ts';
 
-	let { list }: { list: AwesomeList } = $props();
+	// lang: the list's language, when it isn't the page's (not translated yet).
+	let { list, lang }: { list: AwesomeList; lang?: string } = $props();
 
 	const filter = new LinkFilter(() => list.categories);
 	let ready = $state(false);
@@ -44,7 +46,7 @@
      only appeared then, it would push the whole list down (a layout shift). -->
 <search class:ready>
 	<label>
-		Search
+		{m.awesomeSearch()}
 		<!-- A function binding: a getter and a setter instead of a variable. The
 			     setter updates the filter, then the URL, in that order. -->
 		<input
@@ -55,7 +57,7 @@
 	</label>
 
 	<fieldset>
-		<legend>Tags</legend>
+		<legend>{m.tagsLabel()}</legend>
 		<ul>
 			{#each list.tags as tag (tag)}
 				<li>
@@ -72,15 +74,15 @@
 
 	<div class="summary">
 		<!-- role="status": screen readers announce the count when it changes. -->
-		<p role="status">{filter.count} of {list.count} links</p>
+		<p role="status">{m.awesomeShown({ count: filter.count, total: list.count })}</p>
 		{#if filter.active}
-			<button type="button" onclick={clear}>Clear filters</button>
+			<button type="button" onclick={clear}>{m.awesomeClear()}</button>
 		{/if}
 	</div>
 </search>
 
 {#each filter.results as category (category.id)}
-	<section aria-labelledby={category.id}>
+	<section aria-labelledby={category.id} {lang}>
 		<h2 id={category.id}>{category.name}</h2>
 		<ul class="links">
 			{#each category.links as link (link.url)}
@@ -93,7 +95,7 @@
 		</ul>
 	</section>
 {:else}
-	<p class="empty">No links match. Try fewer words or tags.</p>
+	<p class="empty">{m.awesomeEmpty()}</p>
 {/each}
 
 <style>

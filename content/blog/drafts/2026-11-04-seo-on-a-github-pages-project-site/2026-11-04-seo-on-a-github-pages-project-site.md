@@ -83,6 +83,8 @@ paths: {
 <link rel="canonical" href="https://abafdez.github.io/portfolio/projects/cv" />
 ```
 
+**Update:** the site is in English and Spanish now, so the component builds the page's address in every language and adds `hreflang` links between them. A post that isn't translated yet has a Spanish copy whose canonical points at the English page, so search engines don't see the same text twice. The [post on the second language](./2026-11-08-a-second-language-without-a-library) has the details.
+
 ## A description for every page
 
 Posts have a `description` in their frontmatter. Bitácora entries don't, and I'm not going to write 47 of them. So `content.ts` takes one from the body: the first paragraph or list item, as plain text, cut at a word under 160 characters (search results cut at about that).

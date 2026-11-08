@@ -3,18 +3,18 @@
 	// section (the nav already says where a section's own page is), and only when the
 	// route names its page in its load data (`crumb`, see App.PageData).
 	import { page } from '$app/state';
-	import { resolve } from '$app/paths';
+	import { m, route } from '#lib/i18n/index.ts';
 	import { isInside, sections } from '#lib/links.ts';
 
 	const section = $derived(sections.find(({ href }) => isInside(href, page.route.id)));
 </script>
 
 {#if section && page.data.crumb}
-	<nav aria-label="Breadcrumb">
+	<nav aria-label={m.breadcrumbLabel()}>
 		<!-- An ordered list: the order is the point, and a screen reader says "list, 3 items". -->
 		<ol>
-			<li><a href={resolve('/')}>Home</a></li>
-			<li><a href={resolve(section.href)}>{section.label}</a></li>
+			<li><a href={route('/')}>{m.navHome()}</a></li>
+			<li><a href={route(section.href)}>{section.label()}</a></li>
 			<!-- The page itself is text, not a link to where you already are. -->
 			<li aria-current="page">{page.data.crumb}</li>
 		</ol>

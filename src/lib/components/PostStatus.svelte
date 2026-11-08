@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '#lib/i18n/index.ts';
 	// Whether a blog post is a draft or published, in dev only. A build has no drafts
 	// (see content.ts), so there every post is published and the badge would say
 	// nothing. `dev` is false in a build, so the badge isn't even in the HTML there.
@@ -17,7 +18,7 @@
 		{:else}
 			<Globe size="1em" aria-hidden="true" />
 		{/if}
-		{status}
+		{status === 'draft' ? m.statusDraft() : m.statusPublished()}
 	</span>
 {/if}
 

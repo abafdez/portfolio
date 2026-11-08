@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '#lib/i18n/index.ts';
 	import type { ResolvedPathname } from '$app/types';
 
 	// The tags of a post or a Bitácora entry (TeaserCard, ArticleHeader).
@@ -13,7 +14,7 @@
 </script>
 
 <!-- The space above comes from the parent: <TagList --tags-space="var(--size-3)" />. -->
-<ul aria-label="Tags">
+<ul aria-label={m.tagsLabel()}>
 	{#each tags as tag (tag)}
 		<li>
 			{#if tagHref}

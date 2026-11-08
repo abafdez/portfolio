@@ -17,7 +17,7 @@ The easy way would be to copy the list into `localStorage` and edit the copy. Bu
 interface ProfileEdits {
 	on: string[]; // switched on, though the YAML doesn't give this profile
 	off: string[]; // switched off, though it does
-	labels: Record<string, string>; // my wording, by skill name
+	labels: Record<string, string>; // my wording, by skill key
 	added: Record<string, { id: string; text: string }[]>; // my own, by group
 	order: Record<string, string[]>; // my order, by group: skill names and my skills' ids
 }
@@ -30,11 +30,13 @@ Whether a skill is on the CV is computed every time:
 ```ts
 included(skill: CvSkill, profile: string) {
 	const { on, off } = this.get(profile);
-	return on.includes(skill.name) || (skill.profiles.includes(profile) && !off.includes(skill.name));
+	return on.includes(skill.key) || (skill.profiles.includes(profile) && !off.includes(skill.key));
 }
 ```
 
 Switching a skill back to what the YAML says removes it from both lists, so "Reset" is just forgetting the profile's changes.
+
+**Update:** the edits used to be stored by the skill's name. When the site got a Spanish version, a skill's name started to depend on the language, so each skill now has a `key`, its English name, for storing, and `name` is only what's shown. Edits saved before still match, because the key is the name they were saved under.
 
 <!-- TODO: open DevTools → Application → Local Storage and paste what my edits look like -->
 

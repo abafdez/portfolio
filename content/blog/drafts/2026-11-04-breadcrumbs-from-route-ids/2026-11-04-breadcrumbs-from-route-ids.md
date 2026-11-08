@@ -28,6 +28,8 @@ export const sections: { href: RouteWithoutParams; label: string }[] = [
 ];
 ```
 
+(**Update:** since the site has a Spanish version, each `label` is a message, `label: m.navBlog`, called as `label()`, so it comes out in the page's language.)
+
 The only thing the breadcrumbs can't work out is the page's own name. The route knows it (it's loading the post or the project anyway), so it says it in its load data:
 
 ```ts

@@ -13,6 +13,7 @@
 	import { afterNavigate, onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { canTransition } from '#lib/view-transitions.ts';
+	import { getLocale, languageTags } from '#lib/i18n/index.ts';
 	import Header from '#lib/components/Header.svelte';
 	import Footer from '#lib/components/Footer.svelte';
 	import Blueprint from '#lib/components/Blueprint.svelte';
@@ -50,6 +51,12 @@
 	afterNavigate(() => {
 		requestAnimationFrame(() => (document.documentElement.dataset.smoothScroll = ''));
 	});
+
+	// The server writes <html lang> (hooks.server.ts), but a link to the other language
+	// is a client-side navigation: the HTML isn't loaded again, so update it here.
+	$effect(() => {
+		document.documentElement.lang = languageTags[getLocale()];
+	});
 </script>
 
 <svelte:head>
@@ -60,6 +67,11 @@
 <!-- Each route picks its composition in its load data (see App.PageData). -->
 <main data-composition={page.data.composition ?? 'default'}>
 	<Breadcrumbs />
-	{@render children()}
+	<!-- /blog and /es/blog are the same route, so switching language keeps the page's
+	     component and only updates its template: anything a component worked out once
+	     in its <script> would stay in the old language. A new key builds it again. -->
+	{#key getLocale()}
+		{@render children()}
+	{/key}
 </main>
 <Footer />

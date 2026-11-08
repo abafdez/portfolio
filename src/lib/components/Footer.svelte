@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { profiles } from '#lib/links.ts';
+	import { m } from '#lib/i18n/index.ts';
 </script>
 
 <footer id="footer">
@@ -9,7 +10,7 @@
 		<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
 	</a>
 	<div class="inner">
-		<p><small>&copy; {new Date().getFullYear()} Alfonso Baeza. All rights reserved.</small></p>
+		<p><small>&copy; {new Date().getFullYear()} Alfonso Baeza. {m.footerRights()}</small></p>
 		<ul>
 			{#each profiles as profile (profile.label)}
 				<li><a href={profile.url}>{profile.label}</a></li>
