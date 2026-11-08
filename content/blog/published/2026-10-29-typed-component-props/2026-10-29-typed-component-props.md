@@ -3,7 +3,7 @@ title: Typed props and links in Svelte 5 components
 date: 2026-10-29
 tags: [svelte, typescript, components]
 description: How I typed my hero component's props, made links that can't point to a missing page, and handled empty lists, with a few TypeScript tricks along the way.
-cover: A schema with sveltekit and typescript bulding a typed component
+cover: A schema with sveltekit and typescript building a typed component
 ---
 
 The top of my portfolio's home page is a "hero": my name, a tagline, a photo and some links. Building it was a good excuse to get Svelte 5 props and TypeScript working together properly.

@@ -3,7 +3,7 @@ title: A different font for each part of my site, all self-hosted
 date: 2026-10-29
 tags: [css, fonts, fontsource, design-tokens, sveltekit]
 description: Fira Code for code, a handwritten font for my dev log and the system font everywhere else. No Google Fonts, no extra cost on pages that don't use them.
-cover: A box wit text fonts.
+cover: A box with text fonts.
 ---
 
 I wanted each part of my portfolio to have its own feel. Code should look like code, my dev log (the Bitácora) should feel like a notebook, and the rest should stay out of the way. I also didn't want any requests to a third party.

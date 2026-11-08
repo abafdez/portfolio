@@ -3,7 +3,7 @@ title: Deploying SvelteKit 3 to GitHub Pages, step by step
 date: 2026-10-20
 tags: [sveltekit, github-actions, github-pages, ci]
 description: My GitHub Actions setup for a solo SvelteKit 3 project. PRs run checks, merges to main deploy, and an artifact connects the two jobs.
-cover: Visual representation of the pipelion for deployment.
+cover: Visual representation of the pipeline for deployment.
 ---
 
 My portfolio is a static SvelteKit 3 site hosted on GitHub Pages. Getting the deploy working took a string of `fix:` commits, so this post walks through the final workflow and explains what each piece is for.
