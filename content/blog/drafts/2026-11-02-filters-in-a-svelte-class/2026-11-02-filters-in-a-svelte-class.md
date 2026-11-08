@@ -127,7 +127,7 @@ search:not(.ready) {
 
 ## Small accessibility details
 
-- The tag buttons are toggles: `aria-pressed` makes screen readers say "pressed", and the fill shows it for everyone else.
+- The tag buttons are toggles: `aria-pressed` makes screen readers say "pressed", and the fill shows it for everyone else. (**Update:** they're the blog's tag chips now, from the same `TagCloud` component; a picked one has a ring in its colour and a tick.)
 - The count ("3 of 25 links") is a `role="status"`, so it's announced when it changes.
 - "Clear filters" disappears once there's nothing to clear, and focus fell to the top of the page with it. Clearing now moves focus to the search box.
 

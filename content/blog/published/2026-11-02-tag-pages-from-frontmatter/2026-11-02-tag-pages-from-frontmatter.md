@@ -75,6 +75,8 @@ So the list component doesn't build links itself. It takes a function that turns
 
 Blog pages pass `blogTag`, a one-line helper around `resolve('/blog/tags/[tag]', { tag })`. The Devlog passes nothing. The component never needs to know which routes exist.
 
+**Update:** the Devlog has tag pages now too, at `/devlog/tags/[tag]`, so it passes `devlogTag`. On an Awesome list, a link's tags filter the list instead: `tagHref` gives `?tag=css`, and an `onTag` function filters in place when it's clicked.
+
 ## A bad tag fails the build
 
 Each tag becomes part of a URL. `CSS` and `css` would be two tags in the index but one page, and `design tokens` would be a URL with `%20` in it. I could fix tags quietly (lowercase them, swap spaces for hyphens), but then every place that uses a tag has to fix it the same way: the list, the filter, the link, the label.

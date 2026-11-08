@@ -42,6 +42,8 @@ A tint is a new background, so it needs its own contrast check. I checked the te
 
 <!-- TODO: Alfonso, the tag colour you like most. -->
 
+**Update:** the sidebar is a component now, `TagColumns.svelte`, and the Devlog has one too. The Awesome lists use the same chips as their filters: `TagCloud` makes links or, given `pressed` and `ontoggle`, toggle buttons.
+
 ## One surprise: the cover got slower
 
 Folding the tags made the page better on a phone, and Lighthouse's score went down. Before, the tag wall pushed the first post below the fold. Now its cover image is on screen when the page loads, so it's the largest thing the browser paints, and that's what Largest Contentful Paint measures. I made it load at once and with high priority, which is the right thing for that image, even though the simulated number barely moved.

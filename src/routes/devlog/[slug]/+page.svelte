@@ -2,6 +2,7 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
+	import { devlogTag } from '#lib/links.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -19,6 +20,6 @@
 />
 
 <article>
-	<ArticleHeader {...entry} />
+	<ArticleHeader {...entry} tagHref={devlogTag} />
 	<div class="prose" {lang}><Body /></div>
 </article>

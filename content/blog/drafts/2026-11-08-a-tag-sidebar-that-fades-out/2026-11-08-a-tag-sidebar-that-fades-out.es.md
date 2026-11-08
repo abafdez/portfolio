@@ -41,6 +41,8 @@ Un tinte es un fondo nuevo, así que necesita su propia comprobación de contras
 
 <!-- TODO: Alfonso, el color de etiqueta que más te gusta. -->
 
+**Actualización:** la barra lateral ya es un componente, `TagColumns.svelte`, y el Devlog también tiene una. Las listas Awesome usan las mismas fichas como filtros: `TagCloud` crea enlaces o, si recibe `pressed` y `ontoggle`, botones que se activan y desactivan.
+
 ## Una sorpresa: la portada se volvió más lenta
 
 Plegar las etiquetas mejoró la página en el móvil, y la puntuación de Lighthouse bajó. Antes, la pared de etiquetas empujaba el primer artículo por debajo de la primera pantalla. Ahora su imagen de portada está en pantalla al cargar la página, así que es lo más grande que pinta el navegador, y eso es lo que mide el Largest Contentful Paint. Hice que se cargara de inmediato y con prioridad alta, que es lo correcto para esa imagen, aunque el número simulado apenas se moviera.

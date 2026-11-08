@@ -126,7 +126,7 @@ search:not(.ready) {
 
 ## Pequeños detalles de accesibilidad
 
-- Los botones de etiqueta se activan y desactivan: `aria-pressed` hace que los lectores de pantalla digan "presionado", y el relleno lo muestra a todos los demás.
+- Los botones de etiqueta se activan y desactivan: `aria-pressed` hace que los lectores de pantalla digan "presionado", y el relleno lo muestra a todos los demás. (**Actualización:** ahora son las mismas fichas de etiqueta del blog, del mismo componente `TagCloud`; una elegida tiene un anillo de su color y una marca.)
 - El contador ("3 de 25 enlaces") es un `role="status"`, así que se anuncia cuando cambia.
 - "Quitar filtros" desaparece cuando ya no hay nada que quitar, y con él el foco caía al principio de la página. Ahora, al quitar los filtros, el foco pasa al cuadro de búsqueda.
 

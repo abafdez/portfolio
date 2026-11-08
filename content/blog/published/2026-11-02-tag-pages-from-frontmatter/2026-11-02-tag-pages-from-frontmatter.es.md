@@ -74,6 +74,8 @@ Así que el componente de la lista no construye los enlaces él mismo. Recibe un
 
 Las páginas del blog le pasan `blogTag`, una ayuda de una línea alrededor de `resolve('/blog/tags/[tag]', { tag })`. El Devlog no le pasa nada. El componente nunca necesita saber qué rutas existen.
 
+**Actualización:** el Devlog ya tiene también páginas de etiquetas, en `/devlog/tags/[tag]`, así que pasa `devlogTag`. En una lista Awesome, las etiquetas de un enlace filtran la lista: `tagHref` da `?tag=css`, y una función `onTag` filtra en la misma página cuando se pulsa.
+
 ## Una etiqueta mal escrita hace fallar el build
 
 Cada etiqueta pasa a formar parte de una URL. `CSS` y `css` serían dos etiquetas en el índice pero una sola página, y `design tokens` sería una URL con un `%20` dentro. Podría arreglar las etiquetas en silencio (pasarlas a minúsculas, cambiar los espacios por guiones), pero entonces cada sitio que usa una etiqueta tendría que arreglarla igual: la lista, el filtro, el enlace, el texto.

@@ -6,7 +6,7 @@
 	import { thumbnailOf } from '#lib/covers.ts';
 	import SectionNav, { type Section } from '#lib/components/SectionNav.svelte';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
-	import { blogTag, profiles, type Link } from '#lib/links.ts';
+	import { blogTag, devlogTag, profiles, type Link } from '#lib/links.ts';
 	import { projects as allProjects } from '#lib/projects/projects.ts';
 	import type { PageProps } from './$types';
 
@@ -85,7 +85,11 @@
 			<p class="intro-text">{m.homeLogIntro()}</p>
 			<div class="grid">
 				{#each data.log as entry (entry.slug)}
-					<TeaserCard {...entry} href={route('/devlog/[slug]', { slug: entry.slug })} />
+					<TeaserCard
+						{...entry}
+						href={route('/devlog/[slug]', { slug: entry.slug })}
+						tagHref={devlogTag}
+					/>
 				{:else}
 					<p class="empty">{m.homeNoEntries()}</p>
 				{/each}

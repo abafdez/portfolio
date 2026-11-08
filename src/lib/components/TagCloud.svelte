@@ -6,16 +6,25 @@
 	import { spotlight } from '#lib/spotlight.ts';
 	import { m } from '#lib/i18n/index.ts';
 
-	// The blog's tags as chips, most used first. Folded, the list shows a few rows and
-	// fades out into a "+" button that shows them all.
+	// Tags as chips, most used first. Folded, the list shows a few rows and fades out
+	// into a "+" button that shows them all.
+	// Two kinds of chip: links to each tag's page (the blog, the Devlog), or toggle
+	// buttons that filter what's on the page (an Awesome list).
 	interface Props {
 		// hue: the tag's colour (hue.ts), at the brand's lightness, like a skill icon.
 		tags: { tag: string; count: number; hue: number }[];
-		// A tag's page, e.g. blogTag from links.ts.
-		href: (tag: string) => ResolvedPathname;
+		// What the count is, for screen readers: " posts" in "#css, 26 posts".
+		countLabel: (count: number) => string;
+		// Links: a tag's page, e.g. blogTag from links.ts.
+		href?: (tag: string) => ResolvedPathname;
+		// Toggles: whether a tag is picked, and what a press does.
+		pressed?: (tag: string) => boolean;
+		ontoggle?: (tag: string) => void;
 	}
 
-	let { tags, href }: Props = $props();
+	let { tags, countLabel, href, pressed, ontoggle }: Props = $props();
+	// Unique on the page, for aria-controls.
+	const id = $props.id();
 
 	let list: HTMLUListElement;
 	let open = $state(false);
@@ -56,22 +65,35 @@
 		open = !open;
 		await tick();
 		measure();
-		if (open) first?.querySelector('a')?.focus();
+		if (open) first?.querySelector<HTMLElement>('a, button')?.focus();
 	}
 </script>
+
+{#snippet label(tag: string, count: number)}
+	#{tag}
+	<span class="count">{count}<span class="visually-hidden">{countLabel(count)}</span></span>
+{/snippet}
 
 <div class="cloud" class:open class:overflows>
 	<!-- spotlight: as the pointer moves over the list, each chip's edge lights up in its
 	     own colour near it (spotlight.ts, like the skills on /about). -->
-	<ul id="tag-cloud" bind:this={list} style:--full="{full}px" {@attach spotlight}>
+	<ul id="{id}-tags" bind:this={list} style:--full="{full}px" {@attach spotlight}>
 		{#each tags as { tag, count, hue } (tag)}
 			<li style:--hue={hue}>
-				<a href={href(tag)}>
-					#{tag}
-					<span class="count">
-						{count}<span class="visually-hidden">{m.tagPostCount({ count })}</span>
-					</span>
-				</a>
+				{#if href}
+					<a class="chip" href={href(tag)}>{@render label(tag, count)}</a>
+				{:else}
+					<!-- aria-pressed makes it a toggle: screen readers say "pressed". -->
+					<button
+						class="chip"
+						type="button"
+						data-tag={tag}
+						aria-pressed={pressed?.(tag) ?? false}
+						onclick={() => ontoggle?.(tag)}
+					>
+						{@render label(tag, count)}
+					</button>
+				{/if}
 			</li>
 		{/each}
 	</ul>
@@ -79,7 +101,7 @@
 		<button
 			type="button"
 			aria-expanded={open}
-			aria-controls="tag-cloud"
+			aria-controls="{id}-tags"
 			disabled={!ready}
 			onclick={toggle}
 		>
@@ -141,7 +163,7 @@
 
 	/* A chip: a faint tint of its colour, and a stripe of it on the start edge. The text
 	   stays --text-1/--text-2, which every theme checks on its surfaces. */
-	a {
+	.chip {
 		display: flex;
 		align-items: center;
 		gap: var(--size-2);
@@ -153,10 +175,27 @@
 		background: color-mix(in oklab, var(--glow) 8%, var(--surface-2));
 		color: var(--text-1);
 		text-decoration: none;
+		font: inherit;
 		white-space: nowrap;
+		cursor: pointer;
 
 		&:is(:hover, :focus-visible) {
 			background: var(--surface-3);
+		}
+	}
+
+	/* A picked toggle: its colour all the way round and a tick, on --surface-3 (text on
+	   it is checked in every theme). Not colour alone: the tick shows it too, and
+	   aria-pressed tells screen readers. */
+	.chip[aria-pressed='true'] {
+		/* A ring of the colour inside the border, so the chip doesn't change size. */
+		border-color: var(--glow);
+		box-shadow: inset 0 0 0 var(--border-size-1) var(--glow);
+		background: var(--surface-3);
+
+		/* After the slash: the tick's text for screen readers, none (aria-pressed says it). */
+		&::before {
+			content: '✓' / '';
 		}
 	}
 
