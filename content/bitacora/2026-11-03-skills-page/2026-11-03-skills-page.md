@@ -8,7 +8,7 @@ tags: [sveltekit, typescript, icons, oklch]
 ## What we did
 
 - Phase 5 changed: no public CV. It has my phone, email and employers, so I send it on request. `/cv` became `/about`: what I work with, grouped (languages, web, databases, mainframe, tools, ways of working, AI workflows, systems, multimedia, spoken languages), with buttons to ask for the CV on LinkedIn or GitHub.
-- The skills are data in `src/lib/skills/skills.ts`, apart from the page, like `projects.ts`. Each skill has a name, an icon, a level (1 Learning to 4 Could teach it), a note and evidence: links to a Bitácora entry, a tool, an Awesome list or a URL where it shows.
+- The skills are data in `src/lib/skills/skills.ts`, apart from the page, like `projects.ts`. Each skill has a name, an icon, a level (1 Learning to 4 Could teach it), a note and evidence: links to a Devlog entry, a tool, an Awesome list or a URL where it shows.
 - Two icon libraries: Lucide (`@lucide/svelte`) for generic icons and Simple Icons for brand logos. Simple Icons gives each logo as data (a path and a brand color), so `BrandIcon.svelte` draws it.
 - Each logo keeps its brand's hue but takes its lightness from the theme (`--icon-tone`), with OKLCH relative color syntax.
 - A skill with more to say is a `<details>`: its row is the `<summary>`, and it opens to the note and the evidence.

@@ -1,7 +1,7 @@
 // Cover images: a cover.avif (or .png, .jpg, .webp) in a content folder, next to the
 // markdown it belongs to. Its alt text is that file's `cover:` frontmatter, and
 // checkCover() in content.ts fails the build if one comes without the other.
-// Found by folder, so the same code serves blog posts today and Bitácora entries,
+// Found by folder, so the same code serves blog posts today and Devlog entries,
 // Awesome lists or a whole section later.
 //
 // One image, several jobs: the card's thumbnail (TeaserCard), the top of the page

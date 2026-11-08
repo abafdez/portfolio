@@ -7,7 +7,7 @@ tags: [mdsvex, sveltekit, links]
 
 ## What we did
 
-- Added `MarkdownLayout.svelte`, passed to mdsvex's `compile` as `layout`. It wraps every .md file (posts and Bitácora entries) and only renders `children`.
+- Added `MarkdownLayout.svelte`, passed to mdsvex's `compile` as `layout`. It wraps every .md file (posts and Devlog entries) and only renders `children`.
 - The layout's module script exports `a` = `MarkdownLink.svelte`, so every markdown link is rendered by that component instead of a plain `<a>`:
   - `/cv` gets the base path through `resolve()`, and renders as `href="../cv"` in the build.
   - `https://…` gets `rel="external"`.

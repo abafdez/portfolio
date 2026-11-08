@@ -10,6 +10,7 @@
 	import { inputs, problem } from './inputs.ts';
 	import SkillEditor from './SkillEditor.svelte';
 	import { isObject } from './storage.ts';
+	import { m } from '#lib/i18n/index.ts';
 
 	let { skills }: { skills: CvSkills } = $props();
 
@@ -50,12 +51,11 @@
 	let contact = $derived([cv.values.phone, cv.values.email, place].filter(Boolean));
 
 	// What a collapsed section says about itself in its summary line.
-	const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
 	let aboutStatus = $derived.by(() => {
 		const problems = Object.values(errors).filter(Boolean).length;
 		const missing = inputs.filter(({ name, required }) => required && !cv.values[name].trim());
-		if (problems) return `${plural(problems, 'field')} to fix`;
-		if (missing.length) return `${plural(missing.length, 'required field')} left`;
+		if (problems) return m.cvFieldsToFix({ count: problems });
+		if (missing.length) return m.cvRequiredLeft({ count: missing.length });
 		return fullName;
 	});
 	let skillCount = $derived(groups.reduce((sum, group) => sum + group.skills.length, 0));
@@ -110,7 +110,7 @@
 	function printCv() {
 		const first = checkAll();
 		if (first) {
-			message = 'Some fields need fixing first.';
+			message = m.cvFixFirst();
 			reveal(first);
 			return;
 		}
@@ -147,13 +147,13 @@
 			const profiles = isObject(data) ? edits.read(data.skills) : 0;
 			message =
 				count || profiles
-					? `Loaded ${count} fields and skill edits for ${profiles} ${profiles === 1 ? 'profile' : 'profiles'} from ${file.name}.`
-					: `No CV fields in ${file.name}.`;
+					? m.cvLoaded({ count, profiles, file: file.name })
+					: m.cvNoFields({ file: file.name });
 			// A file can hold anything that's a string: show what needs fixing. tick() waits
 			// for the fields to show the new values before they're checked.
 			if (count) await tick().then(checkAll);
 		} catch {
-			message = `${file.name} isn't a JSON file.`;
+			message = m.cvNotJson({ file: file.name });
 		}
 		// Empty again, so picking the same file twice still fires change.
 		input.value = '';
@@ -200,9 +200,9 @@
 		<!-- Disabled until the saved values are in, and for good without JS (it can't
 		     save or preview anything then). A disabled fieldset disables every field. -->
 		<fieldset disabled={!cv.loaded}>
-			<legend>Job</legend>
+			<legend>{m.cvJob()}</legend>
 			<label>
-				Profile
+				{m.cvProfile()}
 				<select bind:value={cv.values.profile}>
 					{#each skills.profiles as option (option.id)}
 						<option value={option.id}>{option.name}</option>
@@ -216,12 +216,12 @@
 		     how it's doing in its summary. The legend repeats the summary for screen
 		     readers (it names the group of fields), hidden for the eye. -->
 		<details name="cv-form" open>
-			<summary>About you <span class="note">{aboutStatus}</span></summary>
+			<summary>{m.cvAboutYou()} <span class="note">{aboutStatus}</span></summary>
 			<!-- autocomplete: the browser can fill these from what it knows about you, and
 		     tells password managers and screen readers what each field is. -->
 			<fieldset disabled={!cv.loaded}>
-				<legend class="visually-hidden">About you</legend>
-				<p class="note wide">* required</p>
+				<legend class="visually-hidden">{m.cvAboutYou()}</legend>
+				<p class="note wide">{m.cvRequiredNote()}</p>
 				{#each inputs as input (input.name)}
 					{@const error = errors[input.name]}
 					<!-- The message sits outside the label, or it would become part of the field's
@@ -231,7 +231,8 @@
 					<div class="field">
 						<label>
 							<span
-								>{input.label}{#if input.required}<span class="required" aria-hidden="true">*</span
+								>{input.label()}{#if input.required}<span class="required" aria-hidden="true"
+										>*</span
 									>{/if}</span
 							>
 							<input
@@ -252,7 +253,7 @@
 					</div>
 				{/each}
 				<label class="wide">
-					Short letter
+					{m.cvLetter()}
 					<textarea bind:value={cv.values.letter} maxlength={letterMax} rows="6"></textarea>
 					<span class="count">{cv.values.letter.length} / {letterMax}</span>
 				</label>
@@ -260,17 +261,18 @@
 		</details>
 
 		<details name="cv-form">
-			<summary>Skills <span class="note">{skillCount} on the CV</span></summary>
+			<summary>
+				{m.cvSkills()} <span class="note">{m.cvSkillsOnCv({ count: skillCount })}</span>
+			</summary>
 			<fieldset class="skills" disabled={!cv.loaded}>
-				<legend class="visually-hidden">Skills</legend>
+				<legend class="visually-hidden">{m.cvSkills()}</legend>
 				<SkillEditor {skills} {edits} {profile} />
 			</fieldset>
 		</details>
 
 		<p class="note">
-			Saved in this browser only. Nothing you type here is sent anywhere. Export your details to
-			keep a copy: clearing the browser's data deletes them.
-			<noscript>The builder needs JavaScript.</noscript>
+			{m.cvSavedNote()}
+			<noscript>{m.cvNeedsJs()}</noscript>
 		</p>
 	</form>
 
@@ -280,23 +282,22 @@
 		     A fieldset still works outside a form, and still disables them all at once.
 		     type="button" anyway, in case they ever move back into a form. -->
 		<fieldset class="actions-box" disabled={!cv.loaded}>
-			<legend>Your CV</legend>
+			<legend>{m.cvYourCv()}</legend>
 			<div class="actions">
 				<!-- The print dialog has "Save as PDF": a PDF with real text, which is what
 				     an applicant tracking system needs. -->
-				<button class="primary" type="button" onclick={printCv}>Print or save as PDF</button>
-				<button type="button" onclick={exportFile}>Export details</button>
+				<button class="primary" type="button" onclick={printCv}>{m.cvPrint()}</button>
+				<button type="button" onclick={exportFile}>{m.cvExport()}</button>
 				<!-- A file input looks like nothing else on the site, so it's hidden and its
 				     label is the button (like the radios on /about). -->
 				<label class="file">
-					Import details
+					{m.cvImport()}
 					<input type="file" accept=".json,application/json" onchange={importFile} />
 				</label>
 			</div>
 			<p class="note" role="status">{message}</p>
 			<p class="note">
-				Tip: you can also type straight into the CV for a last-minute change before printing. It
-				isn't saved, and any change in the form starts the CV over.
+				{m.cvTip()}
 			</p>
 		</fieldset>
 
@@ -311,7 +312,7 @@
 		{#key shown}
 			<article class="cv" aria-labelledby="cv-name" contenteditable="true" onpaste={pastePlain}>
 				<header>
-					<h2 id="cv-name">{fullName || 'Your name'}</h2>
+					<h2 id="cv-name">{fullName || m.cvYourName()}</h2>
 					<p class="headline">{profile.name}</p>
 					{#if contact.length}
 						<p>{contact.join(' · ')}</p>
@@ -320,13 +321,13 @@
 
 				{#if cv.values.letter.trim()}
 					<section>
-						<h3>Summary</h3>
+						<h3>{m.cvSummary()}</h3>
 						<p class="letter">{cv.values.letter}</p>
 					</section>
 				{/if}
 
 				<section>
-					<h3>Skills</h3>
+					<h3>{m.cvSkills()}</h3>
 					<ul>
 						{#each groups as group (group.name)}
 							<li>

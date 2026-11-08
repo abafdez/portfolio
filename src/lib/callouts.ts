@@ -11,6 +11,7 @@
 // so the modern callout plugins don't run on it. The HTML tree is the same in every
 // version. Its own file so it can be unit-tested (callouts.test.ts).
 import { icons, type IconNode } from 'lucide';
+import { fileLocale } from '#lib/i18n/locales.ts';
 
 // The HTML tree (hast) as far as this file needs it. The real types are in the 'hast'
 // package, which isn't one of our dependencies.
@@ -27,12 +28,15 @@ type Parent = { children: Node[] };
 // GitHub's five types. The title is the type as text, so it isn't told by colour
 // alone; the icon is a second hint for the eye. Obsidian has more types, but GitHub
 // would show those as plain blockquotes, so they fail the build instead (see below).
+// The title is in the file's language (<slug>.es.md is Spanish), in the words GitHub
+// uses in Spanish. It's written into the HTML at build time, so it can't come from the
+// UI messages, which follow the page.
 export const calloutTypes = {
-	note: { title: 'Note', icon: icons.Info },
-	tip: { title: 'Tip', icon: icons.Lightbulb },
-	important: { title: 'Important', icon: icons.MessageSquareWarning },
-	warning: { title: 'Warning', icon: icons.TriangleAlert },
-	caution: { title: 'Caution', icon: icons.OctagonAlert }
+	note: { title: { en: 'Note', es: 'Nota' }, icon: icons.Info },
+	tip: { title: { en: 'Tip', es: 'Sugerencia' }, icon: icons.Lightbulb },
+	important: { title: { en: 'Important', es: 'Importante' }, icon: icons.MessageSquareWarning },
+	warning: { title: { en: 'Warning', es: 'Advertencia' }, icon: icons.TriangleAlert },
+	caution: { title: { en: 'Caution', es: 'Precaución' }, icon: icons.OctagonAlert }
 } as const;
 type CalloutType = keyof typeof calloutTypes;
 
@@ -95,7 +99,8 @@ function callout(quote: Element, path: string): Element | undefined {
 	}
 	const body = quote.children.filter((node) => node !== first || inline.some((n) => !isBlank(n)));
 
-	const { title: typeName, icon } = calloutTypes[type];
+	const { title: titles, icon } = calloutTypes[type];
+	const typeName = titles[fileLocale(path)];
 	const custom = title.some((node) => !isBlank(node));
 	return element('aside', { className: ['callout'], dataCallout: type }, [
 		// The text in one <span>: the title is a flex row (icon, text), and every node of

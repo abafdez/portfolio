@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { route } from '#lib/i18n/index.ts';
 	import type { Picture } from '@sveltejs/enhanced-img';
 	import type { Link } from '#lib/links.ts';
 
@@ -31,7 +31,7 @@
 			<ul class="links">
 				{#each links as link (link.label)}
 					<li>
-						<a href={'route' in link ? resolve(link.route) : link.url}>{link.label}</a>
+						<a href={'route' in link ? route(link.route) : link.url}>{link.label}</a>
 					</li>
 				{/each}
 			</ul>

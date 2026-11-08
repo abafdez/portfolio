@@ -1,6 +1,11 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
+	// Set by `define` in vite.config.ts.
+	interface ImportMetaEnv {
+		readonly BASE_PATH: '' | `/${string}`;
+	}
+
 	namespace App {
 		// interface Error {}
 		// interface Locals {}       // Data passed from hooks (e.g., event.locals.user)
@@ -12,6 +17,9 @@ declare global {
 			// This page's name in the breadcrumbs (Breadcrumbs.svelte). Only pages inside a
 			// section set it, in their own load: a post's title, a tool's name.
 			crumb?: string;
+			// The page's language, from its URL (/es/… is Spanish). Set by the root layout
+			// for every page; read it through getLocale() in #lib/i18n.
+			locale?: import('#lib/i18n/locales.ts').Locale;
 		}
 		// interface PageState {}    // Shallow routing state
 		// interface Platform {}     // Platform-specific objects (e.g., Cloudflare Workers env/bindings)

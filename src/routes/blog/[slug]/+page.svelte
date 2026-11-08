@@ -2,19 +2,23 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
 	import { blogTag } from '#lib/links.ts';
+	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import { coverOf } from '#lib/covers.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 	let { post, Body } = $derived(data);
 	const cover = $derived(coverOf(post.folder));
+	// An English post on a Spanish page (not translated yet): the body says it's English.
+	const lang = $derived(post.locale !== getLocale() ? languageTags[post.locale] : undefined);
 </script>
 
 <Seo
 	title={post.title}
-	section="Blog"
+	section={m.navBlog()}
 	description={post.description}
 	published={post.date}
+	translated={data.translated}
 	image={cover && post.cover ? { src: cover.preview, alt: post.cover } : undefined}
 />
 
@@ -25,5 +29,5 @@
 		status={post.draft ? 'draft' : 'published'}
 		tagHref={blogTag}
 	/>
-	<div class="prose"><Body /></div>
+	<div class="prose" {lang}><Body /></div>
 </article>

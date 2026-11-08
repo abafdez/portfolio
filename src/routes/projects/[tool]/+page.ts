@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { projects } from '#lib/projects/projects.ts';
+import { text } from '#lib/i18n/index.ts';
+import { localeOf } from '#lib/i18n/locales.ts';
 import type { EntryGenerator, PageLoad } from './$types';
 
 // One page per project. /projects links to all of them, but entries() makes sure each
@@ -11,9 +13,10 @@ export const entries: EntryGenerator = () =>
 
 // A universal load (+page.ts), not a server one: it returns a component, which can't be
 // serialized. It runs at build time, then in the browser on client-side navigation.
-export const load: PageLoad = async ({ params }) => {
+export const load: PageLoad = async ({ params, url }) => {
 	const project = projects.find(({ slug }) => slug === params.tool);
 	if (!project?.tool) error(404, 'No project with that name');
 	const { default: Tool } = await project.tool();
-	return { project, Tool, crumb: project.title };
+	// A load function isn't rendering a page, so the language comes from its URL.
+	return { project, Tool, crumb: text(project.title, localeOf(url)) };
 };

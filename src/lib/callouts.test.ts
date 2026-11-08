@@ -4,9 +4,9 @@ import { rehypeCallouts } from './callouts';
 
 // Through mdsvex itself, like the site: the plugin depends on how its old parser reads
 // [!note], so a test with a hand-made tree could pass while the real build breaks.
-async function html(markdown: string) {
+async function html(markdown: string, filename = 'post.md') {
 	const out = await compile(markdown, {
-		filename: 'post.md',
+		filename,
 		extensions: ['.md'], // otherwise mdsvex skips the file (its default is .svx)
 		rehypePlugins: [rehypeCallouts] as never // mdsvex 0.12's plugin types are older
 	});
@@ -68,6 +68,15 @@ describe('rehypeCallouts', () => {
 	test('a callout inside a callout', async () => {
 		const out = await html('> [!note]\n> Outer.\n>\n> > [!tip]\n> > Inner.');
 		expect(out.match(/<aside/g)).toHaveLength(2);
+	});
+
+	// A translation (<slug>.es.md) gets the titles in Spanish: they're written into the
+	// HTML at build time, from the file's name.
+	test('a Spanish file gets Spanish titles', async () => {
+		expect(await html('> [!tip]\n> Texto.', 'post.es.md')).toContain('<span>Sugerencia</span>');
+		expect(await html('> [!warning] Ojo\n> Texto.', 'post.es.md')).toContain(
+			'<span class="visually-hidden">Advertencia: </span>Ojo'
+		);
 	});
 
 	test('an unknown type fails, naming the file', async () => {

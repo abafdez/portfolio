@@ -7,6 +7,7 @@
 	import { prefersReducedMotion } from 'svelte/motion';
 	import type { CvGroup, CvSkills } from './cv.ts';
 	import type { Item, SkillEdits } from './edits.svelte.ts';
+	import { m } from '#lib/i18n/index.ts';
 
 	let {
 		skills,
@@ -17,7 +18,7 @@
 	// Where the last move put a skill, for screen readers (the list moves silently).
 	let status = $state('');
 
-	const name = (row: Item) => ('own' in row ? row.own.text || 'your new skill' : row.skill.name);
+	const name = (row: Item) => ('own' in row ? row.own.text || m.cvNewSkill() : row.skill.name);
 
 	// The row and its button move in the page (Svelte moves the <li>), and a moved
 	// element loses the focus. So the focus goes back to the same button in the moved
@@ -27,7 +28,7 @@
 		edits.move(group, profile.id, row.key, by);
 		const rows = edits.items(group, profile.id);
 		const place = rows.findIndex(({ key }) => key === row.key) + 1;
-		status = `${name(row)}: ${place} of ${rows.length} in ${group.name}.`;
+		status = m.cvMoved({ name: name(row), place, total: rows.length, group: group.name });
 		await tick();
 		const moved = list.querySelector(`[data-key="${CSS.escape(row.key)}"]`);
 		const [up, down] = moved?.querySelectorAll<HTMLButtonElement>('.move button') ?? [];
@@ -38,33 +39,33 @@
 	// A new skill gets the focus, so I can type it straight away. tick() waits until its
 	// input is on the page.
 	async function add(group: CvGroup, list: HTMLElement) {
-		const id = edits.add(group.name, profile.id);
+		const id = edits.add(group.key, profile.id);
 		await tick();
 		list.querySelector<HTMLInputElement>(`[data-key="${CSS.escape(id)}"] input`)?.focus();
 	}
 
 	// The row and its button are gone: the focus goes to "Add", nearby, not to <body>.
 	function remove(group: CvGroup, id: string, list: HTMLElement) {
-		edits.remove(group.name, profile.id, id);
+		edits.remove(group.key, profile.id, id);
 		list.parentElement?.querySelector<HTMLButtonElement>('.add')?.focus();
 	}
 </script>
 
 <p class="note">
-	Untick a skill to leave it out of this CV, change its wording, move it with ↑ ↓, or add your own.
-	Only for {profile.name}, only in this browser.
+	{m.cvEditorIntro()}
+	{m.cvEditorScope({ profile: profile.name })}
 </p>
 
 <!-- Visually hidden, read out when it changes. -->
 <p class="visually-hidden" role="status">{status}</p>
 
-{#each skills.groups as group (group.name)}
+{#each skills.groups as group (group.key)}
 	{@const rows = edits.items(group, profile.id)}
 	{@const count = edits.printed(group, profile.id).length}
 	<!-- name: details with the same name are an accordion, built into HTML: opening one
 	     closes the others. No JS. -->
 	<details name="cv-skill-groups">
-		<summary>{group.name} <span class="note">({count} on the CV)</span></summary>
+		<summary>{group.name} <span class="note">({m.cvSkillsOnCv({ count })})</span></summary>
 		<ul>
 			<!-- Keyed by the skill's name (or my skill's id): when the order changes,
 			     Svelte moves the <li>s instead of rewriting their contents, and flip
@@ -77,7 +78,7 @@
 						     the checkbox and the text field read and write the edits. -->
 						<input
 							type="checkbox"
-							aria-label="{skill.name} on the CV"
+							aria-label={m.cvOnCv({ name: skill.name })}
 							bind:checked={
 								() => edits.included(skill, profile.id),
 								(value) => edits.include(skill, profile.id, value)
@@ -85,7 +86,7 @@
 						/>
 						<input
 							class="text"
-							aria-label="Wording for {skill.name}"
+							aria-label={m.cvWording({ name: skill.name })}
 							placeholder={skill.label}
 							bind:value={
 								() => edits.label(skill, profile.id),
@@ -97,30 +98,30 @@
 						<span class="mine" aria-hidden="true">+</span>
 						<input
 							class="text"
-							aria-label="Your skill in {group.name}"
+							aria-label={m.cvOwnSkill({ group: group.name })}
 							bind:value={
-								() => own.text, (text) => edits.rename(group.name, profile.id, own.id, text)
+								() => own.text, (text) => edits.rename(group.key, profile.id, own.id, text)
 							}
 						/>
 					{/if}
 					<span class="move">
 						<button
 							type="button"
-							aria-label="Move {name(row)} up"
+							aria-label={m.cvMoveUp({ name: name(row) })}
 							disabled={i === 0}
 							onclick={(event) => move(group, row, -1, event.currentTarget.closest('ul')!)}
 							>↑</button
 						>
 						<button
 							type="button"
-							aria-label="Move {name(row)} down"
+							aria-label={m.cvMoveDown({ name: name(row) })}
 							disabled={i === rows.length - 1}
 							onclick={(event) => move(group, row, 1, event.currentTarget.closest('ul')!)}>↓</button
 						>
 						{#if 'own' in row}
 							<button
 								type="button"
-								aria-label="Remove {name(row)}"
+								aria-label={m.cvRemove({ name: name(row) })}
 								onclick={(event) => remove(group, row.key, event.currentTarget.closest('ul')!)}
 								>✕</button
 							>
@@ -133,13 +134,14 @@
 			class="add"
 			type="button"
 			onclick={(event) => add(group, event.currentTarget.parentElement!.querySelector('ul')!)}
-			>Add a skill <span class="visually-hidden">to {group.name}</span></button
+			>{m.cvAddSkill()}<span class="visually-hidden">{m.cvAddSkillTo({ group: group.name })}</span
+			></button
 		>
 	</details>
 {/each}
 
 <button type="button" onclick={() => edits.reset(profile.id)}
-	>Reset the skills for {profile.name}</button
+	>{m.cvReset({ profile: profile.name })}</button
 >
 
 <style>

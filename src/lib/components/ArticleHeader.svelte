@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import type { ResolvedPathname } from '$app/types';
 	import type { Picture } from '@sveltejs/enhanced-img';
 	import TagList from './TagList.svelte';
 	import PostStatus from './PostStatus.svelte';
+	import TranslationStatus from './TranslationStatus.svelte';
+	import type { Locale } from '#lib/i18n/locales.ts';
 
-	// The top of a Bitácora entry or a blog post, from its frontmatter.
+	// The top of a Devlog entry or a blog post, from its frontmatter.
 	interface Props {
 		title: string;
 		date: string;
@@ -19,23 +22,41 @@
 		// A post's cover image (covers.ts) and its alt text, the frontmatter's cover:.
 		coverImage?: Picture;
 		cover?: string;
+		// The text's language and whether a translation has been read (see TeaserCard).
+		locale?: Locale;
+		reviewed?: boolean;
 	}
 
-	let { title, date, minutes, tags, description, status, tagHref, coverImage, cover }: Props =
-		$props();
+	let {
+		title,
+		date,
+		minutes,
+		tags,
+		description,
+		status,
+		tagHref,
+		coverImage,
+		cover,
+		locale,
+		reviewed
+	}: Props = $props();
+
+	// The title, description and cover alt in another language than the page's say so.
+	const lang = $derived(locale && locale !== getLocale() ? languageTags[locale] : undefined);
 </script>
 
 <header>
 	<time datetime={date}>{date}</time>
 	{#if minutes}
-		<span class="minutes">· {minutes} min read</span>
+		<span class="minutes">· {m.minutesRead({ minutes })}</span>
 	{/if}
 	{#if status}
 		<PostStatus {status} />
 	{/if}
-	<h1>{title}</h1>
+	<TranslationStatus {locale} {reviewed} />
+	<h1 {lang}>{title}</h1>
 	{#if description}
-		<p class="description">{description}</p>
+		<p class="description" {lang}>{description}</p>
 	{/if}
 	{#if tags?.length}
 		<TagList {tags} {tagHref} />
@@ -47,6 +68,7 @@
 			class="cover"
 			src={coverImage}
 			alt={cover}
+			{lang}
 			sizes="(min-width: 800px) 740px, 100vw"
 			fetchpriority="high"
 		/>

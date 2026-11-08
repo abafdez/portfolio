@@ -3,7 +3,7 @@ title: 'An accordion without JavaScript'
 date: 2026-11-03
 tags: [html, accessibility]
 description: Give several <details> elements the same name, and opening one closes the others. My CV builder's form folds away with it, with one catch about focus.
-cover: An element that expands and colapse into an accordion.
+cover: An element that expands and collapses into an accordion.
 ---
 
 My CV builder's form got long: my details, then ten groups of skills. Once I've filled something in, I want it out of the way. The browser has had collapsible sections for years, `<details>` and `<summary>`. What's newer is that they can be an accordion:

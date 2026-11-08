@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Seo from '#lib/components/Seo.svelte';
-	import { resolve } from '$app/paths';
+	import { m, route, text } from '#lib/i18n/index.ts';
 	import Hero from '#lib/components/Hero.svelte';
 	import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';
 	import { thumbnailOf } from '#lib/covers.ts';
@@ -10,13 +10,13 @@
 	import { projects as allProjects } from '#lib/projects/projects.ts';
 	import type { PageProps } from './$types';
 
-	// From +page.server.ts: the latest posts and Bitácora entries.
+	// From +page.server.ts: the latest posts and Devlog entries.
 	let { data }: PageProps = $props();
 
 	const links: Link[] = [
-		{ label: 'About me', route: '/about' },
-		{ label: 'See projects', route: '/projects' },
-		{ label: 'Read the blog', route: '/blog' },
+		{ label: m.homeAboutMe(), route: '/about' },
+		{ label: m.homeSeeProjects(), route: '/projects' },
+		{ label: m.homeReadBlog(), route: '/blog' },
 		...profiles
 	];
 
@@ -25,18 +25,18 @@
 	const projects: Teaser[] = allProjects
 		.slice(0, 3)
 		.map(({ slug, title, description, date, tags }) => ({
-			title,
-			description,
+			title: text(title),
+			description: text(description),
 			date,
 			tags,
-			href: resolve('/projects/[tool]', { tool: slug })
+			href: route('/projects/[tool]', { tool: slug })
 		}));
 
 	// The sections on the right, in order. The intro's nav is built from this list.
 	const sections: Section[] = [
-		{ id: 'posts', label: 'Latest posts' },
-		{ id: 'log', label: 'Bitácora' },
-		{ id: 'projects', label: 'Featured projects' }
+		{ id: 'posts', label: m.homeLatestPosts() },
+		{ id: 'log', label: m.devlogTitle() },
+		{ id: 'projects', label: m.homeFeaturedProjects() }
 	];
 
 	// This page's entrance: each part fades and slides up, one after another.
@@ -45,7 +45,7 @@
 	const enter = (delay: number) => `home-enter 600ms ease-out ${delay}ms both`;
 </script>
 
-<Seo description="Web developer. I make websites that are fast, accessible and a little playful." />
+<Seo description={m.homeTagline()} />
 
 <!-- Wide screens: the intro stays put on the left while the sections scroll on the
      right. Narrow screens: one column, intro first. -->
@@ -53,7 +53,7 @@
 	<div class="intro">
 		<Hero
 			name="Alfonso Baeza"
-			tagline="Web developer. I make websites that are fast, accessible and a little playful."
+			tagline={m.homeTagline()}
 			{photo}
 			{links}
 			--photo-animation={enter(0)}
@@ -64,41 +64,41 @@
 
 	<div class="sections">
 		<section id="posts" style:animation={enter(300)} aria-labelledby="posts-title">
-			<h2 id="posts-title">Latest posts</h2>
+			<h2 id="posts-title">{m.homeLatestPosts()}</h2>
 			<div class="grid">
 				{#each data.posts as post (post.slug)}
 					<TeaserCard
 						{...post}
-						href={resolve('/blog/[slug]', { slug: post.slug })}
+						href={route('/blog/[slug]', { slug: post.slug })}
 						thumbnail={thumbnailOf(post)}
 						status={post.draft ? 'draft' : 'published'}
 						tagHref={blogTag}
 					/>
 				{:else}
-					<p class="empty">No posts yet. They'll show up here once the blog is live.</p>
+					<p class="empty">{m.homeNoPosts()}</p>
 				{/each}
 			</div>
 		</section>
 
 		<section id="log" style:animation={enter(450)} aria-labelledby="log-title">
-			<h2 id="log-title">Bitácora</h2>
-			<p class="intro-text">Short notes from building this site, step by step.</p>
+			<h2 id="log-title">{m.devlogTitle()}</h2>
+			<p class="intro-text">{m.homeLogIntro()}</p>
 			<div class="grid">
 				{#each data.log as entry (entry.slug)}
-					<TeaserCard {...entry} href={resolve('/bitacora/[slug]', { slug: entry.slug })} />
+					<TeaserCard {...entry} href={route('/devlog/[slug]', { slug: entry.slug })} />
 				{:else}
-					<p class="empty">No entries yet.</p>
+					<p class="empty">{m.homeNoEntries()}</p>
 				{/each}
 			</div>
 		</section>
 
 		<section id="projects" style:animation={enter(600)} aria-labelledby="projects-title">
-			<h2 id="projects-title">Featured projects</h2>
+			<h2 id="projects-title">{m.homeFeaturedProjects()}</h2>
 			<div class="grid">
 				{#each projects as project (project.href)}
 					<TeaserCard {...project} />
 				{:else}
-					<p class="empty">No projects yet. Featured work will appear here.</p>
+					<p class="empty">{m.homeNoProjects()}</p>
 				{/each}
 			</div>
 		</section>

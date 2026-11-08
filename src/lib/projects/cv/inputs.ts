@@ -3,10 +3,12 @@
 // write the messages.
 import type { HTMLInputAttributes } from 'svelte/elements';
 import type { Field } from './details.svelte.ts';
+import { m } from '#lib/i18n/index.ts';
 
 export interface Input {
 	name: Exclude<Field, 'profile' | 'letter'>;
-	label: string;
+	// Messages (functions), so they're read in the page's language each time.
+	label: () => string;
 	type?: 'text' | 'tel' | 'email';
 	autocomplete: HTMLInputAttributes['autocomplete'];
 	inputmode?: HTMLInputAttributes['inputmode'];
@@ -14,16 +16,16 @@ export interface Input {
 	// A regular expression the whole value must match (the browser adds ^ and $).
 	pattern?: string;
 	// What a good value looks like, said when the value isn't one.
-	hint?: string;
+	hint?: () => string;
 }
 
 // A CV without a name or a way to reach you isn't one: those four are required.
 export const inputs: Input[] = [
-	{ name: 'name', label: 'Name', autocomplete: 'given-name', required: true },
-	{ name: 'surnames', label: 'Surnames', autocomplete: 'family-name', required: true },
+	{ name: 'name', label: m.cvFieldName, autocomplete: 'given-name', required: true },
+	{ name: 'surnames', label: m.cvFieldSurnames, autocomplete: 'family-name', required: true },
 	{
 		name: 'phone',
-		label: 'Phone',
+		label: m.cvFieldPhone,
 		type: 'tel',
 		autocomplete: 'tel',
 		required: true,
@@ -32,25 +34,25 @@ export const inputs: Input[] = [
 		// brackets and the dash are escaped: browsers read pattern in the regex v mode,
 		// where they must be.
 		pattern: String.raw`\+?[0-9\s\(\)\-]{9,20}`,
-		hint: 'Digits, spaces and + ( ) -, at least 9.'
+		hint: m.cvPhoneHint
 	},
 	{
 		name: 'email',
-		label: 'Email',
+		label: m.cvFieldEmail,
 		type: 'email',
 		autocomplete: 'email',
 		required: true,
-		hint: 'An address like name@example.com.'
+		hint: m.cvEmailHint
 	},
-	{ name: 'city', label: 'City', autocomplete: 'address-level2' },
-	{ name: 'state', label: 'State', autocomplete: 'address-level1' },
+	{ name: 'city', label: m.cvFieldCity, autocomplete: 'address-level2' },
+	{ name: 'state', label: m.cvFieldState, autocomplete: 'address-level1' },
 	{
 		name: 'postalCode',
-		label: 'Postal code',
+		label: m.cvFieldPostalCode,
 		autocomplete: 'postal-code',
 		inputmode: 'numeric',
 		pattern: String.raw`[0-9A-Za-z\s\-]{3,10}`,
-		hint: '3 to 10 digits or letters.'
+		hint: m.cvPostalCodeHint
 	}
 ];
 
@@ -59,6 +61,6 @@ export const inputs: Input[] = [
 // (validationMessage) come in the browser's language, and this page is in English.
 export function problem(field: HTMLInputElement): string {
 	if (field.validity.valid) return '';
-	if (field.validity.valueMissing) return 'Required.';
-	return inputs.find(({ name }) => name === field.name)?.hint ?? field.validationMessage;
+	if (field.validity.valueMissing) return m.cvRequired();
+	return inputs.find(({ name }) => name === field.name)?.hint?.() ?? field.validationMessage;
 }

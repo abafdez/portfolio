@@ -6,7 +6,7 @@ tags: [content, images, vite, markdown]
 
 ## What we did
 
-- Moved every post, draft and Bitácora entry into a folder with its own name (`<slug>/<slug>.md`), 95 files with `git mv`, so their images can sit next to them. The file names didn't change, so the slugs and URLs didn't either.
+- Moved every post, draft and Devlog entry into a folder with its own name (`<slug>/<slug>.md`), 95 files with `git mv`, so their images can sit next to them. The file names didn't change, so the slugs and URLs didn't either.
 - The blog has two explicit folders now: `content/blog/drafts/` (dev only) and `content/blog/published/`. Publishing is `git mv content/blog/drafts/<slug> content/blog/published/`.
 - The globs became `*/*.md`. A new `slugOf()` in `content.ts` fails the build when a folder and its file have different names.
 - Images are written as plain markdown, `![What it shows](./diagram.png)`. The `markdown()` plugin in `vite.config.ts` turns each one into an import plus an `<enhanced:img>`: AVIF and WebP copies, width and height set.

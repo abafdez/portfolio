@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '#lib/i18n/index.ts';
 	import { onMount, flushSync } from 'svelte';
 	import { canTransition } from '#lib/view-transitions.ts';
 
@@ -89,8 +90,8 @@
 <button
 	type="button"
 	onclick={toggle}
-	aria-label="Dark theme"
-	title="Dark theme"
+	aria-label={m.themeDark()}
+	title={m.themeDark()}
 	aria-pressed={theme ? theme === 'dark' : undefined}
 	disabled={!theme}
 >

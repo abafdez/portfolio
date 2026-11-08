@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { route } from '#lib/i18n/index.ts';
 	import Nav from '#lib/components/Nav.svelte';
 	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
 	import PalettePicker from '#lib/components/PalettePicker.svelte';
+	import LanguageSwitch from '#lib/components/LanguageSwitch.svelte';
 </script>
 
 <header class="site-header">
 	<div class="inner">
-		<a class="site-name" href={resolve('/')}>Alfonso Baeza</a>
+		<a class="site-name" href={route('/')}>Alfonso Baeza</a>
 		<div class="nav"><Nav /></div>
-		<div class="toggle"><PalettePicker /><ThemeToggle duration={500} blur={50} /></div>
+		<div class="toggle">
+			<LanguageSwitch /><PalettePicker /><ThemeToggle duration={500} blur={50} />
+		</div>
 	</div>
 </header>
 

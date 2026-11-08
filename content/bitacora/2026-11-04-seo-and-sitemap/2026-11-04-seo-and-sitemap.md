@@ -11,8 +11,8 @@ tags: [sveltekit, seo, github-pages]
 - Removed `static/robots.txt`: it had never done anything (see below).
 - `Seo.svelte`, one component every page uses instead of its own `<svelte:head>`: `<title>`, description, canonical URL, Open Graph tags and a Twitter card. No image yet, so link previews are text cards (my call, an image can come later).
 - Titles end in "Alfonso Baeza" instead of "AB": `CV builder · Projects · Alfonso Baeza`.
-- `sitemap.xml`, a prerendered endpoint built from the same lists as the pages (sections, projects, Awesome lists, posts, tags, Bitácora entries), with `lastmod` where there's a date.
-- Bitácora entries get a description from their body: `summary()` in `content.ts` takes the first paragraph or list item, as plain text, cut at a word under 160 characters.
+- `sitemap.xml`, a prerendered endpoint built from the same lists as the pages (sections, projects, Awesome lists, posts, tags, Devlog entries), with `lastmod` where there's a date.
+- Devlog entries get a description from their body: `summary()` in `content.ts` takes the first paragraph or list item, as plain text, cut at a word under 160 characters.
 - Lighthouse SEO, accessibility and best practices 100 on home, the CV builder and an entry. `/mascot` gets 63 for SEO, on purpose: "blocked from indexing".
 
 ## What I learned

@@ -38,6 +38,19 @@ tags: [<2–4 lowercase tags>]
 - <next step>
 ```
 
+## In Spanish too
+
+Every entry is written in both languages (since Phase 10). Next to the English file, write `YYYY-MM-DD-<short-slug>.es.md` in the same folder, in Spain's Spanish (tú, ordenador), with its own frontmatter:
+
+```markdown
+---
+title: <the title in Spanish>
+reviewed: false
+---
+```
+
+Only `title`, `description` (optional), `cover` (the alt text, if the folder has a cover) and `reviewed` go in it: `date`, `phase` and `tags` come from the English file, and writing them fails the build. `reviewed: false` until Alfonso has read it. Headings in Spanish: Qué hicimos, Qué aprendí, Problemas y soluciones, Enlaces, Siguiente. Code stays as it is. Avoid wording that needs a gender for Alfonso (phrase around desarrollador/desarrolladora).
+
 ## Rules
 
 - Keep it short: a log, not an article (that's what `content/blog/` is for).

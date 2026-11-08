@@ -12,6 +12,7 @@ Before moving a draft:
 2. Fill or delete its `<!-- TODO -->`s. Svelte drops HTML comments, so readers wouldn't see a TODO, only the gap where Alfonso's part goes.
 3. Publish (or unlink) every draft it links to. A published post that links to a draft fails the build (`prerender_http_error … was linked from …`).
 4. Decide on the date: keep the draft's, or use the day it goes live.
+5. Its Spanish file (`<slug>.es.md`, since Phase 10; every draft has one): still says what the English one says, and read (`reviewed: true`). The TODOs are in both files.
 
 After the first post is live, remove the `handleUnseenRoutes` exceptions in `vite.config.ts`.
 
@@ -31,7 +32,7 @@ The how-to for images, links and the publishing checklist is in `content/blog/pu
 These link to no other draft.
 
 - `2026-10-20-sveltekit-3-github-pages-workflow`
-  - link the post or Bitácora entry where the base path is fixed (it's a Bitácora entry: `/bitacora/2026-10-21-layout-routing-base-path`)
+  - link the post or Bitácora entry where the base path is fixed (it's a Devlog entry: `/devlog/2026-10-21-layout-routing-base-path`)
 - `2026-10-31-scroll-driven-header-footer`
   - a short video of scrolling the home page, top to bottom
   - try `animation-range: 0 50vh` in DevTools and describe the difference
@@ -67,6 +68,14 @@ These link to no other draft.
   - a screenshot of the breadcrumbs and the nav marker on /projects/cv
   - what a screen reader said on the breadcrumbs
   - try it: the relative hrefs in `build/projects/cv.html`, and the marker with JS off
+
+- `2026-11-08-a-second-language-without-a-library` (with its `.es.md`)
+  - a screenshot of /es/blog next to /blog
+  - check one page in Search Console's URL inspection once deployed
+  - would I use Paraglide next time?
+- `2026-11-08-translations-next-to-the-post` (with its `.es.md`)
+  - how many translations I had to change, and what I changed most
+  - a screenshot of an untranslated post on the Spanish site
 
 ## Groups that go up together
 

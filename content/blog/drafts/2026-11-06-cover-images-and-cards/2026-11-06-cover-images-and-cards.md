@@ -25,6 +25,8 @@ cover: The Performance panel in DevTools, with the layout shifts track highlight
 ---
 ```
 
+(**Update:** a post's Spanish version, `<slug>.es.md` in the same folder, shares the image and has its own `cover:` in Spanish.)
+
 The two go together, and the build checks it. A cover nobody described fails, and so does alt text with no image:
 
 ```ts
@@ -42,7 +44,7 @@ export function checkCover(path: string, alt: unknown, files: string[] = coverFi
 
 ## One glob, the right sizes
 
-The covers are found with Vite's `import.meta.glob`, processed by `@sveltejs/enhanced-img`. One glob covers everything under `content/`, so the same code will serve Bitácora entries and Awesome lists when they get covers. A `!` pattern leaves the drafts out of a build:
+The covers are found with Vite's `import.meta.glob`, processed by `@sveltejs/enhanced-img`. One glob covers everything under `content/`, so the same code will serve Devlog entries and Awesome lists when they get covers. A `!` pattern leaves the drafts out of a build:
 
 ```ts
 const pictures = import.meta.glob<Picture>(

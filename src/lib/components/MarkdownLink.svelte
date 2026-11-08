@@ -7,14 +7,14 @@
 	//   tells search engines not to vouch for it. These are links I recommend, so it's
 	//   dropped (it's never read from the props below).
 	// - ./other-post or #a-heading: relative, so they already work under any base.
-	import { resolve } from '$app/paths';
+	import { route } from '#lib/i18n/index.ts';
 	import type { Snippet } from 'svelte';
 
 	// resolve()'s types only accept one known page at a time, and a markdown link is
 	// just a string, so TypeScript can't check it. For a path with no [param], resolve()
 	// only adds the base path, so its type is widened here. The prerender crawler
 	// checks these links instead: a link to a missing page fails the build.
-	const withBase = resolve as (path: string) => string;
+	const withBase = route as (path: string) => string;
 
 	interface Props {
 		href: string;

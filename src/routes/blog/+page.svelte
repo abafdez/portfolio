@@ -1,26 +1,26 @@
 <script lang="ts">
 	import Seo from '#lib/components/Seo.svelte';
-	import { resolve } from '$app/paths';
 	import TagCloud from '#lib/components/TagCloud.svelte';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import { thumbnailOf } from '#lib/covers.ts';
 	import { blogTag } from '#lib/links.ts';
+	import { m, route } from '#lib/i18n/index.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 </script>
 
-<Seo title="Blog" description="Longer articles about what I learn building this site." />
+<Seo title={m.blogTitle()} description={m.blogDescription()} />
 
-<h1>Blog</h1>
-<p class="intro">Longer articles about what I learn building this site.</p>
+<h1>{m.blogTitle()}</h1>
+<p class="intro">{m.blogDescription()}</p>
 
 <!-- Two columns on wide screens: the posts, and the tags beside them. The tags come
      first in the HTML, so on a phone they're above the posts, folded to a few rows. -->
 <div class="columns">
 	{#if data.tags.length}
 		<nav aria-labelledby="tags-title">
-			<h2 id="tags-title">Browse by tag</h2>
+			<h2 id="tags-title">{m.blogTagsTitle()}</h2>
 			<TagCloud tags={data.tags} href={blogTag} />
 		</nav>
 	{/if}
@@ -33,7 +33,7 @@
 					{#each posts as post, i (post.slug)}
 						<TeaserCard
 							{...post}
-							href={resolve('/blog/[slug]', { slug: post.slug })}
+							href={route('/blog/[slug]', { slug: post.slug })}
 							thumbnail={thumbnailOf(post)}
 							status={post.draft ? 'draft' : 'published'}
 							tagHref={blogTag}
@@ -43,7 +43,7 @@
 				</div>
 			</section>
 		{:else}
-			<p class="intro">No posts yet. The first ones are on their way.</p>
+			<p class="intro">{m.blogEmpty()}</p>
 		{/each}
 	</div>
 </div>

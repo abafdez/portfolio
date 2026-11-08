@@ -1,21 +1,17 @@
 // What I know, for /about. The data is content/skills.yaml, read and checked at build
 // time by skills.server.ts; this file has what the page needs in the browser too: the
 // types, the level words and the evidence links.
-import { resolve } from '$app/paths';
+import { route } from '#lib/i18n/index.ts';
 
-// How well I know it. Words, not percentages: "73% CSS" means nothing.
-export const levels = {
-	1: 'Learning',
-	2: 'Comfortable',
-	3: 'Daily',
-	4: 'Could teach it'
-} as const;
-export type Level = keyof typeof levels;
+// How well I know it, 1 to 4. The page shows it in words (m.skillLevel in the messages):
+// "73% CSS" means nothing.
+export const levels = [1, 2, 3, 4] as const;
+export type Level = (typeof levels)[number];
 
 // Where a skill shows on this site (or off it). One key per kind of page, so each
 // href is built by resolve() with its own route, and TypeScript checks the params.
 export type Evidence = { label: string } & (
-	| { entry: string } // a Bitácora entry: /bitacora/<slug>
+	| { entry: string } // a Devlog entry: /devlog/<slug>
 	| { tool: string } // a project: /projects/<tool>
 	| { list: string } // an Awesome list: /awesome/<list>
 	| { url: `https://${string}` }
@@ -44,6 +40,9 @@ export interface Profile {
 }
 
 export interface Skill {
+	// Its English name: the same in every language, for whatever stores or colours it
+	// (the CV's edits, the icon's hue). name is the one to show.
+	key: string;
 	name: string;
 	icon?: IconData;
 	// The icon's color in OKLCH: the brand's for a logo, one from the name for a
@@ -59,6 +58,8 @@ export interface Skill {
 }
 
 export interface Group {
+	// Its English name, the same in every language (the CV stores its order by it).
+	key: string;
 	name: string;
 	// For the heading's id and the "on this page" nav.
 	id: string;
@@ -72,8 +73,8 @@ export interface Group {
 // Built when the page renders, not here: under a base path, resolve() gives a
 // different (relative) href on each prerendered page.
 export function evidenceHref(evidence: Evidence): string {
-	if ('entry' in evidence) return resolve('/bitacora/[slug]', { slug: evidence.entry });
-	if ('tool' in evidence) return resolve('/projects/[tool]', { tool: evidence.tool });
-	if ('list' in evidence) return resolve('/awesome/[list]', { list: evidence.list });
+	if ('entry' in evidence) return route('/devlog/[slug]', { slug: evidence.entry });
+	if ('tool' in evidence) return route('/projects/[tool]', { tool: evidence.tool });
+	if ('list' in evidence) return route('/awesome/[list]', { list: evidence.list });
 	return evidence.url;
 }

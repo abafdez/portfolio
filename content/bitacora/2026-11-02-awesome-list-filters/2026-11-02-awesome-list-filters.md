@@ -11,7 +11,7 @@ tags: [svelte, sveltekit, runes, accessibility]
 - `src/lib/awesome/awesome.ts` loads them at build time (`import.meta.glob` with `?raw` and the `yaml` package, like `content.ts`). A link that isn't `https://` or a tag that isn't kebab-case fails the build. `checkTags` is now exported from `content.ts` for this.
 - `LinkFilter` (`filter.svelte.ts`) holds the search text and the picked tags as `$state`, and the matching links and their count as `$derived`. It turns itself into URL params and reads them back.
 - `AwesomeList.svelte` shows a search box, tag toggle buttons (`aria-pressed`), a live count (`role="status"`) and a "Clear filters" button. The filter goes into the URL (`?q=grid&tag=docs`), so a filtered view can be shared.
-- `/awesome` lists the lists. The first one, Modern CSS, has 25 links taken from the docs this Bitácora already cites.
+- `/awesome` lists the lists. The first one, Modern CSS, has 25 links taken from the docs this Devlog already cites.
 
 ## What I learned
 

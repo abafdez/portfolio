@@ -178,6 +178,12 @@ export default defineConfig({
 	test: {
 		include: ['src/**/*.test.ts']
 	},
+	// The base path for our own code, written into it at build time: '/portfolio' in a
+	// build, '' in dev. The reroute hook (src/hooks.ts) needs it to find the /es in a URL.
+	// Not Vite's import.meta.env.BASE_URL: SvelteKit sets that to './' (relative paths).
+	define: {
+		'import.meta.env.BASE_PATH': JSON.stringify(base)
+	},
 	css: {
 		postcss: {
 			plugins: [postcssJitProps(OpenProps)]

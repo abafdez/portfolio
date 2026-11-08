@@ -115,7 +115,7 @@ FAIL  summary > skips a code block at the start, not just its fence
 AssertionError: expected 'const x = 1;' to be 'The text.'
 ```
 
-`summary()` skipped lines starting with three backticks, so it skipped the fence, then took the first line of code as the description. No Bitácora entry starts with code yet, so nothing on the site showed it. The first one that did would have had `const x = 1;` as its search result.
+`summary()` skipped lines starting with three backticks, so it skipped the fence, then took the first line of code as the description. No Devlog entry starts with code yet, so nothing on the site showed it. The first one that did would have had `const x = 1;` as its search result.
 
 The fix removes whole code blocks before looking for the first line:
 
@@ -129,7 +129,7 @@ const codeBlock = /^(`{3,})[^\n]*\n[\s\S]*?^\1/gm;
 
 ## A test over the real content
 
-The last test doesn't use made-up input. It reads my real Bitácora entries and checks that each one gets a description of 1 to 160 characters:
+The last test doesn't use made-up input. It reads my real Devlog entries and checks that each one gets a description of 1 to 160 characters:
 
 ```ts
 test.each(allLog.map((entry) => [entry.slug, entry.description]))(

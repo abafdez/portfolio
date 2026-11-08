@@ -12,96 +12,155 @@
 #   profiles:  the kinds of job it matters for (ids from the list below)
 #   note:      how I use it, in one line
 #   evidence:  where it shows, each a label and one of
-#              entry (a Bitácora slug), tool (a /projects tool), list (an Awesome
+#              entry (a Devlog slug), tool (a /projects tool), list (an Awesome
 #              list) or url (https://)
 #
 # Levels and profiles are claims about me: keep them honest.
+#
+# In Spanish: any text (a name, description, note, evidence label, profile name) is
+# either plain, the same in every language (Docker), or one per language:
+#   note:
+#     en: How I use it.
+#     es: Cómo lo uso.
+# A skill's English name is its key: the CV builder stores edits by it, so renaming
+# one in English drops what was saved for it. A skill without a level shows the first
+# sentence of its note on the CV ("Spanish (Native)"), in each language.
 
 # The kinds of job I apply for. /about and the CV builder filter skills by these.
 profiles:
   - id: web
-    name: Web development
+    name:
+      en: Web development
+      es: Desarrollo web
   - id: support
-    name: IT support and systems
+    name:
+      en: IT support and systems
+      es: Soporte informático y sistemas
   - id: mainframe
     name: Mainframe
 
 groups:
-  - name: Languages
+  - name:
+      en: Languages
+      es: Lenguajes
     id: languages
-    description: The languages I write code in.
+    description:
+      en: The languages I write code in.
+      es: Los lenguajes con los que programo.
     icon: code-xml
     skills:
       - name: HTML
         logo: html5
         level: 3
         profiles: [web]
-        note: 'Semantic markup first: landmarks, headings in order, native elements before ARIA.'
+        note:
+          en: 'Semantic markup first: landmarks, headings in order, native elements before ARIA.'
+          es: 'Primero el marcado semántico: landmarks, encabezados en orden, elementos nativos antes que ARIA.'
         evidence:
-          - label: Lighthouse accessibility check
+          - label:
+              en: Lighthouse accessibility check
+              es: Revisión de accesibilidad con Lighthouse
             entry: 2026-10-29-lighthouse-a11y-check
       - name: CSS
         logo: css
         level: 3
         profiles: [web]
-        note: 'Modern CSS: cascade layers, container queries, light-dark(), scroll-driven animations.'
+        note:
+          en: 'Modern CSS: cascade layers, container queries, light-dark(), scroll-driven animations.'
+          es: 'CSS moderno: cascade layers, container queries, light-dark() y animaciones ligadas al scroll.'
         evidence:
-          - label: Cascade layers
+          - label:
+              en: Cascade layers
+              es: Capas de cascada
             entry: 2026-10-29-cascade-layers
-          - label: Scroll-driven header and footer
+          - label:
+              en: Scroll-driven header and footer
+              es: Cabecera y pie animados con el scroll
             entry: 2026-10-31-scroll-driven-header-footer
-          - label: My Modern CSS list
+          - label:
+              en: My Modern CSS list
+              es: Mi lista de CSS moderno
             list: modern-css
       - name: JavaScript
         logo: javascript
         level: 3
         profiles: [web]
-        note: Websites for small businesses since 2010, and userscripts to automate the boring parts.
+        note:
+          en: Websites for small businesses since 2010, and userscripts to automate the boring parts.
+          es: Sitios web para pequeñas empresas desde 2010, y userscripts para automatizar lo aburrido.
         evidence:
-          - label: A theme toggle without a flash
+          - label:
+              en: A theme toggle without a flash
+              es: Un cambio de tema sin parpadeo
             entry: 2026-10-29-theme-toggle-no-flash
       - name: TypeScript
         logo: typescript
         level: 2
         profiles: [web]
-        note: 'This site, migrated from JSDoc: typed content, routes and data.'
+        note:
+          en: 'This site, migrated from JSDoc: typed content, routes and data.'
+          es: 'Este sitio, migrado desde JSDoc: contenido, rutas y datos tipados.'
         evidence:
-          - label: Migrating to TypeScript
+          - label:
+              en: Migrating to TypeScript
+              es: La migración a TypeScript
             entry: 2026-10-21-typescript-migration
-          - label: The contrast checker
+          - label:
+              en: The contrast checker
+              es: El comprobador de contraste
             tool: contrast
       - name: PHP
         logo: php
         level: 3
         profiles: [web]
-        note: Freelance websites with PHP and MySQL since 2010.
+        note:
+          en: Freelance websites with PHP and MySQL since 2010.
+          es: Sitios web como autónomo con PHP y MySQL desde 2010.
       - name: Python
         logo: python
         level: 2
         profiles: [web, support]
-        note: Web scraping to compare supplier prices and automate rate updates.
+        note:
+          en: Web scraping to compare supplier prices and automate rate updates.
+          es: Web scraping para comparar precios de proveedores y automatizar la actualización de tarifas.
       - name: SQL
         icon: database
         level: 3
         profiles: [web, support, mainframe]
-        note: MySQL, PostgreSQL and SQLite.
+        note:
+          en: MySQL, PostgreSQL and SQLite.
+          es: MySQL, PostgreSQL y SQLite.
 
-  - name: Web development
+  - name:
+      en: Web development
+      es: Desarrollo web
     id: web
-    description: Frameworks, CMSs and services for building websites.
+    description:
+      en: Frameworks, CMSs and services for building websites.
+      es: Frameworks, CMS y servicios para construir sitios web.
     icon: globe
     skills:
-      - name: Svelte and SvelteKit
+      - name:
+          en: Svelte and SvelteKit
+          es: Svelte y SvelteKit
         logo: svelte
         level: 2
         profiles: [web]
-        note: 'This site: Svelte 5 runes, prerendered SvelteKit on GitHub Pages.'
+        note:
+          en: 'This site: Svelte 5 runes, prerendered SvelteKit on GitHub Pages.'
+          es: 'Este sitio: runes de Svelte 5 y SvelteKit prerenderizado en GitHub Pages.'
         evidence:
-          - label: A composition per route
+          - label:
+              en: A composition per route
+              es: Una composición por ruta
             entry: 2026-10-31-route-composition
-          - label: Filters in a $state class
+          - label:
+              en: Filters in a $state class
+              es: Filtros en una clase con $state
             entry: 2026-11-02-awesome-list-filters
-          - label: Source code
+          - label:
+              en: Source code
+              es: Código fuente
             url: https://github.com/abafdez/portfolio
       - name: Vue
         logo: vuedotjs
@@ -115,7 +174,9 @@ groups:
         logo: wordpress
         level: 3
         profiles: [web]
-        note: Sites for small businesses.
+        note:
+          en: Sites for small businesses.
+          es: Sitios para pequeñas empresas.
       - name: Node.js
         logo: nodedotjs
         level: 2
@@ -128,24 +189,38 @@ groups:
         logo: tailwindcss
         level: 2
         profiles: [web]
-      - name: PostCSS and Open Props
+      - name:
+          en: PostCSS and Open Props
+          es: PostCSS y Open Props
         logo: postcss
         level: 2
         profiles: [web]
         evidence:
-          - label: Open Props with JIT
+          - label:
+              en: Open Props with JIT
+              es: Open Props con JIT
             entry: 2026-10-22-open-props-jit-setup
-      - name: Markdown and mdsvex
+      - name:
+          en: Markdown and mdsvex
+          es: Markdown y mdsvex
         logo: markdown
         level: 3
         profiles: [web]
-        note: This Bitácora and the blog, with my own code highlighting theme.
+        note:
+          en: This devlog and the blog, with my own code highlighting theme.
+          es: Este devlog y el blog, con mi propio tema de resaltado de código.
         evidence:
-          - label: Markdown with mdsvex
+          - label:
+              en: Markdown with mdsvex
+              es: Markdown con mdsvex
             entry: 2026-10-31-markdown-with-mdsvex
-          - label: A Shiki theme from my tokens
+          - label:
+              en: A Shiki theme from my tokens
+              es: Un tema de Shiki a partir de mis tokens
             entry: 2026-11-02-shiki-code-theme
-      - name: Static sites (Jamstack) and PWAs
+      - name:
+          en: Static sites (Jamstack) and PWAs
+          es: Sitios estáticos (Jamstack) y PWA
         icon: layers
         level: 2
         profiles: [web]
@@ -162,16 +237,22 @@ groups:
         level: 1
         profiles: [web]
 
-  - name: Databases
+  - name:
+      en: Databases
+      es: Bases de datos
     id: databases
-    description: Where the data lives.
+    description:
+      en: Where the data lives.
+      es: Donde viven los datos.
     icon: database
     skills:
       - name: MySQL
         logo: mysql
         level: 3
         profiles: [web, support]
-        note: Behind most of my freelance sites.
+        note:
+          en: Behind most of my freelance sites.
+          es: Detrás de casi todos mis sitios como autónomo.
       - name: SQLite
         logo: sqlite
         level: 2
@@ -183,59 +264,89 @@ groups:
 
   - name: Mainframe
     id: mainframe
-    description: IBM Z and Software AG, from my certificates.
+    description:
+      en: IBM Z and Software AG, from my certificates.
+      es: IBM Z y Software AG, de mis certificaciones.
     icon: server
     skills:
-      - name: Natural and NaturalONE
+      - name:
+          en: Natural and NaturalONE
+          es: Natural y NaturalONE
         icon: square-terminal
         level: 1
         profiles: [mainframe]
-        note: Software AG certificate (Essential and Basic).
+        note:
+          en: Software AG certificate (Essential and Basic).
+          es: Certificación de Software AG (Essential y Basic).
       - name: Adabas
         icon: database
         level: 1
         profiles: [mainframe]
-        note: Software AG certificate (Essential and Basic).
+        note:
+          en: Software AG certificate (Essential and Basic).
+          es: Certificación de Software AG (Essential y Basic).
       - name: COBOL
         icon: code
         level: 1
         profiles: [mainframe]
-        note: IBM Z Xplore (Concepts and Intermediate).
+        note:
+          en: IBM Z Xplore (Concepts and Intermediate).
+          es: IBM Z Xplore (Concepts e Intermediate).
       - name: JCL
         icon: file-text
         level: 1
         profiles: [mainframe]
-        note: IBM Z Xplore (Concepts and Intermediate).
-      - name: z/OS and USS
+        note:
+          en: IBM Z Xplore (Concepts and Intermediate).
+          es: IBM Z Xplore (Concepts e Intermediate).
+      - name:
+          en: z/OS and USS
+          es: z/OS y USS
         icon: server
         level: 1
         profiles: [mainframe]
-        note: IBM Z Xplore (Concepts and Intermediate).
+        note:
+          en: IBM Z Xplore (Concepts and Intermediate).
+          es: IBM Z Xplore (Concepts e Intermediate).
       - name: IBM AS/400
         icon: server
         level: 2
         profiles: [mainframe, support]
-        note: Invoicing with an ERP on AS/400.
+        note:
+          en: Invoicing with an ERP on AS/400.
+          es: Facturación con un ERP en AS/400.
 
-  - name: Tools
+  - name:
+      en: Tools
+      es: Herramientas
     id: tools
-    description: What I use to build, test, plan and support.
+    description:
+      en: What I use to build, test, plan and support.
+      es: Lo que uso para construir, probar, planificar y dar soporte.
     icon: wrench
     skills:
-      - name: Git and GitHub
+      - name:
+          en: Git and GitHub
+          es: Git y GitHub
         logo: git
         level: 3
         profiles: [web]
-        note: A branch and a pull request per feature, checked by CI before merging.
+        note:
+          en: A branch and a pull request per feature, checked by CI before merging.
+          es: Una rama y una pull request por funcionalidad, revisadas por la CI antes de fusionar.
         evidence:
-          - label: Source code
+          - label:
+              en: Source code
+              es: Código fuente
             url: https://github.com/abafdez/portfolio
       - name: GitHub Actions
         logo: githubactions
         level: 2
         profiles: [web]
         evidence:
-          - label: Checks on every pull request
+          - label:
+              en: Checks on every pull request
+              es: Comprobaciones en cada pull request
             entry: 2026-10-20-ci-pr-checks
       - name: VS Code
         icon: code
@@ -253,13 +364,17 @@ groups:
         logo: docker
         level: 4
         profiles: [web, support]
-        note: 'Images, networks, volumes and compose stacks: most of my self-hosted apps run in it.'
+        note:
+          en: 'Images, networks, volumes and compose stacks: most of my self-hosted apps run in it.'
+          es: 'Imágenes, redes, volúmenes y stacks de compose: casi todas mis aplicaciones autoalojadas funcionan en él.'
       - name: Lighthouse
         logo: lighthouse
         level: 2
         profiles: [web]
         evidence:
-          - label: A contrast regression
+          - label:
+              en: A contrast regression
+              es: Una regresión de contraste
             entry: 2026-10-29-contrast-regression
       - name: Playwright
         icon: scan-eye
@@ -285,16 +400,24 @@ groups:
         icon: headset
         level: 1
         profiles: [support]
-      - name: TeamViewer, AnyDesk and RustDesk
+      - name:
+          en: TeamViewer, AnyDesk and RustDesk
+          es: TeamViewer, AnyDesk y RustDesk
         logo: teamviewer
         level: 2
         profiles: [support]
-        note: I support people remotely with them now and then.
-      - name: Trello and Asana
+        note:
+          en: I support people remotely with them now and then.
+          es: De vez en cuando doy soporte remoto con ellos.
+      - name:
+          en: Trello and Asana
+          es: Trello y Asana
         logo: trello
         level: 2
         profiles: [web, support]
-        note: Planned projects and tasks in them.
+        note:
+          en: Planned projects and tasks in them.
+          es: He planificado proyectos y tareas con ellos.
       - name: Notion
         logo: notion
         level: 3
@@ -303,190 +426,310 @@ groups:
         logo: obsidian
         level: 3
         profiles: []
-        note: My notes and project boards.
+        note:
+          en: My notes and project boards.
+          es: Mis notas y tableros de proyectos.
       - name: AutoHotkey
         logo: autohotkey
         level: 3
         profiles: [support]
-        note: 'Desktop automation: price comparisons and repetitive data entry.'
+        note:
+          en: 'Desktop automation: price comparisons and repetitive data entry.'
+          es: 'Automatización de escritorio: comparativas de precios y entrada de datos repetitiva.'
       - name: Tampermonkey
         logo: tampermonkey
         level: 3
         profiles: [web, support]
-        note: Userscripts that add what a web app is missing.
+        note:
+          en: Userscripts that add what a web app is missing.
+          es: Userscripts que añaden lo que le falta a una aplicación web.
 
-  - name: Ways of working
+  - name:
+      en: Ways of working
+      es: Formas de trabajar
     id: methods
-    description: How I work, on my own and in a team.
+    description:
+      en: How I work, on my own and in a team.
+      es: Cómo trabajo, por mi cuenta y en equipo.
     icon: workflow
     skills:
-      - name: Accessibility (WCAG)
+      - name:
+          en: Accessibility (WCAG)
+          es: Accesibilidad (WCAG)
         icon: accessibility
         level: 2
         profiles: [web]
-        note: Every page checked with Lighthouse in both themes, and contrast checked as tokens change.
+        note:
+          en: Every page checked with Lighthouse in both themes, and contrast checked as tokens change.
+          es: Cada página revisada con Lighthouse en los dos temas, y el contraste comprobado cada vez que cambian los tokens.
         evidence:
-          - label: The contrast checker
+          - label:
+              en: The contrast checker
+              es: El comprobador de contraste
             tool: contrast
-          - label: Lighthouse accessibility check
+          - label:
+              en: Lighthouse accessibility check
+              es: Revisión de accesibilidad con Lighthouse
             entry: 2026-10-29-lighthouse-a11y-check
-      - name: Design tokens and theming
+      - name:
+          en: Design tokens and theming
+          es: Design tokens y temas
         icon: swatch-book
         level: 2
         profiles: [web]
         evidence:
-          - label: Semantic tokens
+          - label:
+              en: Semantic tokens
+              es: Tokens semánticos
             entry: 2026-10-27-semantic-tokens
-          - label: Dark mode with light-dark()
+          - label:
+              en: Dark mode with light-dark()
+              es: Modo oscuro con light-dark()
             entry: 2026-10-29-dark-mode-light-dark
-      - name: Progressive enhancement
+      - name:
+          en: Progressive enhancement
+          es: Mejora progresiva
         icon: layers
         level: 2
         profiles: [web]
-        note: Pages work without JS; effects are extras and respect reduced motion.
+        note:
+          en: Pages work without JS; effects are extras and respect reduced motion.
+          es: Las páginas funcionan sin JS; los efectos son un extra y respetan la reducción de movimiento.
         evidence:
-          - label: Drafts only in dev
+          - label:
+              en: Drafts only in dev
+              es: Borradores solo en desarrollo
             entry: 2026-11-02-drafts-only-in-dev
-      - name: Scrum and Agile
+      - name:
+          en: Scrum and Agile
+          es: Scrum y Agile
         icon: kanban
         level: 2
         profiles: [web, support, mainframe]
-        note: 'Worked in Scrum teams: sprints, stand-ups, boards.'
-      - name: Help desk and ticketing (ITIL)
+        note:
+          en: 'Worked in Scrum teams: sprints, stand-ups, boards.'
+          es: 'He trabajado en equipos Scrum: sprints, dailies y tableros.'
+      - name:
+          en: Help desk and ticketing (ITIL)
+          es: Help desk y gestión de tickets (ITIL)
         icon: ticket
         level: 2
         profiles: [support]
-        note: 'Worked tickets in a queue: triage, priorities, escalation.'
-      - name: Pull requests and CI
+        note:
+          en: 'Worked tickets in a queue: triage, priorities, escalation.'
+          es: 'He gestionado tickets en cola: triaje, prioridades y escalado.'
+      - name:
+          en: Pull requests and CI
+          es: Pull requests e integración continua
         icon: git-pull-request
         level: 2
         profiles: [web]
         evidence:
-          - label: Checks on every pull request
+          - label:
+              en: Checks on every pull request
+              es: Comprobaciones en cada pull request
             entry: 2026-10-20-ci-pr-checks
-      - name: Learning in public
+      - name:
+          en: Learning in public
+          es: Aprender en público
         icon: book-open
         level: 3
         profiles: [web, support, mainframe]
-        note: A dev log entry for every topic I learn.
+        note:
+          en: A dev log entry for every topic I learn.
+          es: Una entrada en el devlog por cada tema que aprendo.
         evidence:
-          - label: The learning path
+          - label:
+              en: The learning path
+              es: La ruta de aprendizaje
             entry: 2026-10-20-learning-path
-      - name: Automation and web scraping
+      - name:
+          en: Automation and web scraping
+          es: Automatización y web scraping
         icon: workflow
         level: 3
         profiles: [web, support]
-        note: Supplier rates and price comparisons with Python, Tampermonkey and AutoHotkey.
-      - name: Data protection
+        note:
+          en: Supplier rates and price comparisons with Python, Tampermonkey and AutoHotkey.
+          es: Tarifas de proveedores y comparativas de precios con Python, Tampermonkey y AutoHotkey.
+      - name:
+          en: Data protection
+          es: Protección de datos
         icon: shield-check
         level: 2
         profiles: [support]
-        note: Certified; I looked after a customer database under GDPR.
-      - name: Training people
+        note:
+          en: Certified; I looked after a customer database under GDPR.
+          es: Con certificación; gestioné una base de datos de clientes conforme al RGPD.
+      - name:
+          en: Training people
+          es: Formación de personas
         icon: graduation-cap
         level: 3
         profiles: [support]
-        note: Taught staff office and productivity tools.
+        note:
+          en: Taught staff office and productivity tools.
+          es: He enseñado herramientas ofimáticas y de productividad a la plantilla.
 
-  - name: AI workflows
+  - name:
+      en: AI workflows
+      es: Flujos de trabajo con IA
     id: ai
-    description: How I work with AI, and what I let it do.
+    description:
+      en: How I work with AI, and what I let it do.
+      es: Cómo trabajo con IA y qué le dejo hacer.
     icon: bot
     skills:
       - name: Claude Code
         logo: claude
         level: 3
         profiles: [web]
-        note: Project rules, skills and agents in the repo; it writes a step, explains it, then quizzes me.
+        note:
+          en: Project rules, skills and agents in the repo; it writes a step, explains it, then quizzes me.
+          es: Reglas del proyecto, skills y agentes en el repo; escribe un paso, me lo explica y luego me pregunta.
         evidence:
-          - label: The .claude folder
+          - label:
+              en: The .claude folder
+              es: La carpeta .claude
             url: https://github.com/abafdez/portfolio/tree/main/.claude
-      - name: MCP servers
+      - name:
+          en: MCP servers
+          es: Servidores MCP
         icon: plug
         level: 2
         profiles: [web]
-        note: Svelte docs and a Playwright browser, so the AI checks its own work.
-      - name: Writing context for AI
+        note:
+          en: Svelte docs and a Playwright browser, so the AI checks its own work.
+          es: La documentación de Svelte y un navegador Playwright, para que la IA compruebe su propio trabajo.
+      - name:
+          en: Writing context for AI
+          es: Escribir contexto para la IA
         icon: file-text
         level: 2
         profiles: [web]
-        note: 'CLAUDE.md files and skills: the rules and the steps, written once.'
-      - name: An AI-run knowledge base
+        note:
+          en: 'CLAUDE.md files and skills: the rules and the steps, written once.'
+          es: 'Archivos CLAUDE.md y skills: las reglas y los pasos, escritos una sola vez.'
+      - name:
+          en: An AI-run knowledge base
+          es: Una base de conocimiento gestionada por IA
         logo: obsidian
         level: 2
         profiles: []
-        note: 'Claude keeps my Obsidian vault: notes, boards and this dev log.'
+        note:
+          en: 'Claude keeps my Obsidian vault: notes, boards and this dev log.'
+          es: 'Claude mantiene mi bóveda de Obsidian: notas, tableros y este devlog.'
       - name: ComfyUI
         icon: wand-sparkles
         level: 1
         profiles: []
-        note: Image generation workflows.
+        note:
+          en: Image generation workflows.
+          es: Flujos de generación de imágenes.
 
-  - name: Systems and support
+  - name:
+      en: Systems and support
+      es: Sistemas y soporte
     id: systems
-    description: Networks, servers, my homelab, and the people who use them.
+    description:
+      en: Networks, servers, my homelab, and the people who use them.
+      es: Redes, servidores, mi homelab y las personas que los usan.
     icon: network
     skills:
-      - name: Local networks
+      - name:
+          en: Local networks
+          es: Redes locales
         icon: network
         level: 3
         profiles: [support]
-        note: Designed and set up for small businesses.
+        note:
+          en: Designed and set up for small businesses.
+          es: Diseñadas y montadas para pequeñas empresas.
       - name: OpenWrt
         logo: openwrt
         level: 3
         profiles: [support]
-        note: My routers run it; I change it often and fix what breaks.
+        note:
+          en: My routers run it; I change it often and fix what breaks.
+          es: Mis routers lo usan; lo cambio a menudo y arreglo lo que se rompe.
       - name: pfSense
         logo: pfsense
         level: 2
         profiles: [support]
-        note: Firewall rules, NAT, VLANs and VPN.
-      - name: WireGuard and Tailscale
+        note:
+          en: Firewall rules, NAT, VLANs and VPN.
+          es: Reglas de cortafuegos, NAT, VLAN y VPN.
+      - name:
+          en: WireGuard and Tailscale
+          es: WireGuard y Tailscale
         logo: wireguard
         level: 3
         profiles: [support]
-        note: 'Remote access to my network every day: peers, ACLs and DNS.'
-      - name: Pi-hole and AdGuard Home
+        note:
+          en: 'Remote access to my network every day: peers, ACLs and DNS.'
+          es: 'Acceso remoto a mi red a diario: peers, ACL y DNS.'
+      - name:
+          en: Pi-hole and AdGuard Home
+          es: Pi-hole y AdGuard Home
         logo: pihole
         level: 3
         profiles: [support]
-        note: DNS filtering for the whole network.
+        note:
+          en: DNS filtering for the whole network.
+          es: Filtrado DNS para toda la red.
       - name: Proxmox
         logo: proxmox
         level: 3
         profiles: [support]
-        note: 'My homelab runs on it: virtual machines and LXC containers.'
+        note:
+          en: 'My homelab runs on it: virtual machines and LXC containers.'
+          es: 'Mi homelab funciona sobre él: máquinas virtuales y contenedores LXC.'
       - name: Ansible
         logo: ansible
         level: 2
         profiles: [web, support]
-        note: My own playbooks and roles to set up my machines.
+        note:
+          en: My own playbooks and roles to set up my machines.
+          es: Mis propios playbooks y roles para configurar mis máquinas.
       - name: Terraform
         logo: terraform
         level: 2
         profiles: [web, support]
-        note: 'Infrastructure as code: my own configurations.'
+        note:
+          en: 'Infrastructure as code: my own configurations.'
+          es: 'Infraestructura como código: mis propias configuraciones.'
       - name: Caddy
         logo: caddy
         level: 2
         profiles: [web, support]
-        note: Reverse proxy and automatic HTTPS for my self-hosted apps.
+        note:
+          en: Reverse proxy and automatic HTTPS for my self-hosted apps.
+          es: Proxy inverso y HTTPS automático para mis aplicaciones autoalojadas.
       - name: Home Assistant
         logo: homeassistant
         level: 3
         profiles: [support]
-        note: 'My home runs on it: many automations, YAML when needed.'
+        note:
+          en: 'My home runs on it: many automations, YAML when needed.'
+          es: 'Mi casa funciona con él: muchas automatizaciones, y YAML cuando hace falta.'
       - name: n8n
         logo: n8n
         level: 2
         profiles: [web, support]
-        note: 'My own workflows: webhooks, APIs and schedules.'
-      - name: Self-hosted apps
+        note:
+          en: 'My own workflows: webhooks, APIs and schedules.'
+          es: 'Mis propios flujos: webhooks, APIs y tareas programadas.'
+      - name:
+          en: Self-hosted apps
+          es: Aplicaciones autoalojadas
         icon: server-cog
         profiles: [support]
-        note: Plex, Immich and the *arr stack; Syncthing, Vaultwarden and Paperless-ngx; Grafana, Portainer and MailHog.
-      - name: Hardware repair and support
+        note:
+          en: Plex, Immich and the *arr stack; Syncthing, Vaultwarden and Paperless-ngx; Grafana, Portainer and MailHog.
+          es: Plex, Immich y el stack *arr; Syncthing, Vaultwarden y Paperless-ngx; Grafana, Portainer y MailHog.
+      - name:
+          en: Hardware repair and support
+          es: Reparación y soporte de hardware
         icon: wrench
         level: 4
         profiles: [support]
@@ -494,24 +737,36 @@ groups:
         logo: google
         level: 3
         profiles: [support]
-        note: Moved an order system onto it.
+        note:
+          en: Moved an order system onto it.
+          es: Pasé un sistema de pedidos a Google Workspace.
       - name: Microsoft Office
         icon: file-spreadsheet
         level: 3
         profiles: [support]
-      - name: Telemetry and data analysis
+      - name:
+          en: Telemetry and data analysis
+          es: Telemetría y análisis de datos
         icon: activity
         level: 2
         profiles: [support]
-        note: 'Five years in GT racing: car telemetry, and the data to tune the setup at each track.'
-      - name: System migrations
+        note:
+          en: 'Five years in GT racing: car telemetry, and the data to tune the setup at each track.'
+          es: 'Cinco años en carreras de GT: telemetría del coche y los datos para ajustar el reglaje en cada circuito.'
+      - name:
+          en: System migrations
+          es: Migraciones de sistemas
         icon: hard-drive
         level: 3
         profiles: [support]
 
-  - name: Multimedia and 3D
+  - name:
+      en: Multimedia and 3D
+      es: Multimedia y 3D
     id: multimedia
-    description: Video, 3D, design and photography.
+    description:
+      en: Video, 3D, design and photography.
+      es: Vídeo, 3D, diseño y fotografía.
     icon: clapperboard
     skills:
       - name: Adobe Creative Suite
@@ -538,7 +793,9 @@ groups:
         icon: scan-eye
         level: 1
         profiles: []
-        note: Photogrammetry.
+        note:
+          en: Photogrammetry.
+          es: Fotogrametría.
       - name: Inkscape
         logo: inkscape
         level: 2
@@ -551,27 +808,47 @@ groups:
         icon: music
         level: 1
         profiles: []
-      - name: Product photography
+      - name:
+          en: Product photography
+          es: Fotografía de producto
         icon: camera
         level: 3
         profiles: [web]
-        note: Catalogue photos for shops.
+        note:
+          en: Catalogue photos for shops.
+          es: Fotos de catálogo para tiendas.
 
-  - name: Languages I speak
+  - name:
+      en: Languages I speak
+      es: Idiomas que hablo
     id: spoken
-    description: Spanish, English, and writing for the web.
+    description:
+      en: Spanish, English, and writing for the web.
+      es: Español, inglés y redacción para la web.
     icon: languages
     skills:
-      - name: Spanish
+      - name:
+          en: Spanish
+          es: Español
         icon: languages
         profiles: [web, support, mainframe]
-        note: Native.
-      - name: English
+        note:
+          en: Native.
+          es: Nativo.
+      - name:
+          en: English
+          es: Inglés
         icon: languages
         profiles: [web, support, mainframe]
-        note: C1. Six months studying in Manchester.
-      - name: Translation and SEO writing
+        note:
+          en: C1. Six months studying in Manchester.
+          es: C1. Seis meses estudiando en Mánchester.
+      - name:
+          en: Translation and SEO writing
+          es: Traducción y redacción SEO
         icon: pen-line
         level: 2
         profiles: [web]
-        note: Translated and wrote web content, SEO included.
+        note:
+          en: Translated and wrote web content, SEO included.
+          es: He traducido y redactado contenido web, SEO incluido.

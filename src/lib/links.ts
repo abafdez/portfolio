@@ -1,8 +1,8 @@
-import { resolve } from '$app/paths';
 import type { RouteId } from '$app/types';
+import { m, route } from '#lib/i18n/index.ts';
 
 // The routes resolve() can build from the id alone: those without a [param].
-// '/bitacora/[slug]' needs a slug too, so it's left out.
+// '/devlog/[slug]' needs a slug too, so it's left out.
 export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
 
 // A link is either a route on this site (checked by the type system and passed
@@ -19,14 +19,15 @@ export const profiles = [
 ] as const satisfies readonly Link[];
 
 // The site's sections, in nav order. The nav links them; the breadcrumbs name the one
-// a nested page belongs to.
-export const sections: { href: RouteWithoutParams; label: string }[] = [
-	{ href: '/', label: 'Home' },
-	{ href: '/blog', label: 'Blog' },
-	{ href: '/awesome', label: 'Awesome' },
-	{ href: '/projects', label: 'Projects' },
-	{ href: '/about', label: 'About' },
-	{ href: '/bitacora', label: 'Bitacora' }
+// a nested page belongs to. label is a message (a function), so it's in the language of
+// the page that calls it, not of whichever page loaded this module first.
+export const sections: { href: RouteWithoutParams; label: () => string }[] = [
+	{ href: '/', label: m.navHome },
+	{ href: '/blog', label: m.navBlog },
+	{ href: '/awesome', label: m.navAwesome },
+	{ href: '/projects', label: m.navProjects },
+	{ href: '/about', label: m.navAbout },
+	{ href: '/devlog', label: m.navDevlog }
 ];
 
 // Is this route a page inside the section, not the section itself? '/projects/cv' and
@@ -35,9 +36,9 @@ export const sections: { href: RouteWithoutParams; label: string }[] = [
 // while prerendering, resolve() gives relative links ('../projects') that never match
 // page.url.pathname. A route id has no base path and is the same on server and client.
 // null is a page with no route (a 404).
-export const isInside = (href: RouteWithoutParams, route: string | null) =>
-	href !== '/' && !!route?.startsWith(`${href}/`);
+export const isInside = (href: RouteWithoutParams, routeId: string | null) =>
+	href !== '/' && !!routeId?.startsWith(`${href}/`);
 
 // A blog tag's page. Cards and headers take this as tagHref to link their tags.
-// Bitácora tags have no pages, so the Bitácora doesn't pass it.
-export const blogTag = (tag: string) => resolve('/blog/tags/[tag]', { tag });
+// Devlog tags have no pages, so the Devlog doesn't pass it. In the page's language.
+export const blogTag = (tag: string) => route('/blog/tags/[tag]', { tag });

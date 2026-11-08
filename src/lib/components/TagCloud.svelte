@@ -4,6 +4,7 @@
 	import Minus from '@lucide/svelte/icons/minus';
 	import type { ResolvedPathname } from '$app/types';
 	import { spotlight } from '#lib/spotlight.ts';
+	import { m } from '#lib/i18n/index.ts';
 
 	// The blog's tags as chips, most used first. Folded, the list shows a few rows and
 	// fades out into a "+" button that shows them all.
@@ -68,7 +69,7 @@
 				<a href={href(tag)}>
 					#{tag}
 					<span class="count">
-						{count}<span class="visually-hidden">{count === 1 ? ' post' : ' posts'}</span>
+						{count}<span class="visually-hidden">{m.tagPostCount({ count })}</span>
 					</span>
 				</a>
 			</li>
@@ -83,9 +84,9 @@
 			onclick={toggle}
 		>
 			{#if open}
-				<Minus aria-hidden="true" /> Fewer tags
+				<Minus aria-hidden="true" /> {m.tagCloudLess()}
 			{:else}
-				<Plus aria-hidden="true" /> All {tags.length} tags
+				<Plus aria-hidden="true" /> {m.tagCloudMore({ count: tags.length })}
 			{/if}
 		</button>
 	{/if}

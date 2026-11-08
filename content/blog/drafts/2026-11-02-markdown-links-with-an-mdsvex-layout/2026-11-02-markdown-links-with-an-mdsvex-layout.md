@@ -69,6 +69,8 @@ Three kinds of links:
 - **`https://…`**, another site. It gets `rel="external"`.
 - **`./other-post` or `#a-heading`.** These are relative, so they already work under any base.
 
+**Update:** the site is in English and Spanish now, and a link to `/about` in a Spanish post should go to the Spanish `/about`. So `withBase` is now my own `route()` instead of `resolve()`: it adds the base path and, on a Spanish page, the `/es` after it. Relative links stay in the language they're in by themselves.
+
 ## The cast, and who checks the links
 
 `resolve()` is typed from my routes: it only accepts a path it knows, like `'/about'` or `'/blog/[slug]'` with a slug. A markdown `href` is just a `string`, so TypeScript can't check it. For a path with no `[param]`, `resolve()` only adds the base, so I widen its type once, in `withBase`.

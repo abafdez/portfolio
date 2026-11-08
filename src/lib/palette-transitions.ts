@@ -24,8 +24,6 @@ const effects = {
 	ripple,
 	glitch,
 	scanline,
-	crt,
-	dither,
 	rain
 } satisfies Record<string, (origin: Origin) => Settings>;
 
@@ -175,65 +173,6 @@ function bands(share: number): string {
 
 function scanline(): Settings {
 	return { '--palette-duration': '800ms' };
-}
-
-// --- Effect: CRT switch-off -------------------------------------------------------------
-// An old TV turning off and on again: the old page squashes into a bright line, then a
-// dot, on a black screen; the new page opens out from the line. All CSS.
-
-function crt(): Settings {
-	return { '--palette-duration': '900ms' };
-}
-
-// --- Effect: dither dissolve ------------------------------------------------------------
-// The new page appears pixel by pixel through an ordered dither, like an image fading on
-// an old 1-bit screen. The mask is one small tile of 4×4 "pixels", repeated over the
-// whole screen by CSS; each pixel appears at the time of its value in a Bayer matrix,
-// which spreads the pixels so every stage looks like an even pattern. Big pixels and
-// only 16 steps on purpose: finer, it just looks like a fade.
-
-const pixel = 6; // px per dither pixel (the tile is 24px, like a grid cell)
-const ditherTime = 0.6; // seconds from the first pixel to the last
-
-function dither(): Settings {
-	const matrix = bayer(4);
-	const levels = matrix.length ** 2;
-	const rects = matrix.flatMap((row, y) =>
-		row.map(
-			(value, x) =>
-				`<rect x="${x * pixel}" y="${y * pixel}" width="${pixel}" height="${pixel}" opacity="0">` +
-				`<set attributeName="opacity" to="1" begin="${((value / levels) * ditherTime).toFixed(3)}s"/>` +
-				`</rect>`
-		)
-	);
-	const tile = matrix.length * pixel;
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${tile}" height="${tile}">${rects.join('')}</svg>`;
-
-	return {
-		'--palette-mask': svgImage(svg),
-		'--palette-mask-size': `${tile}px ${tile}px`,
-		'--palette-duration': ms(ditherTime + 0.05)
-	};
-}
-
-// A Bayer matrix of size n (a power of 2): every number from 0 to n² - 1, placed so
-// that the first k of them are always spread as evenly as possible. Built from the 1×1
-// matrix by doubling: each quarter of the bigger one is the smaller one × 4, plus 0, 2,
-// 3 or 1 (the 2×2 matrix's own order).
-function bayer(n: number): number[][] {
-	if (n === 1) return [[0]];
-	const half = bayer(n / 2);
-	const quarter = (add: number) => half.map((row) => row.map((value) => 4 * value + add));
-	const [topLeft, topRight, bottomLeft, bottomRight] = [
-		quarter(0),
-		quarter(2),
-		quarter(3),
-		quarter(1)
-	];
-	return [
-		...topLeft.map((row, i) => [...row, ...topRight[i]]),
-		...bottomLeft.map((row, i) => [...row, ...bottomRight[i]])
-	];
 }
 
 // --- Effect: column rain ----------------------------------------------------------------

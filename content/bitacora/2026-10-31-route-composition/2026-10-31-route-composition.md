@@ -16,7 +16,7 @@ tags: [sveltekit, typescript, layout]
 ## What I learned
 
 - Why not just style `main` from the page? A page's styles are scoped to the page component; `main` belongs to the root layout. The page can only send data up, and the layout decides what to do with it.
-- A `+layout.ts` load applies to its route and everything below it, so `/bitacora/[slug]` will be `reading` without doing anything.
+- A `+layout.ts` load applies to its route and everything below it, so `/devlog/[slug]` will be `reading` without doing anything.
 - `satisfies App.PageData` checks the value against the type and keeps `'reading'` as that exact string. Without it TypeScript widens it to `string`.
 - In a grid, `margin-inline: auto` stops an item from stretching: it shrinks to fit its content. So each page was as wide as its text. `inline-size: 100%` plus `max-inline-size` fixes it.
 - With the route view transitions, changing composition (home 1120px → blog 576px) needs nothing extra: the content box jumps to the new size and the new content fades in.

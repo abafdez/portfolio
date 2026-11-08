@@ -12,7 +12,9 @@ import {
 	readFrontmatter,
 	readingTime,
 	slugOf,
-	summary
+	summary,
+	toTranslation,
+	type Entry
 } from './content.ts';
 
 // A markdown file like ours: frontmatter, then a body.
@@ -125,8 +127,16 @@ describe('slugOf', () => {
 		);
 	});
 
+	test('a translation has the same slug: <slug>.es.md', () => {
+		expect(slugOf('/content/blog/2026-10-27-tokens/2026-10-27-tokens.es.md')).toBe(
+			'2026-10-27-tokens'
+		);
+	});
+
 	test.each([
 		'/content/blog/2026-10-27-tokens/2026-10-27-renamed.md',
+		// Not a language the site has: 2026-10-27-tokens.fr is a different name.
+		'/content/blog/2026-10-27-tokens/2026-10-27-tokens.fr.md',
 		'/content/blog/drafts/2026-10-27-tokens.md'
 	])('rejects a folder and file that do not match: %s', (path) => {
 		expect(() => slugOf(path)).toThrow(`${path}: the folder and the file must have the same name`);
@@ -194,7 +204,7 @@ describe('checkTags', () => {
 
 // Not a made-up input: the real entries in content/bitacora. If one gets an empty or
 // too long description, this says which.
-describe('every Bitácora entry', () => {
+describe('every Devlog entry', () => {
 	test.each(allLog.map((entry) => [entry.slug, entry.description]))(
 		'%s has a description of 1 to 160 characters',
 		(_slug, description) => {
@@ -202,4 +212,60 @@ describe('every Bitácora entry', () => {
 			expect(description.length).toBeLessThanOrEqual(160);
 		}
 	);
+});
+
+describe('toTranslation', () => {
+	// The English entry a translation sits next to (no cover, so checkCover passes).
+	const original: Entry<{ title: string; date: string; tags?: string[] }> = {
+		title: 'Design tokens',
+		date: '2026-10-27',
+		tags: ['css'],
+		slug: 'tokens',
+		folder: '/content/blog/published/tokens',
+		path: '/content/blog/published/tokens/tokens.md',
+		draft: false,
+		minutes: 3,
+		description: 'In English.',
+		locale: 'en',
+		locales: ['en', 'es']
+	};
+	const path = '/content/blog/published/tokens/tokens.es.md';
+	const translate = (frontmatter: string, body = 'Un texto en español.') =>
+		toTranslation(path, `---\n${frontmatter}\n---\n\n${body}`, original, 'es');
+
+	test('takes its words from its own file, the rest from the English one', () => {
+		const entry = translate('title: Tokens de diseño\nreviewed: false');
+		expect(entry).toMatchObject({
+			title: 'Tokens de diseño',
+			description: 'Un texto en español.', // its own summary(), not the English one
+			date: '2026-10-27',
+			tags: ['css'],
+			path,
+			locale: 'es',
+			reviewed: false
+		});
+	});
+
+	test('can have its own description', () => {
+		expect(translate('title: T\ndescription: Corta.\nreviewed: true').description).toBe('Corta.');
+	});
+
+	test.each([
+		['date: 2026-10-28', 'date'],
+		['tags: [css]', 'tags'],
+		['phase: 7', 'phase']
+	])('fails on what comes from the English file: %s', (line, key) => {
+		expect(() => translate(`title: T\nreviewed: false\n${line}`)).toThrow(
+			`${path}: ${key}: a translation takes these from the English file`
+		);
+	});
+
+	test('needs a title', () => {
+		expect(() => translate('reviewed: false')).toThrow(`${path}: needs a title`);
+	});
+
+	test('needs reviewed, true or false', () => {
+		expect(() => translate('title: T')).toThrow(`${path}: needs reviewed: false`);
+		expect(() => translate('title: T\nreviewed: no')).toThrow(`${path}: needs reviewed: false`);
+	});
 });

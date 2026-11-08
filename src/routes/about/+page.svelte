@@ -8,6 +8,7 @@
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import SectionNav from '#lib/components/SectionNav.svelte';
 	import { profiles } from '#lib/links.ts';
+	import { m } from '#lib/i18n/index.ts';
 	import LogoMarquee from '#lib/skills/LogoMarquee.svelte';
 	import SkillWindow from '#lib/skills/SkillWindow.svelte';
 
@@ -51,17 +52,14 @@
 	}
 </script>
 
-<Seo
-	title="About"
-	description="What I work with: languages, frameworks, tools, ways of working and AI workflows."
-/>
+<Seo title={m.aboutTitle()} description={m.aboutDescription()} />
 
 <!-- The CV is shared on request, not published: it has my contact details. -->
 {#snippet cv()}
 	<ul class="cv">
 		<li>
 			<a href={linkedin.url} rel="external"
-				><MessageSquare size="1.25rem" aria-hidden="true" />Ask on LinkedIn</a
+				><MessageSquare size="1.25rem" aria-hidden="true" />{m.aboutAskLinkedIn()}</a
 			>
 		</li>
 		<li>
@@ -74,13 +72,9 @@
      skills scroll on the right. -->
 <div class="about">
 	<div class="intro">
-		<h1>About me</h1>
-		<p class="lead">
-			More than 15 years making technology work for small businesses: networks, hardware, automation
-			and websites. I studied web development, I'm certified in mainframe Natural, Adabas and COBOL,
-			and I'm now going deep on the modern front end, learning in public on this site.
-		</p>
-		<p>Want my full CV? I send it on request.</p>
+		<h1>{m.aboutHeading()}</h1>
+		<p class="lead">{m.aboutLead()}</p>
+		<p>{m.aboutCvOnRequest()}</p>
 		{@render cv()}
 
 		<div class="aside">
@@ -88,9 +82,9 @@
 			     between them. Only with JS, since without it they can't do anything. -->
 			{#if ready}
 				<fieldset class="profiles">
-					<legend>Show skills for</legend>
+					<legend>{m.aboutShowSkillsFor()}</legend>
 					<div class="options">
-						{#each [{ id: undefined, name: 'Everything' }, ...data.profiles] as option (option.id)}
+						{#each [{ id: undefined, name: m.aboutEverything() }, ...data.profiles] as option (option.id)}
 							<label>
 								<input
 									type="radio"
@@ -102,7 +96,7 @@
 						{/each}
 					</div>
 					<!-- role="status": screen readers announce the count when it changes. -->
-					<p role="status">{count} of {total} skills</p>
+					<p role="status">{m.aboutSkillCount({ count, total })}</p>
 				</fieldset>
 			{/if}
 			<div class="toc"><SectionNav {sections} /></div>
@@ -120,8 +114,8 @@
 		{/each}
 
 		<section aria-labelledby="cv-title">
-			<h2 id="cv-title">Want my full CV?</h2>
-			<p>It has the dates, the companies and the details. Send me a message and I'll send it.</p>
+			<h2 id="cv-title">{m.aboutCvTitle()}</h2>
+			<p>{m.aboutCvText()}</p>
 			{@render cv()}
 		</section>
 	</div>

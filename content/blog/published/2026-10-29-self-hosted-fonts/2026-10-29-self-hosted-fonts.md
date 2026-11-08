@@ -3,15 +3,15 @@ title: A different font for each part of my site, all self-hosted
 date: 2026-10-29
 tags: [css, fonts, fontsource, design-tokens, sveltekit]
 description: Fira Code for code, a handwritten font for my dev log and the system font everywhere else. No Google Fonts, no extra cost on pages that don't use them.
-cover: A box wit text fonts.
+cover: A box with text fonts.
 ---
 
-I wanted each part of my portfolio to have its own feel. Code should look like code, my dev log (the Bitácora) should feel like a notebook, and the rest should stay out of the way. I also didn't want any requests to a third party.
+I wanted each part of my portfolio to have its own feel. Code should look like code, my devlog should feel like a notebook, and the rest should stay out of the way. I also didn't want any requests to a third party.
 
 ## The picks
 
 - **Code: [Fira Code](https://github.com/tonsky/FiraCode).** It's Fira Mono with optional ligatures, so `=>` is drawn as an arrow. They can be turned off with `font-variant-ligatures: none`.
-- **Bitácora: [Shantell Sans](https://shantellsans.com/).** It looks handwritten but was designed to stay readable in long text. True script fonts look great in a title and get tiring after a paragraph.
+- **Devlog: [Shantell Sans](https://shantellsans.com/).** It looks handwritten but was designed to stay readable in long text. True script fonts look great in a title and get tiring after a paragraph.
 - **Everything else: the system font.** Open Props' `--font-sans` stack uses the OS's own font. It's free and instant, at the cost of looking a bit different on Windows, macOS and Android.
 
 ## Why self-host
@@ -49,7 +49,7 @@ I was worried that three fonts would mean three downloads on every page. They do
 | Page                   | Font files downloaded             |
 | ---------------------- | --------------------------------- |
 | Home                   | none                              |
-| Bitácora               | Shantell Sans (Latin only)        |
+| Devlog                 | Shantell Sans (Latin only)        |
 | Any page with `<code>` | Fira Code (Latin only), on demand |
 
 The "Latin only" part comes from `unicode-range`. Fontsource splits each font into subsets (Latin, Latin Extended, Cyrillic, Greek…), and the browser only downloads the subsets it needs for the characters on the page.
@@ -85,10 +85,10 @@ samp {
 }
 ```
 
-The Bitácora gets its own layout, which only overrides a token:
+The Devlog gets its own layout, which only overrides a token:
 
 ```svelte
-<!-- src/routes/bitacora/+layout.svelte -->
+<!-- src/routes/devlog/+layout.svelte -->
 <div class="bitacora">{@render children()}</div>
 
 <style>
@@ -112,7 +112,7 @@ My first version had this in `tokens.css`:
 }
 ```
 
-It looks like `--font-heading` follows `--font-body`. It doesn't. A `var()` inside a custom property is **resolved on the element where the property is defined**, here `:root`. Children inherit the result, a plain font stack, not a live reference. So when the Bitácora overrode `--font-body`, `--font-heading` was still the system font, and my headings stayed in the wrong font.
+It looks like `--font-heading` follows `--font-body`. It doesn't. A `var()` inside a custom property is **resolved on the element where the property is defined**, here `:root`. Children inherit the result, a plain font stack, not a live reference. So when the Devlog overrode `--font-body`, `--font-heading` was still the system font, and my headings stayed in the wrong font.
 
 The fix is to resolve the value where it's used, with a fallback:
 
@@ -122,6 +122,6 @@ h1 {
 }
 ```
 
-Now `--font-body` is looked up on the `h1` itself, inside the section, and it picks up the override. The same rule explains why the Bitácora wrapper sets `font-family` again: `body` already computed its font, and children inherit that computed value, not the token.
+Now `--font-body` is looked up on the `h1` itself, inside the section, and it picks up the override. The same rule explains why the Devlog wrapper sets `font-family` again: `body` already computed its font, and children inherit that computed value, not the token.
 
 **Update:** later, for the site's [dark-first identity](./2026-10-31-dark-first-palette), headings switched to Fira Code everywhere. So `--font-heading` is now defined on `:root` as `var(--font-code)`, and a new `--font-label` does the same for the nav, buttons and small UI text. Neither follows `--font-body` any more, on purpose, so this gotcha can't bite them. The rule still holds for any token built from another one.

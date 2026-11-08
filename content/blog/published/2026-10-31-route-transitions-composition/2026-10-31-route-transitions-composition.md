@@ -55,7 +55,7 @@ By default the whole page cross-fades. `view-transition-name` gives an element i
 }
 ```
 
-A name must be unique on the page. My first version said `& header`, and it worked until a Bitácora entry got a `<header>` of its own for its title. Two elements had the name `site-header`, and the browser aborted the transition with "Unexpected duplicate view-transition-name". A class on the site header fixed it.
+A name must be unique on the page. My first version said `& header`, and it worked until a Devlog entry got a `<header>` of its own for its title. Two elements had the name `site-header`, and the browser aborted the transition with "Unexpected duplicate view-transition-name". A class on the site header fixed it.
 
 The names only exist during `route` transitions. My theme toggle's circular reveal animates the root picture, and a named element is cut out of the root. With a permanent name, the header would sit outside the circle and change theme on its own.
 
@@ -92,7 +92,7 @@ There's only one marker on each page. During a route transition it's named `nav-
 
 ## Each route picks its composition
 
-The blog and the Bitácora are long text, and long lines are hard to read. I wanted a narrow column there, but `<main>` belongs to the root layout, and a page's styles can't reach it. So the page sends the layout a piece of data instead.
+The blog and the Devlog are long text, and long lines are hard to read. I wanted a narrow column there, but `<main>` belongs to the root layout, and a page's styles can't reach it. So the page sends the layout a piece of data instead.
 
 The type goes in `src/app.d.ts`, so it's known everywhere:
 

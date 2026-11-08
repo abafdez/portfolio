@@ -163,6 +163,24 @@ A box for a note, a tip or a warning. It's a blockquote whose first line is `[!t
 - **Folding** (Obsidian's `[!note]-`) is accepted, but the box is always shown open.
 - **Use them sparingly**: one or two per post. When everything is a callout, nothing stands out.
 
+## In Spanish
+
+A post's Spanish version is a second file in the same folder, `<slug>.es.md`, next to `<slug>.md`. It shares the images (`./diagram.png` works from both) and is published with the same `git mv`.
+
+```md
+---
+title: 'Un acordeón sin JavaScript'
+description: One or two sentences, like the English one (optional: without it, the first paragraph).
+cover: The cover's alt text, in Spanish (required if the folder has a cover).
+reviewed: false
+---
+```
+
+- **Only words go in its frontmatter.** `date`, `tags` and `phase` come from the English file, so the two can't disagree; writing them here fails the build.
+- **`reviewed: false`** until you've read it (Claude writes the translations); in dev, the post shows a "sin revisar" badge. Set it to `true` once it reads like you.
+- **Callout titles** come out in Spanish by themselves ("Sugerencia", "Advertencia"). Code stays as it is.
+- **Without a Spanish file**, `/es/blog/<slug>` shows the English post inside the Spanish site, marked "en inglés", and tells search engines the English page is the real one.
+
 ## Tags and code in the text
 
 **Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. Markdown passes HTML through as it is, so outside backticks:
@@ -174,15 +192,15 @@ The same goes for `{` and `}` outside backticks: Svelte reads them as code. Fron
 
 ## Links
 
-| To                          | Write                                                   | Notes                                                                                               |
-| --------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Another post                | `[text](./2026-10-31-markdown-with-mdsvex)`             | `./` and the other post's folder name. **Only published posts**: a link to a draft fails the build. |
-| Any other page on this site | `[text](/bitacora/2026-10-21-layout-routing-base-path)` | One `/` at the start, then the path. The base path (`/portfolio`) is added for you: never write it. |
-| A tag                       | `[text](/blog/tags/github-actions)`                     | Like any other page.                                                                                |
-| Another site                | `[text](https://svelte.dev/docs/kit/images)`            | The full `https://` address. Gets `rel="external"`, opens in the same tab.                          |
-| A heading in the same post  | `[text](#the-base-path)`                                | Every heading has an `id` made from its text (see below).                                           |
+| To                          | Write                                                 | Notes                                                                                               |
+| --------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Another post                | `[text](./2026-10-31-markdown-with-mdsvex)`           | `./` and the other post's folder name. **Only published posts**: a link to a draft fails the build. |
+| Any other page on this site | `[text](/devlog/2026-10-21-layout-routing-base-path)` | One `/` at the start, then the path. The base path (`/portfolio`) is added for you: never write it. |
+| A tag                       | `[text](/blog/tags/github-actions)`                   | Like any other page.                                                                                |
+| Another site                | `[text](https://svelte.dev/docs/kit/images)`          | The full `https://` address. Gets `rel="external"`, opens in the same tab.                          |
+| A heading in the same post  | `[text](#the-base-path)`                              | Every heading has an `id` made from its text (see below).                                           |
 
-- **Heading ids** come from the heading's text: lowercase, spaces become `-`, punctuation goes, accents stay. `## Gotcha: the base path` is `#gotcha-the-base-path`; a second heading with the same text gets `-1`. The easiest way to get one: hover the heading in `pnpm dev`, click it, and copy the address. To a heading in another post: `[text](./2026-10-31-markdown-with-mdsvex#the-layout)`; on any other page: `[text](/bitacora/2026-10-21-layout-routing-base-path#what-we-did)`.
+- **Heading ids** come from the heading's text: lowercase, spaces become `-`, punctuation goes, accents stay. `## Gotcha: the base path` is `#gotcha-the-base-path`; a second heading with the same text gets `-1`. The easiest way to get one: hover the heading in `pnpm dev`, click it, and copy the address. To a heading in another post: `[text](./2026-10-31-markdown-with-mdsvex#the-layout)`; on any other page: `[text](/devlog/2026-10-21-layout-routing-base-path#what-we-did)`.
 - **Renaming a heading changes its id**, and links to it stop matching. On this site the build catches it (below); links from other sites can't be checked.
 - **The build checks every link to this site**: a page that doesn't exist fails it, and so does a `#heading` that isn't on the page. Links to other sites aren't checked, so click them once before publishing.
 - **Link text says where it goes**: "the SvelteKit docs on images", not "here" or "this link". Screen reader users often jump from link to link, hearing only their text.
@@ -201,7 +219,7 @@ The same goes for `{` and `}` outside backticks: Svelte reads them as code. Fron
    grep -o '](\./[^)]*)' content/blog/drafts/<slug>/<slug>.md
    ```
 4. Is it still true? Posts describe the site as it was; if something changed since, update it.
-5. Description, tags, date; cover and its `cover:` if it has one.
+5. Description, tags, date; cover and its `cover:` if it has one. The same for the Spanish file, `<slug>.es.md`: does it say what the English one says now, and have you read it (`reviewed: true`)?
 6. Move it: `git mv content/blog/drafts/<slug> content/blog/published/`
 7. Build and look at it as visitors will:
    ```sh

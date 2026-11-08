@@ -9,7 +9,7 @@ tags: [testing, vitest, typescript]
 
 - Added Vitest 5.1 (`pnpm add -D vitest`), with `pnpm test` (run once) and `pnpm test:watch` (run again on every save).
 - No new config file: Vitest reads `vite.config.ts`. It now imports `defineConfig` from `vitest/config` (Vite's, plus types for `test`) and has `test: { include: ['src/**/*.test.ts'] }`.
-- `src/lib/content.test.ts`: 72 tests for `summary()`, `readingTime()` (now exported) and `checkTags()`, plus one per real Bitácora entry, checking each gets a description of 1 to 160 characters.
+- `src/lib/content.test.ts`: 72 tests for `summary()`, `readingTime()` (now exported) and `checkTags()`, plus one per real Devlog entry, checking each gets a description of 1 to 160 characters.
 - The first run failed one test, and it was a real bug: a body starting with a code block got the code's first line as its summary. `summary()` now removes whole fenced blocks first.
 
 ## What I learned

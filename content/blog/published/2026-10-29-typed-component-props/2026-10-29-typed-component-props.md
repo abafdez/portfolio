@@ -3,7 +3,7 @@ title: Typed props and links in Svelte 5 components
 date: 2026-10-29
 tags: [svelte, typescript, components]
 description: How I typed my hero component's props, made links that can't point to a missing page, and handled empty lists, with a few TypeScript tricks along the way.
-cover: A schema with sveltekit and typescript bulding a typed component
+cover: A schema with sveltekit and typescript building a typed component
 ---
 
 The top of my portfolio's home page is a "hero": my name, a tagline, a photo and some links. Building it was a good excuse to get Svelte 5 props and TypeScript working together properly.
@@ -71,7 +71,7 @@ In the template, the `in` operator tells TypeScript which kind of link it has:
 
 Inside the first branch, TypeScript knows `link.route` exists. This is called narrowing.
 
-Later, adding a route with a parameter (`/bitacora/[slug]`) broke this. `resolve('/bitacora/[slug]')` needs a slug too, so `resolve()` no longer accepts "any `RouteId`" on its own. These links never point to a route with a parameter, so the type says so now:
+Later, adding a route with a parameter (`/devlog/[slug]`) broke this. `resolve('/devlog/[slug]')` needs a slug too, so `resolve()` no longer accepts "any `RouteId`" on its own. These links never point to a route with a parameter, so the type says so now:
 
 ```ts
 export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
@@ -111,7 +111,7 @@ The teaser cards for "latest posts" have their own props. To let pages type thei
 </script>
 ```
 
-The card takes a link that's already resolved. The page that renders it knows the exact route, so it calls `resolve('/bitacora/[slug]', { slug })`, and that call checks the route and its params. Inside the card, the route could be any of them, and TypeScript couldn't check the params.
+The card takes a link that's already resolved. The page that renders it knows the exact route, so it calls `resolve('/devlog/[slug]', { slug })`, and that call checks the route and its params. Inside the card, the route could be any of them, and TypeScript couldn't check the params.
 
 ```ts
 import TeaserCard, { type Teaser } from '#lib/components/TeaserCard.svelte';

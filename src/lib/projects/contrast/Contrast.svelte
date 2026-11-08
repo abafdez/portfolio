@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { formatNumber, m } from '#lib/i18n/index.ts';
 	import {
 		contrast,
 		level,
@@ -58,15 +59,16 @@
 	const ratio = (colors: Colors, scheme: Scheme, text: Text, surface: Surface) =>
 		contrast(colors[scheme][text], colors[scheme][surface]);
 
-	const names: Record<Scheme, string> = { dark: 'Dark theme', light: 'Light theme' };
+	const names: Record<Scheme, () => string> = { dark: m.themeDark, light: m.themeLight };
 
 	// Cut to two decimals, not rounded: 4.497 fails AA, so it mustn't show as 4.50.
-	const format = (ratio: number) => (Math.floor(ratio * 100) / 100).toFixed(2);
+	// Then written the page's way: 4.50 in English, 4,50 in Spanish.
+	const format = (ratio: number) => formatNumber(Math.floor(ratio * 100) / 100, 2);
 </script>
 
 <div class="pick">
 	<label>
-		Text
+		{m.contrastText()}
 		<select bind:value={text} onchange={share}>
 			{#each texts as option (option)}
 				<option value={option}>--{option}</option>
@@ -74,7 +76,7 @@
 		</select>
 	</label>
 	<label>
-		Surface
+		{m.contrastSurface()}
 		<select bind:value={surface} onchange={share}>
 			{#each surfaces as option (option)}
 				<option value={option}>--{option}</option>
@@ -86,7 +88,7 @@
 <div class="themes">
 	{#each schemes as scheme (scheme)}
 		<section aria-labelledby="{scheme}-title">
-			<h2 id="{scheme}-title">{names[scheme]}</h2>
+			<h2 id="{scheme}-title">{names[scheme]()}</h2>
 			<!-- CSS draws the pair in this theme (data-theme declares the tokens again,
 			     see tokens.css), so the sample needs no JS. -->
 			<p
@@ -95,7 +97,7 @@
 				style:color="var(--{text})"
 				style:background-color="var(--{surface})"
 			>
-				The quick brown fox jumps over the lazy dog.
+				{m.contrastSample()}
 			</p>
 			<!-- Always there, empty until the tokens are read: a line that appeared later
 			     would push everything under it down (a layout shift). -->
@@ -103,7 +105,7 @@
 				{#if colors}
 					{@const pair = ratio(colors, scheme, text, surface)}
 					<strong>{format(pair)}:1</strong>
-					{level(pair)}
+					{m.contrastLevel({ level: level(pair) })}
 				{:else}
 					&nbsp;
 				{/if}
@@ -113,14 +115,12 @@
 </div>
 
 {#if colors}
-	<h2 class="all">All pairs</h2>
-	<p class="note">
-		AA needs 4.5:1 for body text, AAA 7:1. "large" passes for large text only (3:1).
-	</p>
+	<h2 class="all">{m.contrastAllPairs()}</h2>
+	<p class="note">{m.contrastNote()}</p>
 	<div class="tables">
 		{#each schemes as scheme (scheme)}
 			<table>
-				<caption>{names[scheme]}</caption>
+				<caption>{names[scheme]()}</caption>
 				<thead>
 					<tr>
 						<td></td>
@@ -136,7 +136,7 @@
 							{#each surfaces as column (column)}
 								{@const pair = ratio(colors, scheme, row, column)}
 								<td class:current={row === text && column === surface}>
-									{format(pair)} <span>{level(pair)}</span>
+									{format(pair)} <span>{m.contrastLevel({ level: level(pair) })}</span>
 								</td>
 							{/each}
 						</tr>
@@ -147,7 +147,7 @@
 	</div>
 {:else}
 	<!-- Without JS this stays: the ratios are computed in the browser. -->
-	<p class="note">The ratios show up once the page's JavaScript has read the tokens.</p>
+	<p class="note">{m.contrastNoJs()}</p>
 {/if}
 
 <style>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { m } from '#lib/i18n/index.ts';
 	import { onMount } from 'svelte';
 	import PaletteIcon from '@lucide/svelte/icons/palette';
 	import { palettes, defaultPalette, isPalette, type PaletteId } from '#lib/palettes.ts';
@@ -42,8 +43,8 @@
 <button
 	type="button"
 	popovertarget="palettes"
-	aria-label="Color theme"
-	title="Color theme"
+	aria-label={m.paletteLabel()}
+	title={m.paletteLabel()}
 	disabled={!current}
 >
 	<PaletteIcon aria-hidden="true" />
@@ -52,10 +53,14 @@
 <div id="palettes" class="menu" popover>
 	<!-- Disabled until mounted: without JS, choosing would do nothing. -->
 	<fieldset disabled={!current}>
-		<legend>Color theme</legend>
+		<legend>{m.paletteLabel()}</legend>
 		{#each palettes as palette (palette.id)}
 			<!-- Who made it, as a hint on hover (the licence notice is in the theme's CSS). -->
-			<label title={'credit' in palette ? `${palette.name} by ${palette.credit.by}` : undefined}>
+			<label
+				title={'credit' in palette
+					? m.paletteCredit({ name: palette.name, by: palette.credit.by })
+					: undefined}
+			>
 				<input
 					type="radio"
 					name="palette"

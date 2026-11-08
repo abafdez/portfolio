@@ -3,7 +3,7 @@ title: Deploying SvelteKit 3 to GitHub Pages, step by step
 date: 2026-10-20
 tags: [sveltekit, github-actions, github-pages, ci]
 description: My GitHub Actions setup for a solo SvelteKit 3 project. PRs run checks, merges to main deploy, and an artifact connects the two jobs.
-cover: Visual representation of the pipelion for deployment.
+cover: Visual representation of the pipeline for deployment.
 ---
 
 My portfolio is a static SvelteKit 3 site hosted on GitHub Pages. Getting the deploy working took a string of `fix:` commits, so this post walks through the final workflow and explains what each piece is for.
@@ -173,7 +173,7 @@ Most templates include `actions/configure-pages`. It reads the repo's Pages sett
 
 ## Gotcha: the base path
 
-A project repo deploys to `https://<user>.github.io/<repo>/`, not to the domain root. SvelteKit needs to know that through `paths.base`, and links must use `resolve()` from `$app/paths` instead of hard-coded `/about/` URLs. Otherwise the CSS loads (asset paths are relative by default), but internal links 404. [Read more](/bitacora/2026-10-21-layout-routing-base-path/) about how this configuration works in the [devlog](/bitacora/).
+A project repo deploys to `https://<user>.github.io/<repo>/`, not to the domain root. SvelteKit needs to know that through `paths.base`, and links must use `resolve()` from `$app/paths` instead of hard-coded `/about/` URLs. Otherwise the CSS loads (asset paths are relative by default), but internal links 404. [Read more](/devlog/2026-10-21-layout-routing-base-path/) about how this configuration works in the [devlog](/devlog/).
 
 ## What's next
 

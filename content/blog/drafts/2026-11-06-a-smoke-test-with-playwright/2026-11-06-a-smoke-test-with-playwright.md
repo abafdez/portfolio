@@ -86,6 +86,8 @@ A few things I didn't expect:
 
 A second test opens every link directly, without clicking: a full page load, like a visitor coming from a search result. It checks for a `200` and a title ending in my name.
 
+**Update:** the site is in English and Spanish now, so both tests run once per language, starting from `/` and from `/es`. The Spanish nav is called "Navegación principal", every link in it must stay under `/es`, and every page must say `lang="es-ES"`. A third test clicks the language switch there and back.
+
 ## Catching errors that don't show
 
 `collectErrors` is the part that sees what the build can't:
