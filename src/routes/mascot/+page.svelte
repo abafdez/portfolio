@@ -17,7 +17,7 @@
 <Seo title="Mascot" description="Review sheet for the site's mascot while it's designed." noindex />
 
 <h1>Mascot</h1>
-<ul>
+<ul class="sheet">
 	{#each looks as look (look.section)}
 		<li>
 			<Mascot costume={look.costume} />

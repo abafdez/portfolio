@@ -127,7 +127,12 @@
 
 	/* inline-size: 100%: in the body's grid, margin-inline: auto would otherwise shrink
 	   main to fit its content, so each page's width would depend on how much text it has. */
+	/* min-inline-size: 0: main is a grid item (body is a grid), and a grid item won't
+	   go narrower than its widest content by default. One wide table made the whole
+	   page wider than a phone; now main keeps the column's width and the table scrolls
+	   in its own box (tables.ts). */
 	main {
+		min-inline-size: 0;
 		inline-size: 100%;
 		max-inline-size: var(--content-width);
 		margin-inline: auto;
@@ -297,6 +302,28 @@
 		white-space: nowrap;
 	}
 
+	/* A sheet: the page's own paper, without the grid. The rule (CLAUDE.md, Identity):
+	   the blueprint grid is for display headings and empty space; text at body size or
+	   smaller sits on a surface, where no line runs through its letters. Opaque
+	   --surface-1, the same colour as the page under the grid, so it reads as paper
+	   laid on the drawing board, not as a box. Inner panels (controls, code) use
+	   --surface-2 inside it, as before. */
+	.sheet {
+		padding: var(--size-5) clamp(var(--size-4), 4vw, var(--size-7));
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
+		background-color: var(--surface-1);
+
+		/* On a phone, edge to edge: it takes back main's side padding (size-3), so what's
+		   inside has the width it had before sheets (a table, a form row), and paper
+		   from side to side reads as the page, not a box in it. */
+		@media (width < 36rem) {
+			margin-inline: calc(-1 * var(--size-3));
+			border-inline: none;
+			border-radius: 0;
+		}
+	}
+
 	/* Rendered markdown (a Devlog entry, later a blog post). mdsvex makes its HTML in
 	   another component, so a page's scoped styles can't reach it; a global class can.
 	   Space goes between siblings, never before the first one or after the last. */
@@ -418,9 +445,98 @@
 			}
 		}
 
+		/* A table in its scroll box (tables.ts): on a phone a wide one scrolls inside it,
+		   not the whole page. The box takes the keyboard focus, so it shows a ring. */
+		& .table-scroll {
+			max-inline-size: 100%;
+			overflow-x: auto;
+
+			&:focus-visible {
+				outline: var(--border-size-2) solid var(--brand);
+				outline-offset: 2px;
+			}
+		}
+
 		/* ![alt](./x.png "Caption"): the caption under the image, small and muted. */
 		& figcaption {
 			margin-block-start: var(--size-2);
+			font-size: var(--font-size-0);
+			color: var(--text-2);
+		}
+
+		/* ```yt (blocks.ts): a YouTube video as a card that links to it. The picture is
+		   16:9 (YouTube's 4:3 thumbnails lose their black bars to object-fit), or the
+		   blueprint grid when the post has no thumbnail. */
+		& .yt a {
+			display: grid;
+			max-inline-size: 40rem;
+			overflow: clip;
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			background: var(--surface-2);
+			color: var(--text-1);
+			text-decoration: none;
+
+			&:hover {
+				border-color: var(--brand);
+			}
+
+			&:focus-visible {
+				outline: var(--border-size-2) solid var(--brand);
+				outline-offset: var(--border-size-2);
+			}
+		}
+
+		& .yt-picture {
+			position: relative;
+			display: grid;
+			place-items: center;
+			aspect-ratio: 16 / 9;
+			background-image:
+				linear-gradient(var(--grid-line-major) 1px, transparent 1px),
+				linear-gradient(90deg, var(--grid-line-major) 1px, transparent 1px);
+			background-size: var(--grid-size) var(--grid-size);
+			background-position: center;
+
+			/* enhanced:img makes a <picture> around the <img>: both fill the box. */
+			& :is(picture, img) {
+				position: absolute;
+				inset: 0;
+				inline-size: 100%;
+				block-size: 100%;
+				object-fit: cover;
+			}
+		}
+
+		& .yt-play {
+			position: relative;
+			inline-size: 4rem;
+			block-size: 4rem;
+			padding: var(--size-3);
+			border-radius: var(--radius-round);
+			background: var(--brand);
+			fill: var(--surface-1);
+			box-shadow: var(--shadow-3);
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
+			& .yt-play {
+				transition: scale 0.3s var(--ease-spring-3);
+			}
+
+			& .yt a:hover .yt-play {
+				scale: 1.1;
+			}
+		}
+
+		& .yt-title {
+			padding: var(--size-3) var(--size-4) 0;
+			font-family: var(--font-label);
+			font-size: var(--font-size-2);
+		}
+
+		& .yt-where {
+			padding: var(--size-1) var(--size-4) var(--size-3);
 			font-size: var(--font-size-0);
 			color: var(--text-2);
 		}

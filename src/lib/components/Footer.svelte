@@ -20,8 +20,10 @@
 </footer>
 
 <style>
+	/* The page's paper behind it, like the header's bar: small text, so no grid. */
 	footer {
 		border-block-start: var(--border-size-1) solid var(--surface-3);
+		background-color: var(--surface-1);
 		font-family: var(--font-label);
 		color: var(--text-2);
 	}

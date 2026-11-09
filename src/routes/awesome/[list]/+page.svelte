@@ -19,7 +19,7 @@
 />
 
 <!-- data-morph-*: where the list's card lands when it opens this page (morph.ts). -->
-<header data-morph-page>
+<header class="sheet" data-morph-page>
 	<h1 {lang} data-morph="title">{list.title}</h1>
 	<p {lang} data-morph="description">{list.description}</p>
 	<p class="meta" data-morph="meta">

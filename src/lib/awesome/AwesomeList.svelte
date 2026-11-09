@@ -75,7 +75,7 @@
 
 <!-- In the prerendered HTML too, but invisible until JS runs (see the styles): if it
      only appeared then, it would push the whole list down (a layout shift). -->
-<search class:ready bind:this={filters}>
+<search class="sheet" class:ready bind:this={filters}>
 	<label>
 		{m.awesomeSearch()}
 		<!-- A function binding: a getter and a setter instead of a variable. The

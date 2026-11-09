@@ -96,6 +96,8 @@ Los tres valores pasaron del componente a `tokens.css`, junto a los demás token
 
 Tengo pensados temas con nombre (Tokyo Night, Dracula…) que sobrescriban mis tokens. Un tema con otro `--brand` cambia todos los ratios de arriba, así que los valores tienen que vivir donde un tema pueda sobrescribirlos, con un comentario que diga que hay que volver a comprobarlos.
 
+**Actualización (2026-11-09):** el contraste no era todo el problema. Incluso a 4,5:1, una línea que atraviesa las letras de un texto pequeño cansa al leer. Así que el sitio tiene ahora una regla: la cuadrícula es para los títulos y el espacio vacío, y el texto de tamaño normal o menor va sobre una "hoja", una tarjeta del color de la propia página sin cuadrícula detrás. Las proporciones de arriba siguen importando para los títulos y lo que quede sobre la cuadrícula. Más en la entrada del Devlog [Papel sobre el tablero de dibujo](/devlog/2026-11-09-paper-on-the-drawing-board).
+
 ## Enlaces
 
 - [WCAG 2.2: contraste (mínimo)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)

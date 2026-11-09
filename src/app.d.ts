@@ -17,6 +17,9 @@ declare global {
 			// This page's name in the breadcrumbs (Breadcrumbs.svelte). Only pages inside a
 			// section set it, in their own load: a post's title, a tool's name.
 			crumb?: string;
+			// A level between the section and the page, for pages nested deeper: a tool
+			// in the toolbox (Projects / Toolbox / Base64). In the page's language.
+			crumbParent?: { href: import('#lib/links.ts').RouteWithoutParams; label: string };
 			// The page's language, from its URL (/es/… is Spanish). Set by the root layout
 			// for every page; read it through getLocale() in #lib/i18n.
 			locale?: import('#lib/i18n/locales.ts').Locale;

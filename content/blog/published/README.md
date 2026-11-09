@@ -73,6 +73,7 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 - **File size:** git keeps every version of every file forever, even after you delete it. Crop to what matters, and keep originals under about 1 MB.
 - **Alt text is required**: the build fails without it. It says what the image shows, for someone who can't see it. Don't start with "Image of…".
 - **A caption** (the quoted part) is for everyone: context, a source, what to notice. Don't repeat the alt text in it.
+- **No double quotes in alt text or captions**: the markdown step doesn't escape them, so the build stops and says so. Use `'` or curly quotes (“ ”) instead.
 - **Screenshots: check for personal data before committing**: open tabs, notifications, email addresses, the CV builder with real details. Once it's pushed, it's public.
 
 ### Videos
@@ -145,6 +146,29 @@ ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p
 ```
 
 Higher `-crf` means a smaller file and lower quality; raise it if a file is too big.
+
+### YouTube videos
+
+Someone else's talk or tutorial: a `yt` block. It shows the video's picture and title as a card that opens the video on YouTube in a new tab. **Nothing loads from Google on your page**: no player, no scripts, no cookies, until a reader clicks.
+
+````md
+```yt
+src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo
+title: Plain Text, by Dylan Beattie (NDC Copenhagen 2022)
+thumbnail: ./plain-text-talk.jpg
+```
+````
+
+| Field       | Required | What it is                                                                                           |
+| ----------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `src`       | yes      | The video's link, any shape (`youtube.com/watch?v=…`, `youtu.be/…`, `/shorts/…`). A `?t=90` is kept. |
+| `title`     | yes      | The card's text: what the reader is about to open. Usually the video's title and who made it.        |
+| `thumbnail` | no       | A picture next to the post, 16:9. Without one, a blueprint tile with a play sign.                    |
+| `caption`   | no       | A line under the card, like an image caption.                                                        |
+
+- **The thumbnail is a file of yours, not a link to YouTube's**: a picture from `i.ytimg.com` would be a request to Google on every visit. To save the video's own: `https://i.ytimg.com/vi/<id>/maxresdefault.jpg` (1280 × 720; `hqdefault.jpg` if that one is missing, it's 4:3 and loses its black bars). It's the video owner's picture, used to link to their video.
+- **"Opens in a new tab" is written on the card**, in the post's language, so nobody is surprised by a new tab.
+- A link that isn't YouTube, or a missing `title`, fails the build and names the file.
 
 ## Callouts
 

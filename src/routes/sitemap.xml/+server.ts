@@ -4,6 +4,7 @@ import { allLists } from '#lib/awesome/awesome.ts';
 import { allLog, allPosts, isTranslated, logTags, postTags } from '#lib/content.ts';
 import { sections } from '#lib/links.ts';
 import { projects } from '#lib/projects/projects.ts';
+import { tools } from '#lib/projects/toolbox/tools.ts';
 import type { RequestHandler } from './$types';
 
 // Every page search engines should know about, as a sitemap (sitemaps.org). Built from
@@ -26,6 +27,10 @@ const pages: Page[] = [
 	// Every project is at /projects/<slug>, whether [tool] builds it or it has a route of
 	// its own (/projects/cv).
 	...projects.map(({ slug }) => ({ path: `${resolve('/projects')}/${slug}`, translated: true })),
+	...tools.map(({ slug }) => ({
+		path: resolve('/projects/toolbox/[tool]', { tool: slug }),
+		translated: true
+	})),
 	...allLists.map(({ slug, updated, translated }) => ({
 		path: resolve('/awesome/[list]', { list: slug }),
 		updated,

@@ -81,4 +81,4 @@ onNavigate((navigation) => {
 
 Todos los pares que uso pasan el AA en los dos temas. Dos que no uso no lo pasan: en el tema claro, `--code-constant` y `--code-type` sobre `--surface-3` solo llegan a 4,34 y 4,39, suficiente únicamente para texto grande. El código va sobre `--surface-2`, así que de momento es una nota, no un bug.
 
-Puedes probarlo [aquí](/projects/contrast/)
+Prueba el [comprobador de contraste](/projects/contrast/).

@@ -9,8 +9,11 @@
 
 <Seo title={m.awesomeTitle()} description={m.awesomeDescription()} />
 
-<h1>{m.awesomeTitle()}</h1>
-<p class="intro">{m.awesomeDescription()}</p>
+<!-- On a sheet: the intro is body text (the grid is for headings). -->
+<header class="sheet">
+	<h1>{m.awesomeTitle()}</h1>
+	<p class="intro">{m.awesomeDescription()}</p>
+</header>
 
 <section aria-labelledby="lists-title">
 	<h2 id="lists-title">{m.awesomeLists()}</h2>

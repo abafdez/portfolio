@@ -19,7 +19,8 @@
 	translated={data.translated}
 />
 
-<article>
+<!-- The whole article on a sheet: long text never runs over the grid. -->
+<article class="sheet">
 	<ArticleHeader {...entry} tagHref={devlogTag} />
 	<div class="prose" {lang}><Body /></div>
 </article>

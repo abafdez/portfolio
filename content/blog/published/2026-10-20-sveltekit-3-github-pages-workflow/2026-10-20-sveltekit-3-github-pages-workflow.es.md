@@ -172,7 +172,7 @@ Casi todas las plantillas incluyen `actions/configure-pages`. Lee la configuraci
 
 ## Trampa: la ruta base
 
-Un repositorio de proyecto se despliega en `https://<usuario>.github.io/<repo>/`, no en la raíz del dominio. SvelteKit tiene que saberlo mediante `paths.base`, y los enlaces tienen que usar `resolve()` de `$app/paths` en vez de URLs escritas a mano como `/about/`. Si no, el CSS carga (las rutas de los recursos son relativas por defecto), pero los enlaces internos dan 404. [Lee más](/devlog/2026-10-21-layout-routing-base-path/) sobre cómo funciona esta configuración en la [devlog](/devlog/).
+Un repositorio de proyecto se despliega en `https://<usuario>.github.io/<repo>/`, no en la raíz del dominio. SvelteKit tiene que saberlo mediante `paths.base`, y los enlaces tienen que usar `resolve()` de `$app/paths` en vez de URLs escritas a mano como `/about/`. Si no, el CSS carga (las rutas de los recursos son relativas por defecto), pero los enlaces internos dan 404. Cómo funciona esta configuración está en la entrada del Devlog [Layout, rutas y la ruta base de GitHub Pages](/devlog/2026-10-21-layout-routing-base-path/).
 
 ## Lo siguiente
 

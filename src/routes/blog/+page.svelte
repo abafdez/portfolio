@@ -12,8 +12,11 @@
 
 <Seo title={m.blogTitle()} description={m.blogDescription()} />
 
-<h1>{m.blogTitle()}</h1>
-<p class="intro">{m.blogDescription()}</p>
+<!-- On a sheet: the intro is body text (the grid is for headings). -->
+<header class="sheet">
+	<h1>{m.blogTitle()}</h1>
+	<p class="intro">{m.blogDescription()}</p>
+</header>
 
 <TagColumns tags={data.tags} href={blogTag} countLabel={(count) => m.tagPostCount({ count })}>
 	{#each data.years as [year, posts], y (year)}

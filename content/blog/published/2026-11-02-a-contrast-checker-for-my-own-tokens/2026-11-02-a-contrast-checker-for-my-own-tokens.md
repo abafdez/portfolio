@@ -82,4 +82,4 @@ onNavigate((navigation) => {
 
 All the pairs I use pass AA in both themes. Two I don't use don't: in the light theme, `--code-constant` and `--code-type` on `--surface-3` reach only 4.34 and 4.39, enough for large text only. Code sits on `--surface-2`, so for now that's a note, not a bug.
 
-Check it out [here](/projects/contrast/)
+Try the [contrast checker](/projects/contrast/).

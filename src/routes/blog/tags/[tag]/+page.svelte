@@ -12,9 +12,12 @@
 
 <Seo title="#{tag}" section={m.navBlog()} description={m.tagDescription({ tag })} />
 
-<a class="back" href={route('/blog')}>{m.tagAllPosts()}</a>
-<h1>#{tag}</h1>
-<p class="intro">{m.tagIntro({ count })}</p>
+<!-- On a sheet: the intro is body text (the grid is for headings). -->
+<header class="sheet">
+	<a class="back" href={route('/blog')}>{m.tagAllPosts()}</a>
+	<h1>#{tag}</h1>
+	<p class="intro">{m.tagIntro({ count })}</p>
+</header>
 
 {#each years as [year, posts] (year)}
 	<section aria-labelledby="year-{year}">

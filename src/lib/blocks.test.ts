@@ -72,3 +72,56 @@ describe('renderBlock', () => {
 		expect(() => video(yaml)).toThrow(error);
 	});
 });
+
+describe('yt', () => {
+	const yt = (yaml: string, file = 'post.md') => renderBlock('yt', yaml, file)!;
+	const minimal = 'src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo\ntitle: Plain Text';
+
+	test('a link that opens YouTube in a new tab, and nothing from Google on the page', () => {
+		const out = yt(minimal);
+		expect(out).toContain(
+			'<a href="https://www.youtube.com/watch?v=gd5uJ7Nlvvo" target="_blank" rel="external noopener noreferrer">'
+		);
+		expect(out).toContain('<span class="yt-title">Plain Text</span>');
+		expect(out).toContain('opens in a new tab');
+		expect(out).not.toMatch(/<iframe|<script|ytimg|youtube-nocookie/);
+	});
+
+	test('in the post’s language', () => {
+		expect(yt(minimal, 'post.es.md')).toContain('se abre en una pestaña nueva');
+	});
+
+	test.each([
+		'https://youtu.be/gd5uJ7Nlvvo',
+		'https://m.youtube.com/watch?v=gd5uJ7Nlvvo&feature=share',
+		'https://www.youtube.com/embed/gd5uJ7Nlvvo',
+		'https://www.youtube.com/shorts/gd5uJ7Nlvvo'
+	])('any link shape becomes the same link: %s', (src) => {
+		expect(yt(`src: ${src}\ntitle: T`)).toContain(
+			'href="https://www.youtube.com/watch?v=gd5uJ7Nlvvo"'
+		);
+	});
+
+	test('keeps a start time', () => {
+		expect(yt('src: https://youtu.be/gd5uJ7Nlvvo?t=90\ntitle: T')).toContain(
+			'href="https://www.youtube.com/watch?v=gd5uJ7Nlvvo&#38;t=90"'
+		);
+	});
+
+	test('a thumbnail next to the post, decorative (the title names the link), and a caption', () => {
+		const out = yt(`${minimal}\nthumbnail: ./talk.jpg\ncaption: Dylan Beattie on plain text.`);
+		expect(out).toContain('<img src="./talk.jpg" alt="" />');
+		expect(out).toContain('<figcaption>Dylan Beattie on plain text.</figcaption>');
+		// The markdown step makes the thumbnail an import (a missing file fails the build).
+		expect(enhanceMedia(`<script>\n</script>\n${out}`, 'post.md')).toContain(
+			"import __image0 from './talk.jpg?enhanced';"
+		);
+	});
+
+	test('fails on a link that is not YouTube, and without a title', () => {
+		expect(() => yt('src: https://vimeo.com/123\ntitle: T')).toThrow('should be a YouTube link');
+		expect(() => yt('src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo')).toThrow(
+			'needs a "title" field'
+		);
+	});
+});

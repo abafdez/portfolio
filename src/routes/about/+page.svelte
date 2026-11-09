@@ -72,12 +72,16 @@
      skills scroll on the right. -->
 <div class="about">
 	<div class="intro">
-		<h1>{m.aboutHeading()}</h1>
-		<p class="lead">{m.aboutLead()}</p>
-		<p>{m.aboutCvOnRequest()}</p>
-		{@render cv()}
+		<!-- Two sheets, not one: the column is as tall as the page (so the aside can
+		     stick), and one sheet that tall would be a box down the whole page. -->
+		<div class="sheet">
+			<h1>{m.aboutHeading()}</h1>
+			<p class="lead">{m.aboutLead()}</p>
+			<p>{m.aboutCvOnRequest()}</p>
+			{@render cv()}
+		</div>
 
-		<div class="aside">
+		<div class="aside sheet">
 			<!-- Radios, not toggle buttons: one profile at a time, and arrow keys move
 			     between them. Only with JS, since without it they can't do anything. -->
 			{#if ready}
@@ -113,7 +117,7 @@
 			<SkillWindow {group} open={i === 0} />
 		{/each}
 
-		<section aria-labelledby="cv-title">
+		<section class="sheet" aria-labelledby="cv-title">
 			<h2 id="cv-title">{m.aboutCvTitle()}</h2>
 			<p>{m.aboutCvText()}</p>
 			{@render cv()}
@@ -130,6 +134,23 @@
 
 	.lead {
 		font-size: var(--font-size-3);
+	}
+
+	/* Its own sheet under the intro's; the filter's top margin isn't needed in it. */
+	.aside {
+		margin-block-start: var(--size-4);
+
+		& > :first-child {
+			margin-block-start: 0;
+		}
+
+		/* Without JS on a narrow screen it would be empty (no filter, and the nav only
+		   shows on wide screens): no empty sheet. */
+		@media (width < 64rem) {
+			&:not(:has(.profiles)) {
+				display: none;
+			}
+		}
 	}
 
 	/* Same buttons as the hero's links, with an icon. */

@@ -33,8 +33,19 @@ export function enhanceMedia(code: string, id: string): string {
 	const html = code
 		.replace(captioned, '<figure>$1><figcaption>$2</figcaption></figure>')
 		.replace(localImage, (_, src: string, attributes: string) => {
-			if (!/\salt="[^"]+"/.test(attributes)) {
+			// An alt attribute is required. Markdown can't write an empty one (mdsvex
+			// leaves alt out for ![](./x.png)), so alt="" only comes from a block that
+			// marks its picture as decorative on purpose (```yt, blocks.ts).
+			if (!/\salt="[^"]*"/.test(attributes)) {
 				throw new Error(`${id}: ${src} needs alt text: ![What it shows](${src})`);
+			}
+			// mdsvex 0.12 doesn't escape quotes: ![A "big" one](./x.png) becomes
+			// alt="A "big" one", which ends the attribute early and breaks the page with
+			// nothing but a 500. A value's closing quote is followed by a space, / or >.
+			if (/="[^"]*"[^\s/>]/.test(attributes)) {
+				throw new Error(
+					`${id}: ${src} has a double quote in its alt text or caption; use ' or “ ” instead`
+				);
 			}
 			const name = `__image${imports.length}`;
 			imports.push(`import ${name} from '${src}?enhanced';`);

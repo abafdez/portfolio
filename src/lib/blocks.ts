@@ -13,10 +13,12 @@
 // block with its language and the file's name. Its own file so it can be unit-tested
 // (blocks.test.ts).
 import { parse } from 'yaml';
+import { fileLocale } from '#lib/i18n/locales.ts';
 
 // What a field may hold. A file is a path next to the post (./clip.mp4): the markdown
 // step turns it into an import (enhance-media.ts), so a missing file fails the build.
-type Kind = 'text' | 'file' | 'size';
+// A youtube is a link to a video on youtube.com or youtu.be.
+type Kind = 'text' | 'file' | 'size' | 'youtube';
 type Field = { kind: Kind; required: boolean };
 const required = <K extends Kind>(kind: K) => ({ kind, required: true as const });
 const optional = <K extends Kind>(kind: K) => ({ kind, required: false as const });
@@ -30,10 +32,11 @@ type Values<Fields extends Record<string, Field>> = {
 		: Value<Fields[Name]> | undefined;
 };
 
-type Block = { fields: Record<string, Field>; render: (values: never) => string };
+// render() also gets the post's file name, for text in its language (<slug>.es.md).
+type Block = { fields: Record<string, Field>; render: (values: never, file: string) => string };
 function block<Fields extends Record<string, Field>>(
 	fields: Fields,
-	render: (values: Values<Fields>) => string
+	render: (values: Values<Fields>, file: string) => string
 ) {
 	return { fields, render };
 }
@@ -64,8 +67,69 @@ export const blocks: Record<string, Block> = {
 				? `<figure>${video}<figcaption>${escape(caption)}</figcaption></figure>`
 				: video;
 		}
+	),
+
+	// A YouTube video, without YouTube on the page: its picture and title, as a link that
+	// opens it on youtube.com in a new tab. An embedded player loads Google's scripts and
+	// cookies on every visit, watched or not; this loads nothing from Google until the
+	// reader clicks. The thumbnail is a file next to the post for the same reason (one
+	// from i.ytimg.com would be a request to Google too). Without one, a blueprint tile.
+	yt: block(
+		{
+			src: required('youtube'),
+			title: required('text'), // the link's text: what the reader is about to open
+			thumbnail: optional('file'), // 16:9; YouTube's 4:3 ones get their bars cropped
+			caption: optional('text')
+		},
+		({ src, title, thumbnail, caption }, file) => {
+			const where = {
+				en: 'Watch on YouTube · opens in a new tab',
+				es: 'Ver en YouTube · se abre en una pestaña nueva'
+			}[fileLocale(file)];
+			// alt="": the title next to it is the link's name; the picture adds nothing a
+			// screen reader needs.
+			const picture = thumbnail ? `<img src="${escape(thumbnail)}" alt="" />` : '';
+			const link =
+				`<a href="${escape(youtubeUrl(src))}" target="_blank" rel="external noopener noreferrer">` +
+				`<span class="yt-picture">${picture}${play}</span>` +
+				`<span class="yt-title">${escape(title)}</span>` +
+				`<span class="yt-where">${where}</span></a>`;
+			return `<figure class="yt">${link}${caption ? `<figcaption>${escape(caption)}</figcaption>` : ''}</figure>`;
+		}
 	)
 };
+
+// A play sign over the picture (drawn here, not YouTube's logo, which is theirs).
+const play =
+	'<svg class="yt-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5v11l9-5.5z" /></svg>';
+
+// The video's id from any of YouTube's link shapes: youtube.com/watch?v=ID,
+// youtu.be/ID, youtube.com/shorts/ID, /embed/ID, /live/ID.
+export function youtubeId(src: string): string | undefined {
+	let url: URL;
+	try {
+		url = new URL(src);
+	} catch {
+		return;
+	}
+	const host = url.hostname.replace(/^(www|m)\./, '');
+	const id =
+		host === 'youtu.be'
+			? url.pathname.slice(1)
+			: host === 'youtube.com'
+				? (url.searchParams.get('v') ??
+					url.pathname.match(/^\/(?:shorts|embed|live)\/([^/]+)/)?.[1])
+				: undefined;
+	return id && /^[\w-]{11}$/.test(id) ? id : undefined;
+}
+
+// One link shape for every video, keeping a start time (?t=90) if the link had one.
+function youtubeUrl(src: string) {
+	const url = new URL(`https://www.youtube.com/watch?v=${youtubeId(src)}`);
+	const start = new URL(src).searchParams.get('t');
+	if (start) url.searchParams.set('t', start);
+	return url.href;
+}
 
 // The markup for a ```name block, or undefined if name isn't one of ours (then it's
 // highlighted as code). Fails the build on fields the block doesn't have, on missing
@@ -102,7 +166,7 @@ export function renderBlock(lang: string | null | undefined, code: string, file:
 		const problem = check(field.kind, value);
 		if (problem) fail(`"${name}" ${problem}`);
 	}
-	return render(given as never);
+	return render(given as never, file);
 }
 
 // What's wrong with a value, or undefined if nothing.
@@ -114,6 +178,9 @@ function check(kind: Kind, value: unknown): string | undefined {
 	}
 	if (typeof value !== 'string')
 		return 'should be text (in quotes if YAML reads it as something else)';
+	if (kind === 'youtube' && !youtubeId(value)) {
+		return `should be a YouTube link, like https://www.youtube.com/watch?v=… (got "${value}")`;
+	}
 	if (kind === 'file' && !value.startsWith('./')) {
 		return `should be a file next to the post, starting with ./ (got "${value}")`;
 	}

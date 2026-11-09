@@ -11,8 +11,11 @@
 
 <Seo title={m.devlogTitle()} description={m.devlogDescription()} />
 
-<h1>{m.devlogTitle()}</h1>
-<p class="intro">{m.devlogDescription()}</p>
+<!-- On a sheet: the intro is body text (the grid is for headings). -->
+<header class="sheet">
+	<h1>{m.devlogTitle()}</h1>
+	<p class="intro">{m.devlogDescription()}</p>
+</header>
 
 <TagColumns tags={data.tags} href={devlogTag} countLabel={(count) => m.tagEntryCount({ count })}>
 	<Timeline phases={data.phases} />

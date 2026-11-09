@@ -49,6 +49,26 @@ describe('enhanceMedia: images', () => {
 			'post.md: ./a.png needs alt text'
 		);
 	});
+
+	// What mdsvex 0.12 makes of ![A "quoted" word](./a.png): the quotes aren't escaped.
+	test.each([
+		['<p><img src="./a.png" alt="A "quoted" word"></p>'],
+		['<p><img src="./a.png" alt="A" title="Cap "x""></p>']
+	])('fails on a double quote in alt text or a caption: %s', (html) => {
+		expect(() => enhanceMedia(post(html), 'post.md')).toThrow(
+			'post.md: ./a.png has a double quote in its alt text or caption'
+		);
+	});
+
+	test('an explicit alt="" (a decorative picture from a block) is allowed', () => {
+		const out = enhanceMedia(post('<p><img src="./a.png" alt="" /></p>'), 'post.md');
+		expect(out).toContain('<enhanced:img src={__image0} alt="" loading="lazy" />');
+	});
+
+	test("single and curly quotes are fine: ![It's “big”](./a.png)", () => {
+		const out = enhanceMedia(post('<p><img src="./a.png" alt="It\'s “big”"></p>'), 'post.md');
+		expect(out).toContain('alt="It\'s “big”"');
+	});
 });
 
 describe('enhanceMedia: videos', () => {

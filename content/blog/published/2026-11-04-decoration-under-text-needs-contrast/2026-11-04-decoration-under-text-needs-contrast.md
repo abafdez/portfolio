@@ -97,6 +97,8 @@ The three values moved from the component to `tokens.css`, next to the other gri
 
 I'm planning named themes (Tokyo Night, Dracula…) as overrides of my tokens. A theme with a different `--brand` changes every ratio above, so the values have to live where a theme can override them, with a comment that says to re-check them.
 
+**Update (2026-11-09):** contrast wasn't the whole problem. Even at 4.5:1, a line running through the letters of small text makes it tiring to read. So the site now has a rule: the grid is for headings and empty space, and text at body size or smaller sits on a "sheet", a card in the page's own colour with no grid behind it. The ratios above still matter for headings and anything else left on the grid. More in the Devlog entry [Paper on the drawing board](/devlog/2026-11-09-paper-on-the-drawing-board).
+
 ## Links
 
 - [WCAG 2.2: Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)

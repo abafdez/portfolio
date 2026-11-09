@@ -7,8 +7,11 @@
 
 <Seo title={m.projectsTitle()} description={m.projectsDescription()} />
 
-<h1>{m.projectsTitle()}</h1>
-<p class="intro">{m.projectsDescription()}</p>
+<!-- On a sheet: the intro is body text (the grid is for headings). -->
+<header class="sheet">
+	<h1>{m.projectsTitle()}</h1>
+	<p class="intro">{m.projectsDescription()}</p>
+</header>
 
 <!-- Only the list is imported here: each tool's code loads on its own page.
      The cards' titles are h3s, so the section has an h2 (headings don't skip levels). -->

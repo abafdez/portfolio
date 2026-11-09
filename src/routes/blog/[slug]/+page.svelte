@@ -22,7 +22,8 @@
 	image={cover && post.cover ? { src: cover.preview, alt: post.cover } : undefined}
 />
 
-<article>
+<!-- The whole article on a sheet: long text never runs over the grid. -->
+<article class="sheet">
 	<ArticleHeader
 		{...post}
 		coverImage={cover?.picture}

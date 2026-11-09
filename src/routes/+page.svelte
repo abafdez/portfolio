@@ -50,7 +50,8 @@
 <!-- Wide screens: the intro stays put on the left while the sections scroll on the
      right. Narrow screens: one column, intro first. -->
 <div class="landing">
-	<div class="intro">
+	<!-- On a sheet: the tagline and the section links are body text. -->
+	<div class="intro sheet">
 		<Hero
 			name="Alfonso Baeza"
 			tagline={m.homeTagline()}
@@ -82,7 +83,7 @@
 
 		<section id="log" style:animation={enter(450)} aria-labelledby="log-title">
 			<h2 id="log-title">{m.devlogTitle()}</h2>
-			<p class="intro-text">{m.homeLogIntro()}</p>
+			<p class="intro-text sheet">{m.homeLogIntro()}</p>
 			<div class="grid">
 				{#each data.log as entry (entry.slug)}
 					<TeaserCard
@@ -178,8 +179,10 @@
 		color: var(--text-2);
 	}
 
+	/* One line: a slimmer sheet. */
 	.intro-text {
 		margin-block-start: var(--size-2);
+		padding: var(--size-2) var(--size-3);
 	}
 
 	/* Scroll-driven reveal: each section's content is wiped in from the top, like a

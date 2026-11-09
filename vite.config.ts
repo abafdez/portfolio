@@ -12,7 +12,8 @@ import { bundledLanguages, createHighlighter, type BundledLanguage } from 'shiki
 import { codeTheme } from './src/lib/code-theme.ts';
 import { enhanceMedia } from './src/lib/enhance-media.ts'; // images and videos next to a post
 import { rehypeCallouts } from './src/lib/callouts.ts'; // > [!note] boxes
-import { renderBlock } from './src/lib/blocks.ts'; // ```video and other components
+import { renderBlock } from './src/lib/blocks.ts';
+import { rehypeTables } from './src/lib/tables.ts'; // ```video and other components
 import rehypeSlug from 'rehype-slug'; //an id on every heading
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'; //and a link to it
 
@@ -70,6 +71,7 @@ async function highlight(code: string, lang: string | null | undefined, file: st
 // trees they work on are the same, so only the types disagree, hence the cast.
 const rehypePlugins = [
 	rehypeCallouts,
+	rehypeTables, // wide tables scroll in their own box (tables.ts)
 	rehypeSlug,
 	[rehypeAutolinkHeadings, { behavior: 'wrap' }]
 ] as unknown as MdsvexCompileOptions['rehypePlugins'];
@@ -130,6 +132,15 @@ export default defineConfig({
 			// element that never closes, and Svelte's warning would scroll past among the
 			// file sizes. Every other warning is printed as usual.
 			onwarn(warning, warn) {
+				// A table's scroll box (tables.ts) takes the keyboard focus on purpose: a
+				// region that scrolls must be reachable to be scrolled without a mouse.
+				// Svelte's rule is right for other elements, so only this one is let through.
+				if (
+					warning.code === 'a11y_no_noninteractive_tabindex' &&
+					warning.frame?.includes('class="table-scroll"')
+				) {
+					return;
+				}
 				if (!warning.filename?.endsWith('.md') || warning.code !== 'element_implicitly_closed') {
 					return warn(warning);
 				}

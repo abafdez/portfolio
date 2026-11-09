@@ -66,7 +66,7 @@
 	const format = (ratio: number) => formatNumber(Math.floor(ratio * 100) / 100, 2);
 </script>
 
-<div class="pick">
+<div class="pick sheet">
 	<label>
 		{m.contrastText()}
 		<select bind:value={text} onchange={share}>
@@ -87,7 +87,7 @@
 
 <div class="themes">
 	{#each schemes as scheme (scheme)}
-		<section aria-labelledby="{scheme}-title">
+		<section class="sheet" aria-labelledby="{scheme}-title">
 			<h2 id="{scheme}-title">{names[scheme]()}</h2>
 			<!-- CSS draws the pair in this theme (data-theme declares the tokens again,
 			     see tokens.css), so the sample needs no JS. -->
@@ -116,38 +116,41 @@
 
 {#if colors}
 	<h2 class="all">{m.contrastAllPairs()}</h2>
-	<p class="note">{m.contrastNote()}</p>
-	<div class="tables">
-		{#each schemes as scheme (scheme)}
-			<table>
-				<caption>{names[scheme]()}</caption>
-				<thead>
-					<tr>
-						<td></td>
-						{#each surfaces as column (column)}
-							<th scope="col">{column}</th>
-						{/each}
-					</tr>
-				</thead>
-				<tbody>
-					{#each texts as row (row)}
+	<!-- The note and the tables on one sheet: 12px figures, never on the grid. -->
+	<div class="sheet">
+		<p class="note">{m.contrastNote()}</p>
+		<div class="tables">
+			{#each schemes as scheme (scheme)}
+				<table>
+					<caption>{names[scheme]()}</caption>
+					<thead>
 						<tr>
-							<th scope="row">{row}</th>
+							<td></td>
 							{#each surfaces as column (column)}
-								{@const pair = ratio(colors, scheme, row, column)}
-								<td class:current={row === text && column === surface}>
-									{format(pair)} <span>{m.contrastLevel({ level: level(pair) })}</span>
-								</td>
+								<th scope="col">{column}</th>
 							{/each}
 						</tr>
-					{/each}
-				</tbody>
-			</table>
-		{/each}
+					</thead>
+					<tbody>
+						{#each texts as row (row)}
+							<tr>
+								<th scope="row">{row}</th>
+								{#each surfaces as column (column)}
+									{@const pair = ratio(colors, scheme, row, column)}
+									<td class:current={row === text && column === surface}>
+										{format(pair)} <span>{m.contrastLevel({ level: level(pair) })}</span>
+									</td>
+								{/each}
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			{/each}
+		</div>
 	</div>
 {:else}
 	<!-- Without JS this stays: the ratios are computed in the browser. -->
-	<p class="note">{m.contrastNoJs()}</p>
+	<p class="note sheet">{m.contrastNoJs()}</p>
 {/if}
 
 <style>

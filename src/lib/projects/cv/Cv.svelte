@@ -191,6 +191,7 @@
 	     novalidate: no browser bubbles, we show our own messages. The fields still check
 	     themselves (validity). focusout and input bubble, so the form hears every field. -->
 	<form
+		class="sheet"
 		bind:this={form}
 		novalidate
 		onsubmit={(event) => event.preventDefault()}
@@ -281,7 +282,7 @@
 		<!-- Over the CV it acts on, outside the form: these buttons don't edit anything.
 		     A fieldset still works outside a form, and still disables them all at once.
 		     type="button" anyway, in case they ever move back into a form. -->
-		<fieldset class="actions-box" disabled={!cv.loaded}>
+		<fieldset class="actions-box sheet" disabled={!cv.loaded}>
 			<legend>{m.cvYourCv()}</legend>
 			<div class="actions">
 				<!-- The print dialog has "Save as PDF": a PDF with real text, which is what
@@ -371,8 +372,12 @@
 
 	/* One column: the editor's rows and the row of buttons need the whole width. */
 	.skills,
+	/* A sheet (global.css), but the fieldset rule above takes away its padding and
+	   border: component styles beat the global layers, so they come back here. */
 	.actions-box {
 		display: block;
+		padding: var(--size-4) var(--size-5);
+		border: var(--border-size-1) solid var(--surface-3);
 	}
 
 	/* A section's title, and how it's doing in a smaller line next to it. */
@@ -422,9 +427,13 @@
 		grid-column: 1 / -1;
 	}
 
+	/* min-inline-size: 0: a text input is about 20 characters wide by itself, and as a
+	   grid item (the label is a grid) it won't shrink below that: in a narrow column it
+	   ran into its neighbour. Now it takes the column's width. */
 	input,
 	select,
 	textarea {
+		min-inline-size: 0;
 		padding: var(--size-2) var(--size-3);
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);

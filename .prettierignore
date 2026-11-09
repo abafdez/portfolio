@@ -7,3 +7,6 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Generated (pnpm data:symbols): one character per line on purpose
+/src/lib/projects/toolbox/symbols/symbols.json

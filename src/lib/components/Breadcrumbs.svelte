@@ -15,6 +15,9 @@
 		<ol>
 			<li><a href={route('/')}>{m.navHome()}</a></li>
 			<li><a href={route(section.href)}>{section.label()}</a></li>
+			{#if page.data.crumbParent}
+				<li><a href={route(page.data.crumbParent.href)}>{page.data.crumbParent.label}</a></li>
+			{/if}
 			<!-- The page itself is text, not a link to where you already are. -->
 			<li aria-current="page">{page.data.crumb}</li>
 		</ol>
@@ -22,13 +25,20 @@
 {/if}
 
 <style>
+	/* A small pill on the page's paper: 12px text never sits on the grid (the sheet
+	   rule, global.css). As wide as its path, not the page. */
 	ol {
 		display: flex;
 		flex-wrap: wrap;
+		inline-size: fit-content;
+		max-inline-size: 100%;
 		gap: var(--size-1);
 		list-style: none;
-		padding: 0;
-		margin-block: var(--size-3) 0;
+		padding: var(--size-1) var(--size-3);
+		margin-block: var(--size-3);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
+		background-color: var(--surface-1);
 		font-family: var(--font-code);
 		font-size: var(--font-size-0);
 		color: var(--text-2);

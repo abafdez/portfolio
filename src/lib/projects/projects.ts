@@ -21,6 +21,18 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		// A dashboard of small tools with routes of its own (src/routes/projects/toolbox),
+		// listed in toolbox/tools.ts.
+		slug: 'toolbox',
+		title: { en: 'Toolbox', es: 'Caja de herramientas' },
+		description: {
+			en: 'Small tools for everyday front-end work, all in the browser: nothing you type or drop here leaves it.',
+			es: 'Pequeñas herramientas para el día a día del front-end, todas en el navegador: nada de lo que escribas o sueltes aquí sale de él.'
+		},
+		date: '2026-11-09',
+		tags: ['browser-apis', 'svelte', 'tools']
+	},
+	{
 		slug: 'cv',
 		title: { en: 'CV builder', es: 'Generador de CV' },
 		description: {

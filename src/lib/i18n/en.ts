@@ -106,6 +106,124 @@ export const en = {
 	projectsDescription: () => 'Small tools, each one a self-contained app.',
 	projectsTools: () => 'Tools',
 
+	// The toolbox (/projects/toolbox) and what its tools share.
+	toolboxNeedsJs: () => 'This tool runs in your browser and needs JavaScript.',
+	toolboxCopy: ({ what }: { what: string }) => `Copy ${what}`,
+	toolboxCredits: () => 'Where the data comes from',
+	toolboxLicenceText: ({ licence }: { licence: string }) => `The ${licence} text`,
+
+	// HTML symbols.
+	symbolsSearch: () => 'Search',
+	symbolsSearchHint: () => 'A name, a character, U+2192 or &rarr;',
+	symbolsGroup: () => 'Group',
+	symbolsNamed: () => 'Named in HTML',
+	symbolsCount: ({ count }: Count) =>
+		plural('en', count, { one: '1 symbol', other: `${count} symbols` }),
+	symbolsFound: ({ count }: Count) =>
+		plural('en', count, {
+			one: '1 symbol in every group',
+			other: `${count} symbols in every group`
+		}),
+	symbolsCapped: ({ count, total }: Count & { total: number }) =>
+		`Showing the first ${count} of ${total}. Add a word to narrow it down.`,
+	symbolsNone: () => 'Nothing matches. Try another word, or paste the character itself.',
+	symbolsSymbols: () => 'Symbols',
+	symbolsAlso: () => 'Also:',
+	symbolsClose: () => 'Close the details',
+	symbolsGroups: () => 'Groups',
+	symbolsEveryGroup: () => 'Every group (searching)',
+	symbolsHover: () => 'Hover over a symbol to see it here, or click one to keep it.',
+	symbolsKeep: () => 'Click to keep it',
+	symbolsDetails: () => 'Every way to write it',
+	symbolsChar: () => 'Character',
+	symbolsCodePoint: () => 'Code point',
+	symbolsHtmlName: () => 'HTML name',
+	symbolsHtmlDecimal: () => 'HTML, decimal',
+	symbolsHtmlHex: () => 'HTML, hex',
+	symbolsCss: () => 'CSS',
+	symbolsJs: () => 'JavaScript',
+	symbolsUrl: () => 'URL',
+	symbolsUtf8: () => 'UTF-8 bytes',
+	symbolsUtf16: () => 'UTF-16 units',
+
+	// Cursors and selection.
+	cursorsParts: () => 'Parts of the guide',
+	cursorsTouch: () =>
+		'On a phone or a tablet, most of this page can’t be tried: cursors, hover and the pointer need a mouse or a trackpad. The selection demos still work.',
+	cursorsAnimationsHint: () => 'Hover over each one: the cursor itself moves, frame by frame.',
+	cursorsTheme: () => 'One cursor per element',
+	cursorsEffects: () => 'Effects that follow the pointer',
+	cursorsEffect: () => 'Effect',
+	cursorsEffectsArea: () => 'Move the pointer here.',
+	cursorsStill: () => 'Your system asks for less motion, so these stay still.',
+	cursorsCode: () => 'JavaScript',
+	cursorsMagnet: () => 'A magnetic button',
+	cursorsTiltCard: () => 'A card that tilts',
+	cursorsCssOnly: () => 'CSS only',
+	cursorsGifs: () => 'GIFs',
+	cursorsGifsHint: () =>
+		'A GIF as a cursor stays on its first frame. Split into frames in your browser and swapped like the ones above, the same GIF moves.',
+	cursorsGifAsIs: () => 'The GIF as a cursor',
+	cursorsGifFrames: () => 'The same GIF, frame by frame',
+	cursorsGifYours: () => 'Choose a GIF of your own (it stays in your browser)',
+	cursorsGifInfo: ({ count, ms }: Count & { ms: number }) =>
+		`${count} frames, about ${ms} ms each, at 32 × 32`,
+	cursorsGifCant: () =>
+		'Your browser can’t split a GIF into frames (it has no ImageDecoder), so both stay still.',
+	cursorsGifFailed: () => 'That file couldn’t be read as a GIF.',
+	cursorsGifTooBig: ({ max }: { max: string }) => `GIFs up to ${max}, please.`,
+	cursorsUse: () => 'Use it for',
+	cursorsAvoid: () => 'Avoid',
+	cursorsMdn: ({ name }: Name) => `${name} on MDN`,
+	cursorsTry: () => 'Hover over each one to see it; click to copy its CSS.',
+	cursorsCopied: ({ css }: { css: string }) => `Copied: ${css}`,
+	cursorsShape: () => 'Shape',
+	cursorsColor: () => 'Colour',
+	cursorsSize: () => 'Size',
+	cursorsHotspotX: () => 'Hotspot, x',
+	cursorsHotspotY: () => 'Hotspot, y',
+	cursorsFallback: () => 'Fallback',
+	cursorsArea: () => 'Move the pointer here to try your cursor.',
+	cursorsPreview: () => 'Your cursor, four times bigger. The red dot is the hotspot.',
+	cursorsCss: () => 'CSS',
+	cursorsButton: () => 'Click me',
+	cursorsThrough: () => 'on the striped layer',
+	cursorsClicks: ({ button, layer }: { button: number; layer: number }) =>
+		`Clicks: the button ${button}, the striped layer ${layer}.`,
+	cursorsKeyboard: () => 'Now try Tab and Enter: the keyboard reaches the button either way.',
+	cursorsSelected: () => 'You selected:',
+	cursorsNothing: () => 'nothing yet',
+	cursorsText: () => 'Text',
+	cursorsBackground: () => 'Background',
+	cursorsContrast: ({ ratio }: { ratio: string }) => `Contrast ${ratio}:1`,
+	cursorsAAA: () => 'passes AAA',
+	cursorsAA: () => 'passes AA',
+	cursorsLarge: () => 'large text only',
+	cursorsFail: () => 'too low to read',
+	cursorsSelectIt: () => 'Select it for me',
+
+	// Base64.
+	base64TextTitle: () => 'Text',
+	base64Mode: () => 'Direction',
+	base64Encode: () => 'Encode',
+	base64Decode: () => 'Decode',
+	base64UrlSafe: () => 'URL-safe (base64url)',
+	base64Text: () => 'Text',
+	base64Base64: () => 'Base64',
+	base64NotBase64: () =>
+		"That isn't Base64: only A–Z, a–z, 0–9, + and / (or - and _), with = at the end.",
+	base64NotText: () => "That's Base64, but of bytes that aren't UTF-8 text: maybe a file.",
+	base64FileTitle: () => 'File',
+	base64Drop: ({ max }: { max: string }) => `Choose a file or drop it here (up to ${max})`,
+	base64TooBig: ({ name, max }: Name & { max: string }) =>
+		`${name} is over ${max}. Data URLs are for icons and small images: a bigger file is better linked than inlined.`,
+	base64ReadFailed: ({ name }: Name) => `Couldn't read ${name}.`,
+	base64FileSize: ({ name, size, encoded }: Name & { size: string; encoded: string }) =>
+		`${name}: ${size} → ${encoded} as Base64`,
+	base64DataUrl: () => 'Data URL',
+	base64Css: () => 'CSS background',
+	base64Preview: ({ name }: Name) => `Preview of ${name}`,
+
 	// About.
 	aboutTitle: () => 'About',
 	aboutDescription: () =>

@@ -22,7 +22,9 @@
 		"format": "prettier --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"test:e2e": "BASE_PATH=/portfolio vite build && playwright test"
+		"test:e2e": "BASE_PATH=/portfolio vite build && playwright test",
+		"data:symbols": "node scripts/symbols.ts",
+		"data:cursor-gif": "node scripts/cursor-gif.ts"
 	},
 	"devDependencies": {
 		"@fontsource-variable/fira-code": "^5.3.0",
@@ -41,6 +43,7 @@
 		"prettier-plugin-svelte": "^4.1.0",
 		"rehype-autolink-headings": "7.1.0",
 		"rehype-slug": "6.0.0",
+		"sharp": "0.35.5",
 		"shiki": "^4.5.0",
 		"svelte": "^5.57.1",
 		"svelte-check": "^4.6.0",

@@ -21,7 +21,7 @@
 
 <div class="columns">
 	{#if tags.length}
-		<nav aria-labelledby="{id}-title">
+		<nav class="sheet" aria-labelledby="{id}-title">
 			<h2 id="{id}-title">{m.tagsBrowse()}</h2>
 			<TagCloud {tags} {href} {countLabel} />
 		</nav>
@@ -35,6 +35,7 @@
 		display: grid;
 		gap: var(--size-7);
 		margin-block-start: var(--size-7);
+		height: auto;
 	}
 
 	/* Side by side once there's room for a post card with its thumbnail beside it
@@ -51,6 +52,7 @@
 			--tag-rows: 9;
 			grid-column: 2;
 			grid-row: 1;
+			align-self: start;
 		}
 	}
 
