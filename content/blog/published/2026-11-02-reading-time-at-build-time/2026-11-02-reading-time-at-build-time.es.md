@@ -1,5 +1,5 @@
 ---
-title: 'El tiempo de lectura, contado una vez al construir el sitio'
+title: El tiempo de lectura, contado una vez al construir el sitio
 description: Dónde calcular el tiempo de lectura de un artículo en SvelteKit, y por qué la respuesta es "donde ya está el texto".
 cover: Un reloj y un documento.
 reviewed: false

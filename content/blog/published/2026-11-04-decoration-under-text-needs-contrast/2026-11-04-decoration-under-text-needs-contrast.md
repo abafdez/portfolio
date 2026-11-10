@@ -1,5 +1,5 @@
 ---
-title: 'Decoration under text still needs contrast'
+title: Decoration under text still needs contrast
 date: 2026-11-04
 tags: [css, accessibility, design-tokens]
 description: My background grid lights up around the mouse. Where it ran under text, the text dropped to 1.89:1. How I measured a translucent layer, and how I picked the strongest effect that still passes.

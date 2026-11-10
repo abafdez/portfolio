@@ -1,5 +1,5 @@
 ---
-title: 'Printing a CV from a web page'
+title: Printing a CV from a web page
 date: 2026-11-03
 tags: [css, print]
 description: My CV builder makes its PDF with the browser's own print dialog. A print stylesheet, the light theme on paper, and a page title that becomes the file name.

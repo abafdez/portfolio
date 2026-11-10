@@ -1,5 +1,5 @@
 ---
-title: 'Un acordeón sin JavaScript'
+title: Un acordeón sin JavaScript
 description: Dales el mismo name a varios elementos <details> y, al abrir uno, se cierran los demás. El formulario de mi generador de CV se pliega así, con una pega relacionada con el foco.
 cover: Un elemento que se despliega y se pliega como un acordeón.
 reviewed: false

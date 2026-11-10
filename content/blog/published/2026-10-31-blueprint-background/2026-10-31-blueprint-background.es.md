@@ -1,5 +1,5 @@
 ---
-title: 'Una rejilla de planos solo con CSS, con un foco que sigue al cursor'
+title: Una rejilla de planos solo con CSS, con un foco que sigue al cursor
 description: Un fondo de papel milimetrado hecho con cuatro degradados, marcas dibujadas con una máscara y un foco que ilumina la rejilla alrededor del ratón. Una sola capa fija, sin imágenes, y sigue al tema.
 cover: Un foco sobre una rejilla.
 reviewed: false

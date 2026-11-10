@@ -1,5 +1,5 @@
 ---
-title: 'Callouts que se leen bien en todas partes'
+title: Callouts que se leen bien en todas partes
 description: GitHub y Obsidian dibujan "> [!note]" como una caja destacada. Un pequeño plugin de rehype hace que mi sitio también la dibuje, y en cualquier otro sitio sigue siendo una cita normal.
 cover: La sintaxis de los avisos de markdown convirtiéndose en cajas de nota, advertencia y consejo.
 reviewed: false

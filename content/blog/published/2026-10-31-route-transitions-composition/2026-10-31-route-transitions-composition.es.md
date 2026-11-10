@@ -1,5 +1,5 @@
 ---
-title: 'Transiciones entre páginas en SvelteKit, y que cada ruta elija su maquetación'
+title: Transiciones entre páginas en SvelteKit, y que cada ruta elija su maquetación
 description: View transitions entre rutas con onNavigate, un marcador del menú que se desliza hasta la página nueva y una forma tipada de que cada ruta le diga al layout raíz cómo colocarla.
 cover: Una página de CSS frente a una página de Svelte que usa transiciones.
 reviewed: false

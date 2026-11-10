@@ -1,5 +1,5 @@
 ---
-title: 'A second language without a library'
+title: A second language without a library
 date: 2026-11-08
 tags: [i18n, sveltekit, seo]
 description: My site is in English and Spanish now, with a SvelteKit hook, two files of messages and one rule about links. What Paraglide would have done, and what I learned doing it myself.

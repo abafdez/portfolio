@@ -1,5 +1,5 @@
 ---
-title: 'Un segundo idioma sin librería'
+title: Un segundo idioma sin librería
 description: Mi sitio ya está en inglés y en español, con un hook de SvelteKit, dos archivos de mensajes y una regla sobre los enlaces. Lo que habría hecho Paraglide y lo que aprendí haciéndolo yo.
 cover: Un globo terráqueo rodeado de códigos de idioma, con un sitio que cambia a otro idioma.
 reviewed: false

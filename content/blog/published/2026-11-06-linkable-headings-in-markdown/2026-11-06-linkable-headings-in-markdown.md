@@ -1,5 +1,5 @@
 ---
-title: 'Linkable headings in markdown, and a build that checks them'
+title: Linkable headings in markdown, and a build that checks them
 date: 2026-11-06
 tags: [markdown, accessibility, sveltekit]
 description: Two rehype plugins give every heading in my posts an id and a link to itself. Why I wrap the heading instead of adding a "#" link, and how SvelteKit fails the build on a broken one.

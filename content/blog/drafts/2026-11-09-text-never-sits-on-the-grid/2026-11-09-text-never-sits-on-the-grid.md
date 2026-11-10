@@ -1,5 +1,5 @@
 ---
-title: 'Text never sits on the grid'
+title: Text never sits on the grid
 date: 2026-11-09
 tags: [css, accessibility, design-tokens]
 description: My site's background is a blueprint grid that lights up around the mouse. It looked great and read badly. How I found every piece of text sitting on it, and the one rule that fixed them all.

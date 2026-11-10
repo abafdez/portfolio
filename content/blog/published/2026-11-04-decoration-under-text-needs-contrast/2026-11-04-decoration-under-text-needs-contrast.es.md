@@ -1,5 +1,5 @@
 ---
-title: 'La decoración bajo el texto también necesita contraste'
+title: La decoración bajo el texto también necesita contraste
 description: La rejilla de fondo de mi sitio se ilumina alrededor del ratón. Donde pasaba por debajo del texto, el texto bajaba a 1,89:1. Cómo medí una capa translúcida y cómo elegí el efecto más intenso que sigue pasando.
 cover: Una página que se lee mal frente a una página con buen contraste y fácil de leer.
 reviewed: false

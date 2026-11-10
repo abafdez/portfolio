@@ -1,5 +1,5 @@
 ---
-title: 'Páginas de markdown con mdsvex, y una lección sobre el orden de los plugins de Vite'
+title: Páginas de markdown con mdsvex, y una lección sobre el orden de los plugins de Vite
 description: Convertir una carpeta de archivos markdown en páginas de SvelteKit prerenderizadas con mdsvex, por qué la configuración habitual con preprocess se rompió con mis propios artículos, y cómo ordena Vite de verdad los plugins.
 cover: Un archivo markdown que se convierte en un componente de Svelte.
 reviewed: false

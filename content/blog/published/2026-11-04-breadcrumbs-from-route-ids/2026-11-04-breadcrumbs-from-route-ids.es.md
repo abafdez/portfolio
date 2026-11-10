@@ -1,5 +1,5 @@
 ---
-title: 'Migas de pan en SvelteKit, y por qué comparo ids de ruta'
+title: Migas de pan en SvelteKit, y por qué comparo ids de ruta
 description: Unas migas de pan a partir de datos que las rutas ya tienen, y el bug que encontré por el camino. El marcador de la página actual de mi menú nunca estuvo en el HTML prerenderizado, porque resolve() escribe enlaces relativos mientras prerenderiza.
 cover: Un mapa de rutas que une Inicio, Blog y un artículo, con etiquetas de migas de pan.
 reviewed: false

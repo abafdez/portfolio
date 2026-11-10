@@ -1,5 +1,5 @@
 ---
-title: 'Six colour themes as token overrides'
+title: Six colour themes as token overrides
 date: 2026-11-07
 tags: [css, design-tokens, accessibility]
 description: My site now has six colour themes, from Tokyo Night to Solarized. Each is one CSS file, no component changed, and a unit test checks every theme's contrast.

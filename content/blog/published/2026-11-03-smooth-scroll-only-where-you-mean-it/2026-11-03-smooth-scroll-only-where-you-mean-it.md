@@ -1,5 +1,5 @@
 ---
-title: 'Smooth scrolling, only where you mean it'
+title: Smooth scrolling, only where you mean it
 date: 2026-11-03
 tags: [sveltekit, css]
 description: One line of CSS made every page change in my SvelteKit site glide up from wherever the last page was scrolled. The fix is a data attribute and two navigation hooks.

@@ -1,5 +1,5 @@
 ---
-title: 'Encabezados enlazables en markdown, y un build que los comprueba'
+title: Encabezados enlazables en markdown, y un build que los comprueba
 description: Dos plugins de rehype les dan a todos los encabezados de mis artículos un id y un enlace a sí mismos. Por qué envuelvo el encabezado en vez de añadir un enlace "#", y cómo SvelteKit hace fallar el build con uno roto.
 cover: Un encabezado con una almohadilla y un ancla que enlaza a una lista de secciones.
 reviewed: false

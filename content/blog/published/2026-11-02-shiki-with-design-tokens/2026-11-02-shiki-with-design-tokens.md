@@ -1,5 +1,5 @@
 ---
-title: 'Syntax highlighting with Shiki, colored by my own design tokens'
+title: Syntax highlighting with Shiki, colored by my own design tokens
 date: 2026-11-02
 tags: [shiki, mdsvex, css, design-tokens]
 description: Highlighting code blocks at build time with Shiki, and a small TextMate theme whose colors are CSS variables, so code follows my site's themes.

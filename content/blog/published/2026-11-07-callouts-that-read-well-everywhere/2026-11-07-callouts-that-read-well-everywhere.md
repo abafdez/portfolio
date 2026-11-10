@@ -1,5 +1,5 @@
 ---
-title: 'Callouts that read well everywhere'
+title: Callouts that read well everywhere
 date: 2026-11-07
 tags: [markdown, accessibility, sveltekit]
 description: GitHub and Obsidian both draw "> [!note]" as a callout box. A small rehype plugin makes my site draw it too, and it's still a plain blockquote anywhere else.

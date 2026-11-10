@@ -1,5 +1,5 @@
 ---
-title: 'Un formulario que recuerda, con una clase $state y localStorage'
+title: Un formulario que recuerda, con una clase $state y localStorage
 description: Mi generador de CV guarda lo que escribo en el navegador, nunca en un servidor. Un objeto $state, un $effect para guardarlo y un select que me enseñó que los eventos no siempre llegan en el orden que creo.
 cover: Un currículum con flechas hacia formularios.
 reviewed: false

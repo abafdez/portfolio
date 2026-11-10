@@ -1,5 +1,5 @@
 ---
-title: 'Vídeos en artículos de markdown, y por qué no un GIF'
+title: Vídeos en artículos de markdown, y por qué no un GIF
 description: 'Grabaciones de pantalla cortas junto a un artículo: por qué no un GIF, cómo encuentra el build los archivos y los atributos que evitan que un vídeo salte o se reproduzca solo.'
 cover: Un reproductor de vídeo en una pantalla, con código markdown y archivos MP4 y WebM.
 reviewed: false

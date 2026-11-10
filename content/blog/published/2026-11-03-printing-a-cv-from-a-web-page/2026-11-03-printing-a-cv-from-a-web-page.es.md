@@ -1,5 +1,5 @@
 ---
-title: 'Imprimir un CV desde una página web'
+title: Imprimir un CV desde una página web
 description: Mi generador de CV hace su PDF con el propio diálogo de impresión del navegador. Una hoja de estilos de impresión, el tema claro en el papel y un título de página que se convierte en el nombre del archivo.
 cover: Un CV en una página web que sale de una impresora en papel.
 reviewed: false

@@ -1,5 +1,5 @@
 ---
-title: 'Images next to the post, in plain markdown'
+title: Images next to the post, in plain markdown
 date: 2026-11-06
 tags: [images, markdown, vite, svelte]
 description: Where to keep a blog's images, why ![alt](./x.png) breaks on a prerendered site, and a small Vite plugin step that turns it into optimized, checked images.

@@ -1,5 +1,5 @@
 ---
-title: 'Imágenes junto al artículo, en markdown normal'
+title: Imágenes junto al artículo, en markdown normal
 description: Dónde guardar las imágenes de un blog, por qué ![alt](./x.png) se rompe en un sitio prerenderizado, y un pequeño paso en un plugin de Vite que lo convierte en imágenes optimizadas y comprobadas.
 cover: Carpetas de borradores y contenido publicado, con personas que mueven archivos entre ellas.
 reviewed: false

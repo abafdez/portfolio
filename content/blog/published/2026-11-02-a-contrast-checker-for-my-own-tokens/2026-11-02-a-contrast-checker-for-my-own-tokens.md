@@ -1,5 +1,5 @@
 ---
-title: 'A contrast checker that reads its own design tokens'
+title: A contrast checker that reads its own design tokens
 date: 2026-11-02
 tags: [accessibility, design-tokens, css, sveltekit]
 description: Reading CSS custom properties in the browser, turning any CSS color into sRGB with a canvas, and the light-dark() surprise along the way.

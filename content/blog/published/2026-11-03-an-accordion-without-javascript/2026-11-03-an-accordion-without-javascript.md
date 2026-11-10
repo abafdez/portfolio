@@ -1,5 +1,5 @@
 ---
-title: 'An accordion without JavaScript'
+title: An accordion without JavaScript
 date: 2026-11-03
 tags: [html, accessibility]
 description: Give several <details> elements the same name, and opening one closes the others. My CV builder's form folds away with it, with one catch about focus.

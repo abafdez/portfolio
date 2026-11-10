@@ -1,5 +1,5 @@
 ---
-title: 'Videos in markdown posts, and why not a GIF'
+title: Videos in markdown posts, and why not a GIF
 date: 2026-11-06
 tags: [markdown, video, performance, accessibility]
 description: 'Short screen recordings next to a post: why not a GIF, how the build finds the files, and the attributes that keep a video from jumping or autoplaying.'

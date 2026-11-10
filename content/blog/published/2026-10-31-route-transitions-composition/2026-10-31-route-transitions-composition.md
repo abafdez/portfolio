@@ -1,5 +1,5 @@
 ---
-title: 'Page transitions in SvelteKit, and letting each route pick its layout'
+title: Page transitions in SvelteKit, and letting each route pick its layout
 date: 2026-10-31
 tags: [sveltekit, view-transitions, css, typescript]
 description: View transitions between routes with onNavigate, a nav marker that slides to the new page, and a typed way for each route to tell the root layout how to arrange it.

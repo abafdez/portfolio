@@ -1,5 +1,5 @@
 ---
-title: 'A form that remembers, with a $state class and localStorage'
+title: A form that remembers, with a $state class and localStorage
 date: 2026-11-03
 tags: [svelte, forms, local-storage]
 description: My CV builder keeps what I type in the browser, never on a server. One $state object, an $effect to save it, and a select that taught me events don't always arrive in the order I think.

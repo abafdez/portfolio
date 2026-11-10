@@ -1,5 +1,5 @@
 ---
-title: 'Iconos como datos, y un sprite SVG desde un endpoint de SvelteKit'
+title: Iconos como datos, y un sprite SVG desde un endpoint de SvelteKit
 description: Mis habilidades pasaron de TypeScript a un archivo YAML. Los iconos vinieron con ellas como datos, las librerías de iconos dejaron de llegar al navegador y la página perdió la mitad de su peso.
 cover: Iconos de aplicaciones que fluyen hacia un sprite SVG y de ahí a una página web.
 reviewed: false

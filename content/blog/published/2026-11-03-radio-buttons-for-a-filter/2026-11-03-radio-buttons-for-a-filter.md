@@ -1,5 +1,5 @@
 ---
-title: 'Radio buttons for a filter, styled with :has()'
+title: Radio buttons for a filter, styled with :has()
 date: 2026-11-03
 tags: [svelte, css, accessibility]
 description: My about page now filters skills by the kind of job I'm applying for. One choice at a time means radio buttons, and :has() lets me style them without giving up what the browser does for free.

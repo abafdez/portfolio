@@ -1,5 +1,5 @@
 ---
-title: 'Components in code blocks'
+title: Components in code blocks
 date: 2026-11-07
 tags: [markdown, sveltekit, video]
 description: A code block whose language is a component name, with YAML inside, becomes that component on my site. Everywhere else it's a readable block of YAML. And the build checks every field.

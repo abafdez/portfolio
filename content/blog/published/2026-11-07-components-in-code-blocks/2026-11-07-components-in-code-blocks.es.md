@@ -1,5 +1,5 @@
 ---
-title: 'Componentes en bloques de código'
+title: Componentes en bloques de código
 description: Un bloque de código cuyo lenguaje es el nombre de un componente, con YAML dentro, se convierte en ese componente en mi sitio. En cualquier otro sitio es un bloque de YAML que se puede leer. Y el build comprueba cada campo.
 cover: Un bloque de código con la etiqueta de un componente que pasa por un cubo y se convierte en la vista previa de un gráfico.
 reviewed: false

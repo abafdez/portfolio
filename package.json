@@ -24,7 +24,8 @@
 		"test:watch": "vitest",
 		"test:e2e": "BASE_PATH=/portfolio vite build && playwright test",
 		"data:symbols": "node scripts/symbols.ts",
-		"data:cursor-gif": "node scripts/cursor-gif.ts"
+		"data:cursor-gif": "node scripts/cursor-gif.ts",
+		"content:format": "node scripts/content-format.ts"
 	},
 	"devDependencies": {
 		"@fontsource-variable/fira-code": "^5.3.0",

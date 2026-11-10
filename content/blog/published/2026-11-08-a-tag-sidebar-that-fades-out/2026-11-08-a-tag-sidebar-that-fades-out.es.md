@@ -1,5 +1,5 @@
 ---
-title: 'Una barra lateral de etiquetas que se desvanece'
+title: Una barra lateral de etiquetas que se desvanece
 description: La página de mi blog empezaba con una pared de 55 enlaces de etiqueta. Ahora es una barra lateral de chips de colores, las más usadas primero, que se desvanece hacia un botón, y lo que se desvanece desaparece de verdad también para el teclado.
 cover: Etiquetas de colores en forma de píldora alrededor de una esfera brillante.
 reviewed: false

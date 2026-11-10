@@ -1,5 +1,5 @@
 ---
-title: 'Base64 encodes bytes, not text'
+title: Base64 encodes bytes, not text
 date: 2026-11-09
 tags: [encoding, browser-apis, testing]
 description: btoa('ñ') gives the wrong answer and btoa('😀') throws. Base64 works on bytes, so text has to become bytes first. How my Base64 tool does it, and how it tells bad input from binary data.

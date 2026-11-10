@@ -1,5 +1,5 @@
 ---
-title: 'Scroll suave, solo donde lo quieres'
+title: Scroll suave, solo donde lo quieres
 description: Una línea de CSS hacía que cada cambio de página de mi sitio con SvelteKit se deslizara hacia arriba desde donde estaba la página anterior. La solución es un atributo data y dos hooks de navegación.
 cover: Un dedo sobre una barra de desplazamiento, con una curva ease-in-out al lado.
 reviewed: false

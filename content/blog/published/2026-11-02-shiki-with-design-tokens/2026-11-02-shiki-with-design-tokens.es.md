@@ -1,5 +1,5 @@
 ---
-title: 'Resaltado de sintaxis con Shiki, coloreado con mis propios design tokens'
+title: Resaltado de sintaxis con Shiki, coloreado con mis propios design tokens
 description: Resaltar los bloques de código al construir el sitio con Shiki, y un pequeño tema de TextMate cuyos colores son variables de CSS, para que el código siga los temas de mi sitio.
 cover: Una ventana con código de muchos colores.
 reviewed: false
