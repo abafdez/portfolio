@@ -180,6 +180,8 @@ Each later route phase (5–8) also builds that route's own composition and tric
 
 - **Goal:** manage the site's content from a UI instead of editing files: posts, entries, lists, skills, and images, including **picking the focal point** a crop keeps (cards crop a square from the middle today, see `covers.ts`).
 - **To decide first:** a git-based CMS that writes the same markdown and YAML (Decap, TinaCMS, Keystatic, or Sveltia) versus building a small one in the site as a project. The site is static on GitHub Pages, so whatever it is has to commit to the repo, not to a database.
+- **Study (2026-11-09):** [design/cms-study.md](../design/cms-study.md) compares our own CMS, Sveltia and TinaCMS. Tina is out (media must live in `static/`, no i18n, MDX-only components); Sveltia first, decided by a one-hour spike, with our own CMS as the fallback. Alfonso's call.
+- **Adopted (2026-11-09, branch `spike/sveltia-cms`):** Sveltia CMS in dev at `/admin/index.html` (`cms/`). Alfonso checked the WSL folder picker. Saves use our own format (`src/lib/content-files.ts` + Prettier) so only edited lines change; `content-files.test.ts` round-trips every content file; `pnpm content:format` after hand edits. Preview = the real dev page in an iframe. Blocks are editor components from `blocks.ts`. Still open: use `focus` (the focal point field) in `covers.ts`; the standalone CMS (hosting + GitHub sign-in).
 - **Prepared for it:** content metadata lives in frontmatter and YAML (a focal point would sit next to `cover:`), and covers are found by folder, so any content type can get one.
 
 ## Ongoing habits

@@ -13,3 +13,8 @@ List new drafts here, with their TODOs and the drafts they link to, until they g
 - Both have screenshots Claude took (no personal data), no cover yet, and `.es.md` translations with `reviewed: false`.
 - `2026-11-09-plain-text-is-utf-8` (Alfonso asked for it): characters vs code points vs bytes, mojibake, how UTF-8 works (worked example for ©), `<meta charset>`, UTF-16 in JavaScript. Mentions Dylan Beattie's talk through a `yt` block; its thumbnail `plain-text-talk.jpg` is NDC's own picture from i.ytimg.com (used to link to their video; replace it if you'd rather not). Links to the Base64 draft: publish together.
 - `2026-11-09-text-never-sits-on-the-grid`: the grid readability audit and the sheet rule; before/after screenshots Claude took. Links to the published spotlight post. When it goes up, the spotlight post's update note (which points at the Devlog entry) can link to it instead.
+
+## Phase 11 (CMS), 2026-11-09
+
+- `2026-11-09-a-cms-that-only-changes-what-you-edit`: Sveltia CMS's first save rewrote untouched lines; our own file format and the save-everything test. Links to the preview draft below: **publish both together**. No cover, `.es.md` with `reviewed: false`.
+- `2026-11-10-a-preview-built-from-my-own-build`: the CMS preview in three tries (real page as saved, live real page with a hidden `.preview.md`, the build's own plugins in the browser). No cover, no links to drafts, `.es.md` with `reviewed: false`.

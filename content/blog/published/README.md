@@ -6,6 +6,19 @@ Posts start in `../drafts/`, which only exists in dev. Publishing one is a move:
 git mv content/blog/drafts/<slug> content/blog/published/
 ```
 
+## In the CMS
+
+Posts, drafts, the Devlog and the Awesome lists can be edited in a CMS ([Sveltia CMS](https://sveltiacms.app/en/docs), dev only): run `pnpm dev` and open `http://localhost:5173/admin/index.html` in Chrome or Edge (it needs the File System Access API, which Firefox and Safari don't have). Click "Work with Local Repository" and pick the repo's folder; from WSL, pick "Linux" in the folder picker's sidebar first. It edits the files themselves, so check `git diff` and commit as usual.
+
+- **English and Spanish** are side by side. A new entry starts in English only; switch Spanish on from the three-dot menu when you translate it.
+- **A save changes only what you edited**: the CMS writes files in this repo's own style and runs Prettier on them (`src/lib/content-files.ts`, `cms/formats.ts`). After editing frontmatter by hand (in Obsidian, say), run `pnpm content:format` so the files stay in that shape; `pnpm test` fails until they are.
+- **The body** opens as markdown; the button at the end of the toolbar switches to rich text. Both keep callouts, HTML in backticks and the blocks below.
+- **` ```yt ` and ` ```video `** are in the Insert menu and filled in a dialog.
+- **Images**: the image button uploads next to the post and writes `![alt](./file.png)`; its Title field becomes the caption.
+- **The preview** is drawn in the browser as you type, with the build's own markdown plugins and the site's CSS (`cms/render.ts`): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img. A block the build would refuse shows its error there. In dev, the **Real page** tab shows the page itself with your unsaved changes (the CMS writes a hidden `.preview.md` next to the post, ignored by git and by the build). The Awesome list's preview is the page as last saved, in dev only.
+- **Publishing** is still the `git mv` above: drafts and published posts are two lists in the CMS, and it can't move a post between them.
+- **Cover focal point** is stored as `focus: x% y%`; the site doesn't use it yet.
+
 ## The folder
 
 One folder per post, named like its markdown file, with the post's images next to it:
@@ -42,7 +55,7 @@ cover: What the cover image shows, for people who can't see it
 | `description` | yes               | Shown under the title, on the card, in search results. Search engines cut at about 160 characters.   |
 | `cover`       | with a cover file | The cover's alt text. Only together with `cover.png` (the build checks both ways).                   |
 
-**Quote a value that contains `: ` (colon and space)**, or YAML reads it as a new field and the build fails (the error names the file): `description: "Two things: this and that."`. A value with a `'` inside is easiest in double quotes.
+**Quote a value that contains `: ` (colon and space)**, or YAML reads it as a new field and the build fails (the error names the file): `description: 'Two things: this and that.'`. A value with a `'` inside is easiest in double quotes. Don't quote the others: `pnpm content:format` (and the CMS) take quotes off where YAML doesn't need them. The CMS quotes for you.
 
 ## Images
 
@@ -193,7 +206,7 @@ A post's Spanish version is a second file in the same folder, `<slug>.es.md`, ne
 
 ```md
 ---
-title: 'Un acordeón sin JavaScript'
+title: Un acordeón sin JavaScript
 description: One or two sentences, like the English one (optional: without it, the first paragraph).
 cover: The cover's alt text, in Spanish (required if the folder has a cover).
 reviewed: false
