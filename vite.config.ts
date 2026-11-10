@@ -16,6 +16,7 @@ import { renderBlock } from './src/lib/blocks.ts';
 import { rehypeTables } from './src/lib/tables.ts'; // ```video and other components
 import rehypeSlug from 'rehype-slug'; //an id on every heading
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'; //and a link to it
+import { cms } from './cms/plugin.ts'; // Sveltia CMS at /admin/index.html, dev only
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -122,6 +123,7 @@ function markdown(): Plugin {
 
 export default defineConfig({
 	plugins: [
+		cms(),
 		markdown(),
 		enhancedImages(),
 		sveltekit({
@@ -152,6 +154,12 @@ export default defineConfig({
 					`${warning.filename}: <${tag}> is in the text. Put it in backticks: \`<${tag}>\`.\n${warning.frame ?? ''}`
 				);
 			},
+			// The CMS's Svelte components (cms/) run inside Sveltia's page. Without hot reload and
+			// with their CSS inlined, nothing there loads Vite's client, which reloads every page
+			// it's in when a content file changes: the CMS would lose its unsaved edits each time
+			// the live preview writes its file.
+			dynamicCompileOptions: ({ filename }) =>
+				filename.includes('/cms/') ? { hmr: false, css: 'injected' } : undefined,
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>
@@ -187,7 +195,7 @@ export default defineConfig({
 	// so a test imports files exactly like the site does (#lib/…, import.meta.glob).
 	// A test lives next to the file it tests: content.ts -> content.test.ts.
 	test: {
-		include: ['src/**/*.test.ts']
+		include: ['src/**/*.test.ts', 'cms/**/*.test.ts']
 	},
 	// The base path for our own code, written into it at build time: '/portfolio' in a
 	// build, '' in dev. The reroute hook (src/hooks.ts) needs it to find the /es in a URL.

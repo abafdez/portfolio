@@ -31,3 +31,6 @@ vite.config.ts.timestamp-*
 # Playwright test output (traces of failed tests, the HTML report)
 /test-results/
 /playwright-report/
+
+# The CMS live preview: unsaved copies of the entry being edited (src/lib/preview.ts)
+content/**/.preview*.md
