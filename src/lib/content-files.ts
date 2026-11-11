@@ -1,5 +1,5 @@
 // How a content file is read and written back, in this repo's own style: the CMS
-// (cms/main.ts) saves with these, so a file it saves looks like one written by hand.
+// (src/lib/cms/main.ts) saves with these, so a file it saves looks like one written by hand.
 // Sveltia's own writer turns `tags: [a, b]` into a block list and drops quotes; ours keeps
 // short lists on one line. content-files.test.ts runs every file in content/ through
 // read → write → Prettier and expects the same bytes back.

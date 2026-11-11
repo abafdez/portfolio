@@ -4,10 +4,11 @@
 	import { blogTag } from '#lib/links.ts';
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import { coverOf } from '#lib/covers.ts';
+	import { copyCode } from '#lib/markdown/copy.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	let { post, Body } = $derived(data);
+	let { post, html } = $derived(data);
 	const cover = $derived(coverOf(post.folder));
 	// An English post on a Spanish page (not translated yet): the body says it's English.
 	const lang = $derived(post.locale !== getLocale() ? languageTags[post.locale] : undefined);
@@ -30,5 +31,9 @@
 		status={post.draft ? 'draft' : 'published'}
 		tagHref={blogTag}
 	/>
-	<div class="prose" {lang}><Body /></div>
+	<!-- The body as HTML, made on the server (+page.server.ts). {#key}: a new post is new
+	     HTML, and copyCode shows its copy buttons again. -->
+	{#key html}
+		<div class="prose" {lang} {@attach copyCode}>{@html html}</div>
+	{/key}
 </article>

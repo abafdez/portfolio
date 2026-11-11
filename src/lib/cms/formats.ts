@@ -4,7 +4,7 @@
 import * as prettier from 'prettier/standalone';
 import * as markdown from 'prettier/plugins/markdown';
 import * as yaml from 'prettier/plugins/yaml';
-import config from '../prettier.config.js';
+import config from '../../../prettier.config.js';
 import { readEntry, readList, writeEntry, writeList } from '#lib/content-files.ts';
 
 // The plugin and overrides are for .svelte files, which the CMS never writes.

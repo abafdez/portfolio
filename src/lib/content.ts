@@ -3,7 +3,8 @@
 // markdown is read once and never ships to the browser.
 // Only the frontmatter is read here; the bodies are rendered by each [slug] page.
 // Translations sit next to the English file: <slug>/<slug>.es.md (see toTranslation()).
-import { parse } from 'yaml';
+import { readEntry } from '#lib/content-files.ts';
+import { readingTime } from '#lib/reading-time.ts';
 import { baseLocale, fileLocale, locales, type Locale } from '#lib/i18n/locales.ts';
 import { hueOf } from '#lib/hue.ts';
 
@@ -100,14 +101,9 @@ export function checkCover(path: string, alt: unknown, files: string[] = coverFi
 // The frontmatter is the YAML between the two --- lines at the top of the file.
 const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---/;
 
-// Minutes to read the body (the file without its frontmatter), rounded up.
-// 200 words a minute: a bit under the usual ~238 for non-fiction, because the posts
-// are technical and full of code. Code counts as words too.
-// Exported for its tests (content.test.ts).
-export function readingTime(text: string): number {
-	const words = text.replace(frontmatter, '').match(/\S+/g)?.length ?? 0;
-	return Math.max(1, Math.ceil(words / 200));
-}
+// Minutes to read: reading-time.ts (the CMS preview uses it too). Re-exported for its
+// tests (content.test.ts).
+export { readingTime };
 
 // A description for a file that has none (Devlog entries): the body's first
 // paragraph or list item, as plain text, cut at a word to fit in max characters.
@@ -148,13 +144,15 @@ export function checkTags(path: string, tags: string[] = []) {
 	if (bad.length) throw new Error(`${path}: tags must be lowercase kebab-case: ${bad.join(', ')}`);
 }
 
-// The YAML at the top of a file. A YAML error names the line but not the file, so it's
-// added: with a hundred markdown files, the file is what you need to know. The usual
-// mistake is an unquoted ': ' inside a value; wrap the value in quotes.
-// Exported for its tests (content.test.ts).
+// The YAML at the top of a file, read by content-files.ts (the one reader for content
+// files: the site, the CMS and `pnpm content:format` all use it). A YAML error names the
+// line but not the file, so it's added: with a hundred markdown files, the file is what
+// you need to know. The usual mistake is an unquoted ': ' inside a value; wrap the value
+// in quotes. Exported for its tests (content.test.ts).
 export function readFrontmatter<T>(path: string, text: string): T {
 	try {
-		return parse(text.match(frontmatter)?.[1] ?? '') as T;
+		const { body: _body, ...meta } = readEntry(text);
+		return meta as T;
 	} catch (error) {
 		throw new Error(`${path}: the frontmatter isn't valid YAML. ${(error as Error).message}`);
 	}
@@ -288,6 +286,14 @@ checkUniqueSlugs(
 
 export const allPosts = toList<PostMeta>({ ...posts, ...drafts });
 export const allLog = toList<LogMeta>(log);
+
+// A file's text as written, frontmatter included: the [slug] pages render its body on
+// the server (render.server.ts).
+export function sourceOf(path: string): string {
+	const text = posts[path] ?? drafts[path] ?? log[path];
+	if (text === undefined) throw new Error(`${path}: no such content file`);
+	return text;
+}
 
 // Every tag a post uses, once, A to Z. The tag pages are made from this list, so in a
 // build (no drafts) a tag that only drafts use has no page.

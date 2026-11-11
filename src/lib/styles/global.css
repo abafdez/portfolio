@@ -130,7 +130,7 @@
 	/* min-inline-size: 0: main is a grid item (body is a grid), and a grid item won't
 	   go narrower than its widest content by default. One wide table made the whole
 	   page wider than a phone; now main keeps the column's width and the table scrolls
-	   in its own box (tables.ts). */
+	   in its own box (markdown/Table.svelte). */
 	main {
 		min-inline-size: 0;
 		inline-size: 100%;
@@ -324,8 +324,8 @@
 		}
 	}
 
-	/* Rendered markdown (a Devlog entry, later a blog post). mdsvex makes its HTML in
-	   another component, so a page's scoped styles can't reach it; a global class can.
+	/* Rendered markdown (a post or a Devlog entry). It's HTML made on the server
+	   (src/lib/markdown/), so a page's scoped styles can't reach it; a global class can.
 	   Space goes between siblings, never before the first one or after the last. */
 	.prose {
 		& > * + * {
@@ -357,12 +357,15 @@
 			color: var(--brand);
 		}
 
-		/* Inline code; code blocks are CodeBlock.svelte. */
+		/* Inline code; code blocks are .code-block (below). A long one with no spaces
+		   (content/blog/published/README.md, a line of JS) breaks anywhere rather than
+		   pushing the page wider than a phone. */
 		& :not(pre) > code {
 			padding: 0.1em 0.3em;
 			border-radius: var(--radius-2);
 			background-color: var(--surface-2);
 			font-size: 0.9em;
+			overflow-wrap: anywhere;
 		}
 
 		& blockquote {
@@ -422,7 +425,7 @@
 			}
 		}
 
-		/* Images and videos next to the post (see enhance-media.ts). They come with
+		/* Images and videos next to the post (markdown/Image.svelte, blocks/Video.svelte). They come with
 		   width and height, so their space is kept while they load; block-size: auto
 		   keeps the proportions when max-inline-size makes them narrower. */
 		& :is(img, video) {
@@ -445,7 +448,7 @@
 			}
 		}
 
-		/* A table in its scroll box (tables.ts): on a phone a wide one scrolls inside it,
+		/* A table in its scroll box (markdown/Table.svelte): on a phone a wide one scrolls inside it,
 		   not the whole page. The box takes the keyboard focus, so it shows a ring. */
 		& .table-scroll {
 			max-inline-size: 100%;
@@ -539,6 +542,97 @@
 			padding: var(--size-1) var(--size-4) var(--size-3);
 			font-size: var(--font-size-0);
 			color: var(--text-2);
+		}
+
+		/* Code blocks (src/lib/markdown/CodeBlock.svelte). Here and not in the component,
+		   because it's rendered on the server into plain HTML, and a component only the
+		   server uses never sends its CSS to the page. */
+		& .code-block {
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			/* Rounds the corners of the pre's background too. */
+			overflow: clip;
+
+			& figcaption {
+				display: flex;
+				align-items: center;
+				gap: var(--size-2);
+				padding: var(--size-1) var(--size-3);
+				border-block-end: var(--border-size-1) solid var(--surface-3);
+				background-color: var(--surface-1);
+				font-family: var(--font-label);
+				font-size: var(--font-size-0);
+				color: var(--text-2);
+			}
+
+			/* Pushes the status and the button to the end of the bar. */
+			& .status {
+				margin-inline-start: auto;
+			}
+
+			& button {
+				padding: 0 var(--size-2);
+				border: var(--border-size-1) solid var(--surface-3);
+				border-radius: var(--radius-2);
+				background: none;
+				color: inherit;
+				cursor: pointer;
+
+				&:is(:hover, :focus-visible) {
+					color: var(--text-1);
+				}
+
+				/* Until copy.ts shows it (JS, and a browser that can copy). */
+				&[hidden] {
+					display: none;
+				}
+			}
+
+			/* Long lines wrap instead of scrolling, even inside a long word or URL. Nothing
+			   scrolls, so Shiki's tabindex="0" is removed (shiki.ts). */
+			& pre {
+				padding: var(--size-3);
+				font-size: var(--font-size-1);
+				white-space: pre-wrap;
+				overflow-wrap: anywhere;
+				/* The code uses tabs, 8 columns wide by default: too much on a phone. */
+				tab-size: 2;
+			}
+
+			/* Line numbers: a CSS counter, so they're never copied. Each line is a full-width
+			   inline-block with room for its number on the left: a line that wraps continues
+			   under its own text, not under the number. (inline-block, not block: Shiki puts
+			   a newline between the lines, and in a <pre> that would add an empty line after
+			   every one.) The number is pulled into that room with a negative margin rather
+			   than position: absolute, so an empty line still holds its number. */
+			& code {
+				counter-reset: line;
+			}
+
+			& .line {
+				display: inline-block;
+				inline-size: 100%;
+				padding-inline-start: 4ch;
+			}
+
+			& .line::before {
+				counter-increment: line;
+				content: counter(line);
+				display: inline-block;
+				inline-size: 2.5ch;
+				margin-inline: -4ch 1.5ch;
+				text-align: end;
+				color: var(--code-comment);
+			}
+
+			/* A one-line block (a single command) doesn't need a number. */
+			& .line:only-child {
+				padding-inline-start: 0;
+			}
+
+			& .line:only-child::before {
+				content: none;
+			}
 		}
 	}
 }

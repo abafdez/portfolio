@@ -1,4 +1,5 @@
-# Sveltia CMS, at /admin/index.html in dev only (cms/plugin.ts serves this file too).
+# Sveltia CMS, at /admin in dev only (plugin.ts serves the page; main.ts reads this file
+# and passes it to CMS.init()).
 # Docs: https://sveltiacms.app/en/docs. How to use it: content/blog/published/README.md.
 
 # The local workflow ("Work with Local Repository") still needs a Git backend here; it
@@ -24,8 +25,8 @@ slug:
   encoding: ascii
   clean_accents: true
 
-# Shared by the three markdown collections (YAML anchors). Sveltia warns that it doesn't
-# know a `fields` option and ignores it; the anchors below still work.
+# Shared by the three markdown collections (YAML anchors). main.ts resolves the anchors
+# with the yaml package and drops this key before Sveltia sees it.
 fields:
   title: &title { name: title, label: Title, widget: string, i18n: true }
   date: &date

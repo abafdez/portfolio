@@ -1,7 +1,8 @@
 /* Styles for the CMS preview (preview.ts), on top of the site's own tokens.css and
-   global.css. The page's header and code blocks get their look from component styles
-   (ArticleHeader.svelte, CodeBlock.svelte), which can't reach Sveltia's preview frame,
-   so these are copies of theirs. Keep them in step when those change. */
+   global.css. The body needs nothing here: its renderers are styled in global.css
+   (.prose), like on the page. The page's header gets its look from ArticleHeader.svelte's
+   component styles, which can't reach Sveltia's preview frame, so those are copied here.
+   Keep them in step when that changes. */
 
 body {
 	margin: 0;
@@ -91,59 +92,8 @@ body {
 	}
 }
 
-/* CodeBlock.svelte */
-.code-block {
-	border: var(--border-size-1) solid var(--surface-3);
-	border-radius: var(--radius-3);
-	overflow: clip;
-
-	& figcaption {
-		padding: var(--size-1) var(--size-3);
-		border-block-end: var(--border-size-1) solid var(--surface-3);
-		background-color: var(--surface-1);
-		font-family: var(--font-label);
-		font-size: var(--font-size-0);
-		color: var(--text-2);
-	}
-
-	& pre {
-		padding: var(--size-3);
-		font-size: var(--font-size-1);
-		white-space: pre-wrap;
-		overflow-wrap: anywhere;
-		tab-size: 2;
-	}
-
-	& code {
-		counter-reset: line;
-	}
-
-	& .line {
-		display: inline-block;
-		inline-size: 100%;
-		padding-inline-start: 4ch;
-	}
-
-	& .line::before {
-		counter-increment: line;
-		content: counter(line);
-		display: inline-block;
-		inline-size: 2.5ch;
-		margin-inline: -4ch 1.5ch;
-		text-align: end;
-		color: var(--code-comment);
-	}
-
-	& .line:only-child {
-		padding-inline-start: 0;
-
-		&::before {
-			content: none;
-		}
-	}
-}
-
-/* What the build would refuse (an unknown callout, a block with a wrong field). */
+/* What the build would refuse (parse.ts: HTML in the text, an unknown callout, a block
+   with a wrong field, an image without alt text). */
 .preview-error {
 	padding: var(--size-3);
 	border: var(--border-size-2) solid var(--error);

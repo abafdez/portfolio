@@ -12,7 +12,7 @@ const pretty = (text: string, parser: 'markdown' | 'yaml') => format(text, { ...
 // ever changes what was edited.
 describe('every content file survives a save unchanged', () => {
 	const entries = globSync('content/{blog,bitacora}/**/*.md').filter(
-		(f) => !f.endsWith('README.md') && !f.includes('/.preview')
+		(f) => !f.endsWith('README.md')
 	);
 	const lists = globSync('content/awesome/*.yaml');
 

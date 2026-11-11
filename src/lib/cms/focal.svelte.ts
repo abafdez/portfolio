@@ -3,6 +3,7 @@
 // Svelte an element to mount into, and passes the props through a $state object.
 import { mount, unmount } from 'svelte';
 import Focal from './Focal.svelte';
+import { coverOf } from './covers.ts';
 
 type ControlProps = {
 	forID: string;
@@ -16,20 +17,18 @@ type ReactLike = {
 	useEffect: (effect: () => void | (() => void), deps: unknown[]) => void;
 };
 
-// The cover next to the entry, served in dev by cms/plugin.ts (Sveltia's getAsset() didn't
-// find it): content/blog/published/<slug>/<slug>.md → /admin/cover/content/blog/published/<slug>
-function coverOf(entry: ControlProps['entry']) {
-	const path = String(entry.get('path') ?? '');
-	return path ? `/admin/cover/${path.replace(/\/[^/]*$/, '')}` : undefined;
-}
-
 export function focalControl(React: ReactLike) {
 	return function FocalControl({ forID, value, onChange, entry }: ControlProps) {
 		const target = React.useRef<HTMLElement | null>(null);
 		const props = React.useRef<{ value?: string; onchange: (v: string) => void } | null>(null);
 
 		React.useEffect(() => {
-			const state = $state({ id: forID, src: coverOf(entry), value, onchange: onChange });
+			const state = $state({
+				id: forID,
+				src: coverOf(String(entry.get('path') ?? '')),
+				value,
+				onchange: onChange
+			});
 			props.current = state;
 			const app = mount(Focal, { target: target.current!, props: state });
 			return () => void unmount(app);

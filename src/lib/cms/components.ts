@@ -1,6 +1,7 @@
 // Our fenced-block components (```yt, ```video…) as Sveltia editor components, generated
 // from the registry the build uses (src/lib/blocks.ts), so a new block needs no CMS code.
-// Each one is edited in a dialog and previewed with the block's own render().
+// Each one is edited in a dialog. In the editor it shows as one line (its name and title):
+// the preview pane next to it draws the real block with the site's own component.
 import { parse, stringify } from 'yaml';
 import { blocks } from '#lib/blocks.ts';
 
@@ -55,15 +56,13 @@ export function blockComponents() {
 					.map(([field, value]) => line(field, isFile(field) ? dotted(value) : value));
 				return `\`\`\`${name}\n${lines.join('\n')}\n\`\`\``;
 			},
+			// Text, so < and & are written as entities: the editor reads this as HTML.
 			toPreview(values: Values) {
-				try {
-					const withDots = Object.fromEntries(
-						Object.entries(values).map(([k, v]) => [k, isFile(k) ? dotted(v) : v])
-					);
-					return block.render(withDots as never, 'post.md');
-				} catch {
-					return `<p>${name}: fill in its fields</p>`;
-				}
+				const title = String(values[titleField] ?? '').replace(
+					/[&<]/g,
+					(c) => `&#${c.charCodeAt(0)};`
+				);
+				return `<p><strong>${name}</strong> ${title}</p>`;
 			}
 		};
 	});
