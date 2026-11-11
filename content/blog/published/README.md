@@ -8,14 +8,14 @@ git mv content/blog/drafts/<slug> content/blog/published/
 
 ## In the CMS
 
-Posts, drafts, the Devlog and the Awesome lists can be edited in a CMS ([Sveltia CMS](https://sveltiacms.app/en/docs), dev only): run `pnpm dev` and open `http://localhost:5173/admin/index.html` in Chrome or Edge (it needs the File System Access API, which Firefox and Safari don't have). Click "Work with Local Repository" and pick the repo's folder; from WSL, pick "Linux" in the folder picker's sidebar first. It edits the files themselves, so check `git diff` and commit as usual.
+Posts, drafts, the Devlog and the Awesome lists can be edited in a CMS ([Sveltia CMS](https://sveltiacms.app/en/docs), dev only): run `pnpm dev` and open `http://localhost:5173/admin` in Chrome or Edge (it needs the File System Access API, which Firefox and Safari don't have). Click "Work with Local Repository" and pick the repo's folder; from WSL, pick "Linux" in the folder picker's sidebar first. It edits the files themselves, so check `git diff` and commit as usual.
 
 - **English and Spanish** are side by side. A new entry starts in English only; switch Spanish on from the three-dot menu when you translate it.
-- **A save changes only what you edited**: the CMS writes files in this repo's own style and runs Prettier on them (`src/lib/content-files.ts`, `cms/formats.ts`). After editing frontmatter by hand (in Obsidian, say), run `pnpm content:format` so the files stay in that shape; `pnpm test` fails until they are.
+- **A save changes only what you edited**: the CMS writes files in this repo's own style and runs Prettier on them (`src/lib/content-files.ts`, `src/lib/cms/formats.ts`). After editing frontmatter by hand (in Obsidian, say), run `pnpm content:format` so the files stay in that shape; `pnpm test` fails until they are.
 - **The body** opens as markdown; the button at the end of the toolbar switches to rich text. Both keep callouts, HTML in backticks and the blocks below.
 - **` ```yt ` and ` ```video `** are in the Insert menu and filled in a dialog.
 - **Images**: the image button uploads next to the post and writes `![alt](./file.png)`; its Title field becomes the caption.
-- **The preview** is drawn in the browser as you type, with the build's own markdown plugins and the site's CSS (`cms/render.ts`): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img. A block the build would refuse shows its error there. In dev, the **Real page** tab shows the page itself with your unsaved changes (the CMS writes a hidden `.preview.md` next to the post, ignored by git and by the build). The Awesome list's preview is the page as last saved, in dev only.
+- **The preview** is drawn in the browser as you type, by the site's own markdown components and CSS (`src/lib/markdown/`, the same code that renders the page): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img's optimised copies. Anything the build would refuse (HTML in the text, a block with a wrong field, an image without alt text) shows its error there instead. The Awesome list's preview is the page as last saved, in dev only.
 - **Publishing** is still the `git mv` above: drafts and published posts are two lists in the CMS, and it can't move a post between them.
 - **Cover focal point** is stored as `focus: x% y%`; the site doesn't use it yet.
 
@@ -84,9 +84,9 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 - **Width:** about **twice the width it's shown at**. The text column is about 740 px wide, so up to about 1500 px wide. Smaller is fine: it's never stretched bigger than the file.
 - **Format:** **AVIF** is a good default: the smallest file in git for the same quality. Export it at a **high quality (70 or more)**: the build compresses it again for the page, and a file that's already heavily compressed loses detail twice. **PNG** is fine for screenshots and diagrams (text, flat colours), **JPEG** for photos, WebP too. Not SVG: the image step doesn't handle it yet (ask Claude). Not animated GIF either: only its first frame is kept. Use a video (below).
 - **File size:** git keeps every version of every file forever, even after you delete it. Crop to what matters, and keep originals under about 1 MB.
+- **The file must be next to the post** (`./…`): an image from another site fails the build.
 - **Alt text is required**: the build fails without it. It says what the image shows, for someone who can't see it. Don't start with "Image of…".
 - **A caption** (the quoted part) is for everyone: context, a source, what to notice. Don't repeat the alt text in it.
-- **No double quotes in alt text or captions**: the markdown step doesn't escape them, so the build stops and says so. Use `'` or curly quotes (“ ”) instead.
 - **Screenshots: check for personal data before committing**: open tabs, notifications, email addresses, the CV builder with real details. Once it's pushed, it's public.
 
 ### Videos
@@ -115,34 +115,14 @@ caption: The filters appear after the list has loaded, and push it down.
 
 The build fails on a missing required field, a field that isn't in the table (`autoplay` included, on purpose), a size that isn't a number, or a file without `./`, naming the post. The block always adds `controls muted playsinline preload="metadata"` (why each one, below).
 
-The HTML it makes, which you can also write by hand when you need something the block doesn't do. Paths start with `./` like images, and the build turns them into real URLs:
-
-```html
-<figure>
-	<video
-		width="1280"
-		height="720"
-		controls
-		muted
-		playsinline
-		preload="metadata"
-		poster="./awesome-list-shift.png"
-	>
-		<source src="./awesome-list-shift.webm" type="video/webm" />
-		<source src="./awesome-list-shift.mp4" type="video/mp4" />
-	</video>
-	<figcaption>The filters appear after the list has loaded, and push it down.</figcaption>
-</figure>
-```
-
-One file is fine too: `<video src="./clip.mp4" width="1280" height="720" controls muted playsinline preload="metadata"></video>`.
+The video it makes looks like this (poster, WebM and MP4 sources, a caption). You can't write it as HTML yourself: HTML in a post fails the build (see [Tags and code in the text](#tags-and-code-in-the-text)). If you need something the block doesn't do, ask Claude to add a field.
 
 - **Format:** **MP4** (H.264) plays in every browser; if you make one file, make that one. **WebM** (VP9) is usually smaller for the same quality. With both, put WebM first: the browser plays the first `<source>` it can.
 - **`width` and `height` are required** (the build fails without them): the size you exported at. Like an image, the video's space is kept before the file arrives, so the page doesn't jump.
 - **Short and small:** a few seconds, 1280 px wide, under about 1 MB per file. Unlike images, videos are used as they are: the build doesn't compress them, so compress before committing (below).
 - **No sound, no autoplay.** `controls` lets a reader play and pause it (WCAG asks that anything moving can be paused), `muted` says there's no sound (Svelte asks for captions, a `<track>`, on a video with sound), and without `autoplay` nothing moves until the reader asks, which also respects reduced motion.
 - **`preload="metadata"`** downloads only the start of the file (size, length) until it's played. **`poster`** (optional) is the image shown before that; it's used as it is, so export it at the video's size.
-- **Say what it shows**, in a `<figcaption>` or in the text around it: a video has no alt text.
+- **Say what it shows**, in `caption` or in the text around it: a video has no alt text.
 - **In the vault:** copy the files to `_attachments/` and embed with `![[clip.mp4]]`.
 
 Recording and compressing (install once with `sudo apt install ffmpeg`): record with Snipping Tool (Win+Shift+R) or Game Bar (Win+Alt+R), then:
@@ -220,12 +200,9 @@ reviewed: false
 
 ## Tags and code in the text
 
-**Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. Markdown passes HTML through as it is, so outside backticks:
+**Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. **HTML outside backticks fails the build**, naming the post and the tag, whether it's a made-up tag like `<profile>` or a real one like `<aside>`: nothing written in a post reaches the page as raw markup. Every element on the page comes from the site's own components (the blocks above for what markdown can't say). The CMS preview shows the same error. A comment (`<!-- note to self -->`) is the one exception: it's dropped.
 
-- a made-up tag like `<profile>` becomes an element that never closes, and the text after it may vanish. **The build fails** on it, naming the post and the tag;
-- a real one like `<aside>` quietly becomes real markup, with no warning at all.
-
-The same goes for `{` and `}` outside backticks: Svelte reads them as code. Frontmatter (`title`, `description`) is plain text, so no backticks there: they'd show as they are.
+`{` and `}` are plain text now, inside backticks or not. Frontmatter (`title`, `description`) is plain text too, so no backticks there: they'd show as they are.
 
 ## Links
 

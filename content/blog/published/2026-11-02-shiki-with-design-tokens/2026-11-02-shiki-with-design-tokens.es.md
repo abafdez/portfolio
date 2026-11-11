@@ -92,3 +92,5 @@ Eso es escapar: codificar datos para que sigan siendo datos en un sitio concreto
 ## Contraste
 
 Cada color de código tiene que leerse bien sobre el fondo del bloque, en los dos temas. Comprobé cada par antes de usarlo: el más bajo es 5,3:1, por encima del 4,5:1 que piden las WCAG AA para el texto normal. También mantuve todos los colores dentro del rango sRGB, para que las pantallas muestren lo que comprobé.
+
+**Actualización (2026-11-11):** mdsvex ya no está. El resaltador y el tema son los mismos, ahora en un módulo que comparten el render en el servidor y la vista previa del CMS. Un componente no puede esperar mientras se renderiza, así que los lenguajes que usa un post se cargan antes y el resaltado es síncrono.

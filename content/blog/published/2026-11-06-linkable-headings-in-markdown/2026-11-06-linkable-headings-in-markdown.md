@@ -84,6 +84,8 @@ html {
 
 `scroll-padding` tells the browser to leave that much room at the top whenever it scrolls something into view, a `#heading` included.
 
+**Update (2026-11-11):** mdsvex is gone, and so are rehype-slug and rehype-autolink-headings. svelte-markdown makes the ids with github-slugger (the same ids, checked on every page), and a `heading` renderer of mine wraps the text in the link. The crawler still fails the build on a broken `#link`.
+
 ## Links
 
 - [rehype-slug](https://github.com/rehypejs/rehype-slug)

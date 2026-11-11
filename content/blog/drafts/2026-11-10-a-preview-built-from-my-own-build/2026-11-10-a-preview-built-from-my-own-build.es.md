@@ -1,16 +1,16 @@
 ---
 title: Una vista previa del CMS hecha con mi propio build
-description: Mi CMS mostraba la vista previa de algo que no era mi sitio. Tres intentos después, ejecuta los mismos plugins de markdown que mi build, en el navegador, mientras escribo.
+description: Mi CMS mostraba la vista previa de algo que no era mi sitio. Cuatro intentos después, dibuja el post con los mismos componentes de Svelte que la página, en el navegador, mientras escribo.
 reviewed: false
 ---
 
 Mis artículos son archivos markdown, y ahora los edito en [Sveltia CMS](https://sveltiacms.app/en/docs). Su panel de vista previa dibuja el markdown mientras escribes, que es lo que debe hacer una vista previa. Pero dibujaba algo que no era mi sitio: sin estilos, mis callouts como citas normales y mis componentes en bloques de código como YAML.
 
-Me costó tres intentos arreglarlo, y cada uno me enseñó algo sobre de dónde sale de verdad el aspecto de mi sitio.
+Me costó cuatro intentos arreglarlo, y cada uno me enseñó algo sobre de dónde sale de verdad el aspecto de mi sitio.
 
 ## Lo que tiene que reproducir una vista previa
 
-Un artículo de este sitio pasa por varios pasos hasta convertirse en HTML. El build los ejecuta en `vite.config.ts`:
+Un artículo de este sitio pasaba por varios pasos hasta convertirse en HTML. El build los ejecutaba en `vite.config.ts`:
 
 1. mdsvex convierte el markdown en un árbol de HTML.
 2. Bloques de código: si el lenguaje es uno de mis componentes (` ```yt `, ` ```video `), su YAML se convierte en ese componente; cualquier otro lo resalta Shiki, con mi propio tema de colores.
@@ -61,18 +61,49 @@ El resto es conseguir que se parezca a la página:
 - **Las imágenes** se escriben `./diagram.png` en el artículo. `getAsset()` de Sveltia lo convierte en una URL que el marco puede mostrar. Mientras todavía está leyendo el archivo responde con una vacía, así que las rutas se vuelven a buscar cada vez que se redibuja la vista previa.
 - **Los errores** aparecen antes. Un bloque de código con un campo mal puesto lanza el mismo error que daría el build, y la vista previa lo muestra antes de guardar.
 
+Se acercaba, pero era una copia del build, no el build. mdsvex leía el markdown con un analizador más antiguo que el de la vista previa y convertía las comillas en tipográficas, y la vista previa tenía su propia idea de cómo es el marco de un bloque de código. Dos procesos que hoy coinciden pueden separarse mañana.
+
+## Intento 4: los mismos componentes, montados en vivo
+
+Después sustituí mdsvex por [svelte-markdown](https://markdown.svelte.page): marked convierte el markdown en tokens y unos componentes de Svelte los dibujan, uno por cada tipo de elemento, y puedo darle los míos. En el sitio, cada página de post renderiza esos componentes a HTML en el servidor y muestra el texto. Ya no hay un paso del build para el markdown, así que el CMS puede ejecutar exactamente lo mismo.
+
+La vista previa lee el texto con el `parse()` del propio sitio, carga los lenguajes del código para Shiki y monta el `Markdown.svelte` del sitio en el marco de la vista previa. Sveltia dibuja su vista previa con React, así que un componente pequeño de React le da a Svelte un elemento donde montarse y le pasa las props nuevas cuando cambian:
+
+```ts
+let current = $state.raw(props); // los tokens se sustituyen enteros, nunca se editan
+update.current = (next) => (current = next);
+mount(Markdown, {
+	target: target.current!,
+	props: {
+		get tokens() {
+			return current.tokens;
+		}
+		// file, locale, highlighter y media de la misma forma
+	}
+});
+```
+
+`$state.raw`, porque un post son miles de tokens y solo se sustituyen: no hay nada dentro que Svelte tenga que vigilar.
+
+- **Un analizador, un juego de componentes.** La caja del callout, el marco del bloque de código, la tarjeta de ` ```yt `: la página y la vista previa los sacan de los mismos archivos `.svelte`. Un bloque nuevo aparece en los dos porque solo hay uno.
+- **Los errores salen del mismo sitio.** `parse()` lanza todo lo que detiene el build: HTML en el texto, un tipo de callout desconocido, un bloque con un campo mal, una imagen sin texto alternativo. La vista previa muestra ese mensaje en lugar del post.
+- **Las imágenes** pasan por una interfaz: los componentes preguntan «¿dónde está `./diagram.png`?», y el build responde con sus imágenes optimizadas mientras la vista previa responde con `getAsset()`.
+- **Vite descubría svelte-markdown tarde.** La vista previa lo usaba por primera vez cuando la página ya había cargado, Vite lo volvía a empaquetar y la página se rompía con un `504 Outdated Optimize Dep`. Ponerlo en `optimizeDeps.include` lo empaqueta al arrancar el servidor de desarrollo.
+
 ## Lo que no puede hacer, y lo que se queda
 
-No es el build. mdsvex lee el markdown con un analizador más antiguo que el de la vista previa y convierte las comillas en tipográficas, y las imágenes se muestran tal cual, sin enhanced-img. Para eso, la página en vivo del intento 2 se queda como segunda pestaña, solo en desarrollo.
+Las imágenes de la vista previa son los archivos tal cual: las copias AVIF y WebP de enhanced-img solo existen en el build. Nada más. Con los componentes de la propia página en la vista previa, la página en vivo del intento 2 ya solo me enseñaba la cabecera y el diseño del sitio, así que la quité, y con ella el endpoint que escribía el archivo oculto, los propios archivos ocultos y las ramas `?preview` de mis páginas.
 
 ## Lo que me llevo
 
-La vista previa fue posible porque los pasos del build ya eran funciones pequeñas en sus propios archivos, cada una probada por separado. No hubo que copiar nada: el build y el CMS importan el mismo código, así que un nuevo tipo de callout o un nuevo bloque aparece en los dos a la vez.
+El intento 3 funcionó porque los pasos del build eran funciones pequeñas en sus propios archivos. El intento 4 es mejor porque no hay ninguna copia: la vista previa no es «como la página», es el código de la propia página, ejecutándose en otro sitio. Y, para los posts y las entradas, me permitió borrar los intentos 1 y 2.
 
 ## Enlaces
 
 - [Sveltia CMS: plantillas de vista previa propias](https://sveltiacms.app/en/docs/api/preview-templates)
 - [Sveltia CMS: estilos propios para la vista previa](https://sveltiacms.app/en/docs/api/preview-styles)
-- [unified: cómo ejecuta los plugins un procesador](https://unifiedjs.com/learn/guide/using-unified/)
+- [svelte-markdown](https://markdown.svelte.page)
+- [Svelte: mount](https://svelte.dev/docs/svelte/imperative-component-api#mount)
+- [Svelte: $state.raw](https://svelte.dev/docs/svelte/$state#$state.raw)
 - [Vite: importar CSS como texto con `?inline`](https://vite.dev/guide/features#disabling-css-injection-into-the-page)
 - [Shiki en el navegador](https://shiki.style/guide/install)

@@ -83,6 +83,8 @@ html {
 
 `scroll-padding` le dice al navegador que deje ese espacio arriba cada vez que hace scroll para mostrar algo, un `#encabezado` incluido.
 
+**Actualización (2026-11-11):** mdsvex ya no está, ni rehype-slug ni rehype-autolink-headings. svelte-markdown crea los ids con github-slugger (los mismos ids, comprobado en todas las páginas), y un renderer `heading` mío envuelve el texto en el enlace. El crawler sigue rompiendo el build con un `#enlace` roto.
+
 ## Enlaces
 
 - [rehype-slug](https://github.com/rehypejs/rehype-slug)

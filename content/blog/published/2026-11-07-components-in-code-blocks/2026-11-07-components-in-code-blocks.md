@@ -62,6 +62,8 @@ post.md: the ```video block has no "autoplay" field. Its fields: src, webm, post
 
 The `./` files go through the same step as images: each becomes an import, so a missing file fails the build too, and the real one gets a hashed name.
 
+**Update (2026-11-11):** mdsvex is gone. The blocks, their fields and their checks are the same (`blocks.ts`), but they're drawn by real Svelte components now: a `code` renderer for svelte-markdown hands ` ```video ` and ` ```yt ` to their components, and the files they name are loaded before the post renders. The CMS preview mounts the same components.
+
 ## Links
 
 - [mdsvex: highlighting](https://mdsvex.pngwn.io/docs#highlight)

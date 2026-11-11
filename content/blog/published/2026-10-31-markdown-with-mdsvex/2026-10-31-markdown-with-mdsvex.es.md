@@ -130,6 +130,8 @@ export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
 
 Se deja fuera cualquier id de ruta que contenga un `[`.
 
+**Actualización (2026-11-11):** el sitio ya no usa mdsvex. Los posts y las entradas se leen con marked y los dibuja [svelte-markdown](https://markdown.svelte.page) con mis propios componentes, en el servidor: cada página `[slug]` convierte su archivo en HTML en `+page.server.ts` y lo muestra con `{@html}`. El plugin de Vite, el cambio a `<script module>` y los chunks de componentes `.md` han desaparecido, así que el problema del orden de los plugins ya no existe. Las comillas tipográficas también: el texto se muestra tal como lo escribo.
+
 ## Enlaces
 
 - [Documentación de mdsvex](https://mdsvex.com/docs)

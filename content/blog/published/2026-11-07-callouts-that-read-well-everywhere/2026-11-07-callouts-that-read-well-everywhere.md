@@ -66,6 +66,8 @@ Obsidian has more types than GitHub (`info`, `bug`, `quote`…). On GitHub those
 > [!caution]
 > A blockquote that really starts with `[!something]` can't be written any more. I haven't needed one yet.
 
+**Update (2026-11-11):** mdsvex and its old parser are gone, and with them the rehype plugin and the text-node joining. marked keeps `[!tip]` and the title in one text token, so my own pass over its tokens turns the blockquote into a `callout` token, and two small Svelte components draw it. Same syntax, same HTML, same rules.
+
 ## Links
 
 - [GitHub's alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)

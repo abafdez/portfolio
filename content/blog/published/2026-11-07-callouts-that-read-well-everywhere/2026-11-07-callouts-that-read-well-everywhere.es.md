@@ -65,6 +65,8 @@ Obsidian tiene más tipos que GitHub (`info`, `bug`, `quote`…). En GitHub esos
 > [!caution]
 > Ya no se puede escribir una cita que de verdad empiece por `[!algo]`. De momento no lo he necesitado.
 
+**Actualización (2026-11-11):** mdsvex y su parser antiguo ya no están, ni el plugin de rehype ni la unión de nodos de texto. marked deja `[!tip]` y el título en un solo token de texto, así que una pasada mía por sus tokens convierte la cita en un token `callout`, y dos componentes pequeños de Svelte lo dibujan. La misma sintaxis, el mismo HTML, las mismas reglas.
+
 ## Enlaces
 
 - [Las alerts de GitHub](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)

@@ -1,6 +1,6 @@
 # Awesome lists
 
-One YAML file per list; the file name is its URL (`modern-css.yaml` → `/awesome/modern-css`). Edit them in the CMS (`pnpm dev`, then `/admin/index.html`) or by hand.
+One YAML file per list; the file name is its URL (`modern-css.yaml` → `/awesome/modern-css`). Edit them in the CMS (`pnpm dev`, then `/admin`) or by hand.
 
 - Every `url` must be `https://` and every tag lowercase kebab-case, or the build fails (`src/lib/awesome/awesome.ts`).
 - Tags cut across categories: what a link is (docs, article, tool, site) and what it's about.
