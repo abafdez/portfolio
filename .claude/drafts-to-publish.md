@@ -17,4 +17,10 @@ List new drafts here, with their TODOs and the drafts they link to, until they g
 ## Phase 11 (CMS), 2026-11-09
 
 - `2026-11-09-a-cms-that-only-changes-what-you-edit`: Sveltia CMS's first save rewrote untouched lines; our own file format and the save-everything test. Links to the preview draft below: **publish both together**. No cover, `.es.md` with `reviewed: false`.
-- `2026-11-10-a-preview-built-from-my-own-build`: the CMS preview in three tries (real page as saved, live real page with a hidden `.preview.md`, the build's own plugins in the browser). No cover, no links to drafts, `.es.md` with `reviewed: false`.
+- `2026-11-10-a-preview-built-from-my-own-build`: the CMS preview in four tries (real page as saved, live real page with a hidden `.preview.md`, the build's own plugins in the browser, then the site's own `Markdown.svelte` mounted live after the svelte-markdown switch, which made the live real page unnecessary: removed). No cover, no links to drafts, `.es.md` with `reviewed: false`.
+
+## svelte-markdown instead of mdsvex, 2026-11-11 (branch `spike/svelte-markdown`)
+
+- `2026-11-11-markdown-drawn-by-my-own-components`: why and how mdsvex was replaced (the comparison first, our own token pass, strict HTML, server render + `{@html}`, the CMS mounting the same components, two glob traps, the weight numbers). Links to the preview draft above: **publish together** (or after it). No cover, `.es.md` with `reviewed: false`. Only makes sense if the branch is merged.
+- `2026-11-11-a-cms-from-npm-and-three-traps`: the CMS imported from npm (the top-level-await deadlock with `DOMContentLoaded`, Vite's optimizer losing Sveltia's assets, the React effect that returned the props) and what was deleted. Links to the preview draft above: **publish together** (or after it). No cover, `.es.md` with `reviewed: false`.
+- The same branch added a dated "Update (2026-11-11)" note to eight published posts that described mdsvex (markdown-with-mdsvex, markdown-links-with-an-mdsvex-layout, images-next-to-the-post, shiki-with-design-tokens, linkable-headings-in-markdown, components-in-code-blocks, callouts-that-read-well-everywhere, videos-in-markdown-posts), English and Spanish. They don't link to drafts.
