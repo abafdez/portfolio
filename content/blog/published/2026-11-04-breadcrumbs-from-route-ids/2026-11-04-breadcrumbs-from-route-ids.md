@@ -1,5 +1,5 @@
 ---
-title: 'Breadcrumbs in SvelteKit, and why I compare route ids'
+title: Breadcrumbs in SvelteKit, and why I compare route ids
 date: 2026-11-04
 tags: [sveltekit, accessibility, navigation]
 description: A breadcrumb trail from data the routes already have, and the bug I found on the way. My nav's current-page marker was never in the prerendered HTML, because resolve() writes relative links while prerendering.

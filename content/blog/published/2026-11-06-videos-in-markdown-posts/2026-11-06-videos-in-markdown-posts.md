@@ -1,5 +1,5 @@
 ---
-title: 'Videos in markdown posts, and why not a GIF'
+title: Videos in markdown posts, and why not a GIF
 date: 2026-11-06
 tags: [markdown, video, performance, accessibility]
 description: 'Short screen recordings next to a post: why not a GIF, how the build finds the files, and the attributes that keep a video from jumping or autoplaying.'
@@ -95,6 +95,8 @@ A page with a counter, two seconds, and I had a real video file to put in a thro
 ## Later: a video block
 
 All of this HTML is now one block in my posts: a code block whose language is `video`, with the file, the size and a caption as YAML. The build writes the same `<video>` and checks every field. That's [its own post](./2026-11-07-components-in-code-blocks).
+
+**Update (2026-11-11):** HTML in a post now fails the build, `<video>` included: nothing written in a post reaches the page as raw markup. A video is a ` ```video ` block now ([components in code blocks](./2026-11-07-components-in-code-blocks)), with the same attributes and the same rules.
 
 ## Links
 

@@ -1,5 +1,5 @@
 ---
-title: 'Botones de radio para un filtro, con estilo gracias a :has()'
+title: Botones de radio para un filtro, con estilo gracias a :has()
 description: Mi página sobre mí ahora filtra las habilidades por el tipo de empleo al que me presento. Una elección cada vez significa botones de radio, y :has() me deja darles estilo sin renunciar a lo que el navegador hace gratis.
 cover: Tarjetas que pasan por un filtro, con botones de opción para categoría y fecha.
 reviewed: false

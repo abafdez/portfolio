@@ -1,5 +1,5 @@
 ---
-title: 'My first unit tests found a bug on the first run'
+title: My first unit tests found a bug on the first run
 date: 2026-11-04
 tags: [testing, vitest, typescript]
 description: I'd never written a test. Adding Vitest to my SvelteKit site, testing three small functions, and the edge case that turned out to be a real bug.

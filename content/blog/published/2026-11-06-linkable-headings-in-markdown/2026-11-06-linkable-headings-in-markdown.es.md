@@ -1,5 +1,5 @@
 ---
-title: 'Encabezados enlazables en markdown, y un build que los comprueba'
+title: Encabezados enlazables en markdown, y un build que los comprueba
 description: Dos plugins de rehype les dan a todos los encabezados de mis artículos un id y un enlace a sí mismos. Por qué envuelvo el encabezado en vez de añadir un enlace "#", y cómo SvelteKit hace fallar el build con uno roto.
 cover: Un encabezado con una almohadilla y un ancla que enlaza a una lista de secciones.
 reviewed: false
@@ -82,6 +82,8 @@ html {
 ```
 
 `scroll-padding` le dice al navegador que deje ese espacio arriba cada vez que hace scroll para mostrar algo, un `#encabezado` incluido.
+
+**Actualización (2026-11-11):** mdsvex ya no está, ni rehype-slug ni rehype-autolink-headings. svelte-markdown crea los ids con github-slugger (los mismos ids, comprobado en todas las páginas), y un renderer `heading` mío envuelve el texto en el enlace. El crawler sigue rompiendo el build con un `#enlace` roto.
 
 ## Enlaces
 

@@ -1,5 +1,5 @@
 ---
-title: 'Syntax highlighting with Shiki, colored by my own design tokens'
+title: Syntax highlighting with Shiki, colored by my own design tokens
 date: 2026-11-02
 tags: [shiki, mdsvex, css, design-tokens]
 description: Highlighting code blocks at build time with Shiki, and a small TextMate theme whose colors are CSS variables, so code follows my site's themes.
@@ -93,3 +93,5 @@ That's escaping: encoding data so it stays data in a given place. It isn't sanit
 ## Contrast
 
 Every code color has to be readable on the code block's background, in both themes. I checked each pair before using it: the lowest is 5.3:1, above the 4.5:1 WCAG AA asks for normal text. I also kept every color inside the sRGB range, so screens show what I checked.
+
+**Update (2026-11-11):** mdsvex is gone. The highlighter and the theme are the same, now in one module that the server render and the CMS preview share. A component can't wait while it renders, so the languages a post uses are loaded first and the highlighting is synchronous.

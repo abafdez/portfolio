@@ -1,5 +1,5 @@
 ---
-title: 'Tag pages on a static SvelteKit blog'
+title: Tag pages on a static SvelteKit blog
 date: 2026-11-02
 tags: [sveltekit, blog, accessibility]
 description: One prerendered page per tag, a list of tags built from the posts, and a build that fails on a bad tag.

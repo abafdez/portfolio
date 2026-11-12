@@ -1,5 +1,5 @@
 ---
-title: 'Mis primeros tests unitarios encontraron un bug a la primera'
+title: Mis primeros tests unitarios encontraron un bug a la primera
 description: Nunca había escrito un test. Añadir Vitest a mi sitio con SvelteKit, probar tres funciones pequeñas y el caso límite que resultó ser un bug de verdad.
 cover: Archivos de tests que fluyen hacia un documento con el logo de Vitest.
 reviewed: false

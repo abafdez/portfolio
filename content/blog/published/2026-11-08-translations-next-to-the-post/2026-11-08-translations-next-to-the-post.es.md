@@ -1,5 +1,5 @@
 ---
-title: 'Traducciones junto al artículo'
+title: Traducciones junto al artículo
 description: La versión en español de cada artículo es un segundo archivo en su carpeta, con solo las palabras en su frontmatter. Cómo lo lee el sitio y qué muestra una página en español mientras no existe.
 cover: Un archivo en inglés que envía su contenido a copias traducidas, una por bandera.
 reviewed: false

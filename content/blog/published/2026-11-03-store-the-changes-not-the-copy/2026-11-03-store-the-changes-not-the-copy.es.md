@@ -1,5 +1,5 @@
 ---
-title: 'Guarda los cambios, no la copia'
+title: Guarda los cambios, no la copia
 description: Mi generador de CV me deja editar las habilidades de cada perfil de empleo. Guardar mis cambios sobre la lista, en vez de una copia, mantuvo al mando los datos del sitio, y un ??= me enseñó cómo funcionan los proxies de Svelte.
 cover: Un formulario roto que se repara, conectado al almacenamiento del navegador y a la sincronización.
 reviewed: false

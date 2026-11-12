@@ -1,5 +1,5 @@
 ---
-title: 'Validar formularios sin librería'
+title: Validar formularios sin librería
 description: El navegador ya sabe cuándo un campo es obligatorio, no es un correo o no encaja con un patrón. Yo solo tenía que decidir cuándo decirlo, y con qué palabras.
 cover: Un formulario con campos de nombre, correo y contraseña, cada uno marcado como validado.
 reviewed: false

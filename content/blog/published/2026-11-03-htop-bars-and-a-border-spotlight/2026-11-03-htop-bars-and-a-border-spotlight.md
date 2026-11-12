@@ -1,5 +1,5 @@
 ---
-title: 'htop bars that fill when you see them, and a border that follows the pointer'
+title: htop bars that fill when you see them, and a border that follows the pointer
 date: 2026-11-03
 tags: [css, animation, svelte, svg]
 description: The effects on my about page, and the bugs behind each one. An animation that never animated, an observer that never saw, and 168 KB of duplicate SVG.

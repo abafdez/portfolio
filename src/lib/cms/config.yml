@@ -1,0 +1,151 @@
+# Sveltia CMS, at /admin in dev only (plugin.ts serves the page; main.ts reads this file
+# and passes it to CMS.init()).
+# Docs: https://sveltiacms.app/en/docs. How to use it: content/blog/published/README.md.
+
+# The local workflow ("Work with Local Repository") still needs a Git backend here; it
+# never connects to GitHub, the repo name only partitions the browser's storage.
+backend:
+  name: github
+  repo: abafdez/portfolio
+  branch: main
+
+# Required at the top; every collection keeps its images next to the entry instead.
+media_folder: static/uploads
+
+# <slug>.md is English, <slug>.es.md beside it is Spanish.
+i18n:
+  structure: multiple_files
+  locales: [en, es]
+  default_locale: en
+  omit_default_locale_from_file_path: true
+  # A new entry starts in English only; Spanish is switched on per entry when translated.
+  initial_locales: default
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+# Shared by the three markdown collections (YAML anchors). main.ts resolves the anchors
+# with the yaml package and drops this key before Sveltia sees it.
+fields:
+  title: &title { name: title, label: Title, widget: string, i18n: true }
+  date: &date
+    name: date
+    label: Date
+    widget: datetime
+    type: date
+    format: YYYY-MM-DD
+    default: '{{now}}'
+  # A plain list (one text box per tag). Kebab-case is checked by the build (checkTags):
+  # a per-item rule would turn every tag into a collapsible box.
+  tags: &tags { name: tags, label: Tags, widget: list, required: false }
+  description: &description { name: description, label: Description, widget: text, i18n: true }
+  cover: &cover
+    name: cover
+    label: Cover alt text
+    hint: The alt text of cover.avif in the post's folder.
+    widget: string
+    required: false
+    i18n: true
+  # Translations only: false until Alfonso has read it. Shown in English too (a field
+  # can't be translation-only), where it must stay empty: a boolean switch always
+  # writes true or false, a select can be left empty (and is then left out).
+  reviewed: &reviewed
+    name: reviewed
+    label: Reviewed (translations only)
+    widget: select
+    options: [{ label: 'Yes', value: true }, { label: 'No', value: false }]
+    required: false
+    i18n: true
+  # The cover's focal point, "x% y%", picked on the cover (cms/Focal.svelte). The site
+  # doesn't read it yet: card thumbnails are still cropped from the middle (covers.ts).
+  focus: &focus
+    name: focus
+    label: Cover focal point (not used yet)
+    widget: focal
+    required: false
+  body: &body
+    name: body
+    label: Body
+    widget: richtext
+    i18n: true
+    modes: [raw, rich_text]
+
+# Images go in the entry's own folder, written as ./file.png (what the build expects).
+# Not media_folder: '': with a path ending in {{slug}}, Sveltia would put them in a
+# <slug>/ folder inside the entry's folder.
+collections:
+  - name: posts
+    label: Blog posts
+    label_singular: Post
+    folder: content/blog/published
+    path: '{{slug}}/{{slug}}'
+    slug: '{{year}}-{{month}}-{{day}}-{{title}}'
+    format: entry # cms/formats.ts: our own style, then Prettier
+    media_folder: /content/blog/published/{{slug}}
+    public_folder: .
+    i18n: true
+    sortable_fields: [date, title]
+    fields: [*title, *date, *tags, *description, *cover, *focus, *reviewed, *body]
+
+  - name: drafts
+    label: Blog drafts
+    label_singular: Draft
+    folder: content/blog/drafts
+    path: '{{slug}}/{{slug}}'
+    slug: '{{year}}-{{month}}-{{day}}-{{title}}'
+    format: entry # cms/formats.ts: our own style, then Prettier
+    media_folder: /content/blog/drafts/{{slug}}
+    public_folder: .
+    i18n: true
+    fields: [*title, *date, *tags, *description, *cover, *focus, *reviewed, *body]
+
+  - name: devlog
+    label: Devlog
+    label_singular: Entry
+    folder: content/bitacora
+    path: '{{slug}}/{{slug}}'
+    slug: '{{year}}-{{month}}-{{day}}-{{title}}'
+    format: entry # cms/formats.ts: our own style, then Prettier
+    media_folder: /content/bitacora/{{slug}}
+    public_folder: .
+    i18n: true
+    fields:
+      - *title
+      - *date
+      - { name: phase, label: Phase, widget: number, value_type: float, required: false }
+      - *tags
+      - *reviewed
+      - *body
+
+  - name: awesome
+    label: Awesome lists
+    format: list # cms/formats.ts
+    files:
+      - name: modern-css
+        label: Modern CSS
+        file: content/awesome/modern-css.yaml
+        fields:
+          - &both
+            name: title
+            label: Title
+            widget: object
+            fields: [{ name: en, label: English }, { name: es, label: Spanish }]
+          - { <<: *both, name: description, label: Description }
+          - { name: updated, label: Updated, widget: datetime, type: date, format: YYYY-MM-DD }
+          - name: categories
+            label: Categories
+            widget: list
+            summary: '{{name.en}}'
+            fields:
+              # Always { en, es } here, even when both are the same: a field has one shape.
+              - { <<: *both, name: name, label: Name }
+              - name: links
+                label: Links
+                widget: list
+                summary: '{{title}}'
+                fields:
+                  - { name: title, label: Title }
+                  - { name: url, label: URL, pattern: ['^https://', 'Must start with https://'] }
+                  - { <<: *both, name: description, label: Description }
+                  - { name: tags, label: Tags, widget: list }

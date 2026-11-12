@@ -1,5 +1,5 @@
 ---
-title: 'SEO en un sitio de proyecto de GitHub Pages, empezando por un robots.txt que no hacía nada'
+title: SEO en un sitio de proyecto de GitHub Pages, empezando por un robots.txt que no hacía nada
 description: Mi robots.txt bloqueaba a todos los rastreadores, o eso creía. En un sitio de proyecto nunca se lee. Lo que de verdad controla la indexación ahí, más un componente Seo, URLs absolutas al prerenderizar y un sitemap a partir de mi contenido.
 cover: Una lupa, una etiqueta meta y la mascota de GitHub en un sitio web.
 reviewed: false

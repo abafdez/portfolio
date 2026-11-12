@@ -1,5 +1,5 @@
 ---
-title: 'A tag sidebar that fades out'
+title: A tag sidebar that fades out
 date: 2026-11-08
 tags: [css, accessibility, svelte]
 description: My blog page opened with a wall of 55 tag links. Now it's a sidebar of coloured chips, most used first, that fades out into a button, and what fades out is really gone for the keyboard too.

@@ -1,5 +1,5 @@
 ---
-title: 'Seis temas de color como tokens sobrescritos'
+title: Seis temas de color como tokens sobrescritos
 description: Mi sitio ya tiene seis temas de color, de Tokyo Night a Solarized. Cada uno es un archivo CSS, no cambió ningún componente y un test unitario comprueba el contraste de cada tema.
 cover: Tres paletas de temas de color en una pantalla, con una llave que las desbloquea.
 reviewed: false

@@ -1,5 +1,5 @@
 ---
-title: 'Icons as data, and an SVG sprite from a SvelteKit endpoint'
+title: Icons as data, and an SVG sprite from a SvelteKit endpoint
 date: 2026-11-03
 tags: [sveltekit, svg, performance, yaml]
 description: My skills moved from TypeScript to a YAML file. The icons came along as data, the icon libraries stopped shipping to the browser, and the page lost half its weight.

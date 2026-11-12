@@ -1,5 +1,5 @@
 ---
-title: 'El texto nunca va sobre la cuadrícula'
+title: El texto nunca va sobre la cuadrícula
 description: El fondo de mi sitio es una cuadrícula de plano que se ilumina alrededor del ratón. Quedaba genial y se leía mal. Cómo encontré cada texto que había encima, y la única regla que lo arregló todo.
 reviewed: false
 ---

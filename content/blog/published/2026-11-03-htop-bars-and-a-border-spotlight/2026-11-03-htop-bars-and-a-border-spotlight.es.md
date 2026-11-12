@@ -1,5 +1,5 @@
 ---
-title: 'Barras de htop que se llenan cuando las ves, y un borde que sigue al puntero'
+title: Barras de htop que se llenan cuando las ves, y un borde que sigue al puntero
 description: Los efectos de mi página sobre mí, y los bugs que hay detrás de cada uno. Una animación que nunca animaba, un observer que nunca veía y 168 KB de SVG duplicado.
 cover: Una tableta que muestra barras de CPU y memoria al estilo de htop, con paneles de interfaz alrededor.
 reviewed: false

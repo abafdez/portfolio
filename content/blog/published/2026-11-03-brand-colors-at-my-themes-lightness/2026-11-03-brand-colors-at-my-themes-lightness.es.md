@@ -1,5 +1,5 @@
 ---
-title: 'Iconos con el color de su marca a la luminosidad de mi tema'
+title: Iconos con el color de su marca a la luminosidad de mi tema
 description: Cada logo de mi página sobre mí conserva el tono de su marca pero toma la luminosidad del tema, con un poco de matemáticas de OKLab y colores relativos de CSS.
 cover: Mosaicos de aplicaciones de colores conectados alrededor de un logo central.
 reviewed: false

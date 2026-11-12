@@ -1,5 +1,5 @@
 ---
-title: 'Store the changes, not the copy'
+title: Store the changes, not the copy
 date: 2026-11-03
 tags: [svelte, local-storage]
 description: My CV builder lets me edit the skills for each job profile. Saving my changes to the list, instead of a copy of it, kept the site's data in charge, and one ??= taught me about Svelte's proxies.

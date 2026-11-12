@@ -1,5 +1,5 @@
 ---
-title: 'Translations next to the post'
+title: Translations next to the post
 date: 2026-11-08
 tags: [i18n, content, seo]
 description: Each post's Spanish version is a second file in its folder, with only the words in its frontmatter. How the site reads it, and what a Spanish page shows until it exists.

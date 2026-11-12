@@ -1,5 +1,5 @@
 ---
-title: 'Una introducción fija con un menú que sigue al scroll, y un anclaje suave'
+title: Una introducción fija con un menú que sigue al scroll, y un anclaje suave
 description: Mi portada mantiene la introducción a la vista mientras pasan las secciones, y un pequeño menú muestra qué sección estás leyendo. position sticky, unas pocas líneas que miden con cada scroll y un anclaje de proximidad que solo se aplica a una página.
 cover: Un índice fijo junto a una página, con una línea que marca la sección que se está leyendo.
 reviewed: false

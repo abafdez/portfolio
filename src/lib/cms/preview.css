@@ -1,0 +1,104 @@
+/* Styles for the CMS preview (preview.ts), on top of the site's own tokens.css and
+   global.css. The body needs nothing here: its renderers are styled in global.css
+   (.prose), like on the page. The page's header gets its look from ArticleHeader.svelte's
+   component styles, which can't reach Sveltia's preview frame, so those are copied here.
+   Keep them in step when that changes. */
+
+body {
+	margin: 0;
+	padding: var(--size-4);
+	background-color: var(--surface-1);
+}
+
+/* Dev only: Preview | Real page. 40px tall: the real page starts below it. */
+.preview-tabs {
+	position: fixed;
+	inset: 0 0 auto;
+	z-index: 1;
+	display: flex;
+	gap: var(--size-2);
+	box-sizing: border-box;
+	block-size: 40px;
+	margin: 0;
+	padding: var(--size-1) var(--size-3);
+	border-block-end: var(--border-size-1) solid var(--surface-3);
+	background-color: var(--surface-2);
+
+	& button {
+		padding: 0 var(--size-3);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-2);
+		background: none;
+		color: var(--text-2);
+		font: inherit;
+		font-family: var(--font-label);
+		cursor: pointer;
+
+		&[aria-pressed='true'] {
+			border-color: var(--brand);
+			color: var(--text-1);
+		}
+	}
+
+	/* The article starts below the tabs. */
+	& + .preview-article {
+		margin-block-start: 40px;
+	}
+}
+
+.preview-article {
+	max-inline-size: var(--reading-width, 80ch);
+	margin-inline: auto;
+}
+
+/* ArticleHeader.svelte */
+.preview-header {
+	margin-block-end: var(--size-6);
+
+	& .meta {
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		color: var(--text-2);
+	}
+
+	& h1 {
+		margin-block-start: var(--size-2);
+	}
+
+	& .description {
+		margin-block-start: var(--size-2);
+		font-size: var(--font-size-3);
+		color: var(--text-2);
+	}
+
+	& .tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--size-2);
+		margin-block-start: var(--size-3);
+		padding: 0;
+		list-style: none;
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		color: var(--brand);
+	}
+
+	& .cover {
+		inline-size: 100%;
+		block-size: auto;
+		margin-block-start: var(--size-5);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
+	}
+}
+
+/* What the build would refuse (parse.ts: HTML in the text, an unknown callout, a block
+   with a wrong field, an image without alt text). */
+.preview-error {
+	padding: var(--size-3);
+	border: var(--border-size-2) solid var(--error);
+	border-radius: var(--radius-3);
+	color: var(--error);
+	font-family: var(--font-label);
+	white-space: pre-wrap;
+}

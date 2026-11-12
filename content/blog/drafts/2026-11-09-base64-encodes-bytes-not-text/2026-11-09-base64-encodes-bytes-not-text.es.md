@@ -1,5 +1,5 @@
 ---
-title: 'Base64 codifica bytes, no texto'
+title: Base64 codifica bytes, no texto
 description: btoa('ñ') da una respuesta equivocada y btoa('😀') lanza un error. Base64 trabaja con bytes, así que el texto tiene que convertirse antes en bytes. Cómo lo hace mi herramienta de Base64 y cómo distingue una entrada mala de datos binarios.
 reviewed: false
 ---

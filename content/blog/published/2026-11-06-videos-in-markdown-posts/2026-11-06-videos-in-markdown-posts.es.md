@@ -1,5 +1,5 @@
 ---
-title: 'Vídeos en artículos de markdown, y por qué no un GIF'
+title: Vídeos en artículos de markdown, y por qué no un GIF
 description: 'Grabaciones de pantalla cortas junto a un artículo: por qué no un GIF, cómo encuentra el build los archivos y los atributos que evitan que un vídeo salte o se reproduzca solo.'
 cover: Un reproductor de vídeo en una pantalla, con código markdown y archivos MP4 y WebM.
 reviewed: false
@@ -94,6 +94,8 @@ Una página con un contador, dos segundos, y ya tenía un archivo de vídeo de v
 ## Más tarde: un bloque de vídeo
 
 Todo este HTML es ahora un solo bloque en mis artículos: un bloque de código cuyo lenguaje es `video`, con el archivo, el tamaño y un pie como YAML. El build escribe el mismo `<video>` y comprueba cada campo. Eso tiene [su propio artículo](./2026-11-07-components-in-code-blocks).
+
+**Actualización (2026-11-11):** el HTML en un post ahora rompe el build, `<video>` incluido: nada de lo que se escribe en un post llega a la página como marcado sin más. Un vídeo es ahora un bloque ` ```video ` ([componentes en bloques de código](./2026-11-07-components-in-code-blocks)), con los mismos atributos y las mismas reglas.
 
 ## Enlaces
 

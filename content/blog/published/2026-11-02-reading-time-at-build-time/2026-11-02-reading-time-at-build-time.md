@@ -1,5 +1,5 @@
 ---
-title: 'Reading time, counted once while the site builds'
+title: Reading time, counted once while the site builds
 date: 2026-11-02
 tags: [sveltekit, vite, content]
 description: Where to compute a post's reading time in SvelteKit, and why the answer is "where the text already is".

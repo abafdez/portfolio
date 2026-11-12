@@ -1,5 +1,5 @@
 ---
-title: 'Callouts that read well everywhere'
+title: Callouts that read well everywhere
 date: 2026-11-07
 tags: [markdown, accessibility, sveltekit]
 description: GitHub and Obsidian both draw "> [!note]" as a callout box. A small rehype plugin makes my site draw it too, and it's still a plain blockquote anywhere else.
@@ -65,6 +65,8 @@ Obsidian has more types than GitHub (`info`, `bug`, `quote`…). On GitHub those
 
 > [!caution]
 > A blockquote that really starts with `[!something]` can't be written any more. I haven't needed one yet.
+
+**Update (2026-11-11):** mdsvex and its old parser are gone, and with them the rehype plugin and the text-node joining. marked keeps `[!tip]` and the title in one text token, so my own pass over its tokens turns the blockquote into a `callout` token, and two small Svelte components draw it. Same syntax, same HTML, same rules.
 
 ## Links
 

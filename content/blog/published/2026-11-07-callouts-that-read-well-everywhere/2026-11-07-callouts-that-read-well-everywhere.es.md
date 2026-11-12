@@ -1,5 +1,5 @@
 ---
-title: 'Callouts que se leen bien en todas partes'
+title: Callouts que se leen bien en todas partes
 description: GitHub y Obsidian dibujan "> [!note]" como una caja destacada. Un pequeño plugin de rehype hace que mi sitio también la dibuje, y en cualquier otro sitio sigue siendo una cita normal.
 cover: La sintaxis de los avisos de markdown convirtiéndose en cajas de nota, advertencia y consejo.
 reviewed: false
@@ -64,6 +64,8 @@ Obsidian tiene más tipos que GitHub (`info`, `bug`, `quote`…). En GitHub esos
 
 > [!caution]
 > Ya no se puede escribir una cita que de verdad empiece por `[!algo]`. De momento no lo he necesitado.
+
+**Actualización (2026-11-11):** mdsvex y su parser antiguo ya no están, ni el plugin de rehype ni la unión de nodos de texto. marked deja `[!tip]` y el título en un solo token de texto, así que una pasada mía por sus tokens convierte la cita en un token `callout`, y dos componentes pequeños de Svelte lo dibujan. La misma sintaxis, el mismo HTML, las mismas reglas.
 
 ## Enlaces
 

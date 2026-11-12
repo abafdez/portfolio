@@ -1,5 +1,5 @@
 ---
-title: 'Linkable headings in markdown, and a build that checks them'
+title: Linkable headings in markdown, and a build that checks them
 date: 2026-11-06
 tags: [markdown, accessibility, sveltekit]
 description: Two rehype plugins give every heading in my posts an id and a link to itself. Why I wrap the heading instead of adding a "#" link, and how SvelteKit fails the build on a broken one.
@@ -83,6 +83,8 @@ html {
 ```
 
 `scroll-padding` tells the browser to leave that much room at the top whenever it scrolls something into view, a `#heading` included.
+
+**Update (2026-11-11):** mdsvex is gone, and so are rehype-slug and rehype-autolink-headings. svelte-markdown makes the ids with github-slugger (the same ids, checked on every page), and a `heading` renderer of mine wraps the text in the link. The crawler still fails the build on a broken `#link`.
 
 ## Links
 

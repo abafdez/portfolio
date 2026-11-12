@@ -1,5 +1,5 @@
 ---
-title: "Brand-colored icons at my theme's lightness"
+title: Brand-colored icons at my theme's lightness
 date: 2026-11-03
 tags: [css, oklch, icons, design-tokens]
 description: Every logo on my about page keeps its brand's hue but takes its lightness from the theme, with a little OKLab math and CSS relative colors.

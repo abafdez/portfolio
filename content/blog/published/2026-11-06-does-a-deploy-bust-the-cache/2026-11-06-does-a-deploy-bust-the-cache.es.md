@@ -1,5 +1,5 @@
 ---
-title: '¿Cada despliegue invalida la caché de mis visitantes?'
+title: ¿Cada despliegue invalida la caché de mis visitantes?
 description: 'Daba por hecho que cada despliegue renombraba todos los archivos y obligaba a los visitantes a descargarlo todo otra vez. Construí dos veces y leí las cabeceras: acerté a medias, por otro motivo.'
 cover: Datos antiguos con un sello de invalidado, y la mascota de GitHub comprobando un ETag.
 reviewed: false

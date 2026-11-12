@@ -1,5 +1,5 @@
 ---
-title: 'Markdown pages with mdsvex, and a lesson in Vite plugin order'
+title: Markdown pages with mdsvex, and a lesson in Vite plugin order
 date: 2026-10-31
 tags: [sveltekit, mdsvex, markdown, vite]
 description: Turning a folder of markdown files into prerendered SvelteKit pages with mdsvex, why the usual preprocess setup broke on my own posts, and how Vite really orders plugins.
@@ -130,6 +130,8 @@ export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
 ```
 
 Any route id with a `[` in it is left out.
+
+**Update (2026-11-11):** the site no longer uses mdsvex. Posts and entries are parsed with marked and drawn by [svelte-markdown](https://markdown.svelte.page) with my own components, on the server: each `[slug]` page renders its file to HTML in `+page.server.ts` and shows it with `{@html}`. The Vite plugin, the `<script module>` rewrite and the `.md` component chunks are gone, so the plugin-ordering problem above no longer exists. Curly quotes are gone too: the text is shown as typed.
 
 ## Links
 

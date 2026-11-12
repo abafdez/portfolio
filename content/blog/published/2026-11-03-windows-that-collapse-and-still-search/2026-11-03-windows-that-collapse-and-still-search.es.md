@@ -1,5 +1,5 @@
 ---
-title: 'Ventanas que se pliegan, se abren mientras lees y siguen saliendo en Ctrl+F'
+title: Ventanas que se pliegan, se abren mientras lees y siguen saliendo en Ctrl+F
 description: Una sección plegable que funciona sin JS, se abre sola al hacer scroll, respeta lo que elegiste y no le esconde su contenido a la búsqueda en la página.
 cover: Una pila de ventanas que se pliegan, con un dedo que toca la de arriba.
 reviewed: false

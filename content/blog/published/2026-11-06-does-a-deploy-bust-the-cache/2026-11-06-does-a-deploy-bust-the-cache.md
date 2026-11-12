@@ -1,5 +1,5 @@
 ---
-title: "Does every deploy bust my visitors' cache?"
+title: Does every deploy bust my visitors' cache?
 date: 2026-11-06
 tags: [caching, github-pages, performance]
 description: 'I assumed every deploy renamed every file and made visitors download everything again. I built twice and read the headers: half right, for a different reason.'

@@ -1,11 +1,3 @@
-# An Awesome list: one YAML file per list, the file name is its URL (/awesome/modern-css).
-# Every url must be https:// and every tag lowercase kebab-case, or the build fails
-# (src/lib/awesome/awesome.ts). Tags cut across categories: what a link is
-# (docs, article, tool, site) and what it's about.
-# In Spanish: a text is plain (the same in every language) or { en: …, es: … }. Once the
-# list's description is in both, every link's description must be too (else the build
-# fails: the Spanish page would be half English); names and titles can stay plain.
-# Link titles are the sources' own, so they stay as their authors wrote them.
 title:
   en: Modern CSS
   es: CSS moderno
@@ -14,7 +6,9 @@ description:
   es: Las referencias de CSS a las que vuelvo una y otra vez mientras construyo este sitio, del color y el modo oscuro al movimiento y la maquetación.
 updated: 2026-11-02
 categories:
-  - name: Color
+  - name:
+      en: Color
+      es: Color
     links:
       - title: oklch.com
         url: https://oklch.com
@@ -40,7 +34,6 @@ categories:
           en: The 4.5:1 and 3:1 rules for text, and what counts as large text.
           es: Las reglas de 4,5:1 y 3:1 para el texto, y qué cuenta como texto grande.
         tags: [docs, accessibility]
-
   - name:
       en: Dark mode
       es: Modo oscuro
@@ -75,7 +68,6 @@ categories:
           en: Adam Argyle builds an accessible light and dark switch, step by step.
           es: Adam Argyle construye paso a paso un interruptor accesible entre claro y oscuro.
         tags: [article, dark-mode, accessibility]
-
   - name:
       en: Motion
       es: Movimiento
@@ -110,7 +102,6 @@ categories:
           en: The media feature that tells you someone asked for less motion.
           es: La media feature que te dice que alguien ha pedido menos movimiento.
         tags: [docs, motion, accessibility]
-
   - name:
       en: Layout
       es: Maquetación
@@ -139,7 +130,6 @@ categories:
           en: An element that scrolls with the page until it reaches an edge, then stays.
           es: Un elemento que se desplaza con la página hasta llegar a un borde y luego se queda ahí.
         tags: [docs, layout]
-
   - name:
       en: Foundations
       es: Fundamentos
@@ -168,7 +158,6 @@ categories:
           en: Ready-made design tokens as custom properties, the base of this site's tokens.
           es: Design tokens listos para usar como custom properties, la base de los tokens de este sitio.
         tags: [tool]
-
   - name:
       en: Inspiration
       es: Inspiración

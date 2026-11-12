@@ -1,5 +1,5 @@
 ---
-title: 'Cómo limita Svelte el ámbito de los estilos, leído en lo que genera el compilador'
+title: Cómo limita Svelte el ámbito de los estilos, leído en lo que genera el compilador
 description: Qué le hace el compilador de Svelte al bloque de estilos de un componente, por qué los estilos de una página no llegaban a mi markdown renderizado, y cuándo la solución es :global() y cuándo una clase global.
 cover: El logo de Svelte en un escudo de cristal, con nombres de clase generados alrededor.
 reviewed: false

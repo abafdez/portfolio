@@ -1,5 +1,5 @@
 ---
-title: 'SEO on a GitHub Pages project site, starting with a robots.txt that did nothing'
+title: SEO on a GitHub Pages project site, starting with a robots.txt that did nothing
 date: 2026-11-04
 tags: [sveltekit, seo, github-pages]
 description: My robots.txt was blocking every crawler, or so I thought. On a project site it's never read. What actually controls indexing there, plus one Seo component, absolute URLs while prerendering, and a sitemap from my content.

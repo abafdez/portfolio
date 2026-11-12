@@ -31,3 +31,4 @@ vite.config.ts.timestamp-*
 # Playwright test output (traces of failed tests, the HTML report)
 /test-results/
 /playwright-report/
+

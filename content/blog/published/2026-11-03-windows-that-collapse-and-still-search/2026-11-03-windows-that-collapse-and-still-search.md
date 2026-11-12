@@ -1,5 +1,5 @@
 ---
-title: 'Windows that collapse, open as you read, and still show up in Ctrl+F'
+title: Windows that collapse, open as you read, and still show up in Ctrl+F
 date: 2026-11-03
 tags: [svelte, accessibility, html, css]
 description: A collapsible section that works without JS, opens by itself as you scroll, respects what you chose, and doesn't hide its content from find in page.

@@ -1,5 +1,5 @@
 ---
-title: 'Un comprobador de contraste que lee sus propios design tokens'
+title: Un comprobador de contraste que lee sus propios design tokens
 description: Leer custom properties de CSS en el navegador, convertir cualquier color de CSS a sRGB con un canvas, y la sorpresa de light-dark() por el camino.
 cover: Una máquina que evalúa el contraste.
 reviewed: false

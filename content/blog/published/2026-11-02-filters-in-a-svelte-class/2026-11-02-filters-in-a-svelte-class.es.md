@@ -1,5 +1,5 @@
 ---
-title: 'Filtros de búsqueda y etiquetas en una clase de Svelte, guardados en la URL'
+title: Filtros de búsqueda y etiquetas en una clase de Svelte, guardados en la URL
 description: Una clase con $state para los filtros de una lista Awesome, resultados con $derived y una URL que se puede compartir, en una página prerenderizada.
 cover: Un componente de Svelte que envía una corriente de elementos a través de una clase de filtro.
 reviewed: false

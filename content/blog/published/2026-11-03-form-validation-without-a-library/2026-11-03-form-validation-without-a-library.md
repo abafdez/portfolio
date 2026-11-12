@@ -1,5 +1,5 @@
 ---
-title: 'Form validation without a library'
+title: Form validation without a library
 date: 2026-11-03
 tags: [forms, accessibility]
 description: The browser already knows when a field is required, isn't an email or doesn't match a pattern. I only had to decide when to say so, and in which words.

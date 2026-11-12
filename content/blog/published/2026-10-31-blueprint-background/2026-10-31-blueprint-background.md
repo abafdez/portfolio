@@ -1,5 +1,5 @@
 ---
-title: 'A blueprint grid in pure CSS, with a cursor spotlight'
+title: A blueprint grid in pure CSS, with a cursor spotlight
 date: 2026-10-31
 tags: [css, backgrounds, masks, svelte]
 description: A graph-paper background made of four gradients, plus marks drawn with a mask, and a spotlight that lights up the grid around your mouse. One fixed layer, no images, and it follows the theme.

@@ -88,6 +88,11 @@ export function localizePath(pathname: string, locale: Locale) {
 	return `${base}/${locale}${path === '/' ? '' : path}`;
 }
 
+// A path on this site in a language, with the base path: sitePath('/blog', 'es') is
+// '/portfolio/es/blog'. For code that renders outside a page (render.server.ts), where
+// route() can't read the page's language.
+export const sitePath = (path: string, locale: Locale) => localizePath(`${base}${path}`, locale);
+
 // Plurals: "1 post", "26 posts". Languages have different rules (some have forms for
 // two, or for few); Intl.PluralRules knows them and answers with a category, and each
 // message gives the text for the categories its language uses. 'other' is always there.

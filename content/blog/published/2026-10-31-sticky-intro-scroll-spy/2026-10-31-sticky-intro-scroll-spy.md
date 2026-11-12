@@ -1,5 +1,5 @@
 ---
-title: 'A sticky intro with a scroll-spy nav, and gentle scroll snapping'
+title: A sticky intro with a scroll-spy nav, and gentle scroll snapping
 date: 2026-10-31
 tags: [css, layout, scroll-snap, svelte]
 description: My home page keeps the intro in view while the sections scroll past, and a small nav shows which section you're reading. position sticky, a few lines of measuring on scroll, and proximity snapping that only applies to one page.

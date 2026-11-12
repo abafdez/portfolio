@@ -1,5 +1,5 @@
 ---
-title: 'Páginas de etiquetas en un blog estático con SvelteKit'
+title: Páginas de etiquetas en un blog estático con SvelteKit
 description: Una página prerenderizada por etiqueta, una lista de etiquetas construida a partir de los artículos y un build que falla con una etiqueta mal escrita.
 cover: Un documento con varias etiquetas que van a carpetas.
 reviewed: false

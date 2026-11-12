@@ -1,5 +1,5 @@
 ---
-title: 'Search and tag filters in a Svelte class, saved in the URL'
+title: Search and tag filters in a Svelte class, saved in the URL
 date: 2026-11-02
 tags: [svelte, sveltekit, accessibility]
 description: A $state class for an Awesome list's filters, $derived results, and a URL you can share, on a page that's prerendered.

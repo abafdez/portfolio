@@ -1,5 +1,5 @@
 ---
-title: 'Páginas de markdown con mdsvex, y una lección sobre el orden de los plugins de Vite'
+title: Páginas de markdown con mdsvex, y una lección sobre el orden de los plugins de Vite
 description: Convertir una carpeta de archivos markdown en páginas de SvelteKit prerenderizadas con mdsvex, por qué la configuración habitual con preprocess se rompió con mis propios artículos, y cómo ordena Vite de verdad los plugins.
 cover: Un archivo markdown que se convierte en un componente de Svelte.
 reviewed: false
@@ -129,6 +129,8 @@ export type RouteWithoutParams = Exclude<RouteId, `${string}[${string}`>;
 ```
 
 Se deja fuera cualquier id de ruta que contenga un `[`.
+
+**Actualización (2026-11-11):** el sitio ya no usa mdsvex. Los posts y las entradas se leen con marked y los dibuja [svelte-markdown](https://markdown.svelte.page) con mis propios componentes, en el servidor: cada página `[slug]` convierte su archivo en HTML en `+page.server.ts` y lo muestra con `{@html}`. El plugin de Vite, el cambio a `<script module>` y los chunks de componentes `.md` han desaparecido, así que el problema del orden de los plugins ya no existe. Las comillas tipográficas también: el texto se muestra tal como lo escribo.
 
 ## Enlaces
 

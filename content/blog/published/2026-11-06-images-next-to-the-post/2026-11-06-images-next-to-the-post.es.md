@@ -1,5 +1,5 @@
 ---
-title: 'Imágenes junto al artículo, en markdown normal'
+title: Imágenes junto al artículo, en markdown normal
 description: Dónde guardar las imágenes de un blog, por qué ![alt](./x.png) se rompe en un sitio prerenderizado, y un pequeño paso en un plugin de Vite que lo convierte en imágenes optimizadas y comprobadas.
 cover: Carpetas de borradores y contenido publicado, con personas que mueven archivos entre ellas.
 reviewed: false
@@ -142,6 +142,8 @@ La expresión regular no coincidía, la imagen se quedaba como un `<img src="./s
 
 - **El tamaño:** git guarda cada versión de cada archivo para siempre, incluso después de borrarlo. Subo las imágenes a más o menos el doble del ancho al que se muestran, comprimidas. `enhanced-img` genera las copias más pequeñas.
 - **La privacidad:** una captura puede mostrar más de lo que quería: pestañas abiertas, notificaciones, datos personales en un formulario. Una vez subida, es pública.
+
+**Actualización (2026-11-11):** mdsvex ya no está, ni el paso con expresiones regulares que reescribía su HTML. Un renderer `image` de svelte-markdown busca la imagen en un `import.meta.glob(…, { query: { enhanced: true } })` perezoso por la carpeta del post y dibuja `<enhanced:img src={picture}>`. Las reglas siguen (un archivo que falta o un texto alternativo vacío rompen el build) y una desaparece: unas comillas dobles en el texto alternativo ya no son un problema, porque Svelte escapa los atributos. Los archivos que usa un post se cargan antes de renderizarlo, y las imágenes de los borradores no llegan al build porque el glob de borradores es perezoso: uno eager dentro de una rama solo de desarrollo las metía igualmente.
 
 ## Enlaces
 

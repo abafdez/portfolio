@@ -1,5 +1,5 @@
 ---
-title: 'Images next to the post, in plain markdown'
+title: Images next to the post, in plain markdown
 date: 2026-11-06
 tags: [images, markdown, vite, svelte]
 description: Where to keep a blog's images, why ![alt](./x.png) breaks on a prerendered site, and a small Vite plugin step that turns it into optimized, checked images.
@@ -143,6 +143,8 @@ The regex didn't match, the image stayed a plain `<img src="./screenshot.png">`,
 
 - **Size:** git keeps every version of every file forever, even after I delete it. I commit images at about twice the width they're shown at, compressed. `enhanced-img` makes the smaller copies.
 - **Privacy:** a screenshot can show more than I meant: open tabs, notifications, personal data in a form. Once it's pushed, it's public.
+
+**Update (2026-11-11):** mdsvex is gone, and so is the regex step that rewrote its HTML. An `image` renderer for svelte-markdown looks the picture up in a lazy `import.meta.glob(…, { query: { enhanced: true } })` by the post's folder and draws `<enhanced:img src={picture}>`. The rules stay (a missing file or empty alt text fails the build) and one goes: a double quote in alt text is fine now, since Svelte escapes attributes. The files a post uses are loaded before it renders, and drafts' images stay out of the build because the drafts glob is lazy: an eager glob in a dev-only branch still put them there.
 
 ## Links
 

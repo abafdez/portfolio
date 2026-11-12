@@ -1,5 +1,5 @@
 ---
-title: 'Components in code blocks'
+title: Components in code blocks
 date: 2026-11-07
 tags: [markdown, sveltekit, video]
 description: A code block whose language is a component name, with YAML inside, becomes that component on my site. Everywhere else it's a readable block of YAML. And the build checks every field.
@@ -61,6 +61,8 @@ post.md: the ```video block has no "autoplay" field. Its fields: src, webm, post
 ````
 
 The `./` files go through the same step as images: each becomes an import, so a missing file fails the build too, and the real one gets a hashed name.
+
+**Update (2026-11-11):** mdsvex is gone. The blocks, their fields and their checks are the same (`blocks.ts`), but they're drawn by real Svelte components now: a `code` renderer for svelte-markdown hands ` ```video ` and ` ```yt ` to their components, and the files they name are loaded before the post renders. The CMS preview mounts the same components.
 
 ## Links
 
