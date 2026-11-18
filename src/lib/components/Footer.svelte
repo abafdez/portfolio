@@ -6,10 +6,25 @@
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import X from '@lucide/svelte/icons/x';
+	import Shuffle from '@lucide/svelte/icons/shuffle';
 	import { m, route } from '#lib/i18n/index.ts';
 	import { profiles, repository } from '#lib/links.ts';
+	import { looks } from '#lib/components/hire/looks.ts';
+	import photo from '#lib/assets/avatar.jpg?enhanced';
 
 	const linkedin = profiles.find(({ label }) => label === 'LinkedIn')!;
+	const github = profiles.find(({ label }) => label === 'GitHub')!;
+
+	// Which look the top card has (components/hire/looks.ts): a random one the first
+	// time the panel opens, then the next one each time, per visit. -1: not opened yet,
+	// so no look's code is downloaded until then.
+	let look = $state(-1);
+	const next = () =>
+		(look = look < 0 ? Math.floor(Math.random() * looks.length) : (look + 1) % looks.length);
+
+	function toggled(event: ToggleEvent) {
+		if (event.newState === 'open') next();
+	}
 
 	let panel = $state<HTMLElement>();
 	let hint = $state<HTMLElement>();
@@ -75,10 +90,21 @@
 
 	<!-- The panel. A popover: Escape and a click outside close it, focus goes back to
 	     the button that opened it. -->
-	<div id="about-panel" class="panel" popover bind:this={panel} aria-labelledby="about-name">
+	<div
+		id="about-panel"
+		class="panel"
+		popover
+		bind:this={panel}
+		ontoggle={toggled}
+		aria-labelledby="about-title"
+	>
 		<div class="panel-inner">
 			<div class="top">
-				<h2 id="about-name">Alfonso Baeza</h2>
+				<h2 id="about-title" class="visually-hidden">{m.footerMore()}</h2>
+				<button class="another" type="button" onclick={next}>
+					<Shuffle aria-hidden="true" />
+					{m.hireAnother()}
+				</button>
 				<button
 					class="close"
 					type="button"
@@ -90,7 +116,17 @@
 					<X aria-hidden="true" />
 				</button>
 			</div>
-			<p class="tagline">{m.homeTagline()}</p>
+			<!-- The top card, in one of its looks. {#key}: a new look is a new component,
+			     so its entrance animations run again. -->
+			<div class="look">
+				{#if look >= 0}
+					{#key look}
+						{#await looks[look].load() then { default: Look }}
+							<Look {photo} linkedin={linkedin.url} github={github.url} />
+						{/await}
+					{/key}
+				{/if}
+			</div>
 
 			<div class="columns">
 				<section aria-labelledby="footer-who">
@@ -318,8 +354,35 @@
 		gap: var(--size-3);
 	}
 
-	h2 {
-		color: var(--brand);
+	.another {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--size-2);
+		margin-inline-end: auto;
+		padding: var(--size-1) var(--size-3);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-round);
+		background: var(--surface-2);
+		color: var(--text-2);
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		cursor: pointer;
+
+		&:hover {
+			border-color: var(--brand);
+			color: var(--brand);
+		}
+
+		& :global(svg) {
+			inline-size: 1rem;
+			block-size: 1rem;
+		}
+	}
+
+	/* Room for the look while it loads, so the columns don't jump. */
+	.look {
+		min-block-size: 14rem;
+		margin-block-start: var(--size-4);
 	}
 
 	.close {
@@ -338,11 +401,6 @@
 			background: var(--surface-2);
 			color: var(--text-1);
 		}
-	}
-
-	.tagline {
-		margin-block-start: var(--size-1);
-		color: var(--text-2);
 	}
 
 	/* As many 16rem columns as fit: three side by side on a wide screen. */

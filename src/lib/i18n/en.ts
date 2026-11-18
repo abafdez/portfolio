@@ -29,6 +29,13 @@ export const en = {
 	// The footer's panel (Footer.svelte): who I am and how to hire me.
 	footerMore: () => 'About me and hiring',
 	footerClose: () => 'Close',
+	hireAnother: () => 'Another look',
+	hireRole: () => 'Web developer',
+	hireOpenToWork: () => 'Open to work',
+	hireFlip: () => 'Turn the card over',
+	hireStatYears: () => 'years making technology work',
+	hireStatKinds: () => 'kinds of work: web, support, mainframe',
+	hireStatLanguages: () => 'languages on this site',
 	footerWho: () => 'Who I am',
 	footerMoreAbout: () => 'More about me and my skills',
 	footerHire: () => 'Hire me',
