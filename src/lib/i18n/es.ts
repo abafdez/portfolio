@@ -43,7 +43,6 @@ export const es = {
 	textSize: () => 'Tamaño del texto',
 	textSmaller: () => 'Texto más pequeño',
 	textLarger: () => 'Texto más grande',
-	textReset: () => 'Restablecer',
 	textResetLabel: () => 'Restablecer el tamaño del texto',
 
 	tagsLabel: () => 'Etiquetas',

@@ -48,7 +48,6 @@ export const en = {
 	textSize: () => 'Text size',
 	textSmaller: () => 'Smaller text',
 	textLarger: () => 'Larger text',
-	textReset: () => 'Reset',
 	textResetLabel: () => 'Reset the text size',
 
 	// Cards, posts and code blocks.

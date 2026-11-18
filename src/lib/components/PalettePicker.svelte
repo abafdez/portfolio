@@ -2,6 +2,9 @@
 	import { formatNumber, m } from '#lib/i18n/index.ts';
 	import { onMount } from 'svelte';
 	import PaletteIcon from '@lucide/svelte/icons/palette';
+	import Smaller from '@lucide/svelte/icons/a-arrow-down';
+	import Larger from '@lucide/svelte/icons/a-arrow-up';
+	import Reset from '@lucide/svelte/icons/rotate-ccw';
 	import { palettes, defaultPalette, isPalette, type PaletteId } from '#lib/palettes.ts';
 	import { transitionPalette } from '#lib/palette-transitions.ts';
 	import { applyScale, currentScale, defaultScale, scales, step } from '#lib/text-size.ts';
@@ -94,24 +97,30 @@
 				aria-label={m.textSmaller()}
 				title={m.textSmaller()}
 				disabled={scale === undefined || scale === scales[0]}
-				onclick={() => scale && resize(step(scale, -1))}>A−</button
+				onclick={() => scale && resize(step(scale, -1))}
 			>
+				<Smaller aria-hidden="true" />
+			</button>
 			<output aria-live="polite">{formatNumber(Math.round((scale ?? 1) * 100), 0)}%</output>
 			<button
 				type="button"
-				class="larger"
 				aria-label={m.textLarger()}
 				title={m.textLarger()}
 				disabled={scale === undefined || scale === scales.at(-1)}
-				onclick={() => scale && resize(step(scale, 1))}>A+</button
+				onclick={() => scale && resize(step(scale, 1))}
 			>
+				<Larger aria-hidden="true" />
+			</button>
 			<button
 				type="button"
 				class="reset"
 				aria-label={m.textResetLabel()}
+				title={m.textResetLabel()}
 				disabled={scale === undefined || scale === defaultScale}
-				onclick={() => resize(defaultScale)}>{m.textReset()}</button
+				onclick={() => resize(defaultScale)}
 			>
+				<Reset aria-hidden="true" />
+			</button>
 		</div>
 	</div>
 </div>
@@ -232,10 +241,13 @@
 		gap: var(--size-1);
 	}
 
-	/* Small square keys. */
+	/* Small square keys with an icon. */
 	.steps button {
-		min-inline-size: var(--size-7);
-		padding: var(--size-1) var(--size-2);
+		display: grid;
+		place-items: center;
+		inline-size: var(--size-7);
+		block-size: var(--size-7);
+		padding: var(--size-1);
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);
 		background: var(--surface-1);
@@ -250,8 +262,14 @@
 		}
 	}
 
-	.steps .larger {
-		font-size: var(--font-size-1);
+	.steps button :global(svg) {
+		inline-size: 1.15rem;
+		block-size: 1.15rem;
+	}
+
+	.steps button:not(:disabled):hover {
+		border-color: var(--brand);
+		color: var(--brand);
 	}
 
 	.steps .reset {
