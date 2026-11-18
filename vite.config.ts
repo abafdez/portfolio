@@ -65,6 +65,11 @@ export default defineConfig({
 	define: {
 		'import.meta.env.BASE_PATH': JSON.stringify(base)
 	},
+	// The encoded images (scripts/image-cache-link.ts): imagetools writes them while the
+	// dev server runs, and no page imports them, so there's nothing to watch.
+	server: {
+		watch: { ignored: ['**/.image-cache/**'] }
+	},
 	css: {
 		postcss: {
 			plugins: [postcssJitProps(OpenProps)]
