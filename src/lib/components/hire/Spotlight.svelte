@@ -2,8 +2,9 @@
 	// Look 2: the photo in a turning brand-coloured ring, a blueprint grid behind it lit
 	// where the pointer is, and three numbers that count up. Screen readers get each
 	// number once (the counting is aria-hidden).
+	import { site } from '#lib/site.ts';
 	import { onMount } from 'svelte';
-	import { m } from '#lib/i18n/index.ts';
+	import { m, text } from '#lib/i18n/index.ts';
 	import type { LookProps } from './looks.ts';
 
 	let { photo, linkedin }: LookProps = $props();
@@ -43,8 +44,8 @@
 		<enhanced:img src={photo} alt="" sizes="9rem" />
 	</div>
 	<div class="text">
-		<p class="name">Alfonso Baeza</p>
-		<p class="tagline">{m.homeTagline()}</p>
+		<p class="name">{site.name}</p>
+		<p class="tagline">{text(site.tagline)}</p>
 		<ul class="stats">
 			{#each stats as { value, plus, label } (label)}
 				<li>

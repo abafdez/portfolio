@@ -68,6 +68,8 @@ export function readList(text: string): Data {
 	return (parse(text) as Data | null) ?? {};
 }
 
+// Empty top-level fields are left out, like in a frontmatter: the CMS hands an unset
+// optional field (a list's icon, the site's email) over as an empty string.
 export function writeList(data: Data): string {
-	return yaml(data);
+	return yaml(Object.fromEntries(Object.entries(data).filter(([, value]) => !empty(value))));
 }

@@ -195,3 +195,40 @@ collections:
               - { name: url, label: URL, pattern: ['^https://', 'Must start with https://'] }
               - { <<: *both, name: description, label: Description }
               - { name: tags, label: Tags, widget: list }
+
+# Single files with a page of their own in the sidebar.
+singletons:
+  # content/site.yaml, read by src/lib/site.ts (which checks every field at build time).
+  - name: site
+    label: Site settings
+    file: content/site.yaml
+    format: list # cms/formats.ts
+    fields:
+      - name: name
+        label: Name
+        hint: 'The site name: the header, the page titles, the footer.'
+      - {
+          <<: *both,
+          name: tagline,
+          label: Tagline,
+          hint: 'Under the name on the home page, and in the hire panel.'
+        }
+      - { <<: *both, name: role, label: Role, hint: 'One line, like on a business card.' }
+      - name: hire
+        label: Hiring
+        widget: object
+        fields:
+          - { <<: *both, name: text, label: What I'm looking for }
+          - { <<: *both, name: contact, label: How to reach me }
+          - { <<: *both, name: contactWithEmail, label: How to reach me (with an email address) }
+      - name: email
+        label: Contact email
+        required: false
+        hint: "Shows an Email me button in the hire panel. Use an address made for this (a forwarding alias), never your personal one: it ends up in the site's code."
+        pattern: ['^[^\s@]+@[^\s@]+\.[^\s@]+$', 'Must be an email address']
+      - { name: github, label: GitHub profile, pattern: ['^https://', 'Must start with https://'] }
+      - {
+          name: linkedin,
+          label: LinkedIn profile,
+          pattern: ['^https://', 'Must start with https://']
+        }

@@ -2,16 +2,17 @@
 	// Look 1: a terminal window. The commands type themselves one line after another, and
 	// the photo comes into focus from big pixels while they do. Screen readers get the
 	// finished text at once (the typing is aria-hidden).
+	import { site } from '#lib/site.ts';
 	import { onMount } from 'svelte';
-	import { m } from '#lib/i18n/index.ts';
+	import { m, text } from '#lib/i18n/index.ts';
 	import type { LookProps } from './looks.ts';
 
 	let { photo, linkedin }: LookProps = $props();
 
 	const lines = [
-		{ command: 'whoami', output: `Alfonso Baeza · ${m.hireRole()}` },
-		{ command: 'cat hire.txt', output: m.footerHireText() },
-		{ command: 'contact --linkedin', output: m.footerHireHow() }
+		{ command: 'whoami', output: `${site.name} · ${text(site.role)}` },
+		{ command: 'cat hire.txt', output: text(site.hire.text) },
+		{ command: 'contact --linkedin', output: text(site.hire.contact) }
 	];
 	// The whole text, typed: each line is the command and its output.
 	const script = lines.map(({ command, output }) => `$ ${command}\n${output}`).join('\n');
@@ -78,7 +79,7 @@
 			<canvas width="128" height="128" bind:this={canvas} aria-hidden="true"></canvas>
 		</div>
 		<div class="screen">
-			<p class="visually-hidden">Alfonso Baeza, {m.hireRole()}. {m.footerHireText()}</p>
+			<p class="visually-hidden">{site.name}, {text(site.role)}. {text(site.hire.text)}</p>
 			<pre aria-hidden="true">{#each shown as line, index (index)}<span class:command={line.command}
 						>{line.text}</span
 					>{#if index < shown.length - 1}{'\n'}{/if}{/each}<span class="cursor" class:blink={done}

@@ -26,7 +26,6 @@ export const es = {
 	themeLight: () => 'Tema claro',
 	footerMore: () => 'Sobre mí y contratación',
 	footerClose: () => 'Cerrar',
-	hireRole: () => 'Desarrollo web',
 	hireOpenToWork: () => 'Disponible para trabajar',
 	hireFlip: () => 'Dar la vuelta a la tarjeta',
 	hireStatYears: () => 'años haciendo que la tecnología funcione',
@@ -36,10 +35,6 @@ export const es = {
 	footerWho: () => 'Quién soy',
 	footerMoreAbout: () => 'Más sobre mí y mis habilidades',
 	footerHire: () => 'Contrátame',
-	footerHireText: () =>
-		'Busco mi próximo puesto en desarrollo web, sobre todo front-end. También aporto años de soporte informático y de trabajo en mainframe (Natural, Adabas, COBOL).',
-	footerHireHow: () => 'Escríbeme por LinkedIn: te contesto y te envío mi CV.',
-	footerHireHowEmail: () => 'Escríbeme por LinkedIn o por correo: te contesto y te envío mi CV.',
 	footerEmail: () => 'Escríbeme un correo',
 	footerElsewhere: () => 'En otros sitios',
 	footerSource: () => 'El código de este sitio',
@@ -63,8 +58,6 @@ export const es = {
 	codeCopied: () => 'copiado',
 	codeCopyFailed: () => 'no se pudo copiar',
 
-	homeTagline: () =>
-		'Desarrollo web. Diseño sitios rápidos, accesibles y con un toque diferenciador.',
 	homeAboutMe: () => 'Sobre mí',
 	homeSeeProjects: () => 'Ver proyectos',
 	homeReadBlog: () => 'Leer el blog',

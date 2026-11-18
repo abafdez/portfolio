@@ -29,7 +29,6 @@ export const en = {
 	// The footer's panel (Footer.svelte): who I am and how to hire me.
 	footerMore: () => 'About me and hiring',
 	footerClose: () => 'Close',
-	hireRole: () => 'Web developer',
 	hireOpenToWork: () => 'Open to work',
 	hireFlip: () => 'Turn the card over',
 	hireStatYears: () => 'years making technology work',
@@ -39,11 +38,6 @@ export const en = {
 	footerWho: () => 'Who I am',
 	footerMoreAbout: () => 'More about me and my skills',
 	footerHire: () => 'Hire me',
-	footerHireText: () =>
-		"I'm looking for my next role in web development, front end first. I also bring years of IT support and mainframe work (Natural, Adabas, COBOL).",
-	footerHireHow: () => "Send me a message on LinkedIn: I'll answer and send you my CV.",
-	footerHireHowEmail: () =>
-		"Send me a message on LinkedIn or by email: I'll answer and send you my CV.",
 	footerEmail: () => 'Email me',
 	footerElsewhere: () => 'Elsewhere',
 	footerSource: () => "This site's code",
@@ -73,8 +67,6 @@ export const en = {
 	codeCopyFailed: () => "couldn't copy",
 
 	// Home.
-	homeTagline: () =>
-		'Web developer. I make websites that are fast, accessible and a little playful.',
 	homeAboutMe: () => 'About me',
 	homeSeeProjects: () => 'See projects',
 	homeReadBlog: () => 'Read the blog',

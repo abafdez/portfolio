@@ -3,6 +3,7 @@
 	// rising from the bottom like a sheet) with who I am, how to hire me and my links.
 	// A small handle at the bottom of the window opens it too: barely there while you
 	// read, it grows and shows its label as the pointer gets near the bottom edge.
+	import { site } from '#lib/site.ts';
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import X from '@lucide/svelte/icons/x';
@@ -17,7 +18,7 @@
 	import { siGithub } from 'simple-icons';
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import { spotlight } from '#lib/spotlight.ts';
-	import { m, route } from '#lib/i18n/index.ts';
+	import { m, route, text } from '#lib/i18n/index.ts';
 	import { email, profiles, repository } from '#lib/links.ts';
 	import { looks } from '#lib/components/hire/looks.ts';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
@@ -92,7 +93,7 @@
 	</div>
 
 	<div class="inner">
-		<p><small>&copy; {new Date().getFullYear()} Alfonso Baeza. {m.footerRights()}</small></p>
+		<p><small>&copy; {new Date().getFullYear()} {site.name}. {m.footerRights()}</small></p>
 		<button class="more" type="button" popovertarget="about-panel">
 			<UserRound aria-hidden="true" />
 			{m.footerMore()}
@@ -159,8 +160,8 @@
 
 				<section aria-labelledby="footer-hire">
 					<h3 id="footer-hire">{m.footerHire()}</h3>
-					<p>{m.footerHireText()}</p>
-					<p>{mailto ? m.footerHireHowEmail() : m.footerHireHow()}</p>
+					<p>{text(site.hire.text)}</p>
+					<p>{mailto ? text(site.hire.contactWithEmail) : text(site.hire.contact)}</p>
 					<p class="buttons">
 						<a class="button shine" href={linkedin.url} rel="external">
 							<MessageSquare aria-hidden="true" />
