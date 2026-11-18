@@ -1,0 +1,14 @@
+# Dependabot keeps the workflow's actions up to date: they're pinned to a commit (SHA),
+# so without it they'd never move. Once a week, one PR with every new version, after
+# the release is a week old (like pnpm's minimumReleaseAge for packages).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']

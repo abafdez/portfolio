@@ -10,25 +10,37 @@ on:
 
   workflow_dispatch: # Allows you to run this workflow manually from the Actions tab on GitHub.
 
-# Allow this job to clone the repo and create a page deployment
+# Every job can only read the repo, unless it says otherwise (the image cache commit and
+# the deploy). Least privilege: the build runs code from hundreds of packages, so it gets
+# no right to push.
 permissions:
-  contents: read # clone the repo
-  pages: write # create a Pages deployment
-  id-token: write # get an OIDC token so deploy-pages can prove who it is
+  contents: read
+
+# One run per branch at a time. A newer push to a pull request cancels the older run;
+# on main, runs queue instead, so two image cache commits never race.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Actions are pinned to a commit (the SHA), with the version in a comment: a tag like v7
+# can be moved to other code, a commit can't. Dependabot (.github/dependabot.yml) opens a
+# PR when there's a new version.
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Replaces the workflow's permissions for this job: write, to commit the image cache
-    # (last step). The deploy job keeps the ones at the top.
-    permissions:
-      contents: write
+    outputs:
+      # 'true' when the build added or dropped encoded images (see the image-cache job).
+      images: ${{ steps.images.outputs.changed }}
     steps:
       - name: Checkout # Gets the code from the repo to be executed
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # Don't leave the token in .git/config, where any script of the build could read it.
+          persist-credentials: false
 
       - name: Setup pnpm with runtime # Install Node & PNPM and install dependencies in the same step
-        uses: pnpm/setup@v3.0.0
+        uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
         with:
           cache: true
           runtime: node@22
@@ -56,6 +68,13 @@ jobs:
       - name: Tidy the image cache # Drops the encoded images this build didn't use
         run: pnpm image-cache:tidy
 
+      - name: Has the image cache changed?
+        id: images
+        run: |
+          if [ -n "$(git status --porcelain -- .image-cache)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       # Smoke test (Playwright, e2e/): a browser clicks through the build above.
       # It uses the Google Chrome the runner already has (channel 'chrome' in
       # playwright.config.ts), so there's no browser to install.
@@ -66,22 +85,61 @@ jobs:
 
       - name: Upload Playwright traces # Only when the smoke test failed, to see why
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: playwright-traces
           path: test-results/
           retention-days: 7
 
-      # New or dropped encoded images go back to the repo, so the next build reuses them.
-      # Only on main: a pull request's images arrive once it's merged. A push made with
-      # GITHUB_TOKEN never starts another run ([skip ci] says so too). If the push fails
-      # (main moved on and the rebase can't apply), the deploy still goes ahead: the next
-      # run just encodes those images again and tries once more.
-      - name: Commit the image cache
+      # The new cache goes to the image-cache job, which commits it. Only on main: a pull
+      # request's images arrive once it's merged.
+      - name: Upload the image cache
+        if: github.ref == 'refs/heads/main' && steps.images.outputs.changed == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: image-cache
+          path: .image-cache/
+          include-hidden-files: true # the folder's name starts with a dot
+          retention-days: 1
+
+      - name: Upload GitHub Pages artifact # Prepares the files for deployment
+        # Only upload when we're going to deploy (see the deploy job's `if`)
         if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: 'build/'
+
+  # New or dropped encoded images go back to the repo, so the next build reuses them.
+  # Its own job because it's the only one allowed to push, and it runs no code from the
+  # repo or its packages: checkout, the build's artifact, git.
+  # A push made with GITHUB_TOKEN never starts another run ([skip ci] says so too). If the
+  # push fails (main moved on and the rebase can't apply), the deploy still goes ahead:
+  # the next run just encodes those images again and tries once more.
+  image-cache:
+    needs: build
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.images == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      # The build's .image-cache as it is, files it dropped included: empty the folder,
+      # then put the artifact in it.
+      - name: Remove the old cache
+        run: rm -rf .image-cache
+
+      - name: Download the new cache
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: image-cache
+          path: .image-cache
+
+      - name: Commit the image cache
         continue-on-error: true
         run: |
-          git add .image-cache
+          git add -A -- .image-cache
           if git diff --cached --quiet; then
             echo "Image cache unchanged"
             exit 0
@@ -91,13 +149,6 @@ jobs:
           git commit -m 'chore(images): update the image cache [skip ci]'
           git pull --rebase
           git push
-
-      - name: Upload GitHub Pages artifact # Prepares the files for deployment
-        # Only upload when we're going to deploy (see the deploy job's `if`)
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: 'build/'
 
   deploy:
     needs: build
@@ -111,6 +162,10 @@ jobs:
       group: 'pages'
       cancel-in-progress: false
 
+    permissions:
+      pages: write # create a Pages deployment
+      id-token: write # get an OIDC token so deploy-pages can prove who it is
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -118,4 +173,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
