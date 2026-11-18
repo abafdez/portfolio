@@ -18,6 +18,8 @@ tags: [css, design-tokens, accessibility, color]
 - Five named themes had been tuned right at the edge; softening the spotlight kept them all passing without retuning any.
 - `light-dark()` only takes colours: `color-mix(…, var(--brand) light-dark(6%, 8%), …)` is invalid. Write the whole mix twice instead.
 
+- **Later the same day:** the grid looked messy and the bright green awful on cream. I compared three new directions with screenshots (ink green, blueprint blue, graphite) and picked **ink green**: a soft warm white, graphite text, the brand as a deep ink green (`oklch(42% 0.085 165)`), and a grid with no minor lines, only faint major lines and crosses in the text colour. Every light pair passes (muted text 5.09:1 at the spotlight's peak, brand 5.6:1).
+
 ## Next
 
 - Lighthouse on the new light theme, which I didn't run.

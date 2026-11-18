@@ -60,13 +60,13 @@ describe('palettes', () => {
 		describe.each(['light', 'dark'] as const)('%s', (half) => {
 			const colour = (token: string) => hex(valuesOf(css, token)[half === 'light' ? 0 : 1]);
 			const surfaces = ['surface-1', 'surface-2', 'surface-3'].map(colour);
-			// The spotlight's brightest point (tokens.css), all in the brand colour over the
-			// page. Dark: a 4% glow and a 15% grid line. Light: a 3% glow and a 10% line, over
-			// the grid's own 6% major line (brand-coloured in light).
+			// The spotlight's brightest point (tokens.css). Dark: a 4% glow and a 15% brand
+			// line over the page (the model the dark themes were tuned with). Light: a 3% glow
+			// and a 10% line, over the grid's own 6% major line in the text colour.
 			const brand = colour('brand');
 			const spotlight =
 				half === 'light'
-					? over(brand, 0.1, over(brand, 0.03, over(brand, 0.06, surfaces[0])))
+					? over(brand, 0.1, over(brand, 0.03, over(colour('text-1'), 0.06, surfaces[0])))
 					: over(brand, 0.15, over(brand, 0.04, surfaces[0]));
 			const pairs: [string, RGB[]][] = [
 				['text-1', [...surfaces, spotlight]],

@@ -13,16 +13,17 @@
 	--ink-7: oklch(21% 0.02 250);
 	--ink-8: oklch(17% 0.018 250);
 
-	/* The light theme's paper and pencil: a warm cream, like a squared engineering pad,
-	   and a warm near-black. Hue 95 is a yellowish cream, 60 a brown-grey: next to the
-	   green they read as paper, where the blue-greys read as a screen. */
-	--paper-0: oklch(99.5% 0.006 95);
-	--paper-1: oklch(97% 0.02 95);
-	--paper-3: oklch(91% 0.028 100);
-	--pencil-1: oklch(24% 0.02 60);
-	--pencil-2: oklch(45% 0.03 60);
+	/* The light theme ("ink green", picked 2026-11-18 from three directions): a soft warm
+	   white, graphite text with a hint of green, and the brand as a deep ink green, like
+	   a fountain pen on good paper. The bright phosphor green is for the dark theme; on
+	   light paper it looked loud. */
+	--paper-0: oklch(99.6% 0.002 95); /* inner panels, code */
+	--paper-1: oklch(98% 0.005 95); /* the page and its sheets */
+	--paper-3: oklch(91% 0.01 95); /* borders */
+	--pencil-1: oklch(23% 0.012 160); /* text */
+	--pencil-2: oklch(45% 0.015 160); /* muted text */
 
-	--green-dark: oklch(46% 0.13 148);
+	--green-dark: oklch(42% 0.085 165); /* the ink green: the light theme's brand */
 	--green-bright: oklch(84% 0.2 148);
 
 	--pink-soft: oklch(76% 0.13 5);
@@ -69,23 +70,17 @@
 	--error: light-dark(var(--red-dark), var(--red-bright));
 
 	/* The blueprint grid behind the page (Blueprint.svelte): faint lines, a minor cell,
-	   a major one every 4 cells, and a "+" at major crossings. Dark: text-colored, like
-	   chalk. Light: the brand color, like the green squares of an engineering pad, so
-	   every color theme's light half gets a grid in its own color.
+	   a major one every 4 cells, and a "+" at major crossings, all in the text colour.
+	   Dark: like chalk. Light: quieter, graphite, and no minor lines at all (with them,
+	   and in the brand colour, it looked busy): only the major lines and the crosses.
 	   Decorative (text never sits on it), so no contrast requirement. */
 	/* Every mix with transparent is in oklab, not oklch: Chrome drops the hue of a
 	   near-grey hex colour in oklch (Tokyo Night's #e6e7ed came out oklch(… none)),
 	   and a missing hue is drawn as 0, a pink tint. oklab has no hue to lose. */
-	--grid-line: light-dark(
-		color-mix(in oklab, var(--brand) 5%, transparent),
-		color-mix(in oklab, var(--text-1) 3%, transparent)
-	);
-	--grid-line-major: light-dark(
-		color-mix(in oklab, var(--brand) 6%, transparent),
-		color-mix(in oklab, var(--text-1) 6%, transparent)
-	);
+	--grid-line: light-dark(transparent, color-mix(in oklab, var(--text-1) 3%, transparent));
+	--grid-line-major: color-mix(in oklab, var(--text-1) 6%, transparent);
 	--grid-mark: light-dark(
-		color-mix(in oklab, var(--brand) 25%, transparent),
+		color-mix(in oklab, var(--text-1) 16%, transparent),
 		color-mix(in oklab, var(--text-1) 18%, transparent)
 	);
 	--grid-size: 1.5rem;
@@ -93,11 +88,10 @@
 	/* The spotlight: the same grid lit in the brand color around the mouse, plus a
 	   glow. Not decorative any more once text sits on it: a lit line runs under the
 	   letters, so it counts as their background. At the spot's center (glow + major
-	   line, the brightest point) --text-2 keeps 4.89:1 dark. Light is softer, because
-	   its grid is brand-coloured already: 3% glow + 10% line + the grid's 6% major line
-	   add up to a little less brand than dark's 4% + 15%, so every theme that passed
-	   before still passes. The header's nav sits on the grid, so this matters;
-	   palettes.test.ts checks every theme, both halves. */
+	   line, the brightest point) --text-2 keeps 4.89:1 dark. Light is softer (3% glow,
+	   10% line), over the grid's own 6% major line in the text colour. The header's nav
+	   sits on the grid, so this matters; palettes.test.ts checks every theme, both
+	   halves, with that whole stack. */
 	--grid-spot-line: light-dark(
 		color-mix(in oklab, var(--brand) 6%, transparent),
 		color-mix(in oklab, var(--brand) 8%, transparent)

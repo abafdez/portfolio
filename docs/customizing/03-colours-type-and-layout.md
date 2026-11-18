@@ -6,7 +6,7 @@ Everything visual that isn't motion: design tokens, light and dark, the colour t
 
 A design token is a named value, here a CSS custom property, that components use instead of a raw value. All of them are in `src/lib/styles/tokens.css`, in two levels:
 
-1. **Primitives**: the actual colours, named after what they are. `--ink-0` … `--ink-8` (blue-greys, the dark theme), `--paper-0/1/3` and `--pencil-1/2` (the light theme's cream and graphite), `--green-dark` / `--green-bright` (the brand), a dark and a bright step per syntax hue (`--violet-*`, `--blue-*`, `--amber-*`, `--teal-*`, `--red-*`), and the window lights.
+1. **Primitives**: the actual colours, named after what they are. `--ink-0` … `--ink-8` (blue-greys, the dark theme), `--paper-0/1/3` and `--pencil-1/2` (the light theme's warm white and graphite), `--green-dark` / `--green-bright` (the brand: a deep ink green for light, the bright phosphor green for dark), a dark and a bright step per syntax hue (`--violet-*`, `--blue-*`, `--amber-*`, `--teal-*`, `--red-*`), and the window lights.
 2. **Semantic tokens**: what a colour is _for_. Components only use these.
 
 | Token                                                            | Used for                                                                        |
@@ -44,7 +44,7 @@ To restyle the site, change semantic tokens. To change one colour everywhere, ch
 - The tokens are declared on `:root` **and** on every `[data-theme]` element. A custom property holding `light-dark()` is resolved where it's declared, so without the second selector a part of the page with a different `data-theme` (the contrast checker draws both themes side by side) would still inherit the root's colours.
 - `--dark` is `0` or `1`, for things `light-dark()` can't do because they aren't colours (a transform, an opacity): `calc(var(--dark) * …)`.
 - Printing always uses the light theme (`@media print` at the end of `tokens.css`).
-- The site was designed dark first; light is the "engineering pad": cream paper, pencil text and a grid in the brand colour. `design/light-theme-directions.md` has the three directions that were tried.
+- The site was designed dark first. Light is "ink green" (picked 2026-11-18 from three directions): a soft warm white, graphite text, a deep ink-green brand, and a quiet grid with no minor lines (only faint major lines and the crosses, in the text colour). `design/light-theme-directions.md` has the history: the first engineering-pad version (cream and a brand-coloured grid) looked busy and loud.
 
 ## Colour themes ("palettes")
 
