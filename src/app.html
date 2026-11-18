@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
 		<script>
-			// Runs before the first paint, so a saved theme or palette never flashes.
+			// Runs before the first paint, so a saved theme, palette or text size never flashes.
 			try {
 				const theme = localStorage.getItem('theme');
 				if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
@@ -13,6 +13,10 @@
 				const palette = localStorage.getItem('palette');
 				if (palette && /^[a-z-]+$/.test(palette))
 					document.documentElement.dataset.palette = palette;
+				// The text size (text-size.ts): only the sizes the menu offers.
+				const scale = localStorage.getItem('text-scale');
+				if (['0.875', '1.125', '1.25', '1.375'].includes(scale))
+					document.documentElement.style.setProperty('--text-scale', scale);
 			} catch {}
 		</script>
 		%sveltekit.head%

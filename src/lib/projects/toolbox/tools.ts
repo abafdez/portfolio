@@ -27,6 +27,7 @@ export const tools: Tool[] = [
 		date: '2026-11-09',
 		tags: ['encoding', 'files'],
 		icon: Binary,
+		source: 'src/lib/projects/toolbox/base64',
 		tool: () => import('./base64/Base64.svelte')
 	},
 	{
@@ -39,6 +40,7 @@ export const tools: Tool[] = [
 		date: '2026-11-09',
 		tags: ['unicode', 'html', 'css'],
 		icon: Omega,
+		source: 'src/lib/projects/toolbox/symbols',
 		tool: () => import('./symbols/Symbols.svelte')
 	},
 	{
@@ -51,6 +53,7 @@ export const tools: Tool[] = [
 		date: '2026-11-09',
 		tags: ['css', 'ux', 'accessibility'],
 		icon: MousePointer2,
+		source: 'src/lib/projects/toolbox/cursors',
 		tool: () => import('./cursors/Cursors.svelte')
 	}
 ];

@@ -26,10 +26,38 @@ export const en = {
 	breadcrumbLabel: () => 'Breadcrumb',
 	sectionNavLabel: () => 'On this page',
 	footerRights: () => 'All rights reserved.',
+	// The footer's panel (Footer.svelte): who I am and how to hire me.
+	footerMore: () => 'About me and hiring',
+	footerClose: () => 'Close',
+	hireRole: () => 'Web developer',
+	hireOpenToWork: () => 'Open to work',
+	hireFlip: () => 'Turn the card over',
+	hireStatYears: () => 'years making technology work',
+	hireStatKinds: () => 'kinds of work: web, support, mainframe',
+	hireStatLanguages: () => 'languages on this site',
+	hireTiltHint: () => 'Move the pointer over the card',
+	footerWho: () => 'Who I am',
+	footerMoreAbout: () => 'More about me and my skills',
+	footerHire: () => 'Hire me',
+	footerHireText: () =>
+		"I'm looking for my next role in web development, front end first. I also bring years of IT support and mainframe work (Natural, Adabas, COBOL).",
+	footerHireHow: () => "Send me a message on LinkedIn: I'll answer and send you my CV.",
+	footerHireHowEmail: () =>
+		"Send me a message on LinkedIn or by email: I'll answer and send you my CV.",
+	footerEmail: () => 'Email me',
+	footerElsewhere: () => 'Elsewhere',
+	footerSource: () => "This site's code",
+	footerBuilt: () =>
+		'Built with SvelteKit, Svelte 5 and Open Props, deployed on GitHub Pages, written in the open.',
 	themeDark: () => 'Dark theme',
 	themeLight: () => 'Light theme',
 	paletteLabel: () => 'Color theme',
 	paletteCredit: ({ name, by }: Name & { by: string }) => `${name} by ${by}`,
+	themeMenuLabel: () => 'Color theme and text size',
+	textSize: () => 'Text size',
+	textSmaller: () => 'Smaller text',
+	textLarger: () => 'Larger text',
+	textResetLabel: () => 'Reset the text size',
 
 	// Cards, posts and code blocks.
 	tagsLabel: () => 'Tags',
@@ -101,10 +129,20 @@ export const en = {
 	awesomeClear: () => 'Clear filters',
 	awesomeEmpty: () => 'No links match. Try fewer words or tags.',
 
+	// Search (Search.svelte, in the header).
+	searchLabel: () => 'Search',
+	searchPlaceholder: () => 'Posts, the Devlog, projects, links…',
+	searchSearching: () => 'Searching…',
+	searchUnavailable: () => 'Search works on the built site (pnpm build), not in dev.',
+	searchNone: ({ query }: { query: string }) => `Nothing found for “${query}”.`,
+	searchCount: ({ count }: Count) =>
+		plural('en', count, { one: '1 result', other: `${count} results` }),
+
 	// Projects.
 	projectsTitle: () => 'Projects',
 	projectsDescription: () => 'Small tools, each one a self-contained app.',
 	projectsTools: () => 'Tools',
+	projectSource: () => 'Source code on GitHub',
 
 	// The toolbox (/projects/toolbox) and what its tools share.
 	toolboxNeedsJs: () => 'This tool runs in your browser and needs JavaScript.',
@@ -319,7 +357,51 @@ export const en = {
 	cvRemove: ({ name }: Name) => `Remove ${name}`,
 	cvAddSkill: () => 'Add a skill',
 	cvAddSkillTo: ({ group }: { group: string }) => ` to ${group}`,
-	cvReset: ({ profile }: { profile: string }) => `Reset the skills for ${profile}`
+	cvReset: ({ profile }: { profile: string }) => `Reset the skills for ${profile}`,
+	// The error page (+error.svelte): a 404 is one of the not-found variants, at random.
+	notFoundTitle: () => 'Page not found',
+	notFoundText: () => "There's nothing at this address. It may have moved, or it was never here.",
+	notFoundPath: () => 'You asked for',
+	notFoundLinks: () => 'Pages that do exist',
+	notFoundAnother: () => 'Another 404',
+	notFoundDescription: () => 'This page does not exist.',
+	errorTitle: () => 'Something went wrong',
+	errorText: () => "This page couldn't be shown. Reloading may help.",
+	// The games on the 404.
+	gamePaused: () => 'Paused. Press Space or Resume to go on.',
+	gameStart: () => 'Start',
+	gamePause: () => 'Pause',
+	gameResume: () => 'Resume',
+	gameAgain: () => 'Play again',
+	gameLeft: () => 'Left',
+	gameRight: () => 'Right',
+	gameUp: () => 'Up',
+	gameDown: () => 'Down',
+	breakoutLabel: () => 'Breakout: break the 404',
+	breakoutHow: () =>
+		'Move the paddle with the arrow keys, the mouse, or by dragging. Space or a tap launches the ball and pauses.',
+	breakoutReady: () => 'Ball ready. Press Space or Start to launch it.',
+	breakoutMissed: () => 'Missed! The bricks you broke stay broken. Press Space to launch again.',
+	breakoutPlaying: () => 'Break every brick of the 404.',
+	breakoutWon: () => 'You broke the whole 404. There is still nothing here, though.',
+	breakoutScore: ({ count, misses }: Count & { misses: number }) =>
+		`${count} ${plural('en', count, { one: 'brick', other: 'bricks' })} left · ${misses} missed`,
+	snakeLabel: () => 'Snake: eat the 404',
+	snakeHow: () =>
+		"Steer with the arrow keys, by swiping, or with the buttons. The walls wrap around; just don't bite yourself.",
+	snakeReady: () => 'Press Space or Start, then steer.',
+	snakePlaying: () => 'Eat every cell of the 404.',
+	snakeOver: () => 'You bit yourself. Press Space or Play again.',
+	snakeWon: () => 'You ate the whole 404. There is still nothing here, though.',
+	snakeScore: ({ count }: Count) =>
+		`${count} ${plural('en', count, { one: 'cell', other: 'cells' })} of the 404 left`,
+	asciiHow: () => 'Move the pointer over the number to scramble it; click to send a wave.',
+	particlesHow: () => 'Push the dots around with the pointer; click to scatter them.',
+	// The 404 games as a project (/projects/404).
+	notFoundVariant: () => 'Game or animation',
+	notFoundCode: () => 'Its code',
+	notFoundShared: () => 'Shared by all four',
+	notFoundNeedsJs: () => 'These games and animations run in your browser and need JavaScript.'
 };
 
 export type Messages = typeof en;

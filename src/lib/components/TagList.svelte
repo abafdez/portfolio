@@ -19,7 +19,8 @@
 </script>
 
 <!-- The space above comes from the parent: <TagList --tags-space="var(--size-3)" />. -->
-<ul aria-label={m.tagsLabel()}>
+<!-- data-pagefind-ignore: "#css #svelte" made search excerpts noisy (search.ts). -->
+<ul aria-label={m.tagsLabel()} data-pagefind-ignore>
 	{#each tags as tag (tag)}
 		<li>
 			{#if tagHref}

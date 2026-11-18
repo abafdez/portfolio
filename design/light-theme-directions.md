@@ -1,5 +1,7 @@
 # Light theme directions (2026-11-07)
 
+**2026-11-18, second round: "ink green" shipped.** B (the engineering pad) went in first, with cream paper and the grid in the brand colour, and Alfonso found the grid messy and the bright green awful on light paper. Three new directions were compared with screenshots (A ink green, B blueprint blue, C graphite with crosses only); A won: warm white `oklch(98% 0.005 95)`, panels `oklch(99.6% 0.002 95)`, borders `oklch(91% 0.01 95)`, text `oklch(23% 0.012 160)`, muted `oklch(45% 0.015 160)`, brand `oklch(42% 0.085 165)`, and a graphite grid with no minor lines (major 6%, crosses 16%). The values below are the first round's previews; the shipped ones are in tokens.css.
+
 The light theme feels dull: it was adapted from the dark one, with the same cold blue-grey neutrals at low chroma, a dark forest green (`46% 0.13 148`) used only for text, cards barely different from the page, a grey grid you can hardly see, and a heavy header shadow.
 
 Three directions were previewed by overriding only the light half of the tokens in the browser (screenshots in `.playwright-mcp/theme/`, not committed). All text passed 4.5:1 on all three surfaces. On hold since named themes came first; each could become a palette (`src/lib/styles/themes/`) or replace the default light half. Before using one: re-measure the grid lines under text and the spotlight (tokens.css), and keep `color-mix(…, transparent)` in oklab.

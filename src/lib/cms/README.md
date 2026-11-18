@@ -1,8 +1,27 @@
 # Sveltia CMS on this site
 
-This folder (`src/lib/cms/`) adds [Sveltia CMS](https://sveltiacms.app/en/docs) (0.262.0, pinned) to a personal SvelteKit site, as an editor for its markdown posts, its dev-log entries and one YAML list. For now it runs only in `pnpm dev`, at `/admin`, through the local workflow; a hosted version against the GitHub repo is planned. Sveltia itself is used as published, imported from npm: no fork, no patch. Everything here goes through its JavaScript API.
+This folder (`src/lib/cms/`) adds [Sveltia CMS](https://sveltiacms.app/en/docs) (0.262.0, pinned) to a personal SvelteKit site, as an editor for its markdown posts, its dev-log entries and one YAML list. It runs in `pnpm dev` at `/admin` (the local workflow), and on the live site at `/portfolio/admin/`, built by its own Vite config (see "On the live site"). Sveltia itself is used as published, imported from npm: no fork, no patch. Everything here goes through its JavaScript API.
 
 This file explains how the pieces are wired, for anyone reading the code, and for Sveltia's author, who we'd like to show it to.
+
+## On the live site
+
+`pnpm build` runs two builds: the site (SvelteKit), then `vite build -c src/lib/cms/vite.config.ts`, which compiles `index.html` + `main.ts` (and the site code they import: the markdown components, `blocks.ts`, Prettier) with the plain Svelte plugin into `build/admin/`. Not a SvelteKit route, for the same reason as in dev: the site's layout and global CSS would wrap it. Two differences from dev:
+
+- `covers.ts` is swapped for `covers.hosted.ts`: its glob would copy every original cover into the build (23 MB) just for the preview's header. The build writes down each cover's URL on raw.githubusercontent.com instead (repo and branch from `config.yml`); a cover added in the CMS and not merged yet comes from `getAsset()` first.
+- The Awesome list's "page as last saved" preview is dev only.
+
+Signing in, three ways:
+
+1. **Sign In with GitHub**: needs `backend.base_url`, the URL of [Sveltia's authenticator](https://github.com/sveltia/sveltia-cms-auth), a Cloudflare Worker we deploy ourselves. It uses a GitHub App, which only gets access to the repos it's installed on; its tokens expire after 8 hours and refresh by themselves. Setup:
+   1. Deploy the Worker (the "Deploy to Cloudflare Workers" button in its README) and copy its URL, `https://sveltia-cms-auth.<subdomain>.workers.dev`.
+   2. Register a GitHub App from the README's prefilled link: Redirect URI `<worker URL>/callback`; Contents and Pull requests read and write; no webhook. Copy its Client ID, create a client secret under Credentials, then install it on `abafdez/portfolio` only.
+   3. In the Worker's settings (Runtime variables and secrets): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (as a secret), and `ALLOWED_DOMAINS` = `abafdez.github.io`.
+   4. Uncomment `base_url` in `config.yml` with the Worker's URL, commit, deploy.
+2. **Sign In Using Access Token**: a fine-grained token, only this repo, Contents and Pull requests read and write, with an expiry. Works without the Worker.
+3. **Work with Local Repository**: as in dev (Chrome or Edge), on a clone.
+
+Sveltia keeps the token in the browser's storage for `abafdez.github.io`, which every GitHub Pages site of this account shares: a script on another `abafdez.github.io/<repo>` site could read it. Keep JavaScript you didn't write off those sites.
 
 ## The content it edits
 
@@ -15,16 +34,16 @@ The site renders them with [svelte-markdown](https://markdown.svelte.page) (mark
 
 ## The files
 
-| File                                              | What it does                                                                                       | Sveltia API                                                                      |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `plugin.ts`                                       | A Vite plugin, dev only (`apply: 'serve'`): the page at `/admin`, and two dev-server settings      | –                                                                                |
-| `main.ts`                                         | Imports Sveltia from npm, registers everything below, then starts it with `config.yml`             | `CMS_MANUAL_INIT`, `init({ config })`                                            |
-| `config.yml`                                      | Collections, fields, i18n, media folders                                                           | config                                                                           |
-| `formats.ts` + `../content-files.ts`              | How files are read and written                                                                     | `registerCustomFormat()`                                                         |
-| `components.ts`                                   | The code-block components as editor components                                                     | `registerEditorComponent()`                                                      |
-| `preview.ts`, `markdown.svelte.ts`, `preview.css` | The preview pane                                                                                   | `registerPreviewTemplate()`, `registerPreviewStyle()`, `registerEventListener()` |
-| `focal.svelte.ts`, `Focal.svelte`                 | A field for the cover's focal point                                                                | `registerFieldType()`                                                            |
-| `covers.ts`                                       | The cover next to each entry, as a URL (a Vite glob): for the focal field and the preview's header | –                                                                                |
+| File                                              | What it does                                                                                             | Sveltia API                                                                      |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `plugin.ts`                                       | A Vite plugin, dev only (`apply: 'serve'`): serves `index.html` at `/admin`, and two dev-server settings | –                                                                                |
+| `main.ts`                                         | Imports Sveltia from npm, registers everything below, then starts it with `config.yml`                   | `CMS_MANUAL_INIT`, `init({ config })`                                            |
+| `config.yml`                                      | Collections, fields, i18n, media folders                                                                 | config                                                                           |
+| `formats.ts` + `../content-files.ts`              | How files are read and written                                                                           | `registerCustomFormat()`                                                         |
+| `components.ts`                                   | The code-block components as editor components                                                           | `registerEditorComponent()`                                                      |
+| `preview.ts`, `markdown.svelte.ts`, `preview.css` | The preview pane                                                                                         | `registerPreviewTemplate()`, `registerPreviewStyle()`, `registerEventListener()` |
+| `focal.svelte.ts`, `Focal.svelte`                 | A field for the cover's focal point                                                                      | `registerFieldType()`                                                            |
+| `covers.ts`                                       | The cover next to each entry, as a URL (a Vite glob): for the focal field and the preview's header       | –                                                                                |
 
 ## Loading it
 

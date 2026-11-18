@@ -1,0 +1,156 @@
+title:
+  en: Svelte and SvelteKit
+  es: Svelte y SvelteKit
+description:
+  en: The docs, libraries and people I learn Svelte 5 and SvelteKit from, the stack this site is built with.
+  es: La documentación, las librerías y la gente con las que aprendo Svelte 5 y SvelteKit, el stack con el que está hecho este sitio.
+updated: 2026-11-18
+categories:
+  - name:
+      en: Official
+      es: Oficial
+    links:
+      - title: Svelte docs
+        url: https://svelte.dev/docs/svelte/overview
+        description:
+          en: The reference for components, runes, template syntax and styles.
+          es: La referencia de componentes, runes, sintaxis de plantillas y estilos.
+        tags: [docs, svelte]
+      - title: SvelteKit docs
+        url: https://svelte.dev/docs/kit/introduction
+        description:
+          en: Routing, load functions, form actions, adapters and prerendering.
+          es: Rutas, funciones load, form actions, adaptadores y prerenderizado.
+        tags: [docs, sveltekit]
+      - title: Svelte tutorial
+        url: https://svelte.dev/tutorial/svelte/welcome-to-svelte
+        description:
+          en: The interactive tutorial, from a first component to SvelteKit, in the browser.
+          es: El tutorial interactivo, del primer componente a SvelteKit, en el navegador.
+        tags: [tutorial, svelte]
+      - title: Svelte playground
+        url: https://svelte.dev/playground
+        description:
+          en: Try a component in the browser and share it as a link.
+          es: Prueba un componente en el navegador y compártelo con un enlace.
+        tags: [tool, svelte]
+      - title: The Svelte CLI (sv)
+        url: https://svelte.dev/docs/cli/overview
+        description:
+          en: Create a project and add tools to it (Vitest, Playwright, ESLint, adapters) with one command.
+          es: Crea un proyecto y añádele herramientas (Vitest, Playwright, ESLint, adaptadores) con un comando.
+        tags: [docs, tool]
+      - title: Svelte blog
+        url: https://svelte.dev/blog
+        description:
+          en: Release notes and the monthly "What's new in Svelte".
+          es: Notas de versión y el "What's new in Svelte" de cada mes.
+        tags: [blog, svelte]
+  - name:
+      en: Runes and reactivity
+      es: Runes y reactividad
+    links:
+      - title: $state
+        url: https://svelte.dev/docs/svelte/$state
+        description:
+          en: Reactive state, deep proxies, $state.raw, and state in classes.
+          es: Estado reactivo, proxies profundos, $state.raw y estado en clases.
+        tags: [docs, runes]
+      - title: $derived
+        url: https://svelte.dev/docs/svelte/$derived
+        description:
+          en: Values computed from state, and when they recompute.
+          es: Valores calculados a partir del estado, y cuándo se recalculan.
+        tags: [docs, runes]
+      - title: $effect
+        url: https://svelte.dev/docs/svelte/$effect
+        description:
+          en: Side effects, their cleanup, and the long section on when not to use one.
+          es: Efectos secundarios, su limpieza y la larga sección sobre cuándo no usar uno.
+        tags: [docs, runes]
+      - title: '{@attach}'
+        url: https://svelte.dev/docs/svelte/@attach
+        description:
+          en: Attachments, functions that run when an element is mounted, the newer way to write actions.
+          es: Los attachments, funciones que se ejecutan al montar un elemento, la forma nueva de escribir acciones.
+        tags: [docs, svelte]
+      - title: Svelte 5 migration guide
+        url: https://svelte.dev/docs/svelte/v5-migration-guide
+        description:
+          en: 'From let and $: to runes, from slots to snippets, from on:click to onclick.'
+          es: 'De let y $: a runes, de slots a snippets, de on:click a onclick.'
+        tags: [docs, runes]
+  - name:
+      en: Libraries
+      es: Librerías
+    links:
+      - title: Bits UI
+        url: https://bits-ui.com
+        description:
+          en: Headless, accessible components (dialogs, menus, comboboxes) to style yourself.
+          es: Componentes accesibles y sin estilos (diálogos, menús, comboboxes) para darles tu propio estilo.
+        tags: [library, ui, accessibility]
+      - title: shadcn-svelte
+        url: https://www.shadcn-svelte.com
+        description:
+          en: Copy-in components built on Bits UI and Tailwind; the code becomes yours.
+          es: Componentes que copias a tu proyecto, hechos con Bits UI y Tailwind; el código pasa a ser tuyo.
+        tags: [library, ui]
+      - title: Superforms
+        url: https://superforms.rocks
+        description:
+          en: Forms with SvelteKit's form actions, validation on both sides, and progressive enhancement.
+          es: Formularios con las form actions de SvelteKit, validación en ambos lados y mejora progresiva.
+        tags: [library, forms]
+      - title: Paraglide JS
+        url: https://paraglidejs.com
+        description:
+          en: Typed translations compiled into functions, with a SvelteKit setup. I built my own, but read it first.
+          es: Traducciones tipadas compiladas en funciones, con integración para SvelteKit. Hice las mías, pero la leí antes.
+        tags: [library, i18n]
+      - title: '@humanspeak/svelte-markdown'
+        url: https://github.com/humanspeak/svelte-markdown
+        description:
+          en: Markdown drawn by Svelte components you choose, the renderer this site uses.
+          es: Markdown dibujado por componentes de Svelte que eliges tú, el renderizador que usa este sitio.
+        tags: [library, markdown]
+      - title: Sveltia CMS
+        url: https://github.com/sveltia/sveltia-cms
+        description:
+          en: A Git-based CMS written in Svelte, a fast take on Decap CMS. It edits this site's posts.
+          es: Un CMS basado en Git escrito en Svelte, una versión rápida de Decap CMS. Edita los artículos de este sitio.
+        tags: [tool, cms]
+      - title: Images in SvelteKit
+        url: https://svelte.dev/docs/kit/images
+        description:
+          en: '@sveltejs/enhanced-img: AVIF and WebP copies, sizes and dimensions at build time.'
+          es: '@sveltejs/enhanced-img: copias AVIF y WebP, tamaños y dimensiones al construir.'
+        tags: [docs, images]
+  - name:
+      en: Learning and community
+      es: Aprender y comunidad
+    links:
+      - title: Joy of Code
+        url: https://joyofcode.xyz
+        description:
+          en: Clear videos and posts on Svelte and SvelteKit, often the first to cover something new.
+          es: Vídeos y artículos claros sobre Svelte y SvelteKit, a menudo los primeros en explicar algo nuevo.
+        tags: [video, tutorial]
+      - title: Huntabyte
+        url: https://www.youtube.com/@huntabyte
+        description:
+          en: Videos on SvelteKit, forms and component libraries by the author of Bits UI.
+          es: Vídeos sobre SvelteKit, formularios y librerías de componentes del autor de Bits UI.
+        tags: [video, tutorial]
+      - title: Svelte Society
+        url: https://sveltesociety.dev
+        description:
+          en: Community-made recipes, a package directory and events.
+          es: Recetas hechas por la comunidad, un directorio de paquetes y eventos.
+        tags: [community, site]
+      - title: Svelte on GitHub
+        url: https://github.com/sveltejs/svelte
+        description:
+          en: The source, the issues and the discussions where features are argued over.
+          es: El código, las incidencias y las discusiones donde se debaten las novedades.
+        tags: [community, svelte]

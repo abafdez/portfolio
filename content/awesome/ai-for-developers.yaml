@@ -1,0 +1,142 @@
+title:
+  en: AI for developers
+  es: IA para programar
+description:
+  en: Tools, protocols and reading for working with AI as a web developer, and for building with it without getting burned.
+  es: Herramientas, protocolos y lecturas para trabajar con IA en desarrollo web, y para construir con ella sin quemarse.
+updated: 2026-11-18
+categories:
+  - name:
+      en: Assistants and agents
+      es: Asistentes y agentes
+    links:
+      - title: Claude Code
+        url: https://code.claude.com/docs/en/overview
+        description:
+          en: Anthropic's coding agent for the terminal and the editor, the one this site was built with.
+          es: El agente de programación de Anthropic para la terminal y el editor, con el que se ha hecho este sitio.
+        tags: [tool, agents]
+      - title: GitHub Copilot docs
+        url: https://docs.github.com/en/copilot
+        description:
+          en: Completions, chat and the coding agent inside GitHub and the editor.
+          es: Autocompletado, chat y el agente de programación dentro de GitHub y del editor.
+        tags: [docs, tool]
+      - title: Ollama
+        url: https://ollama.com
+        description:
+          en: Run open models on your own machine with one command, and call them from code.
+          es: Ejecuta modelos abiertos en tu propio ordenador con un comando, y llámalos desde el código.
+        tags: [tool, local-models]
+      - title: LM Studio
+        url: https://lmstudio.ai
+        description:
+          en: A desktop app to download and chat with local models, with an API compatible with OpenAI's.
+          es: Una aplicación de escritorio para descargar modelos locales y chatear con ellos, con una API compatible con la de OpenAI.
+        tags: [tool, local-models]
+  - name:
+      en: Protocols and conventions
+      es: Protocolos y convenciones
+    links:
+      - title: Model Context Protocol
+        url: https://modelcontextprotocol.io
+        description:
+          en: The open standard that connects assistants to tools and data; the spec and guides.
+          es: El estándar abierto que conecta asistentes con herramientas y datos; la especificación y las guías.
+        tags: [docs, mcp]
+      - title: MCP reference servers
+        url: https://github.com/modelcontextprotocol/servers
+        description:
+          en: Example servers (files, Git, fetch, memory) and a list of community ones.
+          es: Servidores de ejemplo (archivos, Git, fetch, memoria) y una lista de los de la comunidad.
+        tags: [code, mcp]
+      - title: AGENTS.md
+        url: https://agents.md
+        description:
+          en: A plain markdown file that tells coding agents how a project works.
+          es: Un archivo markdown sencillo que explica a los agentes de programación cómo funciona un proyecto.
+        tags: [site, agents]
+      - title: llms.txt
+        url: https://llmstxt.org
+        description:
+          en: A proposal for a markdown file that gives language models a site's key pages.
+          es: Una propuesta de archivo markdown que da a los modelos de lenguaje las páginas clave de un sitio.
+        tags: [site, seo]
+  - name:
+      en: Learning
+      es: Aprender
+    links:
+      - title: Building effective agents
+        url: https://www.anthropic.com/research/building-effective-agents
+        description:
+          en: Anthropic on the simple patterns (chains, routing, tools) that work better than big frameworks.
+          es: Anthropic sobre los patrones sencillos (cadenas, enrutado, herramientas) que funcionan mejor que los grandes frameworks.
+        tags: [article, agents]
+      - title: Prompt engineering overview
+        url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview
+        description:
+          en: How to write clear prompts, give examples and structure long tasks.
+          es: Cómo escribir prompts claros, dar ejemplos y organizar tareas largas.
+        tags: [docs, prompting]
+      - title: Simon Willison's weblog
+        url: https://simonwillison.net
+        description:
+          en: Daily, hands-on notes on what language models can and can't do, with tools to try.
+          es: Notas diarias y prácticas sobre lo que los modelos de lenguaje pueden y no pueden hacer, con herramientas para probar.
+        tags: [blog]
+      - title: Neural networks, by 3Blue1Brown
+        url: https://www.3blue1brown.com/topics/neural-networks
+        description:
+          en: Animated lessons on how neural networks and transformers work, no maths degree needed.
+          es: Lecciones animadas sobre cómo funcionan las redes neuronales y los transformers, sin necesidad de ser matemático.
+        tags: [video, basics]
+      - title: 'Neural Networks: Zero to Hero'
+        url: https://karpathy.ai/zero-to-hero.html
+        description:
+          en: Andrej Karpathy builds a small GPT from scratch, in code, step by step.
+          es: Andrej Karpathy construye un GPT pequeño desde cero, en código, paso a paso.
+        tags: [video, basics]
+      - title: Hugging Face Learn
+        url: https://huggingface.co/learn
+        description:
+          en: Free courses on language models, agents and MCP.
+          es: Cursos gratuitos sobre modelos de lenguaje, agentes y MCP.
+        tags: [tutorial, basics]
+  - name:
+      en: AI in the browser
+      es: IA en el navegador
+    links:
+      - title: Built-in AI in Chrome
+        url: https://developer.chrome.com/docs/ai/built-in
+        description:
+          en: Summarizer, Translator and Prompt APIs that run a model on the device, no server.
+          es: Las API Summarizer, Translator y Prompt, que ejecutan un modelo en el dispositivo, sin servidor.
+        tags: [docs, browser]
+      - title: Transformers.js
+        url: https://huggingface.co/docs/transformers.js
+        description:
+          en: Run Hugging Face models in JavaScript, in the browser or Node.
+          es: Ejecuta modelos de Hugging Face en JavaScript, en el navegador o en Node.
+        tags: [library, browser]
+      - title: WebLLM
+        url: https://webllm.mlc.ai
+        description:
+          en: Chat models in the browser on the GPU through WebGPU.
+          es: Modelos de chat en el navegador, en la GPU, con WebGPU.
+        tags: [library, browser]
+  - name:
+      en: Risks
+      es: Riesgos
+    links:
+      - title: OWASP Top 10 for LLM applications
+        url: https://genai.owasp.org/llm-top-10/
+        description:
+          en: Prompt injection, data leaks, excessive agency and the other usual ways an AI feature goes wrong.
+          es: Inyección de prompts, fugas de datos, exceso de autonomía y las demás formas habituales en que falla una función con IA.
+        tags: [docs, security]
+      - title: Prompt injection, a series
+        url: https://simonwillison.net/series/prompt-injection/
+        description:
+          en: Simon Willison's posts on why text an agent reads can take over what it does.
+          es: Los artículos de Simon Willison sobre por qué el texto que lee un agente puede tomar el control de lo que hace.
+        tags: [article, security]

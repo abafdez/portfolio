@@ -67,6 +67,12 @@
 @layer base {
 	/* The page scrollbar: thin, accent thumb on the page background. Standard
 	   properties (Firefox, Chrome 121+); other browsers keep their default. */
+	/* The text size from the theme menu (text-size.ts): 1 unless the visitor picked
+	   another. A percentage, so it multiplies whatever size the browser is set to. */
+	html {
+		font-size: calc(var(--text-scale, 1) * 100%);
+	}
+
 	html {
 		scrollbar-color: var(--brand) var(--surface-1);
 		scrollbar-width: thin;
@@ -145,6 +151,29 @@
 	   code blocks (--reading-width). */
 	main[data-composition='reading'] {
 		max-inline-size: var(--reading-width);
+	}
+
+	/* On a wide screen the reading column (80 characters) was a narrow strip down the
+	   middle. It keeps its 80 characters and grows instead: zoom scales everything in
+	   it (text, headings, code, pictures, spacing) by the same amount, which a bigger
+	   font-size alone wouldn't (the headings are in rem). Steps by window width; rem in
+	   a media query is the browser's size, so the text size setting doesn't move them. */
+	@media (min-width: 100rem) {
+		main[data-composition='reading'] {
+			zoom: 1.12;
+		}
+	}
+
+	@media (min-width: 120rem) {
+		main[data-composition='reading'] {
+			zoom: 1.25;
+		}
+	}
+
+	@media (min-width: 150rem) {
+		main[data-composition='reading'] {
+			zoom: 1.4;
+		}
 	}
 
 	code,

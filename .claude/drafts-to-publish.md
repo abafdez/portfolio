@@ -24,3 +24,15 @@ List new drafts here, with their TODOs and the drafts they link to, until they g
 - `2026-11-11-markdown-drawn-by-my-own-components`: why and how mdsvex was replaced (the comparison first, our own token pass, strict HTML, server render + `{@html}`, the CMS mounting the same components, two glob traps, the weight numbers). Links to the preview draft above: **publish together** (or after it). No cover, `.es.md` with `reviewed: false`. Only makes sense if the branch is merged.
 - `2026-11-11-a-cms-from-npm-and-three-traps`: the CMS imported from npm (the top-level-await deadlock with `DOMContentLoaded`, Vite's optimizer losing Sveltia's assets, the React effect that returned the props) and what was deleted. Links to the preview draft above: **publish together** (or after it). No cover, `.es.md` with `reviewed: false`.
 - The same branch added a dated "Update (2026-11-11)" note to eight published posts that described mdsvex (markdown-with-mdsvex, markdown-links-with-an-mdsvex-layout, images-next-to-the-post, shiki-with-design-tokens, linkable-headings-in-markdown, components-in-code-blocks, callouts-that-read-well-everywhere, videos-in-markdown-posts), English and Spanish. They don't link to drafts.
+
+## 2026-11-18 (branch `feat/image-cache`)
+
+All seven have an `.es.md` with `reviewed: false`, no cover, and screenshots Claude took (no personal data beyond Alfonso's public photo). None links to a draft, so each can go up on its own.
+
+- `2026-11-18-minigames-on-a-404-page`: the four 404 variants, how the 404 works on GitHub Pages, rules without a canvas, `role="application"`, the project page. Screenshot of the project page.
+- `2026-11-18-least-privilege-for-a-pages-workflow`: the build job that could push, the separate image-cache job, SHA pins + Dependabot, concurrency, the faster Playwright run. **Publish after the workflow change has run on `main` once.**
+- `2026-11-18-a-light-theme-that-looks-like-paper`: the engineering-pad tokens, the brand grid in every theme, the spotlight contrast fix. Screenshot of a post in light.
+- `2026-11-18-static-search-with-pagefind`: what's indexed, two languages, why preview didn't work, animating the popover, the result morph trap. Two screenshots.
+- `2026-11-18-zoom-for-a-wider-reading-column`: wider pages, `zoom` for the reading column, the text size control, the Devlog font. Screenshot at 1920.
+- `2026-11-18-a-hire-me-panel-with-five-looks`: the handle, the sheet, the five looks, the tilt overflow fix. Three screenshots. **Mentions "open to work": publish only if you're fine saying so.**
+- `2026-11-18-a-cms-on-github-pages`: the second Vite build, the covers swap, what the authenticator Worker does, the shared-origin caveat. **Publish once GitHub sign-in works on the live site** (the Worker and GitHub App exist).

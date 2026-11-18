@@ -4,6 +4,7 @@
 	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
 	import PalettePicker from '#lib/components/PalettePicker.svelte';
 	import LanguageSwitch from '#lib/components/LanguageSwitch.svelte';
+	import Search from '#lib/components/Search.svelte';
 </script>
 
 <header class="site-header">
@@ -11,7 +12,7 @@
 		<a class="site-name" href={route('/')}>Alfonso Baeza</a>
 		<div class="nav"><Nav /></div>
 		<div class="toggle">
-			<LanguageSwitch /><PalettePicker /><ThemeToggle duration={500} blur={50} />
+			<Search /><LanguageSwitch /><PalettePicker /><ThemeToggle duration={500} blur={50} />
 		</div>
 	</div>
 </header>
@@ -104,6 +105,25 @@
 		display: flex;
 		align-items: center;
 		gap: var(--size-1);
+	}
+
+	/* The smallest phones: four 3rem buttons (search, language, colour theme, light/dark)
+	   left the name no room, and the page scrolled sideways at 320px. Smaller buttons
+	   and a narrower gap there. Only the buttons and links: PalettePicker's popover is
+	   a child too. */
+	@media (max-width: 24rem) {
+		.inner {
+			column-gap: var(--size-3);
+		}
+
+		.toggle {
+			gap: 0;
+		}
+
+		.toggle > :global(:is(a, button)) {
+			inline-size: 2.5rem;
+			block-size: 2.5rem;
+		}
 	}
 
 	/* Not printed: the site nav means nothing on paper. */

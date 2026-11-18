@@ -8,13 +8,18 @@ import { defineConfig, devices } from '@playwright/test';
 // (test:e2e sets it; CI passes the repo name), so the tests catch links that forget
 // it (dev has no base path).
 const base = process.env.BASE_PATH ?? '/portfolio';
-// Not 4173 (preview's default), so a preview you have open doesn't get in the way.
+// Not 4173 (pnpm preview's default), so a preview you have open doesn't get in the way.
 const port = 4174;
 
 export default defineConfig({
 	testDir: 'e2e',
 	// test.only left in by mistake fails CI instead of silently skipping every other test.
 	forbidOnly: !!process.env.CI,
+	// Every test on its own, in any order (none shares state), spread over the workers:
+	// by default only files run side by side, and there are just three. On CI, one worker
+	// per core of the runner (4); locally, Playwright's default (half the cores).
+	fullyParallel: true,
+	workers: process.env.CI ? '100%' : undefined,
 	// On CI, the GitHub reporter turns failures into notes on the PR's changed lines.
 	reporter: process.env.CI ? 'github' : 'list',
 	use: {
@@ -24,12 +29,22 @@ export default defineConfig({
 		// (pnpm exec playwright show-trace <file>).
 		trace: 'retain-on-failure'
 	},
-	projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-	// Playwright starts the preview server before the tests and stops it after.
+	// On CI, the Google Chrome GitHub's Ubuntu runners come with ('chrome' channel), so
+	// there's no browser to download (that step took 27 s). Locally, Playwright's own
+	// Chromium (pnpm exec playwright install chromium).
+	projects: [
+		{
+			name: 'chromium',
+			use: { ...devices['Desktop Chrome'], channel: process.env.CI ? 'chrome' : undefined }
+		}
+	],
+	// Playwright starts the server before the tests and stops it after.
 	// The build itself happens before (see test:e2e in package.json and the CI workflow).
 	webServer: {
-		command: `pnpm preview --port ${port} --strictPort`,
-		env: { BASE_PATH: base },
+		// build/ as GitHub Pages serves it (scripts/serve.ts), with the CMS and the search
+		// index that `vite preview` doesn't have.
+		command: 'node scripts/serve.ts',
+		env: { BASE_PATH: base, PORT: String(port) },
 		url: `http://localhost:${port}${base}/`
 	}
 });

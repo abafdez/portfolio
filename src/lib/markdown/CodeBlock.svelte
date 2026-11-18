@@ -23,7 +23,8 @@
 </script>
 
 <figure class="code-block">
-	<figcaption>
+	<!-- data-pagefind-ignore: the language name and "copy" aren't worth finding. -->
+	<figcaption data-pagefind-ignore>
 		<span>{lang}</span>
 		<!-- role="status": screen readers announce the text when it changes. -->
 		<span class="status" role="status"></span>

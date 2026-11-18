@@ -13,7 +13,17 @@
 	--ink-7: oklch(21% 0.02 250);
 	--ink-8: oklch(17% 0.018 250);
 
-	--green-dark: oklch(46% 0.13 148);
+	/* The light theme ("ink green", picked 2026-11-18 from three directions): a soft warm
+	   white, graphite text with a hint of green, and the brand as a deep ink green, like
+	   a fountain pen on good paper. The bright phosphor green is for the dark theme; on
+	   light paper it looked loud. */
+	--paper-0: oklch(99.6% 0.002 95); /* inner panels, code */
+	--paper-1: oklch(98% 0.005 95); /* the page and its sheets */
+	--paper-3: oklch(91% 0.01 95); /* borders */
+	--pencil-1: oklch(23% 0.012 160); /* text */
+	--pencil-2: oklch(45% 0.015 160); /* muted text */
+
+	--green-dark: oklch(42% 0.085 165); /* the ink green: the light theme's brand */
 	--green-bright: oklch(84% 0.2 148);
 
 	--pink-soft: oklch(76% 0.13 5);
@@ -47,35 +57,53 @@
 	color-scheme: light dark;
 
 	--brand: light-dark(var(--green-dark), var(--green-bright));
-	--text-1: light-dark(var(--ink-7), var(--ink-2));
-	--text-2: light-dark(var(--ink-5), var(--ink-4));
-	--surface-1: light-dark(var(--ink-0), var(--ink-8));
-	--surface-2: light-dark(var(--ink-1), var(--ink-7));
-	--surface-3: light-dark(var(--ink-3), var(--ink-6));
+	--text-1: light-dark(var(--pencil-1), var(--ink-2));
+	--text-2: light-dark(var(--pencil-2), var(--ink-4));
+	/* Light: the page (and every sheet on it) is cream paper, inner panels and code are
+	   nearly white, borders a darker cream. */
+	--surface-1: light-dark(var(--paper-1), var(--ink-8));
+	--surface-2: light-dark(var(--paper-0), var(--ink-7));
+	--surface-3: light-dark(var(--paper-3), var(--ink-6));
 
 	/* Something is wrong: a field's border and its message. Text on any surface: light
 	   ≥ 5.74:1, dark ≥ 7.45:1 (so a border, which needs 3:1, too). */
 	--error: light-dark(var(--red-dark), var(--red-bright));
 
-	/* The blueprint grid behind the page (Blueprint.svelte): faint text-colored lines,
-	   a minor cell, a major one every 4 cells, and a "+" at major crossings.
-	   Decorative, so no contrast requirement. */
+	/* The blueprint grid behind the page (Blueprint.svelte): faint lines, a minor cell,
+	   a major one every 4 cells, and a "+" at major crossings, all in the text colour.
+	   Dark: like chalk. Light: quieter, graphite, and no minor lines at all (with them,
+	   and in the brand colour, it looked busy): only the major lines and the crosses.
+	   Decorative (text never sits on it), so no contrast requirement. */
 	/* Every mix with transparent is in oklab, not oklch: Chrome drops the hue of a
 	   near-grey hex colour in oklch (Tokyo Night's #e6e7ed came out oklch(… none)),
 	   and a missing hue is drawn as 0, a pink tint. oklab has no hue to lose. */
-	--grid-line: color-mix(in oklab, var(--text-1) 3%, transparent);
+	--grid-line: light-dark(transparent, color-mix(in oklab, var(--text-1) 3%, transparent));
 	--grid-line-major: color-mix(in oklab, var(--text-1) 6%, transparent);
-	--grid-mark: color-mix(in oklab, var(--text-1) 18%, transparent);
+	--grid-mark: light-dark(
+		color-mix(in oklab, var(--text-1) 16%, transparent),
+		color-mix(in oklab, var(--text-1) 18%, transparent)
+	);
 	--grid-size: 1.5rem;
 
 	/* The spotlight: the same grid lit in the brand color around the mouse, plus a
 	   glow. Not decorative any more once text sits on it: a lit line runs under the
 	   letters, so it counts as their background. At the spot's center (glow + major
-	   line, the brightest point) --text-2 keeps 4.89:1 dark, 4.83:1 light; on a minor
-	   line 5.77:1 and 5.40:1. A theme that changes --brand must re-check these. */
-	--grid-spot-line: color-mix(in oklab, var(--brand) 8%, transparent);
-	--grid-spot-line-major: color-mix(in oklab, var(--brand) 15%, transparent);
-	--grid-spot-glow: color-mix(in oklab, var(--brand) 4%, transparent);
+	   line, the brightest point) --text-2 keeps 4.89:1 dark. Light is softer (3% glow,
+	   10% line), over the grid's own 6% major line in the text colour. The header's nav
+	   sits on the grid, so this matters; palettes.test.ts checks every theme, both
+	   halves, with that whole stack. */
+	--grid-spot-line: light-dark(
+		color-mix(in oklab, var(--brand) 6%, transparent),
+		color-mix(in oklab, var(--brand) 8%, transparent)
+	);
+	--grid-spot-line-major: light-dark(
+		color-mix(in oklab, var(--brand) 10%, transparent),
+		color-mix(in oklab, var(--brand) 15%, transparent)
+	);
+	--grid-spot-glow: light-dark(
+		color-mix(in oklab, var(--brand) 3%, transparent),
+		color-mix(in oklab, var(--brand) 4%, transparent)
+	);
 
 	/* Skill icons (/about): only this color's lightness is used. Each brand logo keeps
 	   its own hue and chroma at this lightness (oklch(from var(--icon-tone) l c h) in
@@ -119,10 +147,18 @@
 	--callout-caution: light-dark(var(--red-dark), var(--red-bright));
 
 	/* Floating things (the detached header, the footer hint). */
-	--shadow-float: 0 var(--size-2) var(--size-6) color-mix(in oklab, var(--ink-8) 35%, transparent);
+	/* Light: a soft shadow in the text's own color (35% of near-black was a smudge). */
+	--shadow-float: 0 var(--size-2) var(--size-6)
+		light-dark(
+			color-mix(in oklab, var(--text-1) 14%, transparent),
+			color-mix(in oklab, var(--ink-8) 35%, transparent)
+		);
 
-	/* Layout: the header, main and footer share one content width. */
-	--content-width: 70rem;
+	/* Layout: the header, main and footer share one content width. It grows with the
+	   window: 70rem was right on a laptop but left wide empty margins full screen on a
+	   big monitor. 82% of the window, between 70rem and 96rem (1536px). Reading pages
+	   keep --reading-width. */
+	--content-width: clamp(70rem, 82vw, 96rem);
 	/* The reading composition (posts, Devlog entries): one column for text and code.
 	   80ch of the body font is about 90 characters of text and 80 of code. */
 	--reading-width: 80ch;
@@ -130,12 +166,12 @@
 	   and in-page jumps leave this much space at the top. */
 	--header-space: 6.5rem;
 
-	/* Sections override these (e.g. the devlog layout sets --font-body).
+	/* A section can override these (the Devlog set --font-body to a handwritten font,
+	   Shantell Sans, until 2026-11-18: hard to read in long entries).
 	   --font-heading and --font-label point at --font-code, not --font-body: they're
 	   resolved here on :root, so a section's --font-body could never reach them anyway. */
 	--font-body: var(--font-sans);
 	--font-code: 'Fira Code Variable', var(--font-mono);
-	--font-hand: 'Shantell Sans Variable', var(--font-sans);
 	--font-heading: var(--font-code);
 	/* Nav, site name, buttons, small UI text. */
 	--font-label: var(--font-code);

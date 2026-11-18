@@ -1,24 +1,21 @@
-// Serves Sveltia CMS at /admin, in dev only (`apply: 'serve'`): it's never built, so it
-// never reaches GitHub Pages. Why Sveltia: design/cms-study.md.
+// Serves Sveltia CMS at /admin in dev (`apply: 'serve'`). The live site gets its own
+// build of the same page (vite.config.ts in this folder). Why Sveltia: design/cms-study.md.
 // Everything else is ordinary source that Vite serves: main.ts imports Sveltia from npm,
 // its config, and the site's own code. Why the page isn't a SvelteKit route: a route
 // would wrap the CMS in the site's layout and global CSS, and in dev it would load Vite's
 // client, which reloads the page whenever a content file changes, as saving one does:
 // Sveltia would start over (and ask for the folder again) after every save.
 import type { Plugin } from 'vite';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-const page = `<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="robots" content="noindex" />
-		<title>Content manager</title>
-		<script type="module" src="/src/lib/cms/main.ts"></script>
-	</head>
-	<body></body>
-</html>`;
+// The page is index.html, the same file the live site's CMS is built from (vite.config.ts
+// in this folder). Its script is relative to the file; here it's served at /admin, so the
+// path is made absolute from the project's root.
+const page = readFileSync(new URL('./index.html', import.meta.url), 'utf8').replace(
+	'src="./main.ts"',
+	'src="/src/lib/cms/main.ts"'
+);
 
 export function cms(): Plugin {
 	return {

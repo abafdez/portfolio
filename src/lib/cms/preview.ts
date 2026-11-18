@@ -12,7 +12,6 @@ import { markdownBody } from './markdown.svelte.ts';
 import tokens from '#lib/styles/tokens.css?inline';
 import global from '#lib/styles/global.css?inline';
 import fira from '@fontsource-variable/fira-code/index.css?inline';
-import shantell from '@fontsource-variable/shantell-sans/index.css?inline';
 import own from './preview.css?inline';
 
 type Entry = { get: (key: string) => unknown };
@@ -28,7 +27,7 @@ type ReactLike = {
 // The site's CSS for the preview frame (registerPreviewStyle). The frame is a blob:
 // document, where a URL like /node_modules/… (the fonts) has nothing to resolve against,
 // so they're made absolute.
-export const previewStyles = [fira, shantell, tokens, global, own]
+export const previewStyles = [fira, tokens, global, own]
 	.join('\n')
 	.replace(/url\((['"]?)\//g, `url($1${location.origin}/`);
 
