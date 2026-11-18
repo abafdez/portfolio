@@ -37,7 +37,7 @@ function setUp(CMS: typeof import('@sveltia/cms')) {
 	// and CSS (preview.ts); the Awesome list, in dev, its page as last saved (hosted, Sveltia's
 	// own preview).
 	CMS.registerPreviewStyle(previewStyles, { raw: true });
-	for (const name of ['posts', 'drafts', 'devlog']) {
+	for (const name of ['posts', 'devlog']) {
 		CMS.registerPreviewTemplate(name, articlePreview(React) as never);
 	}
 	if (import.meta.env.DEV) {

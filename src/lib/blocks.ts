@@ -27,7 +27,7 @@ const optional = (kind: Kind): Field => ({ kind, required: false });
 // Each block's fields, in the order the CMS shows them and writes them.
 export const blocks: Record<string, { fields: Record<string, Field> }> = {
 	// A short screen recording: no sound, no autoplay, the reader presses play. The
-	// <video> rules (why each attribute) are in content/blog/published/README.md.
+	// <video> rules (why each attribute) are in content/blog/posts/README.md.
 	video: {
 		fields: {
 			src: required('file'), // MP4 plays everywhere

@@ -3,13 +3,11 @@
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
 	import { blogTag } from '#lib/links.ts';
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
-	import { coverOf } from '#lib/covers.ts';
 	import { copyCode } from '#lib/markdown/copy.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	let { post, html } = $derived(data);
-	const cover = $derived(coverOf(post.folder));
+	let { post, html, cover } = $derived(data);
 	// An English post on a Spanish page (not translated yet): the body says it's English.
 	const lang = $derived(post.locale !== getLocale() ? languageTags[post.locale] : undefined);
 </script>

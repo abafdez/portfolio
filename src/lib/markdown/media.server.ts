@@ -1,52 +1,32 @@
 // The files next to the posts and Devlog entries, for the renderers (media.ts), on the server only:
 // what a page gets is the HTML that points at the files, not this list.
 // Lazy globs: each file is imported only when a post uses it, before rendering (a
-// renderer can't wait, like Shiki's languages). Lazy for a second reason: drafts must
-// not reach a build. An eager glob becomes imports at the top of the module, which
-// imagetools processes (and writes into the build) even inside a DEV-only branch; a lazy
-// one stays inside the branch, which the build removes.
-// Covers are left out (covers.ts has them, at the sizes cards need). '!**/cover.*', not
-// '!/content/**/cover.*': a negative pattern that starts with / and has ** in the middle
-// excludes nothing.
+// renderer can't wait, like Shiki's languages). Every file a glob matches still goes into
+// the build, used or not, so drafts' files are left out with '!/:drafts:' (drafts.ts).
+// Covers are left out (covers.server.ts has them, at the sizes cards need). '!**/cover.*',
+// not '!/content/**/cover.*': a negative pattern that starts with / and has ** in the
+// middle excludes nothing.
 import type { Picture } from '@sveltejs/enhanced-img';
 import type { Media } from './media.ts';
 
 type Load<T> = () => Promise<T>;
 
-const pictures: Record<string, Load<Picture>> = {
-	...import.meta.glob<Picture>(
-		[
-			'/content/blog/published/*/*.{avif,png,jpg,jpeg,webp}',
-			'/content/bitacora/*/*.{avif,png,jpg,jpeg,webp}',
-			'!**/cover.*'
-		],
-		{ import: 'default', query: { enhanced: true } }
-	),
-	...(import.meta.env.DEV
-		? import.meta.glob<Picture>(
-				['/content/blog/drafts/*/*.{avif,png,jpg,jpeg,webp}', '!**/cover.*'],
-				{ import: 'default', query: { enhanced: true } }
-			)
-		: {})
-};
+const pictures: Record<string, Load<Picture>> = import.meta.glob<Picture>(
+	[
+		'/content/blog/posts/*/*.{avif,png,jpg,jpeg,webp}',
+		'/content/bitacora/*/*.{avif,png,jpg,jpeg,webp}',
+		'!**/cover.*',
+		'!/:drafts:'
+	],
+	{ import: 'default', query: { enhanced: true } }
+);
 
-const files: Record<string, Load<string>> = {
-	...import.meta.glob<string>(
-		['/content/blog/published/*/*.{mp4,webm,vtt}', '/content/bitacora/*/*.{mp4,webm,vtt}'],
-		{
-			import: 'default',
-			query: '?url'
-		}
-	),
-	...(import.meta.env.DEV
-		? import.meta.glob<string>('/content/blog/drafts/*/*.{mp4,webm,vtt}', {
-				import: 'default',
-				query: '?url'
-			})
-		: {})
-};
+const files: Record<string, Load<string>> = import.meta.glob<string>(
+	['/content/blog/posts/*/*.{mp4,webm,vtt}', '/content/bitacora/*/*.{mp4,webm,vtt}', '!/:drafts:'],
+	{ import: 'default', query: '?url' }
+);
 
-// '/content/blog/published/x/x.md' + './a.png' -> '/content/blog/published/x/a.png'
+// '/content/blog/posts/x/x.md' + './a.png' -> '/content/blog/posts/x/a.png'
 const pathOf = (file: string, src: string) =>
 	`${file.slice(0, file.lastIndexOf('/'))}/${src.replace(/^\.\//, '')}`;
 

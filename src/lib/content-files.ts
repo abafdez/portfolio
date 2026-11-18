@@ -9,7 +9,17 @@ import { Document, isScalar, parse, visit } from 'yaml';
 type Data = Record<string, unknown>;
 
 // Frontmatter keys in the order the files use; anything else goes after, as given.
-const order = ['title', 'date', 'phase', 'tags', 'description', 'cover', 'focus', 'reviewed'];
+const order = [
+	'title',
+	'draft',
+	'date',
+	'phase',
+	'tags',
+	'description',
+	'cover',
+	'focus',
+	'reviewed'
+];
 const rank = (key: string) => (order.includes(key) ? order.indexOf(key) : order.length);
 
 const empty = (value: unknown) =>

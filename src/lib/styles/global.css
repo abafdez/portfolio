@@ -358,7 +358,7 @@
 		}
 
 		/* Inline code; code blocks are .code-block (below). A long one with no spaces
-		   (content/blog/published/README.md, a line of JS) breaks anywhere rather than
+		   (content/blog/posts/README.md, a line of JS) breaks anywhere rather than
 		   pushing the page wider than a phone. */
 		& :not(pre) > code {
 			padding: 0.1em 0.3em;

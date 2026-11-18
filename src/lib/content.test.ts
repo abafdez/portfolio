@@ -8,7 +8,6 @@ import {
 	allLog,
 	checkCover,
 	checkTags,
-	checkUniqueSlugs,
 	readFrontmatter,
 	readingTime,
 	slugOf,
@@ -121,12 +120,6 @@ describe('slugOf', () => {
 		);
 	});
 
-	test('works for drafts too', () => {
-		expect(slugOf('/content/blog/drafts/2026-10-27-tokens/2026-10-27-tokens.md')).toBe(
-			'2026-10-27-tokens'
-		);
-	});
-
 	test('a translation has the same slug: <slug>.es.md', () => {
 		expect(slugOf('/content/blog/2026-10-27-tokens/2026-10-27-tokens.es.md')).toBe(
 			'2026-10-27-tokens'
@@ -137,33 +130,16 @@ describe('slugOf', () => {
 		'/content/blog/2026-10-27-tokens/2026-10-27-renamed.md',
 		// Not a language the site has: 2026-10-27-tokens.fr is a different name.
 		'/content/blog/2026-10-27-tokens/2026-10-27-tokens.fr.md',
-		'/content/blog/drafts/2026-10-27-tokens.md'
+		'/content/blog/posts/2026-10-27-tokens.md'
 	])('rejects a folder and file that do not match: %s', (path) => {
 		expect(() => slugOf(path)).toThrow(`${path}: the folder and the file must have the same name`);
 	});
 });
 
-describe('checkUniqueSlugs', () => {
-	const draft = '/content/blog/drafts/2026-11-06-a/2026-11-06-a.md';
-	const published = '/content/blog/published/2026-11-06-a/2026-11-06-a.md';
-
-	test('accepts different slugs', () => {
-		expect(() =>
-			checkUniqueSlugs([draft, '/content/blog/published/2026-11-06-b/2026-11-06-b.md'])
-		).not.toThrow();
-	});
-
-	test('rejects a post that is both a draft and published', () => {
-		expect(() => checkUniqueSlugs([published, draft])).toThrow(
-			`${draft}: ${published} has the same name`
-		);
-	});
-});
-
 describe('checkCover', () => {
-	const post = '/content/blog/published/2026-11-06-a/2026-11-06-a.md';
-	const cover = '/content/blog/published/2026-11-06-a/cover.png';
-	const other = '/content/blog/published/2026-11-06-b/cover.png';
+	const post = '/content/blog/posts/2026-11-06-a/2026-11-06-a.md';
+	const cover = '/content/blog/posts/2026-11-06-a/cover.png';
+	const other = '/content/blog/posts/2026-11-06-b/cover.png';
 
 	test('accepts a cover with its alt text', () => {
 		expect(() => checkCover(post, 'A diagram', [cover])).not.toThrow();
@@ -221,15 +197,15 @@ describe('toTranslation', () => {
 		date: '2026-10-27',
 		tags: ['css'],
 		slug: 'tokens',
-		folder: '/content/blog/published/tokens',
-		path: '/content/blog/published/tokens/tokens.md',
+		folder: '/content/blog/posts/tokens',
+		path: '/content/blog/posts/tokens/tokens.md',
 		draft: false,
 		minutes: 3,
 		description: 'In English.',
 		locale: 'en',
 		locales: ['en', 'es']
 	};
-	const path = '/content/blog/published/tokens/tokens.es.md';
+	const path = '/content/blog/posts/tokens/tokens.es.md';
 	const translate = (frontmatter: string, body = 'Un texto en español.') =>
 		toTranslation(path, `---\n${frontmatter}\n---\n\n${body}`, original, 'es');
 

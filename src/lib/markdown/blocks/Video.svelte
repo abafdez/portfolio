@@ -1,6 +1,6 @@
 <script lang="ts">
 	// ```video: a short screen recording. No sound, no autoplay, the reader presses play;
-	// why each attribute is in content/blog/published/README.md. The same markup as
+	// why each attribute is in content/blog/posts/README.md. The same markup as
 	// blocks.ts's render(), which the CMS's editor components use.
 	import { videoType } from '#lib/blocks.ts';
 	import type { Media } from '../media.ts';
