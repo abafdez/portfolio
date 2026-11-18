@@ -107,6 +107,25 @@
 		gap: var(--size-1);
 	}
 
+	/* The smallest phones: four 3rem buttons (search, language, colour theme, light/dark)
+	   left the name no room, and the page scrolled sideways at 320px. Smaller buttons
+	   and a narrower gap there. Only the buttons and links: PalettePicker's popover is
+	   a child too. */
+	@media (max-width: 24rem) {
+		.inner {
+			column-gap: var(--size-3);
+		}
+
+		.toggle {
+			gap: 0;
+		}
+
+		.toggle > :global(:is(a, button)) {
+			inline-size: 2.5rem;
+			block-size: 2.5rem;
+		}
+	}
+
 	/* Not printed: the site nav means nothing on paper. */
 	@media print {
 		header {
