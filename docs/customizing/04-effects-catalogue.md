@@ -76,7 +76,7 @@ The language link (`LanguageSwitch.svelte`) is a normal navigation; the root lay
   - `Spotlight.svelte`: photo in a conic ring turned by a registered `--ring-angle`, a grid lit under the pointer, counters that count up (`requestAnimationFrame`).
   - `BusinessCard.svelte`: flips with `rotate: y 180deg` and `backface-visibility: hidden`; the hidden face is `inert`.
   - `OpenToWork.svelte`: a pinging status dot, the photo glitches with the colour themes' SVG filter, a magnetic button (`magnet()` in `tilt.ts`) with CSS sparkles.
-  - `IdCard.svelte`: tilts toward the pointer (`tilt()`), parts at different `translateZ` depths inside `transform-style: preserve-3d`, a foil sheen at the pointer.
+  - `IdCard.svelte`: tilts toward the pointer (`tilt()`: it starts leaning before the pointer arrives, measures the untilted card so it doesn't bounce at the edges, and eases in script), parts at different `translateZ` depths inside `transform-style: preserve-3d`, a foil sheen at the pointer as strong as the tilt.
 - **Turn off a look:** delete its line in `looks.ts`. **Always the same look:** set `look` in `Footer.svelte` to a fixed index instead of rotating.
 
 ### Buttons and links that react

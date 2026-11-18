@@ -11,7 +11,7 @@
 </script>
 
 <div class="stage">
-	<div class="card" {@attach tilt(14)}>
+	<div class="card" {@attach tilt(14, 140)}>
 		<span class="foil" aria-hidden="true"></span>
 		<span class="chip" aria-hidden="true"></span>
 		<div class="photo">
@@ -31,7 +31,10 @@
 
 <style>
 	/* Room around the card, so its turned corners stay inside the panel. */
+	/* position: relative: the card's offsetParent, untilted, which tilt() measures the
+	   card against (so the tilt never moves the edges it measures). */
 	.stage {
+		position: relative;
 		display: grid;
 		justify-items: center;
 		gap: var(--size-3);
@@ -60,15 +63,11 @@
 				var(--grid-size),
 			var(--surface-2);
 		box-shadow: var(--shadow-float);
-		/* The tilt: quick while it follows the pointer, springy when it lets go. Its
-		   children keep their depth (preserve-3d), so nothing in here may clip. */
+		/* The tilt, eased by tilt() on every frame (no CSS transition: it would lag
+		   behind and fight the easing). Its children keep their depth (preserve-3d), so
+		   nothing in here may clip. */
 		transform-style: preserve-3d;
 		transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-		transition: transform 600ms var(--ease-spring-2);
-
-		&:global([data-tilting]) {
-			transition: transform 90ms linear;
-		}
 	}
 
 	/* Each part a little in front of the card. */
@@ -128,7 +127,7 @@
 	}
 
 	/* A foil sheen across the card, its stripes slid by the pointer (--px), and a light
-	   where the pointer is (--px, --py). Only while tilting. */
+	   where the pointer is (--px, --py). As strong as the tilt (--tilt, 0 to 1). */
 	.foil {
 		position: absolute;
 		inset: 0;
@@ -148,13 +147,8 @@
 					transparent 72%
 				)
 				calc(100% - var(--px, 50%)) 0 / 250% 100%;
-		opacity: 0;
-		transition: opacity 300ms var(--ease-out-3);
+		opacity: var(--tilt, 0);
 		pointer-events: none;
-	}
-
-	.card:global([data-tilting]) .foil {
-		opacity: 1;
 	}
 
 	.role {

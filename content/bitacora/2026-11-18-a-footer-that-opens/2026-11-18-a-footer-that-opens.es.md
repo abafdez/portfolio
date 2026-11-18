@@ -17,6 +17,7 @@ reviewed: false
 - `preserve-3d` se aplana si algún antepasado entre la tarjeta y sus partes recorta (`overflow: hidden`), así que la tarjeta en 3D no puede recortar.
 - La dirección noreply de GitHub no recibe correo, así que no sirve de contacto; un alias que reenvíe, sí.
 - Con movimiento reducido todos los estilos se quedan quietos: sin escritura, contadores, inclinación, haz ni chispas.
+- La primera inclinación escuchaba en la tarjeta y la medía ya inclinada: saltaba al pasar el ratón, y en el borde la tarjeta inclinada se salía de debajo del puntero, volvía a su sitio, regresaba, una y otra vez. Ahora escucha en toda la página, empieza a inclinarse a 140 px, mide la caja sin inclinar (`offsetLeft`/`offsetWidth` ignoran las transformaciones) y suaviza los ángulos en cada fotograma desde el script en lugar de con una transición CSS.
 
 ## Siguiente
 

@@ -59,7 +59,7 @@ Change the light's colour with the gradient, its reach with `16rem`, the ring's 
 
 **On the site:** the ID-card look and the open-to-work look in the footer panel. **File:** `src/lib/components/hire/tilt.ts`.
 
-`tilt(max)` writes the rotation and the pointer position as custom properties, and `data-tilting` while it follows the pointer. It does nothing on touch or with reduced motion:
+`tilt(max, reach)` writes the rotation (`--rx`, `--ry`), the pointer's place over the card for a light (`--px`, `--py`) and how much it's tilting (`--tilt`, 0 to 1). It does nothing on touch or with reduced motion:
 
 ```svelte
 <script>
@@ -67,27 +67,33 @@ Change the light's colour with the gradient, its reach with `16rem`, the ring's 
 </script>
 
 <div class="stage">
-	<div class="card" {@attach tilt(14)}>…</div>
+	<div class="card" {@attach tilt(14, 140)}>…</div>
 </div>
 
 <style>
 	.stage {
+		position: relative; /* the card's untilted offsetParent: tilt() measures against it */
 		perspective: 50rem; /* the depth of the 3D space */
 	}
 	.card {
-		transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-		transition: transform 600ms var(--ease-spring-2); /* springs back when you leave */
+		transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); /* no transition */
 	}
-	.card:global([data-tilting]) {
-		transition: transform 90ms linear; /* follows the pointer closely */
+	.light {
+		opacity: var(--tilt, 0);
 	}
 </style>
 ```
 
+Three things make it feel right, and each fixed a real bug:
+
+- **It anticipates.** It listens to the pointer on the whole page, not on the card, and starts leaning while the pointer is still `reach` px away (a smoothstep from 0 there to 1 at the edge). Listening on the card made the tilt jump the moment the pointer arrived.
+- **It doesn't bounce at the edges.** It measures the card's untilted box: `offsetLeft`/`offsetTop`/`offsetWidth`/`offsetHeight` ignore transforms, taken against the offsetParent's box. Measuring the tilted card with `getBoundingClientRect()` moved its edge out from under the pointer, which reset the tilt, which brought the edge back, again and again. That's why the wrapper needs `position: relative` and mustn't be transformed itself.
+- **It eases in script, not CSS.** Every frame moves the angles part of the way to their target (`now += (goal - now) * (1 - Math.exp(-dt * 8))`, about 90% in 300 ms at any frame rate), and frames stop once it settles. A CSS `transition` on `transform` would lag behind and switch speeds when the pointer enters.
+
+Other notes:
+
 - **Depth:** give the card `transform-style: preserve-3d` and its children `transform: translateZ(2rem)`. Nothing between them may clip (`overflow: hidden` flattens the 3D).
-- **A light at the pointer:** a pseudo-element with `radial-gradient(circle at var(--px) var(--py), …)`.
 - **Overflow:** a tilted box still counts as scrollable overflow. Give the container room (padding) or `overflow-x: hidden` on the scrolling parent, or it scrolls sideways.
-- `:global([data-tilting])`: the attribute is set from JavaScript, so Svelte can't see it in the markup and would drop the rule as unused.
 
 `magnet(pull)` makes an element lean toward the pointer while it's near (reading moves over its parent): use `translate: var(--mx, 0) var(--my, 0)` with a springy `transition`.
 

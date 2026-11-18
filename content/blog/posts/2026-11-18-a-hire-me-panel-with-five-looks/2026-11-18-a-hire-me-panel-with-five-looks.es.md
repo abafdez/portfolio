@@ -26,6 +26,8 @@ El panel es un popover, así que Escape y un clic fuera lo cierran, y el foco vu
 
 ![El carné en 3D inclinado hacia el puntero, con un brillo metalizado verde](./id-card.png 'El carné se inclina, y la foto queda por delante de la tarjeta')
 
+La primera versión solo escuchaba en la tarjeta, así que la inclinación saltaba en cuanto llegaba el puntero, y medía la tarjeta ya inclinada: en un borde la tarjeta se salía de debajo del puntero, se enderezaba, volvía y rebotaba. Ahora escucha en toda la página y empieza a inclinarse a 140 píxeles, mide la caja de la tarjeta sin inclinar (`offsetLeft` y `offsetWidth` ignoran las transformaciones) y suaviza los ángulos en cada fotograma desde el script.
+
 Al principio todos los estilos se inclinaban. Una tarjeta en 3D es una sorpresa; cinco son un parque de atracciones, así que la inclinación pasó a ser un estilo propio. Además hacía que el panel se desplazara en horizontal: una caja transformada sigue contando como desbordamiento para su contenedor. `overflow: hidden auto` en el panel solo deja desplazar arriba y abajo. Y `preserve-3d` se aplana con cualquier antepasado que recorte, así que el propio carné no puede usar `overflow: hidden`.
 
 ## Tranquilo por defecto

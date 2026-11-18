@@ -28,6 +28,8 @@ The panel is a popover, so Escape and a click outside close it, and focus goes b
 
 ![The 3D ID card tilted toward the pointer, with a green foil sheen across it](./id-card.png 'The ID card tilts, and the photo sits in front of the card')
 
+The first version only listened on the card, so the tilt jumped the moment the pointer arrived, and it measured the card already tilted: at an edge the card slid out from under the pointer, straightened, came back, and bounced. It now listens to the whole page and starts leaning within 140 pixels, measures the card's untilted box (`offsetLeft` and `offsetWidth` ignore transforms), and eases the angles on every frame in script.
+
 At first every look tilted. One 3D card is a surprise; five are a theme park, so the tilt became its own look. It also made the panel scroll sideways: a transformed box still counts as overflow for its scrolling container. `overflow: hidden auto` on the panel lets it scroll up and down only. And `preserve-3d` is flattened by any ancestor that clips, so the 3D card itself can't use `overflow: hidden`.
 
 ## Calm by default
