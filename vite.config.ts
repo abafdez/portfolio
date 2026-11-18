@@ -7,6 +7,8 @@ import OpenProps from 'open-props'; //Styling
 import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
 import { cms } from './src/lib/cms/plugin.ts'; // Sveltia CMS at /admin, dev only
 import { drafts } from './src/lib/drafts.ts'; // leaves draft posts out of a build
+import { lucideNames } from './src/lib/cms/lucide-names.ts'; // the CMS icon picker's list
+import { yamlData } from './src/lib/yaml-data.ts'; // import x from '/content/x.yaml?data'
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -22,6 +24,8 @@ export default defineConfig({
 	plugins: [
 		cms(),
 		drafts(),
+		lucideNames(),
+		yamlData(),
 		enhancedImages(),
 		sveltekit({
 			compilerOptions: {

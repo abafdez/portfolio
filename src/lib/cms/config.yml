@@ -148,60 +148,50 @@ collections:
       - *reviewed
       - *body
 
+  # One YAML file per list in content/awesome/ (README.md there is skipped: not .yaml).
+  # A folder collection, so a new list is made here with New, no config entry needed:
+  # its file name, which is its URL, comes from the English title.
   - name: awesome
     label: Awesome lists
+    label_singular: Awesome list
+    folder: content/awesome
+    extension: yaml
     format: list # cms/formats.ts
-    files:
-      - name: modern-css
-        label: Modern CSS
-        file: content/awesome/modern-css.yaml
-        fields: &awesome-fields
-          - &both
-            name: title
-            label: Title
-            widget: object
-            fields: [{ name: en, label: English }, { name: es, label: Spanish }]
-          - { <<: *both, name: description, label: Description }
-          # The list's icon on its card and page: a Lucide name or a Simple Icons slug, one
-          # of the two (glyph.server.ts checks both exist).
-          - {
-              name: icon,
-              label: Icon,
-              required: false,
-              hint: 'A Lucide icon name, e.g. sparkles ([lucide.dev/icons](https://lucide.dev/icons)). Leave empty if you use a logo.'
-            }
-          - {
-              name: logo,
-              label: Logo,
-              required: false,
-              hint: 'A Simple Icons slug, e.g. svelte ([simpleicons.org](https://simpleicons.org)). Leave empty if you use an icon.'
-            }
-          - { name: updated, label: Updated, widget: datetime, type: date, format: YYYY-MM-DD }
-          - name: categories
-            label: Categories
+    create: true
+    slug: { template: '{{title.en}}', editable: [create] }
+    summary: '{{title.en}}'
+    fields:
+      - &both
+        name: title
+        label: Title
+        widget: object
+        fields: [{ name: en, label: English }, { name: es, label: Spanish }]
+      - { <<: *both, name: description, label: Description }
+      # The list's icon on its card and page: a Lucide icon (the picker, icon.svelte.ts)
+      # or a Simple Icons logo, one of the two (glyph.server.ts checks they exist).
+      - name: icon
+        label: Icon
+        widget: lucide
+        required: false
+        hint: 'Pick one, or give a logo below instead (not both).'
+      - name: logo
+        label: Logo
+        required: false
+        hint: 'A Simple Icons slug, e.g. svelte ([simpleicons.org](https://simpleicons.org)). Leave empty if you picked an icon.'
+      - { name: updated, label: Updated, widget: datetime, type: date, format: YYYY-MM-DD }
+      - name: categories
+        label: Categories
+        widget: list
+        summary: '{{name.en}}'
+        fields:
+          # Always { en, es } here, even when both are the same: a field has one shape.
+          - { <<: *both, name: name, label: Name }
+          - name: links
+            label: Links
             widget: list
-            summary: '{{name.en}}'
+            summary: '{{title}}'
             fields:
-              # Always { en, es } here, even when both are the same: a field has one shape.
-              - { <<: *both, name: name, label: Name }
-              - name: links
-                label: Links
-                widget: list
-                summary: '{{title}}'
-                fields:
-                  - { name: title, label: Title }
-                  - { name: url, label: URL, pattern: ['^https://', 'Must start with https://'] }
-                  - { <<: *both, name: description, label: Description }
-                  - { name: tags, label: Tags, widget: list }
-      - name: svelte
-        label: Svelte and SvelteKit
-        file: content/awesome/svelte.yaml
-        fields: *awesome-fields
-      - name: ai-for-developers
-        label: AI for developers
-        file: content/awesome/ai-for-developers.yaml
-        fields: *awesome-fields
-      - name: web-platform
-        label: The web platform
-        file: content/awesome/web-platform.yaml
-        fields: *awesome-fields
+              - { name: title, label: Title }
+              - { name: url, label: URL, pattern: ['^https://', 'Must start with https://'] }
+              - { <<: *both, name: description, label: Description }
+              - { name: tags, label: Tags, widget: list }

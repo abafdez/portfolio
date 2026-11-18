@@ -158,7 +158,9 @@ const bar = { font: '13px system-ui', padding: '6px 12px', margin: 0 };
 
 // Dev only: a page of the site as last saved, in an iframe, reloaded after each save (the
 // Awesome list, whose page is drawn from more than one entry's text).
-export function savedPage(React: ReactLike, path: string) {
+// path: the page's address, or a function of the entry for a collection of pages (each
+// Awesome list is /awesome/<its slug>).
+export function savedPage(React: ReactLike, path: string | ((entry: Entry) => string)) {
 	const h = React.createElement;
 	return function SavedPage({ entry }: Props) {
 		const [version, setVersion] = React.useState(saves);
@@ -169,7 +171,8 @@ export function savedPage(React: ReactLike, path: string) {
 			return () => void listeners.delete(listener);
 		}, []);
 
-		const url = `${location.origin}${localizePath(path, localeOf(entry))}`;
+		const page = typeof path === 'string' ? path : path(entry);
+		const url = `${location.origin}${localizePath(page, localeOf(entry))}`;
 		return h(
 			'div',
 			{ style: { position: 'fixed', inset: 0, display: 'flex', flexDirection: 'column' } },
