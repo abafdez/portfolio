@@ -1,0 +1,182 @@
+title:
+  en: The web platform
+  es: La plataforma web
+description:
+  en: References for HTML, JavaScript, HTTP, accessibility, performance and security, the parts of the web every framework sits on.
+  es: Referencias de HTML, JavaScript, HTTP, accesibilidad, rendimiento y seguridad, las partes de la web sobre las que se apoya cualquier framework.
+updated: 2026-11-18
+categories:
+  - name:
+      en: References
+      es: Referencias
+    links:
+      - title: MDN Web Docs
+        url: https://developer.mozilla.org/en-US/
+        description:
+          en: The reference for HTML, CSS, JavaScript and web APIs, with browser support tables.
+          es: La referencia de HTML, CSS, JavaScript y las API web, con tablas de compatibilidad.
+        tags: [docs, reference]
+      - title: web.dev
+        url: https://web.dev
+        description:
+          en: Google's guides and courses on performance, accessibility and new platform features.
+          es: Las guías y cursos de Google sobre rendimiento, accesibilidad y novedades de la plataforma.
+        tags: [docs, courses]
+      - title: Can I use
+        url: https://caniuse.com
+        description:
+          en: Which browsers support a feature, version by version.
+          es: Qué navegadores admiten una función, versión a versión.
+        tags: [tool, compatibility]
+      - title: Baseline
+        url: https://web.dev/baseline
+        description:
+          en: One label for features that work in every major browser, and since when.
+          es: Una etiqueta para las funciones que van en todos los navegadores principales, y desde cuándo.
+        tags: [docs, compatibility]
+      - title: HTML Living Standard
+        url: https://html.spec.whatwg.org/multipage/
+        description:
+          en: The HTML spec itself, for when MDN isn't precise enough.
+          es: La especificación de HTML, para cuando MDN no es lo bastante precisa.
+        tags: [spec, html]
+      - title: Interop
+        url: https://wpt.fyi/interop
+        description:
+          en: The yearly effort of browser makers to make the same features work the same everywhere, with scores.
+          es: El esfuerzo anual de los fabricantes de navegadores para que las mismas funciones vayan igual en todos, con puntuaciones.
+        tags: [site, compatibility]
+  - name:
+      en: JavaScript and TypeScript
+      es: JavaScript y TypeScript
+    links:
+      - title: The Modern JavaScript Tutorial
+        url: https://javascript.info
+        description:
+          en: JavaScript from the basics to the event loop and modules, with exercises.
+          es: JavaScript desde lo básico hasta el bucle de eventos y los módulos, con ejercicios.
+        tags: [tutorial, javascript]
+      - title: TypeScript handbook
+        url: https://www.typescriptlang.org/docs/handbook/intro.html
+        description:
+          en: The official guide to types, narrowing, generics and modules.
+          es: La guía oficial de tipos, estrechamiento, genéricos y módulos.
+        tags: [docs, typescript]
+      - title: Node.js docs
+        url: https://nodejs.org/docs/latest/api/
+        description:
+          en: The API reference for files, HTTP, streams and the test runner.
+          es: La referencia de la API para archivos, HTTP, streams y el ejecutor de tests.
+        tags: [docs, node]
+      - title: HTTP on MDN
+        url: https://developer.mozilla.org/en-US/docs/Web/HTTP
+        description:
+          en: Requests, status codes, headers, caching and CORS, explained.
+          es: Peticiones, códigos de estado, cabeceras, caché y CORS, explicados.
+        tags: [docs, http]
+  - name:
+      en: Accessibility
+      es: Accesibilidad
+    links:
+      - title: ARIA Authoring Practices Guide
+        url: https://www.w3.org/WAI/ARIA/apg/
+        description:
+          en: How tabs, menus, dialogs and other widgets should behave with a keyboard and a screen reader.
+          es: Cómo deben comportarse pestañas, menús, diálogos y otros widgets con teclado y lector de pantalla.
+        tags: [docs, accessibility]
+      - title: WebAIM
+        url: https://webaim.org
+        description:
+          en: Articles, a contrast checker and the yearly report on the home pages of a million sites.
+          es: Artículos, un comprobador de contraste y el informe anual sobre las portadas de un millón de sitios.
+        tags: [site, accessibility]
+      - title: The A11Y Project
+        url: https://www.a11yproject.com
+        description:
+          en: A checklist and plain-language posts on accessible design and code.
+          es: Una lista de comprobación y artículos en lenguaje sencillo sobre diseño y código accesibles.
+        tags: [site, accessibility]
+      - title: Inclusive Components
+        url: https://inclusive-components.design
+        description:
+          en: Heydon Pickering builds common components (toggles, tabs, cards) the accessible way, with the reasons.
+          es: Heydon Pickering construye componentes habituales (interruptores, pestañas, tarjetas) de forma accesible, con los porqués.
+        tags: [article, accessibility]
+  - name:
+      en: Performance
+      es: Rendimiento
+    links:
+      - title: Web Vitals
+        url: https://web.dev/articles/vitals
+        description:
+          en: LCP, INP and CLS, what they measure and the thresholds for "good".
+          es: LCP, INP y CLS, qué miden y los umbrales de lo que se considera "bueno".
+        tags: [docs, performance]
+      - title: PageSpeed Insights
+        url: https://pagespeed.web.dev
+        description:
+          en: Lighthouse plus real visitors' data for any public page.
+          es: Lighthouse más datos de visitantes reales para cualquier página pública.
+        tags: [tool, performance]
+      - title: WebPageTest
+        url: https://www.webpagetest.org
+        description:
+          en: Load a page from real devices and places, with a waterfall of every request.
+          es: Carga una página desde dispositivos y lugares reales, con una cascada de cada petición.
+        tags: [tool, performance]
+      - title: Squoosh
+        url: https://squoosh.app
+        description:
+          en: Compress and compare images (AVIF, WebP, JPEG) in the browser.
+          es: Comprime y compara imágenes (AVIF, WebP, JPEG) en el navegador.
+        tags: [tool, images]
+  - name:
+      en: Security
+      es: Seguridad
+    links:
+      - title: OWASP Cheat Sheet Series
+        url: https://cheatsheetseries.owasp.org
+        description:
+          en: Short, practical sheets on XSS, CSRF, authentication, headers and more.
+          es: Fichas breves y prácticas sobre XSS, CSRF, autenticación, cabeceras y más.
+        tags: [docs, security]
+      - title: Web security on MDN
+        url: https://developer.mozilla.org/en-US/docs/Web/Security
+        description:
+          en: Same-origin policy, CSP, HTTPS and the attacks they protect against.
+          es: Política del mismo origen, CSP, HTTPS y los ataques de los que protegen.
+        tags: [docs, security]
+      - title: HTTP Observatory
+        url: https://developer.mozilla.org/en-US/observatory
+        description:
+          en: Scores a site's security headers and says what to add.
+          es: Puntúa las cabeceras de seguridad de un sitio y dice qué añadir.
+        tags: [tool, security]
+  - name:
+      en: News and community
+      es: Noticias y comunidad
+    links:
+      - title: Smashing Magazine
+        url: https://www.smashingmagazine.com
+        description:
+          en: Long articles on front-end, design and accessibility.
+          es: Artículos largos sobre front-end, diseño y accesibilidad.
+        tags: [blog]
+      - title: CSS-Tricks
+        url: https://css-tricks.com
+        description:
+          en: The almanac of CSS properties and years of articles on layout and front-end.
+          es: El almanaque de propiedades CSS y años de artículos sobre maquetación y front-end.
+        tags: [blog, css]
+      - title: State of JS
+        url: https://stateofjs.com
+        description:
+          en: The yearly survey of what developers use, like and want to learn.
+          es: La encuesta anual sobre lo que la gente que desarrolla usa, aprecia y quiere aprender.
+        tags: [site, survey]
+      - title: Syntax
+        url: https://syntax.fm
+        description:
+          en: A podcast on web development, from CSS to servers, by Wes Bos and Scott Tolinski.
+          es: Un pódcast sobre desarrollo web, del CSS a los servidores, de Wes Bos y Scott Tolinski.
+        tags: [podcast]
