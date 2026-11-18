@@ -6,6 +6,7 @@ import { enhancedImages } from '@sveltejs/enhanced-img';
 import OpenProps from 'open-props'; //Styling
 import postcssJitProps from 'postcss-jit-props'; //treeshaking for styles
 import { cms } from './src/lib/cms/plugin.ts'; // Sveltia CMS at /admin, dev only
+import { drafts } from './src/lib/drafts.ts'; // leaves draft posts out of a build
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -20,6 +21,7 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 export default defineConfig({
 	plugins: [
 		cms(),
+		drafts(),
 		enhancedImages(),
 		sveltekit({
 			compilerOptions: {
@@ -64,6 +66,11 @@ export default defineConfig({
 	// Not Vite's import.meta.env.BASE_URL: SvelteKit sets that to './' (relative paths).
 	define: {
 		'import.meta.env.BASE_PATH': JSON.stringify(base)
+	},
+	// The encoded images (scripts/image-cache-link.ts): imagetools writes them while the
+	// dev server runs, and no page imports them, so there's nothing to watch.
+	server: {
+		watch: { ignored: ['**/.image-cache/**'] }
 	},
 	css: {
 		postcss: {

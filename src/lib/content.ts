@@ -7,9 +7,12 @@ import { readEntry } from '#lib/content-files.ts';
 import { readingTime } from '#lib/reading-time.ts';
 import { baseLocale, fileLocale, locales, type Locale } from '#lib/i18n/locales.ts';
 import { hueOf } from '#lib/hue.ts';
+import { coverFiles } from '#lib/covers.server.ts';
 
 interface Frontmatter {
 	title: string;
+	// A post that isn't published yet: only in dev (see drafts.ts).
+	draft?: boolean;
 	// The alt text of the cover image, cover.png next to the file (see covers.ts).
 	cover?: string;
 	// 'YYYY-MM-DD'. The yaml package keeps unquoted dates as strings.
@@ -27,8 +30,8 @@ export interface LogMeta extends Frontmatter {
 	phase?: number;
 }
 
-// draft: the file is in a drafts/ folder (only possible in dev, see below).
-// folder: where the file and its images are, e.g. /content/blog/published/<slug>
+// draft: the frontmatter says draft: true (only possible in dev, see below).
+// folder: where the file and its images are, e.g. /content/blog/posts/<slug>
 // (covers.ts finds a cover by it).
 // path: the markdown file this text is in; the [slug] page renders its body.
 // minutes: reading time, from the words in the file (see readingTime()).
@@ -53,35 +56,24 @@ export type Entry<T extends Frontmatter> = T & {
 // written inline: Vite reads them from the source code, before anything runs.
 // Every file sits in a folder of its own, with its images (see slugOf()), so the
 // pattern is folder/file: '*/*.md'.
-const posts = import.meta.glob<string>('/content/blog/published/*/*.md', {
+// Drafts (draft: true) sit with the published posts and only exist in dev: in a build,
+// the drafts plugin (drafts.ts) turns '!/:drafts:' into one exclusion per draft folder,
+// so no draft is read or bundled. The Devlog has no drafts.
+const posts = import.meta.glob<string>(['/content/blog/posts/*/*.md', '!/:drafts:'], {
 	eager: true,
 	query: '?raw',
 	import: 'default'
 });
-// Drafts only exist in dev. In a build, Vite replaces import.meta.env.DEV with false
-// and removes the dead branch, glob included, so no draft is read or bundled.
-const drafts = import.meta.env.DEV
-	? import.meta.glob<string>('/content/blog/drafts/*/*.md', {
-			eager: true,
-			query: '?raw',
-			import: 'default'
-		})
-	: {};
 const log = import.meta.glob<string>('/content/bitacora/*/*.md', {
 	eager: true,
 	query: '?raw',
 	import: 'default'
 });
 
-// The cover images (cover.avif, .png, .jpg or .webp next to a post's or an entry's markdown).
-// Only their paths are used here, to check each one has its alt text: not eager, so
-// no image is read. covers.ts imports them for the pages. Drafts only in dev.
-const coverFiles = Object.keys({
-	...import.meta.glob(['/content/**/cover.{avif,png,jpg,jpeg,webp}', '!/content/blog/drafts/**']),
-	...(import.meta.env.DEV
-		? import.meta.glob('/content/blog/drafts/*/cover.{avif,png,jpg,jpeg,webp}')
-		: {})
-});
+// The cover images (cover.avif, .png, .jpg or .webp next to a post's or an entry's
+// markdown) come from covers.server.ts's list. Not a glob of their own: every file a
+// glob matches goes into the build, so a glob just to check they exist shipped every
+// original cover (23 MB) that no page uses.
 
 // A cover and its alt text come together: an image nobody described is a problem for
 // screen readers, and alt text without an image is a typo somewhere. Either fails the
@@ -161,7 +153,7 @@ export function readFrontmatter<T>(path: string, text: string): T {
 // Each file sits in a folder with the same name, next to its images, and that name is
 // the slug: /content/blog/2026-10-27-design-tokens/2026-10-27-design-tokens.md ->
 // 2026-10-27-design-tokens. A folder and file that don't match fail the build (a
-// rename that missed one, or a file dropped straight into drafts/).
+// rename that missed one, or a file dropped straight into posts/).
 // Exported for its tests (content.test.ts).
 export function slugOf(path: string): string {
 	const [folder, file] = path.split('/').slice(-2);
@@ -183,7 +175,7 @@ function toEntry<T extends Frontmatter>(path: string, text: string): Entry<T> {
 		slug: slugOf(path),
 		folder: folderOf(path),
 		path,
-		draft: path.includes('/drafts/'),
+		draft: meta.draft === true,
 		minutes: readingTime(text),
 		description: meta.description ?? summary(text),
 		locale: baseLocale,
@@ -266,31 +258,13 @@ export function inLocale<T extends Frontmatter>(entry: Entry<T>, locale: Locale)
 export const isTranslated = (entry: { locales: Locale[] }) =>
 	entry.locales.length === locales.length;
 
-// A slug is a URL, so it can only be used once: a post copied to published/ instead of
-// moved there would be in both folders, and two pages would want the same address.
-// Exported for its tests (content.test.ts).
-export function checkUniqueSlugs(paths: string[]) {
-	const seen = new Map<string, string>();
-	for (const path of paths) {
-		const slug = slugOf(path);
-		const other = seen.get(slug);
-		if (other) throw new Error(`${path}: ${other} has the same name; move a draft, don't copy it`);
-		seen.set(slug, path);
-	}
-}
-
-// Translations share their English file's slug on purpose, so only English files count.
-checkUniqueSlugs(
-	[...Object.keys(posts), ...Object.keys(drafts)].filter((path) => fileLocale(path) === baseLocale)
-);
-
-export const allPosts = toList<PostMeta>({ ...posts, ...drafts });
+export const allPosts = toList<PostMeta>(posts);
 export const allLog = toList<LogMeta>(log);
 
 // A file's text as written, frontmatter included: the [slug] pages render its body on
 // the server (render.server.ts).
 export function sourceOf(path: string): string {
-	const text = posts[path] ?? drafts[path] ?? log[path];
+	const text = posts[path] ?? log[path];
 	if (text === undefined) throw new Error(`${path}: no such content file`);
 	return text;
 }

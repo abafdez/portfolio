@@ -8,7 +8,7 @@ const media: Media = {
 	url: (_file, src) => `/files/${src.slice(2)}`
 };
 
-const file = '/content/blog/published/x/x.md';
+const file = '/content/blog/posts/x/x.md';
 const html = (markdown: string, path = file, locale: 'en' | 'es' = 'en') =>
 	renderMarkdown(markdown, path, locale, media);
 
@@ -44,7 +44,7 @@ describe('renderMarkdown', () => {
 	});
 
 	test('a callout, with its title in the file language', async () => {
-		const out = await html('> [!tip] Use `pnpm`\n> Text.', '/content/blog/published/x/x.es.md');
+		const out = await html('> [!tip] Use `pnpm`\n> Text.', '/content/blog/posts/x/x.es.md');
 		expect(out).toMatch(/^<aside class="callout" data-callout="tip"><p class="callout-title"><svg/);
 		expect(out).toContain(
 			'<span class="visually-hidden">Sugerencia: </span>Use <code>pnpm</code></span></p><p>Text.</p></aside>'
@@ -52,7 +52,7 @@ describe('renderMarkdown', () => {
 	});
 
 	test('a table scrolls in its own box, labelled in the file language', async () => {
-		const out = await html('| a |\n| - |\n| b |', '/content/blog/published/x/x.es.md');
+		const out = await html('| a |\n| - |\n| b |', '/content/blog/posts/x/x.es.md');
 		expect(out).toMatch(
 			/^<div class="table-scroll" role="region" aria-label="Tabla" tabindex="0"><table>/
 		);
@@ -91,7 +91,7 @@ describe('renderMarkdown', () => {
 	test('a ```yt block becomes a link card, in the file language', async () => {
 		const out = await html(
 			'```yt\nsrc: https://youtu.be/gd5uJ7Nlvvo\ntitle: A talk\n```',
-			'/content/blog/published/x/x.es.md'
+			'/content/blog/posts/x/x.es.md'
 		);
 		expect(out).toContain('<a href="https://www.youtube.com/watch?v=gd5uJ7Nlvvo" target="_blank"');
 		expect(out).toContain(

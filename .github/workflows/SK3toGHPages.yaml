@@ -19,6 +19,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Replaces the workflow's permissions for this job: write, to commit the image cache
+    # (last step). The deploy job keeps the ones at the top.
+    permissions:
+      contents: write
     steps:
       - name: Checkout # Gets the code from the repo to be executed
         uses: actions/checkout@v7
@@ -28,6 +32,12 @@ jobs:
         with:
           cache: true
           runtime: node@22
+      # node_modules/.cache/imagetools -> .image-cache/, the encoded images committed to
+      # the repo, so the build only encodes new images. postinstall does it too; this step
+      # makes sure, whatever the install step runs.
+      - name: Link the image cache
+        run: pnpm image-cache:link
+
       # Separate steps so the Actions UI shows exactly which one failed
       - name: Type check
         run: pnpm check
@@ -42,6 +52,9 @@ jobs:
         run: pnpm run build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
+
+      - name: Tidy the image cache # Drops the encoded images this build didn't use
+        run: pnpm image-cache:tidy
 
       # Smoke test (Playwright, e2e/): a browser clicks through the build above.
       # The runner has no browser, so install Chromium and the system libraries it needs.
@@ -60,6 +73,26 @@ jobs:
           name: playwright-traces
           path: test-results/
           retention-days: 7
+
+      # New or dropped encoded images go back to the repo, so the next build reuses them.
+      # Only on main: a pull request's images arrive once it's merged. A push made with
+      # GITHUB_TOKEN never starts another run ([skip ci] says so too). If the push fails
+      # (main moved on and the rebase can't apply), the deploy still goes ahead: the next
+      # run just encodes those images again and tries once more.
+      - name: Commit the image cache
+        if: github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          git add .image-cache
+          if git diff --cached --quiet; then
+            echo "Image cache unchanged"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore(images): update the image cache [skip ci]'
+          git pull --rebase
+          git push
 
       - name: Upload GitHub Pages artifact # Prepares the files for deployment
         # Only upload when we're going to deploy (see the deploy job's `if`)

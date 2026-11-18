@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { allPosts, inLocale, isTranslated, sourceOf } from '#lib/content.ts';
+import { coverOf } from '#lib/covers.server.ts';
 import { localeOf } from '#lib/i18n/locales.ts';
 import { renderMarkdown } from '#lib/markdown/render.server.ts';
 import type { EntryGenerator, PageServerLoad } from './$types';
@@ -18,5 +19,6 @@ export const load: PageServerLoad = async ({ params, url }) => {
 	// The body as HTML, made here on the server (render.server.ts); the page shows it with
 	// {@html}.
 	const html = await renderMarkdown(text, post.path, locale);
-	return { post, html, translated: isTranslated(post), crumb: post.title };
+	const cover = await coverOf(post.folder);
+	return { post, html, cover, translated: isTranslated(post), crumb: post.title };
 };

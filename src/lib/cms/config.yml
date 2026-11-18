@@ -1,6 +1,6 @@
 # Sveltia CMS, at /admin in dev only (plugin.ts serves the page; main.ts reads this file
 # and passes it to CMS.init()).
-# Docs: https://sveltiacms.app/en/docs. How to use it: content/blog/published/README.md.
+# Docs: https://sveltiacms.app/en/docs. How to use it: content/blog/posts/README.md.
 
 # The local workflow ("Work with Local Repository") still needs a Git backend here; it
 # never connects to GitHub, the repo name only partitions the browser's storage.
@@ -8,6 +8,20 @@ backend:
   name: github
   repo: abafdez/portfolio
   branch: main
+  # A published change is one commit on main, not a merge commit plus every save.
+  squash_merges: true
+
+# Signed in with GitHub, every change goes through a pull request: saving commits to a
+# cms/<collection>/<slug> branch, Publish merges it, and CI builds the pull request
+# first. Two stages (no "In review": GitHub doesn't let you approve your own pull
+# request). Save and Publish commits straight to main, for a typo. Working with the
+# local repository ignores all this and writes the files, as before.
+# Not the same as a post's draft field: an unmerged pull request isn't on main at all;
+# a merged post with draft: true is on main but left out of the site (drafts.ts).
+publish_mode:
+  type: editorial_workflow
+  stages: [draft, pending_publish]
+  direct_publish: true
 
 # Required at the top; every collection keeps its images next to the entry instead.
 media_folder: static/uploads
@@ -29,6 +43,15 @@ slug:
 # with the yaml package and drops this key before Sveltia sees it.
 fields:
   title: &title { name: title, label: Title, widget: string, i18n: true }
+  # A post that isn't on the site yet (only in pnpm dev): the build leaves it out, files
+  # and all (drafts.ts). Publishing it is clearing this and saving. A select, not a
+  # switch: a switch writes draft: false into every published post.
+  draft: &draft
+    name: draft
+    label: Hidden on the site (draft)
+    widget: select
+    options: [{ label: 'Yes', value: true }]
+    required: false
   date: &date
     name: date
     label: Date
@@ -78,27 +101,26 @@ collections:
   - name: posts
     label: Blog posts
     label_singular: Post
-    folder: content/blog/published
+    folder: content/blog/posts
     path: '{{slug}}/{{slug}}'
     slug: '{{year}}-{{month}}-{{day}}-{{title}}'
     format: entry # cms/formats.ts: our own style, then Prettier
-    media_folder: /content/blog/published/{{slug}}
+    media_folder: /content/blog/posts/{{slug}}
     public_folder: .
     i18n: true
     sortable_fields: [date, title]
-    fields: [*title, *date, *tags, *description, *cover, *focus, *reviewed, *body]
-
-  - name: drafts
-    label: Blog drafts
-    label_singular: Draft
-    folder: content/blog/drafts
-    path: '{{slug}}/{{slug}}'
-    slug: '{{year}}-{{month}}-{{day}}-{{title}}'
-    format: entry # cms/formats.ts: our own style, then Prettier
-    media_folder: /content/blog/drafts/{{slug}}
-    public_folder: .
-    i18n: true
-    fields: [*title, *date, *tags, *description, *cover, *focus, *reviewed, *body]
+    view_filters:
+      - { label: Drafts, field: draft, pattern: true }
+    # The list's thumbnails: the cover isn't a field (cover: is its alt text), it's the
+    # file named cover.* next to the post, as the site finds it (covers.server.ts). A
+    # value starting with / is a file path with template tags; the first that exists wins.
+    thumbnail:
+      - /content/blog/posts/{{slug}}/cover.avif
+      - /content/blog/posts/{{slug}}/cover.png
+      - /content/blog/posts/{{slug}}/cover.jpg
+      - /content/blog/posts/{{slug}}/cover.jpeg
+      - /content/blog/posts/{{slug}}/cover.webp
+    fields: [*title, *draft, *date, *tags, *description, *cover, *focus, *reviewed, *body]
 
   - name: devlog
     label: Devlog
