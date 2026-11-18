@@ -18,13 +18,15 @@
 <section aria-labelledby="lists-title">
 	<h2 id="lists-title">{m.awesomeLists()}</h2>
 	<div class="grid">
-		{#each data.lists as { slug, title, description, updated, locale } (slug)}
+		{#each data.lists as { slug, title, description, glyph, updated, locale } (slug)}
+			<!-- The list's icon in the card's tile (icon: or logo: in its YAML). -->
 			<TeaserCard
 				{title}
 				{description}
 				{locale}
 				date={updated}
 				href={route('/awesome/[list]', { list: slug })}
+				thumbnail={glyph ? { label: title, glyph } : undefined}
 			/>
 		{/each}
 	</div>

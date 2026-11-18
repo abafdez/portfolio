@@ -2,6 +2,7 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import AwesomeList from '#lib/awesome/AwesomeList.svelte';
 	import TranslationStatus from '#lib/components/TranslationStatus.svelte';
+	import Glyph from '#lib/components/Glyph.svelte';
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import type { PageProps } from './$types';
 
@@ -26,7 +27,11 @@
 	data-pagefind-body
 	data-pagefind-meta="section:{m.awesomeTitle()}"
 >
-	<h1 {lang} data-morph="title">{list.title}</h1>
+	<!-- The list's icon (icon: or logo: in its YAML) beside its title. -->
+	<div class="title-row">
+		{#if list.glyph}<span class="icon"><Glyph glyph={list.glyph} size="2.75rem" /></span>{/if}
+		<h1 {lang} data-morph="title">{list.title}</h1>
+	</div>
 	<p {lang} data-morph="description">{list.description}</p>
 	<p class="meta" data-morph="meta">
 		{m.awesomeLinkCount({ count: list.count })} · {m.awesomeUpdated()}
@@ -42,6 +47,23 @@
 {/key}
 
 <style>
+	.title-row {
+		display: flex;
+		align-items: center;
+		gap: var(--size-3);
+	}
+
+	.icon {
+		display: grid;
+		flex: none;
+		place-items: center;
+		padding: var(--size-2);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-3);
+		background: color-mix(in oklab, var(--brand) 10%, var(--surface-2));
+		color: var(--brand);
+	}
+
 	p {
 		max-inline-size: var(--reading-width);
 		margin-block-start: var(--size-2);

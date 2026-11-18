@@ -5,6 +5,8 @@
 // and a page asks for its own with listIn().
 import { parse } from 'yaml';
 import { checkTags } from '#lib/content.ts';
+import type { Glyph } from '#lib/glyph.ts';
+import { glyphFrom } from '#lib/glyph.server.ts';
 import { readText, type Locale, type Translated } from '#lib/i18n/locales.ts';
 
 // What a page gets: a list in one language.
@@ -28,6 +30,9 @@ export interface AwesomeList {
 	slug: string;
 	title: string;
 	description: string;
+	// Its icon (`icon:` a Lucide name or `logo:` a Simple Icons slug in the YAML), on its
+	// card and its page.
+	glyph?: Glyph;
 	// 'YYYY-MM-DD', when the list last changed.
 	updated: string;
 	categories: Category[];
@@ -55,6 +60,8 @@ export type AwesomeListData = Omit<AwesomeList, 'title' | 'description' | 'categ
 type ListFile = {
 	title: unknown;
 	description: unknown;
+	icon?: unknown;
+	logo?: unknown;
 	updated: string;
 	categories: {
 		name: unknown;
@@ -109,6 +116,7 @@ export function readList(path: string, file: ListFile): Omit<AwesomeListData, 's
 	return {
 		title: readText(file.title, `${path}: title`).text,
 		description: description.text,
+		glyph: glyphFrom(path, file),
 		updated: file.updated,
 		categories,
 		tags: [...new Set(links.flatMap((link) => link.tags))].sort(),
@@ -133,6 +141,7 @@ export function listIn(list: AwesomeListData, locale: Locale): AwesomeList {
 		slug: list.slug,
 		title: list.title[locale],
 		description: list.description[locale],
+		glyph: list.glyph,
 		updated: list.updated,
 		tags: list.tags,
 		count: list.count,

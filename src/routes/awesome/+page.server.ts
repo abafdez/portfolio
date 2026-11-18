@@ -7,10 +7,11 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = ({ url }) => {
 	const locale = localeOf(url);
 	return {
-		lists: allLists.map(({ slug, title, description, updated, translated }) => ({
+		lists: allLists.map(({ slug, title, description, glyph, updated, translated }) => ({
 			slug,
 			title: title[locale],
 			description: description[locale],
+			glyph,
 			updated,
 			locale: translated ? locale : ('en' as const)
 		}))
