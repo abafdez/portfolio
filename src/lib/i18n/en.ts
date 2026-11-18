@@ -101,6 +101,15 @@ export const en = {
 	awesomeClear: () => 'Clear filters',
 	awesomeEmpty: () => 'No links match. Try fewer words or tags.',
 
+	// Search (Search.svelte, in the header).
+	searchLabel: () => 'Search',
+	searchPlaceholder: () => 'Posts, the Devlog, projects, links…',
+	searchSearching: () => 'Searching…',
+	searchUnavailable: () => 'Search works on the built site (pnpm build), not in dev.',
+	searchNone: ({ query }: { query: string }) => `Nothing found for “${query}”.`,
+	searchCount: ({ count }: Count) =>
+		plural('en', count, { one: '1 result', other: `${count} results` }),
+
 	// Projects.
 	projectsTitle: () => 'Projects',
 	projectsDescription: () => 'Small tools, each one a self-contained app.',

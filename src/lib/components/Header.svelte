@@ -4,6 +4,7 @@
 	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
 	import PalettePicker from '#lib/components/PalettePicker.svelte';
 	import LanguageSwitch from '#lib/components/LanguageSwitch.svelte';
+	import Search from '#lib/components/Search.svelte';
 </script>
 
 <header class="site-header">
@@ -11,7 +12,7 @@
 		<a class="site-name" href={route('/')}>Alfonso Baeza</a>
 		<div class="nav"><Nav /></div>
 		<div class="toggle">
-			<LanguageSwitch /><PalettePicker /><ThemeToggle duration={500} blur={50} />
+			<Search /><LanguageSwitch /><PalettePicker /><ThemeToggle duration={500} blur={50} />
 		</div>
 	</div>
 </header>

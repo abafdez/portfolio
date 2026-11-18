@@ -1,5 +1,5 @@
 // The 404: GitHub Pages sends build/404.html for any address that isn't a page, and the
-// app shows +error.svelte with one of the variants (src/lib/projects/not-found/). `pnpm preview`
+// app shows +error.svelte with one of the variants (src/lib/projects/not-found/). scripts/serve.ts
 // does the same, so this runs against the real fallback.
 import { expect, test } from '@playwright/test';
 

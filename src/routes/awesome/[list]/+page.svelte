@@ -19,7 +19,13 @@
 />
 
 <!-- data-morph-*: where the list's card lands when it opens this page (morph.ts). -->
-<header class="sheet" data-morph-page>
+<!-- data-pagefind-*: search indexes the header and every link (search.ts). -->
+<header
+	class="sheet"
+	data-morph-page
+	data-pagefind-body
+	data-pagefind-meta="section:{m.awesomeTitle()}"
+>
 	<h1 {lang} data-morph="title">{list.title}</h1>
 	<p {lang} data-morph="description">{list.description}</p>
 	<p class="meta" data-morph="meta">

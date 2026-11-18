@@ -107,7 +107,7 @@
 </search>
 
 {#each filter.results as category (category.id)}
-	<section aria-labelledby={category.id} {lang}>
+	<section aria-labelledby={category.id} {lang} data-pagefind-body>
 		<h2 id={category.id}>{category.name}</h2>
 		<ul class="links">
 			{#each category.links as link (link.url)}

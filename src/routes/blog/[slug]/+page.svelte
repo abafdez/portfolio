@@ -22,7 +22,8 @@
 />
 
 <!-- The whole article on a sheet: long text never runs over the grid. -->
-<article class="sheet">
+<!-- data-pagefind-*: what search indexes, and its label (search.ts). -->
+<article class="sheet" data-pagefind-body data-pagefind-meta="section:{m.navBlog()}">
 	<ArticleHeader
 		{...post}
 		coverImage={cover?.picture}

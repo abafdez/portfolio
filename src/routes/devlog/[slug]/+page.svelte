@@ -21,7 +21,8 @@
 />
 
 <!-- The whole article on a sheet: long text never runs over the grid. -->
-<article class="sheet">
+<!-- data-pagefind-*: what search indexes, and its label (search.ts). -->
+<article class="sheet" data-pagefind-body data-pagefind-meta="section:{m.navDevlog()}">
 	<ArticleHeader {...entry} tagHref={devlogTag} />
 	<!-- The body as HTML, made on the server (+page.server.ts). {#key}: new HTML, and
 	     copyCode shows its copy buttons again. -->

@@ -94,6 +94,14 @@ export const es = {
 	awesomeClear: () => 'Quitar filtros',
 	awesomeEmpty: () => 'Ningún enlace coincide. Prueba con menos palabras o etiquetas.',
 
+	searchLabel: () => 'Buscar',
+	searchPlaceholder: () => 'Artículos, el Devlog, proyectos, enlaces…',
+	searchSearching: () => 'Buscando…',
+	searchUnavailable: () => 'La búsqueda funciona en el sitio construido (pnpm build), no en dev.',
+	searchNone: ({ query }: { query: string }) => `No se ha encontrado nada para «${query}».`,
+	searchCount: ({ count }: Count) =>
+		plural('es', count, { one: '1 resultado', other: `${count} resultados` }),
+
 	projectsTitle: () => 'Proyectos',
 	projectsDescription: () => 'Pequeñas herramientas, cada una una aplicación independiente.',
 	projectsTools: () => 'Herramientas',

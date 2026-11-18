@@ -13,7 +13,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && vite build -c src/lib/cms/vite.config.ts",
+		"build": "vite build && vite build -c src/lib/cms/vite.config.ts && pagefind --site build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"postinstall": "node scripts/image-cache-link.ts",
@@ -44,6 +44,7 @@
 		"lucide": "1.66.0",
 		"marked": "18.2.0",
 		"open-props": "^1.7.23",
+		"pagefind": "1.6.0",
 		"postcss-jit-props": "^1.0.16",
 		"prettier": "^3.10.1",
 		"prettier-plugin-svelte": "^4.1.1",

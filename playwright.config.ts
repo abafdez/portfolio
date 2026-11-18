@@ -8,7 +8,7 @@ import { defineConfig, devices } from '@playwright/test';
 // (test:e2e sets it; CI passes the repo name), so the tests catch links that forget
 // it (dev has no base path).
 const base = process.env.BASE_PATH ?? '/portfolio';
-// Not 4173 (preview's default), so a preview you have open doesn't get in the way.
+// Not 4173 (vite preview's default), so a preview you have open doesn't get in the way.
 const port = 4174;
 
 export default defineConfig({
@@ -38,11 +38,13 @@ export default defineConfig({
 			use: { ...devices['Desktop Chrome'], channel: process.env.CI ? 'chrome' : undefined }
 		}
 	],
-	// Playwright starts the preview server before the tests and stops it after.
+	// Playwright starts the server before the tests and stops it after.
 	// The build itself happens before (see test:e2e in package.json and the CI workflow).
 	webServer: {
-		command: `pnpm preview --port ${port} --strictPort`,
-		env: { BASE_PATH: base },
+		// build/ as GitHub Pages serves it (scripts/serve.ts), with the CMS and the search
+		// index that `vite preview` doesn't have.
+		command: 'node scripts/serve.ts',
+		env: { BASE_PATH: base, PORT: String(port) },
 		url: `http://localhost:${port}${base}/`
 	}
 });

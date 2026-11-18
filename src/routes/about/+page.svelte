@@ -74,7 +74,7 @@
 	<div class="intro">
 		<!-- Two sheets, not one: the column is as tall as the page (so the aside can
 		     stick), and one sheet that tall would be a box down the whole page. -->
-		<div class="sheet">
+		<div class="sheet" data-pagefind-body data-pagefind-meta="section:{m.navAbout()}">
 			<h1>{m.aboutHeading()}</h1>
 			<p class="lead">{m.aboutLead()}</p>
 			<p>{m.aboutCvOnRequest()}</p>

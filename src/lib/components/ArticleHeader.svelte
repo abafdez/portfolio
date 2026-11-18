@@ -45,9 +45,10 @@
 	const lang = $derived(locale && locale !== getLocale() ? languageTags[locale] : undefined);
 </script>
 
-<!-- data-morph-*: where a card's parts land when it opens this page (morph.ts). -->
+<!-- data-morph-*: where a card's parts land when it opens this page (morph.ts).
+     data-pagefind-ignore: the date and reading time stay out of search (search.ts). -->
 <header data-morph-page>
-	<div data-morph="meta">
+	<div data-morph="meta" data-pagefind-ignore>
 		<time datetime={date}>{date}</time>
 		{#if minutes}
 			<span class="minutes">· {m.minutesRead({ minutes })}</span>
