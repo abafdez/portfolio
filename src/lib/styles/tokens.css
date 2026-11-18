@@ -13,6 +13,15 @@
 	--ink-7: oklch(21% 0.02 250);
 	--ink-8: oklch(17% 0.018 250);
 
+	/* The light theme's paper and pencil: a warm cream, like a squared engineering pad,
+	   and a warm near-black. Hue 95 is a yellowish cream, 60 a brown-grey: next to the
+	   green they read as paper, where the blue-greys read as a screen. */
+	--paper-0: oklch(99.5% 0.006 95);
+	--paper-1: oklch(97% 0.02 95);
+	--paper-3: oklch(91% 0.028 100);
+	--pencil-1: oklch(24% 0.02 60);
+	--pencil-2: oklch(45% 0.03 60);
+
 	--green-dark: oklch(46% 0.13 148);
 	--green-bright: oklch(84% 0.2 148);
 
@@ -47,35 +56,60 @@
 	color-scheme: light dark;
 
 	--brand: light-dark(var(--green-dark), var(--green-bright));
-	--text-1: light-dark(var(--ink-7), var(--ink-2));
-	--text-2: light-dark(var(--ink-5), var(--ink-4));
-	--surface-1: light-dark(var(--ink-0), var(--ink-8));
-	--surface-2: light-dark(var(--ink-1), var(--ink-7));
-	--surface-3: light-dark(var(--ink-3), var(--ink-6));
+	--text-1: light-dark(var(--pencil-1), var(--ink-2));
+	--text-2: light-dark(var(--pencil-2), var(--ink-4));
+	/* Light: the page (and every sheet on it) is cream paper, inner panels and code are
+	   nearly white, borders a darker cream. */
+	--surface-1: light-dark(var(--paper-1), var(--ink-8));
+	--surface-2: light-dark(var(--paper-0), var(--ink-7));
+	--surface-3: light-dark(var(--paper-3), var(--ink-6));
 
 	/* Something is wrong: a field's border and its message. Text on any surface: light
 	   ≥ 5.74:1, dark ≥ 7.45:1 (so a border, which needs 3:1, too). */
 	--error: light-dark(var(--red-dark), var(--red-bright));
 
-	/* The blueprint grid behind the page (Blueprint.svelte): faint text-colored lines,
-	   a minor cell, a major one every 4 cells, and a "+" at major crossings.
-	   Decorative, so no contrast requirement. */
+	/* The blueprint grid behind the page (Blueprint.svelte): faint lines, a minor cell,
+	   a major one every 4 cells, and a "+" at major crossings. Dark: text-colored, like
+	   chalk. Light: the brand color, like the green squares of an engineering pad, so
+	   every color theme's light half gets a grid in its own color.
+	   Decorative (text never sits on it), so no contrast requirement. */
 	/* Every mix with transparent is in oklab, not oklch: Chrome drops the hue of a
 	   near-grey hex colour in oklch (Tokyo Night's #e6e7ed came out oklch(… none)),
 	   and a missing hue is drawn as 0, a pink tint. oklab has no hue to lose. */
-	--grid-line: color-mix(in oklab, var(--text-1) 3%, transparent);
-	--grid-line-major: color-mix(in oklab, var(--text-1) 6%, transparent);
-	--grid-mark: color-mix(in oklab, var(--text-1) 18%, transparent);
+	--grid-line: light-dark(
+		color-mix(in oklab, var(--brand) 5%, transparent),
+		color-mix(in oklab, var(--text-1) 3%, transparent)
+	);
+	--grid-line-major: light-dark(
+		color-mix(in oklab, var(--brand) 6%, transparent),
+		color-mix(in oklab, var(--text-1) 6%, transparent)
+	);
+	--grid-mark: light-dark(
+		color-mix(in oklab, var(--brand) 25%, transparent),
+		color-mix(in oklab, var(--text-1) 18%, transparent)
+	);
 	--grid-size: 1.5rem;
 
 	/* The spotlight: the same grid lit in the brand color around the mouse, plus a
 	   glow. Not decorative any more once text sits on it: a lit line runs under the
 	   letters, so it counts as their background. At the spot's center (glow + major
-	   line, the brightest point) --text-2 keeps 4.89:1 dark, 4.83:1 light; on a minor
-	   line 5.77:1 and 5.40:1. A theme that changes --brand must re-check these. */
-	--grid-spot-line: color-mix(in oklab, var(--brand) 8%, transparent);
-	--grid-spot-line-major: color-mix(in oklab, var(--brand) 15%, transparent);
-	--grid-spot-glow: color-mix(in oklab, var(--brand) 4%, transparent);
+	   line, the brightest point) --text-2 keeps 4.89:1 dark. Light is softer, because
+	   its grid is brand-coloured already: 3% glow + 10% line + the grid's 6% major line
+	   add up to a little less brand than dark's 4% + 15%, so every theme that passed
+	   before still passes. The header's nav sits on the grid, so this matters;
+	   palettes.test.ts checks every theme, both halves. */
+	--grid-spot-line: light-dark(
+		color-mix(in oklab, var(--brand) 6%, transparent),
+		color-mix(in oklab, var(--brand) 8%, transparent)
+	);
+	--grid-spot-line-major: light-dark(
+		color-mix(in oklab, var(--brand) 10%, transparent),
+		color-mix(in oklab, var(--brand) 15%, transparent)
+	);
+	--grid-spot-glow: light-dark(
+		color-mix(in oklab, var(--brand) 3%, transparent),
+		color-mix(in oklab, var(--brand) 4%, transparent)
+	);
 
 	/* Skill icons (/about): only this color's lightness is used. Each brand logo keeps
 	   its own hue and chroma at this lightness (oklch(from var(--icon-tone) l c h) in
@@ -119,7 +153,12 @@
 	--callout-caution: light-dark(var(--red-dark), var(--red-bright));
 
 	/* Floating things (the detached header, the footer hint). */
-	--shadow-float: 0 var(--size-2) var(--size-6) color-mix(in oklab, var(--ink-8) 35%, transparent);
+	/* Light: a soft shadow in the text's own color (35% of near-black was a smudge). */
+	--shadow-float: 0 var(--size-2) var(--size-6)
+		light-dark(
+			color-mix(in oklab, var(--text-1) 14%, transparent),
+			color-mix(in oklab, var(--ink-8) 35%, transparent)
+		);
 
 	/* Layout: the header, main and footer share one content width. */
 	--content-width: 70rem;

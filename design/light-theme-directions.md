@@ -1,5 +1,7 @@
 # Light theme directions (2026-11-07)
 
+**Picked 2026-11-18: B, the engineering pad**, in `src/lib/styles/tokens.css` (`--paper-*`, `--pencil-*`), with the grid in the brand colour for every palette and a softer light spotlight. The values below are the preview; the shipped ones are in tokens.css.
+
 The light theme feels dull: it was adapted from the dark one, with the same cold blue-grey neutrals at low chroma, a dark forest green (`46% 0.13 148`) used only for text, cards barely different from the page, a grey grid you can hardly see, and a heavy header shadow.
 
 Three directions were previewed by overriding only the light half of the tokens in the browser (screenshots in `.playwright-mcp/theme/`, not committed). All text passed 4.5:1 on all three surfaces. On hold since named themes came first; each could become a palette (`src/lib/styles/themes/`) or replace the default light half. Before using one: re-measure the grid lines under text and the spotlight (tokens.css), and keep `color-mix(…, transparent)` in oklab.
