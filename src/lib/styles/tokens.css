@@ -160,8 +160,11 @@
 			color-mix(in oklab, var(--ink-8) 35%, transparent)
 		);
 
-	/* Layout: the header, main and footer share one content width. */
-	--content-width: 70rem;
+	/* Layout: the header, main and footer share one content width. It grows with the
+	   window: 70rem was right on a laptop but left wide empty margins full screen on a
+	   big monitor. 82% of the window, between 70rem and 96rem (1536px). Reading pages
+	   keep --reading-width. */
+	--content-width: clamp(70rem, 82vw, 96rem);
 	/* The reading composition (posts, Devlog entries): one column for text and code.
 	   80ch of the body font is about 90 characters of text and 80 of code. */
 	--reading-width: 80ch;
@@ -169,12 +172,12 @@
 	   and in-page jumps leave this much space at the top. */
 	--header-space: 6.5rem;
 
-	/* Sections override these (e.g. the devlog layout sets --font-body).
+	/* A section can override these (the Devlog set --font-body to a handwritten font,
+	   Shantell Sans, until 2026-11-18: hard to read in long entries).
 	   --font-heading and --font-label point at --font-code, not --font-body: they're
 	   resolved here on :root, so a section's --font-body could never reach them anyway. */
 	--font-body: var(--font-sans);
 	--font-code: 'Fira Code Variable', var(--font-mono);
-	--font-hand: 'Shantell Sans Variable', var(--font-sans);
 	--font-heading: var(--font-code);
 	/* Nav, site name, buttons, small UI text. */
 	--font-label: var(--font-code);
