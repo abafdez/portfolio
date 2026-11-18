@@ -42,7 +42,9 @@ export const en = {
 	footerHireText: () =>
 		"I'm looking for my next role in web development, front end first. I also bring years of IT support and mainframe work (Natural, Adabas, COBOL).",
 	footerHireHow: () => "Send me a message on LinkedIn: I'll answer and send you my CV.",
-	footerCvBuilder: () => 'How I build a CV for each job',
+	footerHireHowEmail: () =>
+		"Send me a message on LinkedIn or by email: I'll answer and send you my CV.",
+	footerEmail: () => 'Email me',
 	footerElsewhere: () => 'Elsewhere',
 	footerSource: () => "This site's code",
 	footerBuilt: () =>

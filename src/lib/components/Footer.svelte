@@ -9,11 +9,16 @@
 	import Briefcase from '@lucide/svelte/icons/briefcase-business';
 	import FolderGit from '@lucide/svelte/icons/folder-git-2';
 	import ArrowUpRight from '@lucide/svelte/icons/arrow-up-right';
+	import ArrowRight from '@lucide/svelte/icons/arrow-right';
+	import UserRound from '@lucide/svelte/icons/user-round';
+	import Mail from '@lucide/svelte/icons/mail';
+	import MessageSquare from '@lucide/svelte/icons/message-square';
+	import ChevronUp from '@lucide/svelte/icons/chevron-up';
 	import { siGithub } from 'simple-icons';
 	import BrandIcon from '#lib/components/BrandIcon.svelte';
 	import { spotlight } from '#lib/spotlight.ts';
 	import { m, route } from '#lib/i18n/index.ts';
-	import { profiles, repository } from '#lib/links.ts';
+	import { email, profiles, repository } from '#lib/links.ts';
 	import { looks } from '#lib/components/hire/looks.ts';
 	import photo from '#lib/assets/avatar.jpg?enhanced';
 
@@ -32,6 +37,8 @@
 	}
 
 	let panel = $state<HTMLElement>();
+	// The email button's link, put together once the page runs (see email in links.ts).
+	let mailto = $state<string>();
 	let hint = $state<HTMLElement>();
 
 	// A link in the panel goes to another page: the panel closes behind it.
@@ -42,6 +49,7 @@
 	// pointer move, and Svelte state would re-render for nothing. Only with a real
 	// pointer; on touch the handle just stays small.
 	onMount(() => {
+		if (email.user && email.domain) mailto = `mailto:${email.user}@${email.domain}`;
 		if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 		const reach = 10 * parseFloat(getComputedStyle(document.documentElement).fontSize);
 		let frame = 0;
@@ -85,7 +93,11 @@
 
 	<div class="inner">
 		<p><small>&copy; {new Date().getFullYear()} Alfonso Baeza. {m.footerRights()}</small></p>
-		<button class="more" type="button" popovertarget="about-panel">{m.footerMore()}</button>
+		<button class="more" type="button" popovertarget="about-panel">
+			<UserRound aria-hidden="true" />
+			{m.footerMore()}
+			<ChevronUp class="chevron" aria-hidden="true" />
+		</button>
 		<ul>
 			{#each profiles as profile (profile.label)}
 				<li><a href={profile.url} rel="external">{profile.label}</a></li>
@@ -129,22 +141,38 @@
 				{/if}
 			</div>
 
-			<!-- Each column has its own effect: a light that follows the pointer round the
-			     first one's border (spotlight sets --x / --y on each column), a beam running
-			     round the second's, and links that slide and pop their icons in the third. -->
+			<!-- The columns' borders: a light that follows the pointer round the first and
+			     third (spotlight sets --x / --y on each column), a beam running round the
+			     second. The third's links also slide and pop their icons. -->
 			<div class="columns" {@attach spotlight}>
 				<section aria-labelledby="footer-who">
 					<h3 id="footer-who">{m.footerWho()}</h3>
 					<p>{m.aboutLead()}</p>
-					<p><a href={route('/about')}>{m.footerMoreAbout()}</a></p>
+					<p>
+						<a class="button secondary" href={route('/about')}>
+							<UserRound aria-hidden="true" />
+							{m.footerMoreAbout()}
+							<ArrowRight class="nudge" aria-hidden="true" />
+						</a>
+					</p>
 				</section>
 
 				<section aria-labelledby="footer-hire">
 					<h3 id="footer-hire">{m.footerHire()}</h3>
 					<p>{m.footerHireText()}</p>
-					<p>{m.footerHireHow()}</p>
-					<p><a class="cta" href={linkedin.url} rel="external">{m.aboutAskLinkedIn()}</a></p>
-					<p><a href={route('/projects/cv')}>{m.footerCvBuilder()}</a></p>
+					<p>{mailto ? m.footerHireHowEmail() : m.footerHireHow()}</p>
+					<p class="buttons">
+						<a class="button shine" href={linkedin.url} rel="external">
+							<MessageSquare aria-hidden="true" />
+							{m.aboutAskLinkedIn()}
+						</a>
+						{#if mailto}
+							<a class="button secondary" href={mailto}>
+								<Mail aria-hidden="true" />
+								{m.footerEmail()}
+							</a>
+						{/if}
+					</p>
 				</section>
 
 				<section aria-labelledby="footer-elsewhere">
@@ -208,19 +236,87 @@
 		list-style: none;
 	}
 
+	/* The bar's button opens the panel: the one thing in the footer that should catch
+	   the eye. A brand pill with a person and an arrow up; a light sweeps across it
+	   now and then, and it lifts on hover. */
 	.more {
-		padding: var(--size-1) var(--size-3);
-		border: var(--border-size-1) solid var(--surface-3);
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--size-2);
+		overflow: hidden;
+		padding: var(--size-2) var(--size-4);
+		border: none;
 		border-radius: var(--radius-round);
-		background: var(--surface-2);
-		color: var(--text-1);
+		background: var(--brand);
+		color: var(--surface-1);
 		font: inherit;
-		font-size: var(--font-size-0);
+		font-size: var(--font-size-1);
 		cursor: pointer;
+		box-shadow: 0 var(--size-1) var(--size-3) color-mix(in oklab, var(--brand) 30%, transparent);
+
+		& :global(svg) {
+			inline-size: 1.15rem;
+			block-size: 1.15rem;
+		}
 
 		&:hover {
-			border-color: var(--brand);
-			color: var(--brand);
+			background: color-mix(in oklab, var(--brand) 85%, var(--text-1));
+		}
+	}
+
+	/* The light: a slanted bright band crossing the button. */
+	.more::after,
+	.shine::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			105deg,
+			transparent 35%,
+			color-mix(in oklab, var(--surface-1) 45%, transparent) 50%,
+			transparent 65%
+		);
+		translate: -120% 0;
+		pointer-events: none;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.more {
+			transition:
+				translate 300ms var(--ease-spring-3),
+				box-shadow 300ms var(--ease-out-3);
+
+			&:hover {
+				translate: 0 -3px;
+				box-shadow: 0 var(--size-2) var(--size-4) color-mix(in oklab, var(--brand) 40%, transparent);
+			}
+		}
+
+		/* Every 5 s the light crosses (the last 30% of the loop); the arrow bobs. */
+		.more::after,
+		.shine::after {
+			animation: shine 5s var(--ease-in-out-3) infinite;
+		}
+
+		.more :global(.chevron) {
+			animation: chevron-bob 1.6s var(--ease-in-out-3) infinite;
+		}
+	}
+
+	@keyframes shine {
+		0%,
+		70% {
+			translate: -120% 0;
+		}
+		100% {
+			translate: 120% 0;
+		}
+	}
+
+	@keyframes chevron-bob {
+		50% {
+			translate: 0 -3px;
 		}
 	}
 
@@ -437,8 +533,9 @@
 		pointer-events: none;
 	}
 
-	/* 1. Who I am: a light that follows the pointer (anywhere over the three columns). */
-	section:nth-child(1)::before {
+	/* 1 and 3. Who I am and Elsewhere: a light that follows the pointer (anywhere over
+	   the three columns). */
+	section:is(:nth-child(1), :nth-child(3))::before {
 		background: radial-gradient(
 			14rem circle at var(--x, -100rem) var(--y, -100rem),
 			var(--brand),
@@ -490,17 +587,64 @@
 		color: var(--text-2);
 	}
 
-	.cta {
-		display: inline-block;
+	/* The panel's buttons: a brand pill (Ask on LinkedIn, with the same light as the
+	   bar's button) or an outlined one (More about me, Email me), each with an icon. */
+	.buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--size-2);
+	}
+
+	.button {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--size-2);
+		overflow: hidden;
 		padding: var(--size-2) var(--size-4);
+		border: var(--border-size-1) solid var(--brand);
 		border-radius: var(--radius-round);
 		background: var(--brand);
 		color: var(--surface-1);
 		font-family: var(--font-label);
+		font-size: var(--font-size-0);
 		text-decoration: none;
+
+		& :global(svg) {
+			flex: none;
+			inline-size: 1.1rem;
+			block-size: 1.1rem;
+		}
 
 		&:hover {
 			background: color-mix(in oklab, var(--brand) 85%, var(--text-1));
+		}
+
+		&.secondary {
+			background: var(--surface-1);
+			color: var(--brand);
+
+			&:hover {
+				background: color-mix(in oklab, var(--brand) 10%, var(--surface-1));
+			}
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.button {
+			transition: translate 300ms var(--ease-spring-3);
+
+			&:hover {
+				translate: 0 -2px;
+			}
+		}
+
+		.button :global(.nudge) {
+			transition: translate 300ms var(--ease-spring-3);
+		}
+
+		.button:hover :global(.nudge) {
+			translate: 3px 0;
 		}
 	}
 

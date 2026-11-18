@@ -39,7 +39,8 @@ export const es = {
 	footerHireText: () =>
 		'Busco mi próximo puesto en desarrollo web, sobre todo front-end. También aporto años de soporte informático y de trabajo en mainframe (Natural, Adabas, COBOL).',
 	footerHireHow: () => 'Escríbeme por LinkedIn: te contesto y te envío mi CV.',
-	footerCvBuilder: () => 'Cómo preparo un CV para cada empleo',
+	footerHireHowEmail: () => 'Escríbeme por LinkedIn o por correo: te contesto y te envío mi CV.',
+	footerEmail: () => 'Escríbeme un correo',
 	footerElsewhere: () => 'En otros sitios',
 	footerSource: () => 'El código de este sitio',
 	footerBuilt: () =>

@@ -21,6 +21,12 @@ export const profiles = [
 // This site's code, on GitHub. sourceUrl() links a file or folder in it, as it is on main:
 // 'src/lib/projects/contrast' -> https://github.com/abafdez/portfolio/tree/main/src/lib/projects/contrast
 // GitHub shows a folder under /tree/ and a file under /blob/ (a name with a dot is a file).
+// The address for the hire panel's email button (Footer.svelte). Empty: no button.
+// Not a personal address: one made for this (a forwarding alias). Two halves, joined
+// in the browser once the page runs, so the address isn't in the HTML that address
+// scrapers read. GitHub's private noreply address can't be used: it receives nothing.
+export const email = { user: '', domain: '' };
+
 export const repository = 'https://github.com/abafdez/portfolio';
 export const sourceUrl = (path: string): `https://${string}` =>
 	`${repository}/${/\.[a-z]+$/.test(path) ? 'blob' : 'tree'}/main/${path}` as const;
