@@ -34,6 +34,9 @@
 
 	function opened(event: ToggleEvent) {
 		if (event.newState !== 'open') return;
+		// A result that opened its page closed the box at once (morph.ts, leave()); the
+		// next time it opens and closes with its animation again.
+		if (panel) delete panel.dataset.instant;
 		input?.focus();
 		input?.select();
 		load(); // start fetching Pagefind while the visitor types
@@ -90,15 +93,18 @@
 		<p class="status" role="status">{message}</p>
 		{#if typeof results === 'object' && results?.hits.length}
 			<ol>
-				{#each results.hits as hit (hit.url)}
-					<li>
-						<a href={hit.url}>
+				{#each results.hits as hit, index (hit.url)}
+					<!-- --index staggers the results as they come in. -->
+					<li style:--index={index}>
+						<!-- data-morph-*: the result is a card (morph.ts). Opening it, its title
+						     flies to the page's title and the excerpt to the description. -->
+						<a href={hit.url} data-morph-card>
 							{#if hit.section}<span class="section">{hit.section}</span>{/if}
-							<span class="title">{hit.title}</span>
+							<span class="title" data-morph="title">{hit.title}</span>
 							<!-- Pagefind's excerpt is HTML: it escapes the page's text, then wraps
 							     the matches in <mark>. Safe as HTML (its docs say so), and the text
 							     is this site's own. -->
-							<span class="excerpt">{@html hit.excerpt}</span>
+							<span class="excerpt" data-morph="description">{@html hit.excerpt}</span>
 						</a>
 					</li>
 				{/each}
@@ -129,6 +135,11 @@
 			inline-size: 100%;
 			block-size: 100%;
 		}
+	}
+
+	/* While the box is open, the button's glass is lit in the brand colour. */
+	button:has(+ .panel:popover-open) {
+		color: var(--brand);
 	}
 
 	/* Under the button, its end edge lined up with the button's, like the theme menu. */
@@ -162,6 +173,107 @@
 		.panel {
 			inset: var(--header-space) var(--size-3) auto auto;
 			margin: 0;
+		}
+	}
+
+	/* Opening and closing. A closed popover is display: none, and display can't be
+	   animated, so: the open state is the end of the transition, @starting-style is
+	   where it starts when the box appears, and the closed state is where it goes when
+	   it leaves. allow-discrete keeps display and overlay (the top layer) until the
+	   other properties have finished, so the closing animation is seen. It drops from
+	   under the button: transform-origin is its top end corner. */
+	@media (prefers-reduced-motion: no-preference) {
+		.panel {
+			opacity: 0;
+			translate: 0 calc(-1 * var(--size-2));
+			scale: 0.96;
+			transform-origin: top right;
+			transition:
+				opacity 160ms var(--ease-out-2),
+				translate 260ms var(--ease-spring-2),
+				scale 260ms var(--ease-spring-2),
+				display 260ms allow-discrete,
+				overlay 260ms allow-discrete;
+		}
+
+		.panel:popover-open {
+			opacity: 1;
+			translate: 0;
+			scale: 1;
+
+			@starting-style {
+				opacity: 0;
+				translate: 0 calc(-1 * var(--size-2));
+				scale: 0.96;
+			}
+		}
+
+		/* The page behind dims a little, the same way in and out. */
+		.panel::backdrop {
+			background: transparent;
+			transition:
+				background-color 260ms var(--ease-out-2),
+				display 260ms allow-discrete,
+				overlay 260ms allow-discrete;
+		}
+
+		.panel:popover-open::backdrop {
+			background: color-mix(in oklab, var(--surface-1) 35%, transparent);
+
+			@starting-style {
+				background: transparent;
+			}
+		}
+
+		/* Closed by a result that opens its page: no closing animation, or it would show
+		   in the page transition's "after" picture (morph.ts, leave()). */
+		.panel:global([data-instant]),
+		.panel:global([data-instant])::backdrop {
+			transition: none;
+		}
+
+		/* Opening a result: the box was part of the page's "before" picture, drawn under
+		   the old page's cards as they fade. With a name of its own it's a separate
+		   picture, on top, and it fades and shrinks away while the result's title and
+		   excerpt fly out of it (they have their own names, morph.ts). */
+		:global(:root:active-view-transition-type(route)) .panel {
+			view-transition-name: search-panel;
+		}
+
+		:global(::view-transition-old(search-panel)) {
+			animation: panel-out 200ms var(--ease-in-2) both;
+		}
+
+		/* The magnifying glass in the field swings in when the box opens. */
+		.panel:popover-open form > :global(svg) {
+			animation: glass-in 400ms var(--ease-spring-3);
+		}
+
+		/* Each result rises into place, one after the other. */
+		li {
+			animation: result-in 280ms var(--ease-out-3) both;
+			animation-delay: calc(var(--index) * 35ms);
+		}
+	}
+
+	@keyframes panel-out {
+		to {
+			opacity: 0;
+			scale: 0.97;
+		}
+	}
+
+	@keyframes glass-in {
+		from {
+			rotate: -40deg;
+			scale: 0.6;
+		}
+	}
+
+	@keyframes result-in {
+		from {
+			opacity: 0;
+			translate: 0 var(--size-2);
 		}
 	}
 

@@ -16,7 +16,7 @@
 	import { getLocale, languageTags } from '#lib/i18n/index.ts';
 	import { split } from '#lib/i18n/locales.ts';
 	import { transitionPalette } from '#lib/palette-transitions.ts';
-	import { cardLinkingTo, mark, pageHeader, picturesReady, unmarkAll } from '#lib/morph.ts';
+	import { cardLinkingTo, leave, mark, pageHeader, picturesReady, unmarkAll } from '#lib/morph.ts';
 	import Header from '#lib/components/Header.svelte';
 	import Footer from '#lib/components/Footer.svelte';
 	import Blueprint from '#lib/components/Blueprint.svelte';
@@ -79,6 +79,7 @@
 				update: async () => {
 					resolve();
 					await navigation.complete;
+					leave(card);
 					root.style.setProperty('--route-shift', `${oldTop - top()}px`);
 					const other = card ? pageHeader() : header && cardLinkingTo(navigation.from?.url);
 					mark(other);
