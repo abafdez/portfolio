@@ -52,7 +52,7 @@ return new Promise((resolve) => {
 });
 ```
 
-- **What's named:** the `.site-header` (`site-header`), `main` (`page`) and the nav's underline (`nav-marker`). The header stays put, the underline slides to the new link (old box to new box), the root swaps at once.
+- **What's named:** the `.site-header` (`site-header`), `main` (`page`) and the current section's pill in the nav (`nav-marker`, `Nav.svelte`). The header stays put, the pill slides to the new link (old box to new box), the root swaps at once.
 - **The content:** the old `page` keeps its size, centred where it was, and fades out in 150 ms; the new one fades in and rises in 300 ms. `--route-shift` (old content top minus new content top, set by the layout) keeps the old picture where it was on screen even when the new page is scrolled elsewhere (Back restores the list's scroll position).
 - **Shallow navigations** (a tool updating its URL with `goto(url, { shallow: true })`) also call `onNavigate`, but don't swap the page, so the layout returns early.
 - **Turn off:** return early from `onNavigate`, or delete the CSS block.

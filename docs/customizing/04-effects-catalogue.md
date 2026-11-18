@@ -39,7 +39,7 @@ To test them: DevTools → Rendering → "Emulate CSS media feature prefers-redu
 
 ### Page transitions, the nav marker, cards that become pages
 
-See chapter 5. In short: every route change is a view transition of type `route` (the page fades and rises, the header stays, the underline under the nav slides to the new link), and a post or project card turns into the page it opens (type `morph`). Turn them off by returning early from `onNavigate` in `src/routes/+layout.svelte`.
+See chapter 5. In short: every route change is a view transition of type `route` (the page fades and rises, the header stays, the current section's pill in the nav slides to the new link), and a post or project card turns into the page it opens (type `morph`). Turn them off by returning early from `onNavigate` in `src/routes/+layout.svelte`.
 
 ### The light/dark circle
 
