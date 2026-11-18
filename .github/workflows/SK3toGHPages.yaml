@@ -57,10 +57,8 @@ jobs:
         run: pnpm image-cache:tidy
 
       # Smoke test (Playwright, e2e/): a browser clicks through the build above.
-      # The runner has no browser, so install Chromium and the system libraries it needs.
-      - name: Install Chromium for Playwright
-        run: pnpm exec playwright install --with-deps chromium
-
+      # It uses the Google Chrome the runner already has (channel 'chrome' in
+      # playwright.config.ts), so there's no browser to install.
       - name: Smoke test
         run: pnpm exec playwright test
         env:

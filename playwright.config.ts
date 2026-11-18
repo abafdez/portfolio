@@ -15,6 +15,11 @@ export default defineConfig({
 	testDir: 'e2e',
 	// test.only left in by mistake fails CI instead of silently skipping every other test.
 	forbidOnly: !!process.env.CI,
+	// Every test on its own, in any order (none shares state), spread over the workers:
+	// by default only files run side by side, and there are just three. On CI, one worker
+	// per core of the runner (4); locally, Playwright's default (half the cores).
+	fullyParallel: true,
+	workers: process.env.CI ? '100%' : undefined,
 	// On CI, the GitHub reporter turns failures into notes on the PR's changed lines.
 	reporter: process.env.CI ? 'github' : 'list',
 	use: {
@@ -24,7 +29,15 @@ export default defineConfig({
 		// (pnpm exec playwright show-trace <file>).
 		trace: 'retain-on-failure'
 	},
-	projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+	// On CI, the Google Chrome GitHub's Ubuntu runners come with ('chrome' channel), so
+	// there's no browser to download (that step took 27 s). Locally, Playwright's own
+	// Chromium (pnpm exec playwright install chromium).
+	projects: [
+		{
+			name: 'chromium',
+			use: { ...devices['Desktop Chrome'], channel: process.env.CI ? 'chrome' : undefined }
+		}
+	],
 	// Playwright starts the preview server before the tests and stops it after.
 	// The build itself happens before (see test:e2e in package.json and the CI workflow).
 	webServer: {
