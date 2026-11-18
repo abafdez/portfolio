@@ -3,6 +3,9 @@
 	import { m, route, text } from '#lib/i18n/index.ts';
 	import TeaserCard from '#lib/components/TeaserCard.svelte';
 	import { projects } from '#lib/projects/projects.ts';
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
 </script>
 
 <Seo title={m.projectsTitle()} description={m.projectsDescription()} />
@@ -18,13 +21,16 @@
 <section aria-labelledby="tools-title">
 	<h2 id="tools-title">{m.projectsTools()}</h2>
 	<div class="grid">
-		{#each projects as { slug, title, description, date, tags } (slug)}
+		{#each projects as { slug, title, description, date, tags }, i (slug)}
+			<!-- The cover is a screenshot of the project (content/projects/<slug>/). -->
 			<TeaserCard
 				title={text(title)}
 				description={text(description)}
 				{date}
 				{tags}
 				href={route('/projects/[tool]', { tool: slug })}
+				thumbnail={{ cover: data.covers[slug], label: `#${tags[0]}` }}
+				priority={i === 0}
 			/>
 		{/each}
 	</div>
