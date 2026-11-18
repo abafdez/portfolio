@@ -26,6 +26,20 @@ export const en = {
 	breadcrumbLabel: () => 'Breadcrumb',
 	sectionNavLabel: () => 'On this page',
 	footerRights: () => 'All rights reserved.',
+	// The footer's panel (Footer.svelte): who I am and how to hire me.
+	footerMore: () => 'About me and hiring',
+	footerClose: () => 'Close',
+	footerWho: () => 'Who I am',
+	footerMoreAbout: () => 'More about me and my skills',
+	footerHire: () => 'Hire me',
+	footerHireText: () =>
+		"I'm looking for my next role in web development, front end first. I also bring years of IT support and mainframe work (Natural, Adabas, COBOL).",
+	footerHireHow: () => "Send me a message on LinkedIn: I'll answer and send you my CV.",
+	footerCvBuilder: () => 'How I build a CV for each job',
+	footerElsewhere: () => 'Elsewhere',
+	footerSource: () => "This site's code",
+	footerBuilt: () =>
+		'Built with SvelteKit, Svelte 5 and Open Props, deployed on GitHub Pages, written in the open.',
 	themeDark: () => 'Dark theme',
 	themeLight: () => 'Light theme',
 	paletteLabel: () => 'Color theme',
