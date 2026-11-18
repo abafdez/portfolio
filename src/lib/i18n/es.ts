@@ -97,6 +97,7 @@ export const es = {
 	projectsTitle: () => 'Proyectos',
 	projectsDescription: () => 'Pequeñas herramientas, cada una una aplicación independiente.',
 	projectsTools: () => 'Herramientas',
+	projectSource: () => 'Código fuente en GitHub',
 
 	toolboxNeedsJs: () => 'Esta herramienta funciona en tu navegador y necesita JavaScript.',
 	toolboxCopy: ({ what }: { what: string }) => `Copiar ${what}`,
@@ -307,5 +308,51 @@ export const es = {
 	cvRemove: ({ name }: Name) => `Quitar ${name}`,
 	cvAddSkill: () => 'Añadir una habilidad',
 	cvAddSkillTo: ({ group }: { group: string }) => ` a ${group}`,
-	cvReset: ({ profile }: { profile: string }) => `Restablecer las habilidades de ${profile}`
+	cvReset: ({ profile }: { profile: string }) => `Restablecer las habilidades de ${profile}`,
+	// La página de error (+error.svelte): un 404 es una de las variantes, al azar.
+	notFoundTitle: () => 'Página no encontrada',
+	notFoundText: () =>
+		'En esta dirección no hay nada. Puede que se haya movido, o que nunca existiera.',
+	notFoundPath: () => 'Has pedido',
+	notFoundLinks: () => 'Páginas que sí existen',
+	notFoundAnother: () => 'Otro 404',
+	notFoundDescription: () => 'Esta página no existe.',
+	errorTitle: () => 'Algo ha ido mal',
+	errorText: () => 'No se ha podido mostrar esta página. Recargarla puede ayudar.',
+	// Los juegos del 404.
+	gamePaused: () => 'En pausa. Pulsa Espacio o Seguir para continuar.',
+	gameStart: () => 'Empezar',
+	gamePause: () => 'Pausa',
+	gameResume: () => 'Seguir',
+	gameAgain: () => 'Jugar otra vez',
+	gameLeft: () => 'Izquierda',
+	gameRight: () => 'Derecha',
+	gameUp: () => 'Arriba',
+	gameDown: () => 'Abajo',
+	breakoutLabel: () => 'Breakout: rompe el 404',
+	breakoutHow: () =>
+		'Mueve la pala con las flechas, el ratón o arrastrando. Espacio o un toque lanza la bola y pausa.',
+	breakoutReady: () => 'Bola lista. Pulsa Espacio o Empezar para lanzarla.',
+	breakoutMissed: () =>
+		'¡Fallaste! Los ladrillos rotos siguen rotos. Pulsa Espacio para lanzar otra vez.',
+	breakoutPlaying: () => 'Rompe todos los ladrillos del 404.',
+	breakoutWon: () => 'Has roto el 404 entero. Aun así, aquí sigue sin haber nada.',
+	breakoutScore: ({ count, misses }: Count & { misses: number }) =>
+		`${plural('es', count, { one: 'Queda', other: 'Quedan' })} ${count} ${plural('es', count, { one: 'ladrillo', other: 'ladrillos' })} · ${misses} ${plural('es', misses, { one: 'fallo', other: 'fallos' })}`,
+	snakeLabel: () => 'Snake: cómete el 404',
+	snakeHow: () =>
+		'Gira con las flechas, deslizando el dedo o con los botones. Los bordes dan la vuelta; solo no te muerdas.',
+	snakeReady: () => 'Pulsa Espacio o Empezar, y luego gira.',
+	snakePlaying: () => 'Cómete todas las casillas del 404.',
+	snakeOver: () => 'Te has mordido. Pulsa Espacio o Jugar otra vez.',
+	snakeWon: () => 'Te has comido el 404 entero. Aun así, aquí sigue sin haber nada.',
+	snakeScore: ({ count }: Count) =>
+		`${plural('es', count, { one: 'Queda', other: 'Quedan' })} ${count} ${plural('es', count, { one: 'casilla', other: 'casillas' })} del 404`,
+	asciiHow: () => 'Pasa el puntero por el número para revolverlo; haz clic para lanzar una onda.',
+	particlesHow: () => 'Empuja los puntos con el puntero; haz clic para dispersarlos.',
+	notFoundVariant: () => 'Juego o animación',
+	notFoundCode: () => 'Su código',
+	notFoundShared: () => 'Compartido por los cuatro',
+	notFoundNeedsJs: () =>
+		'Estos juegos y animaciones funcionan en tu navegador y necesitan JavaScript.'
 } satisfies Messages;

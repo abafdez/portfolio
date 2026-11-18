@@ -13,6 +13,9 @@ export interface Project {
 	// 'YYYY-MM-DD', when it went live. The list is newest first.
 	date: string;
 	tags: string[];
+	// Its code in this repository (a folder or a file), linked from its page as "Source
+	// code on GitHub" (ProjectHeader, sourceUrl() in links.ts).
+	source?: string;
 	// The tool itself. A dynamic import() becomes its own chunk, downloaded only on the
 	// tool's page, never on /projects or the landing. None for a tool with a route of
 	// its own (src/routes/projects/cv): that route imports it.
@@ -20,6 +23,20 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+	{
+		// The games and animations of the 404 page (src/routes/+error.svelte shows one at
+		// random), all on one page. The variants are listed in not-found/variants.ts.
+		slug: '404',
+		title: { en: '404 games', es: 'Juegos del 404' },
+		description: {
+			en: "The games and animations of this site's 404 page, all four in one place: break the 404, eat it, scramble it or scatter it.",
+			es: 'Los juegos y animaciones de la página 404 de este sitio, los cuatro juntos: rompe el 404, cómetelo, revuélvelo o dispérsalo.'
+		},
+		date: '2026-11-18',
+		tags: ['canvas', 'games', 'svelte'],
+		source: 'src/lib/projects/not-found',
+		tool: () => import('./not-found/Gallery.svelte')
+	},
 	{
 		// A dashboard of small tools with routes of its own (src/routes/projects/toolbox),
 		// listed in toolbox/tools.ts.
@@ -30,7 +47,8 @@ export const projects: Project[] = [
 			es: 'Pequeñas herramientas para el día a día del front-end, todas en el navegador: nada de lo que escribas o sueltes aquí sale de él.'
 		},
 		date: '2026-11-09',
-		tags: ['browser-apis', 'svelte', 'tools']
+		tags: ['browser-apis', 'svelte', 'tools'],
+		source: 'src/lib/projects/toolbox'
 	},
 	{
 		slug: 'cv',
@@ -40,7 +58,8 @@ export const projects: Project[] = [
 			es: 'Un CV para cada tipo de empleo al que me presento: las habilidades salen de este sitio y el resto se escribe a mano y se queda en tu navegador.'
 		},
 		date: '2026-11-03',
-		tags: ['forms', 'local-storage', 'svelte']
+		tags: ['forms', 'local-storage', 'svelte'],
+		source: 'src/lib/projects/cv'
 	},
 	{
 		slug: 'contrast',
@@ -51,6 +70,7 @@ export const projects: Project[] = [
 		},
 		date: '2026-11-02',
 		tags: ['accessibility', 'color', 'design-tokens'],
+		source: 'src/lib/projects/contrast',
 		tool: () => import('./contrast/Contrast.svelte')
 	}
 ];

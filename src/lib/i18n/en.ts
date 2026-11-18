@@ -105,6 +105,7 @@ export const en = {
 	projectsTitle: () => 'Projects',
 	projectsDescription: () => 'Small tools, each one a self-contained app.',
 	projectsTools: () => 'Tools',
+	projectSource: () => 'Source code on GitHub',
 
 	// The toolbox (/projects/toolbox) and what its tools share.
 	toolboxNeedsJs: () => 'This tool runs in your browser and needs JavaScript.',
@@ -319,7 +320,51 @@ export const en = {
 	cvRemove: ({ name }: Name) => `Remove ${name}`,
 	cvAddSkill: () => 'Add a skill',
 	cvAddSkillTo: ({ group }: { group: string }) => ` to ${group}`,
-	cvReset: ({ profile }: { profile: string }) => `Reset the skills for ${profile}`
+	cvReset: ({ profile }: { profile: string }) => `Reset the skills for ${profile}`,
+	// The error page (+error.svelte): a 404 is one of the not-found variants, at random.
+	notFoundTitle: () => 'Page not found',
+	notFoundText: () => "There's nothing at this address. It may have moved, or it was never here.",
+	notFoundPath: () => 'You asked for',
+	notFoundLinks: () => 'Pages that do exist',
+	notFoundAnother: () => 'Another 404',
+	notFoundDescription: () => 'This page does not exist.',
+	errorTitle: () => 'Something went wrong',
+	errorText: () => "This page couldn't be shown. Reloading may help.",
+	// The games on the 404.
+	gamePaused: () => 'Paused. Press Space or Resume to go on.',
+	gameStart: () => 'Start',
+	gamePause: () => 'Pause',
+	gameResume: () => 'Resume',
+	gameAgain: () => 'Play again',
+	gameLeft: () => 'Left',
+	gameRight: () => 'Right',
+	gameUp: () => 'Up',
+	gameDown: () => 'Down',
+	breakoutLabel: () => 'Breakout: break the 404',
+	breakoutHow: () =>
+		'Move the paddle with the arrow keys, the mouse, or by dragging. Space or a tap launches the ball and pauses.',
+	breakoutReady: () => 'Ball ready. Press Space or Start to launch it.',
+	breakoutMissed: () => 'Missed! The bricks you broke stay broken. Press Space to launch again.',
+	breakoutPlaying: () => 'Break every brick of the 404.',
+	breakoutWon: () => 'You broke the whole 404. There is still nothing here, though.',
+	breakoutScore: ({ count, misses }: Count & { misses: number }) =>
+		`${count} ${plural('en', count, { one: 'brick', other: 'bricks' })} left · ${misses} missed`,
+	snakeLabel: () => 'Snake: eat the 404',
+	snakeHow: () =>
+		"Steer with the arrow keys, by swiping, or with the buttons. The walls wrap around; just don't bite yourself.",
+	snakeReady: () => 'Press Space or Start, then steer.',
+	snakePlaying: () => 'Eat every cell of the 404.',
+	snakeOver: () => 'You bit yourself. Press Space or Play again.',
+	snakeWon: () => 'You ate the whole 404. There is still nothing here, though.',
+	snakeScore: ({ count }: Count) =>
+		`${count} ${plural('en', count, { one: 'cell', other: 'cells' })} of the 404 left`,
+	asciiHow: () => 'Move the pointer over the number to scramble it; click to send a wave.',
+	particlesHow: () => 'Push the dots around with the pointer; click to scatter them.',
+	// The 404 games as a project (/projects/404).
+	notFoundVariant: () => 'Game or animation',
+	notFoundCode: () => 'Its code',
+	notFoundShared: () => 'Shared by all four',
+	notFoundNeedsJs: () => 'These games and animations run in your browser and need JavaScript.'
 };
 
 export type Messages = typeof en;

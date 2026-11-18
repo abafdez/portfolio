@@ -18,6 +18,13 @@ export const profiles = [
 	{ label: 'LinkedIn', url: 'https://www.linkedin.com/in/alfonso-baeza-fdez/' }
 ] as const satisfies readonly Link[];
 
+// This site's code, on GitHub. sourceUrl() links a file or folder in it, as it is on main:
+// 'src/lib/projects/contrast' -> https://github.com/abafdez/portfolio/tree/main/src/lib/projects/contrast
+// GitHub shows a folder under /tree/ and a file under /blob/ (a name with a dot is a file).
+export const repository = 'https://github.com/abafdez/portfolio';
+export const sourceUrl = (path: string): `https://${string}` =>
+	`${repository}/${/\.[a-z]+$/.test(path) ? 'blob' : 'tree'}/main/${path}` as const;
+
 // The site's sections, in nav order. The nav links them; the breadcrumbs name the one
 // a nested page belongs to. label is a message (a function), so it's in the language of
 // the page that calls it, not of whichever page loaded this module first.
