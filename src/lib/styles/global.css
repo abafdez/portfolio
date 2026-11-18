@@ -320,38 +320,6 @@
 }
 
 @layer components {
-	/* A card that tilts in 3D toward the pointer (tilt() in components/hire/tilt.ts sets
-	   the custom properties), with a soft brand-coloured light where the pointer is.
-	   Quick while following the pointer, springy when it lets go. */
-	.tilt-card {
-		position: relative;
-		transform: perspective(60rem) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-		transition: transform 500ms var(--ease-spring-2);
-
-		&[data-tilting] {
-			transition: transform 90ms linear;
-		}
-
-		&::after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			border-radius: inherit;
-			background: radial-gradient(
-				circle at var(--px, 50%) var(--py, 50%),
-				color-mix(in oklab, var(--brand) 16%, transparent),
-				transparent 50%
-			);
-			opacity: 0;
-			transition: opacity 300ms var(--ease-out-3);
-			pointer-events: none;
-		}
-
-		&[data-tilting]::after {
-			opacity: 1;
-		}
-	}
-
 	/* Read by screen readers, not shown: a heading or a hint that the layout already
 	   says to the eye. Not display: none, which hides it from screen readers too. */
 	.visually-hidden {

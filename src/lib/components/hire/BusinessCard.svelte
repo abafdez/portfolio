@@ -4,7 +4,6 @@
 	// hire me and my links. The face turned away is inert: no focus, no screen reader.
 	import RotateCw from '@lucide/svelte/icons/rotate-cw';
 	import { m } from '#lib/i18n/index.ts';
-	import { tilt } from './tilt.ts';
 	import type { LookProps } from './looks.ts';
 
 	let { photo, linkedin, github }: LookProps = $props();
@@ -20,7 +19,7 @@
 <div class="scene">
 	<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions:
 	     the click is a shortcut for the mouse; the Turn button does the same from the keyboard. -->
-	<div class="tilt-card holder" {@attach tilt(10)} onclick={turn}>
+	<div class="holder" onclick={turn}>
 		<div class="card" class:back>
 			<div class="face front" inert={back}>
 				<enhanced:img src={photo} alt="" sizes="7rem" />
@@ -53,6 +52,7 @@
 	}
 
 	.holder {
+		position: relative;
 		inline-size: min(100%, 34rem);
 		border-radius: var(--radius-3);
 		cursor: pointer;

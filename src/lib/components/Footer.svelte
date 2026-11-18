@@ -6,7 +6,12 @@
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
 	import X from '@lucide/svelte/icons/x';
-	import Shuffle from '@lucide/svelte/icons/shuffle';
+	import Briefcase from '@lucide/svelte/icons/briefcase-business';
+	import FolderGit from '@lucide/svelte/icons/folder-git-2';
+	import ArrowUpRight from '@lucide/svelte/icons/arrow-up-right';
+	import { siGithub } from 'simple-icons';
+	import BrandIcon from '#lib/components/BrandIcon.svelte';
+	import { spotlight } from '#lib/spotlight.ts';
 	import { m, route } from '#lib/i18n/index.ts';
 	import { profiles, repository } from '#lib/links.ts';
 	import { looks } from '#lib/components/hire/looks.ts';
@@ -101,10 +106,6 @@
 		<div class="panel-inner">
 			<div class="top">
 				<h2 id="about-title" class="visually-hidden">{m.footerMore()}</h2>
-				<button class="another" type="button" onclick={next}>
-					<Shuffle aria-hidden="true" />
-					{m.hireAnother()}
-				</button>
 				<button
 					class="close"
 					type="button"
@@ -128,7 +129,10 @@
 				{/if}
 			</div>
 
-			<div class="columns">
+			<!-- Each column has its own effect: a light that follows the pointer round the
+			     first one's border (spotlight sets --x / --y on each column), a beam running
+			     round the second's, and links that slide and pop their icons in the third. -->
+			<div class="columns" {@attach spotlight}>
 				<section aria-labelledby="footer-who">
 					<h3 id="footer-who">{m.footerWho()}</h3>
 					<p>{m.aboutLead()}</p>
@@ -145,11 +149,30 @@
 
 				<section aria-labelledby="footer-elsewhere">
 					<h3 id="footer-elsewhere">{m.footerElsewhere()}</h3>
+					<!-- GitHub's own logo (Simple Icons); LinkedIn's isn't there (removed at
+					     LinkedIn's request), so a briefcase stands for it. -->
 					<ul class="links">
-						{#each profiles as profile (profile.label)}
-							<li><a href={profile.url} rel="external">{profile.label}</a></li>
-						{/each}
-						<li><a href={repository} rel="external">{m.footerSource()}</a></li>
+						<li>
+							<a href={github.url} rel="external">
+								<span class="icon"><BrandIcon icon={siGithub} size="1.25rem" /></span>
+								GitHub
+								<ArrowUpRight class="arrow" aria-hidden="true" />
+							</a>
+						</li>
+						<li>
+							<a href={linkedin.url} rel="external">
+								<span class="icon"><Briefcase aria-hidden="true" /></span>
+								LinkedIn
+								<ArrowUpRight class="arrow" aria-hidden="true" />
+							</a>
+						</li>
+						<li>
+							<a href={repository} rel="external">
+								<span class="icon"><FolderGit aria-hidden="true" /></span>
+								{m.footerSource()}
+								<ArrowUpRight class="arrow" aria-hidden="true" />
+							</a>
+						</li>
 					</ul>
 					<p class="built">{m.footerBuilt()}</p>
 				</section>
@@ -329,7 +352,9 @@
 		max-block-size: min(85vh, 48rem);
 		margin: 0 auto;
 		padding: 0;
-		overflow: auto;
+		/* Scrolls up and down when it's taller than the window, never sideways: a look
+		   that turns in 3D or slides in may poke past the edges for a moment. */
+		overflow: hidden auto;
 		border: var(--border-size-1) solid var(--surface-3);
 		border-block-end: none;
 		border-radius: var(--radius-3) var(--radius-3) 0 0;
@@ -349,34 +374,9 @@
 
 	.top {
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-items: center;
 		gap: var(--size-3);
-	}
-
-	.another {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--size-2);
-		margin-inline-end: auto;
-		padding: var(--size-1) var(--size-3);
-		border: var(--border-size-1) solid var(--surface-3);
-		border-radius: var(--radius-round);
-		background: var(--surface-2);
-		color: var(--text-2);
-		font-family: var(--font-label);
-		font-size: var(--font-size-0);
-		cursor: pointer;
-
-		&:hover {
-			border-color: var(--brand);
-			color: var(--brand);
-		}
-
-		& :global(svg) {
-			inline-size: 1rem;
-			block-size: 1rem;
-		}
 	}
 
 	/* Room for the look while it loads, so the columns don't jump. */
@@ -412,6 +412,7 @@
 	}
 
 	section {
+		position: relative;
 		display: grid;
 		align-content: start;
 		gap: var(--size-2);
@@ -419,6 +420,66 @@
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);
 		background: var(--surface-2);
+	}
+
+	/* The light on a border: a 1px ring over the column's own border (the mask keeps
+	   only the padding box's edge: content-box excluded from the whole). Its
+	   background is the effect. Decoration over the border, not under any text. */
+	section::before {
+		content: '';
+		position: absolute;
+		inset: -1px;
+		padding: 1px;
+		border-radius: inherit;
+		mask:
+			linear-gradient(#000 0 0) content-box exclude,
+			linear-gradient(#000 0 0);
+		pointer-events: none;
+	}
+
+	/* 1. Who I am: a light that follows the pointer (anywhere over the three columns). */
+	section:nth-child(1)::before {
+		background: radial-gradient(
+			14rem circle at var(--x, -100rem) var(--y, -100rem),
+			var(--brand),
+			transparent 70%
+		);
+	}
+
+	/* 2. Hire me: a beam that runs round the border, again and again. A conic gradient
+	   whose start angle is a registered property, so it can be animated. */
+	@property --beam {
+		syntax: '<angle>';
+		inherits: false;
+		initial-value: 0deg;
+	}
+
+	section:nth-child(2)::before {
+		background: conic-gradient(
+			from var(--beam),
+			transparent 0 70%,
+			var(--brand) 85%,
+			transparent 100%
+		);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.panel:popover-open section:nth-child(2)::before {
+			animation: beam 4s linear infinite;
+		}
+	}
+
+	/* Still, the beam is a plain brand border. */
+	@media (prefers-reduced-motion: reduce) {
+		section:nth-child(2)::before {
+			background: var(--brand);
+		}
+	}
+
+	@keyframes beam {
+		to {
+			--beam: 360deg;
+		}
 	}
 
 	h3 {
@@ -443,9 +504,96 @@
 		}
 	}
 
+	/* 3. Elsewhere: each link a row with its icon in a tile. Hovered, the row slides,
+	   the tile takes the brand colour and its icon pops, and an arrow shows the way
+	   out. */
 	.links {
 		display: grid;
 		gap: var(--size-1);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.links a {
+		display: flex;
+		align-items: center;
+		gap: var(--size-3);
+		padding: var(--size-1);
+		border-radius: var(--radius-2);
+		text-decoration: none;
+		color: var(--text-1);
+
+		&:is(:hover, :focus-visible) {
+			background: var(--surface-1);
+			color: var(--brand);
+		}
+	}
+
+	.icon {
+		display: grid;
+		place-items: center;
+		flex: none;
+		inline-size: 2.25rem;
+		block-size: 2.25rem;
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-2);
+		background: var(--surface-1);
+		color: var(--text-1);
+
+		& :global(svg) {
+			inline-size: 1.25rem;
+			block-size: 1.25rem;
+		}
+	}
+
+	.links a:is(:hover, :focus-visible) .icon {
+		border-color: var(--brand);
+		background: var(--brand);
+		color: var(--surface-1);
+	}
+
+	.links :global(.arrow) {
+		inline-size: 1rem;
+		block-size: 1rem;
+		margin-inline-start: auto;
+		opacity: 0;
+	}
+
+	.links a:is(:hover, :focus-visible) :global(.arrow) {
+		opacity: 1;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.links a {
+			transition: translate 300ms var(--ease-spring-3);
+
+			&:is(:hover, :focus-visible) {
+				translate: var(--size-2) 0;
+			}
+		}
+
+		.links a:is(:hover, :focus-visible) .icon :global(svg) {
+			animation: icon-pop 450ms var(--ease-spring-4);
+		}
+
+		.links :global(.arrow) {
+			translate: calc(-1 * var(--size-2)) var(--size-1);
+			transition:
+				opacity 200ms var(--ease-out-3),
+				translate 300ms var(--ease-spring-3);
+		}
+
+		.links a:is(:hover, :focus-visible) :global(.arrow) {
+			translate: 0;
+		}
+	}
+
+	@keyframes icon-pop {
+		40% {
+			scale: 1.35;
+			rotate: -12deg;
+		}
 	}
 
 	.built {

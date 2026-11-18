@@ -4,7 +4,6 @@
 	// finished text at once (the typing is aria-hidden).
 	import { onMount } from 'svelte';
 	import { m } from '#lib/i18n/index.ts';
-	import { tilt } from './tilt.ts';
 	import type { LookProps } from './looks.ts';
 
 	let { photo, linkedin }: LookProps = $props();
@@ -68,7 +67,7 @@
 	);
 </script>
 
-<div class="window tilt-card" {@attach tilt(6)}>
+<div class="window">
 	<div class="bar" aria-hidden="true">
 		<span class="light"></span><span class="light"></span><span class="light"></span>
 		<span class="title">alfonso@portfolio: ~/hire</span>

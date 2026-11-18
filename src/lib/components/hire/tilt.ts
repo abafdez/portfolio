@@ -1,7 +1,7 @@
-// A card that tilts in 3D toward the pointer, used by every look of the hire panel.
+// A card that tilts in 3D toward the pointer (the hire panel's ID card, IdCard.svelte).
 // The attachment writes --rx / --ry (the rotation) and --px / --py (where the pointer
-// is, for the highlight) on the element; the CSS is the global .tilt-card (global.css).
-// Only with a real pointer, and never under reduced motion.
+// is, for the light) on the element, and data-tilting while it follows the pointer;
+// the component's CSS does the rest. Only with a real pointer, never under reduced motion.
 import type { Attachment } from 'svelte/attachments';
 
 export function tilt(max = 8): Attachment<HTMLElement> {

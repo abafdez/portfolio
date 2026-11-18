@@ -4,7 +4,6 @@
 	// number once (the counting is aria-hidden).
 	import { onMount } from 'svelte';
 	import { m } from '#lib/i18n/index.ts';
-	import { tilt } from './tilt.ts';
 	import type { LookProps } from './looks.ts';
 
 	let { photo, linkedin }: LookProps = $props();
@@ -39,7 +38,7 @@
 	}
 </script>
 
-<div class="card tilt-card" {@attach tilt(7)} onpointermove={follow} role="presentation">
+<div class="card" onpointermove={follow} role="presentation">
 	<div class="ring">
 		<enhanced:img src={photo} alt="" sizes="9rem" />
 	</div>
@@ -65,6 +64,7 @@
 	.card {
 		--sx: 50%;
 		--sy: 50%;
+		position: relative;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;

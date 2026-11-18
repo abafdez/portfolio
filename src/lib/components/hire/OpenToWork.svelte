@@ -4,13 +4,13 @@
 	// PalettePicker in the header), and an "Ask on LinkedIn" button that leans toward the
 	// pointer and gives off sparkles.
 	import { m } from '#lib/i18n/index.ts';
-	import { magnet, tilt } from './tilt.ts';
+	import { magnet } from './tilt.ts';
 	import type { LookProps } from './looks.ts';
 
 	let { photo, linkedin }: LookProps = $props();
 </script>
 
-<div class="card tilt-card" {@attach tilt(6)}>
+<div class="card">
 	<p class="status"><span class="dot" aria-hidden="true"></span>{m.hireOpenToWork()}</p>
 	<div class="who">
 		<div class="photo">
