@@ -4,7 +4,7 @@ Every post lives here, drafts too. A draft has `draft: true` in its frontmatter:
 
 ## In the CMS
 
-Posts (drafts too), the Devlog and the Awesome lists can be edited in a CMS ([Sveltia CMS](https://sveltiacms.app/en/docs), dev only): run `pnpm dev` and open `http://localhost:5173/admin` in Chrome or Edge (it needs the File System Access API, which Firefox and Safari don't have). Click "Work with Local Repository" and pick the repo's folder; from WSL, pick "Linux" in the folder picker's sidebar first. It edits the files themselves, so check `git diff` and commit as usual.
+Posts (drafts too), the Devlog and the Awesome lists can be edited in a CMS ([Sveltia CMS](https://sveltiacms.app/en/docs)), on the live site at `https://abafdez.github.io/portfolio/admin/` (sign in with GitHub, see `src/lib/cms/README.md`) or locally: run `pnpm dev` and open `http://localhost:5173/admin` in Chrome or Edge (it needs the File System Access API, which Firefox and Safari don't have). Click "Work with Local Repository" and pick the repo's folder; from WSL, pick "Linux" in the folder picker's sidebar first. It edits the files themselves, so check `git diff` and commit as usual.
 
 - **English and Spanish** are side by side. A new entry starts in English only; switch Spanish on from the three-dot menu when you translate it.
 - **A save changes only what you edited**: the CMS writes files in this repo's own style and runs Prettier on them (`src/lib/content-files.ts`, `src/lib/cms/formats.ts`). After editing frontmatter by hand (in Obsidian, say), run `pnpm content:format` so the files stay in that shape; `pnpm test` fails until they are.

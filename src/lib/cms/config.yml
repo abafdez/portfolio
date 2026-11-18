@@ -1,5 +1,6 @@
-# Sveltia CMS, at /admin in dev only (plugin.ts serves the page; main.ts reads this file
-# and passes it to CMS.init()).
+# Sveltia CMS, at /admin: in dev plugin.ts serves the page, on the live site it's built
+# into build/admin (vite.config.ts in this folder). main.ts reads this file and passes it
+# to CMS.init().
 # Docs: https://sveltiacms.app/en/docs. How to use it: content/blog/posts/README.md.
 
 # The local workflow ("Work with Local Repository") still needs a Git backend here; it
@@ -10,6 +11,13 @@ backend:
   branch: main
   # A published change is one commit on main, not a merge commit plus every save.
   squash_merges: true
+  # "Sign In with GitHub" on the live site goes through Sveltia's authenticator, a
+  # Cloudflare Worker of our own (README.md in this folder, "On the live site"). Until
+  # this is set, sign in with an access token or the local repository instead.
+  # base_url: https://sveltia-cms-auth.<your-subdomain>.workers.dev
+
+# The live site, for the CMS's "view on site" links.
+site_url: https://abafdez.github.io/portfolio
 
 # Signed in with GitHub, every change goes through a pull request: saving commits to a
 # cms/<collection>/<slug> branch, Publish merges it, and CI builds the pull request
