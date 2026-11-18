@@ -30,6 +30,12 @@ export const en = {
 	themeLight: () => 'Light theme',
 	paletteLabel: () => 'Color theme',
 	paletteCredit: ({ name, by }: Name & { by: string }) => `${name} by ${by}`,
+	themeMenuLabel: () => 'Color theme and text size',
+	textSize: () => 'Text size',
+	textSmaller: () => 'Smaller text',
+	textLarger: () => 'Larger text',
+	textReset: () => 'Reset',
+	textResetLabel: () => 'Reset the text size',
 
 	// Cards, posts and code blocks.
 	tagsLabel: () => 'Tags',

@@ -67,6 +67,12 @@
 @layer base {
 	/* The page scrollbar: thin, accent thumb on the page background. Standard
 	   properties (Firefox, Chrome 121+); other browsers keep their default. */
+	/* The text size from the theme menu (text-size.ts): 1 unless the visitor picked
+	   another. A percentage, so it multiplies whatever size the browser is set to. */
+	html {
+		font-size: calc(var(--text-scale, 1) * 100%);
+	}
+
 	html {
 		scrollbar-color: var(--brand) var(--surface-1);
 		scrollbar-width: thin;

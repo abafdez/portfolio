@@ -1,18 +1,28 @@
 <script lang="ts">
-	import { m } from '#lib/i18n/index.ts';
+	import { formatNumber, m } from '#lib/i18n/index.ts';
 	import { onMount } from 'svelte';
 	import PaletteIcon from '@lucide/svelte/icons/palette';
 	import { palettes, defaultPalette, isPalette, type PaletteId } from '#lib/palettes.ts';
 	import { transitionPalette } from '#lib/palette-transitions.ts';
+	import { applyScale, currentScale, defaultScale, scales, step } from '#lib/text-size.ts';
 
 	// Unknown until mounted: the prerendered HTML can't know the visitor's choice.
 	let current = $state<PaletteId>();
+	// The text size (text-size.ts), also unknown until mounted.
+	let scale = $state<number>();
 
 	onMount(() => {
-		// app.html has already put a saved palette on <html>, before the first paint.
+		// app.html has already put a saved palette and text size on <html>, before the
+		// first paint.
 		const saved = document.documentElement.dataset.palette;
 		current = isPalette(saved) ? saved : defaultPalette;
+		scale = currentScale();
 	});
+
+	function resize(next: number) {
+		scale = next;
+		applyScale(next);
+	}
 
 	// A new colour theme, with one of the transitions (palette-transitions.ts), starting
 	// from the radio that was picked: by click or by arrow keys, it's that input.
@@ -42,9 +52,10 @@
      also closes on Escape or a click outside, and focus goes back to the button. -->
 <button
 	type="button"
+	class="open"
 	popovertarget="palettes"
-	aria-label={m.paletteLabel()}
-	title={m.paletteLabel()}
+	aria-label={m.themeMenuLabel()}
+	title={m.themeMenuLabel()}
 	disabled={!current}
 >
 	<PaletteIcon aria-hidden="true" />
@@ -72,6 +83,37 @@
 			</label>
 		{/each}
 	</fieldset>
+
+	<!-- The text size: a step smaller, the size now, a step bigger, back to normal. The
+	     size is an <output>: screen readers hear it change (aria-live). -->
+	<div class="text-size" role="group" aria-labelledby="text-size-label">
+		<span id="text-size-label" class="legend">{m.textSize()}</span>
+		<div class="steps">
+			<button
+				type="button"
+				aria-label={m.textSmaller()}
+				title={m.textSmaller()}
+				disabled={scale === undefined || scale === scales[0]}
+				onclick={() => scale && resize(step(scale, -1))}>A−</button
+			>
+			<output aria-live="polite">{formatNumber(Math.round((scale ?? 1) * 100), 0)}%</output>
+			<button
+				type="button"
+				class="larger"
+				aria-label={m.textLarger()}
+				title={m.textLarger()}
+				disabled={scale === undefined || scale === scales.at(-1)}
+				onclick={() => scale && resize(step(scale, 1))}>A+</button
+			>
+			<button
+				type="button"
+				class="reset"
+				aria-label={m.textResetLabel()}
+				disabled={scale === undefined || scale === defaultScale}
+				onclick={() => resize(defaultScale)}>{m.textReset()}</button
+			>
+		</div>
+	</div>
 </div>
 
 <!-- The glitch's colour split (palette-transitions.ts and .css): the red channel moved
@@ -97,7 +139,7 @@
 </svg>
 
 <style>
-	button {
+	.open {
 		display: grid;
 		place-items: center;
 		inline-size: var(--size-8);
@@ -168,6 +210,59 @@
 
 	input {
 		accent-color: var(--brand);
+	}
+
+	.text-size {
+		margin-block-start: var(--size-3);
+		padding-block-start: var(--size-3);
+		border-block-start: var(--border-size-1) solid var(--surface-3);
+	}
+
+	.legend {
+		display: block;
+		margin-block-end: var(--size-2);
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		color: var(--text-2);
+	}
+
+	.steps {
+		display: flex;
+		align-items: center;
+		gap: var(--size-1);
+	}
+
+	/* Small square keys. */
+	.steps button {
+		min-inline-size: var(--size-7);
+		padding: var(--size-1) var(--size-2);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-2);
+		background: var(--surface-1);
+		color: var(--text-1);
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		cursor: pointer;
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: default;
+		}
+	}
+
+	.steps .larger {
+		font-size: var(--font-size-1);
+	}
+
+	.steps .reset {
+		margin-inline-start: auto;
+	}
+
+	output {
+		min-inline-size: 4ch;
+		font-family: var(--font-label);
+		font-size: var(--font-size-0);
+		text-align: center;
 	}
 
 	/* No size and out of the way, but not display: none, which can switch filters off. */

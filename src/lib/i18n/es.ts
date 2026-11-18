@@ -26,6 +26,12 @@ export const es = {
 	themeLight: () => 'Tema claro',
 	paletteLabel: () => 'Tema de color',
 	paletteCredit: ({ name, by }: Name & { by: string }) => `${name}, de ${by}`,
+	themeMenuLabel: () => 'Tema de color y tamaño del texto',
+	textSize: () => 'Tamaño del texto',
+	textSmaller: () => 'Texto más pequeño',
+	textLarger: () => 'Texto más grande',
+	textReset: () => 'Restablecer',
+	textResetLabel: () => 'Restablecer el tamaño del texto',
 
 	tagsLabel: () => 'Etiquetas',
 	minutesRead: ({ minutes }: { minutes: number }) => `${minutes} min de lectura`,
