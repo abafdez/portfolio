@@ -1,5 +1,6 @@
-// Serves build/ the way GitHub Pages does, for the e2e tests (playwright.config.ts) and
-// for looking at a build by hand: `BASE_PATH=/portfolio node scripts/serve.ts`.
+// Serves build/ the way GitHub Pages does: `pnpm preview` (after
+// `BASE_PATH=/portfolio pnpm build`, run it with the same BASE_PATH) and the e2e tests
+// (playwright.config.ts). Port 4173 like vite preview, or --port 4180, or PORT=4180.
 // Not `vite preview`: it serves .svelte-kit/output, so whatever is added to build/ after
 // SvelteKit (the CMS at /admin, Pagefind's search index) isn't there.
 //
@@ -11,7 +12,8 @@ import { extname, join, normalize } from 'node:path';
 
 const root = join(import.meta.dirname, '..', 'build');
 const base = process.env.BASE_PATH ?? '';
-const port = Number(process.env.PORT ?? 4174);
+const flag = process.argv.indexOf('--port');
+const port = Number(flag > 0 ? process.argv[flag + 1] : (process.env.PORT ?? 4173));
 
 const types: Record<string, string> = {
 	'.html': 'text/html; charset=utf-8',

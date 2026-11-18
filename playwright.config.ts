@@ -8,7 +8,7 @@ import { defineConfig, devices } from '@playwright/test';
 // (test:e2e sets it; CI passes the repo name), so the tests catch links that forget
 // it (dev has no base path).
 const base = process.env.BASE_PATH ?? '/portfolio';
-// Not 4173 (vite preview's default), so a preview you have open doesn't get in the way.
+// Not 4173 (pnpm preview's default), so a preview you have open doesn't get in the way.
 const port = 4174;
 
 export default defineConfig({

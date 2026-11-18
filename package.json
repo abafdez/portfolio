@@ -14,7 +14,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && vite build -c src/lib/cms/vite.config.ts && pagefind --site build",
-		"preview": "vite preview",
+		"preview": "node scripts/serve.ts",
 		"prepare": "svelte-kit sync || echo ''",
 		"postinstall": "node scripts/image-cache-link.ts",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
