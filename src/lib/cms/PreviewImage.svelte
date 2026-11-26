@@ -1,11 +1,11 @@
 <script lang="ts">
 	// A markdown image in the CMS preview. The build turns ./files into imports
-	// (enhanced-img); here they come from Sveltia (getAsset), which the preview hands down
-	// as a context (mdsvex.svelte.ts).
-	import { getContext } from 'svelte';
+	// (enhanced-img); here they come from Sveltia (getAsset), as the media the preview
+	// hands down (mdsvex/context.ts).
+	import { markdownMedia } from '#lib/mdsvex/context.ts';
 
 	let { src, alt, title }: { src: string; alt: string; title?: string } = $props();
-	const asset = getContext<(path: string) => string>('preview-asset');
+	const media = markdownMedia();
 </script>
 
-<img src={asset(src)} {alt} {title} loading="lazy" />
+<img src={media().url('', src)} {alt} {title} loading="lazy" />

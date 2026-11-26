@@ -16,8 +16,8 @@
 // unit-tested (blocks.test.ts).
 import { parse } from 'yaml';
 
-// What a field may hold. A file is a path next to the post (./clip.mp4): parse.ts lists it
-// and media.server.ts loads it, so a missing file fails the build.
+// What a field may hold. A file is a path next to the post (./clip.mp4): mdsvex/blocks.ts lists it
+// and mdsvex/media.ts loads it, so a missing file fails the build.
 // A youtube is a link to a video on youtube.com or youtu.be.
 type Kind = 'text' | 'file' | 'size' | 'youtube';
 type Field = { kind: Kind; required: boolean };

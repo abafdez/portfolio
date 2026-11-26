@@ -6,24 +6,31 @@
 // That module imports Svelte's runtime and our components by name ('svelte/internal/client',
 // 'preview:components'). The browser can't resolve those names, so each is swapped for a
 // blob: module that hands out this bundle's own copy (the same Svelte that mounts it).
+import * as svelteApi from 'svelte';
 import { mount, unmount, type Component } from 'svelte';
 import { client } from './svelte-runtime.ts';
 import { compile } from 'mdsvex/compile';
 import { create_highlight, load_default_languages, type HighlightConfig } from 'mdsvex/highlight';
 import * as components from '#lib/mdsvex/components.ts';
 import { compileOptions } from '#lib/mdsvex/options.ts';
-import { markdownLocaleContext } from '#lib/mdsvex/locale.ts';
+import * as blockComponents from '#lib/mdsvex/blocks/index.ts';
+import { markdownContext } from '#lib/mdsvex/context.ts';
+import type { Media } from '#lib/markdown/media.ts';
 import type { Locale } from '#lib/i18n/locales.ts';
 import PreviewImage from './PreviewImage.svelte';
 
-// The build's replacements, plus images drawn from Sveltia's files.
+// The build's replacements, plus images drawn from Sveltia's files (the build's are imports).
 const replacements: Record<string, unknown> = { ...components, img: PreviewImage };
 
 // What a compiled post may import, by the name it imports it under.
 const modules: Record<string, Record<string, unknown>> = {
 	'svelte/internal/client': client,
+	// A post whose plugins left data sets it as a context (mdsvex writes the import).
+	svelte: svelteApi,
 	'svelte/internal/disclose-version': {},
-	'preview:components': replacements
+	'preview:components': replacements,
+	// The blocks plugin's components (mdsvex/blocks.ts), under the module name it gives.
+	'/src/lib/mdsvex/blocks/index.ts': blockComponents
 };
 
 declare global {
@@ -104,12 +111,14 @@ type ReactLike = {
 	useEffect: (effect: () => void | (() => void), deps: unknown[]) => void;
 };
 
-// Sveltia's asset URLs, as state: it answers with an empty URL while it reads a file and
-// draws the template again when it has it, so the images follow.
+// The files next to the post, from Sveltia (getAsset), as the media the components ask
+// (context.ts). State: Sveltia answers with an empty URL while it reads a file and draws
+// the template again when it has it, so the pictures and videos follow.
 function assetState(initial: (path: string) => string) {
 	let asset = $state.raw(initial);
+	const media: Media = { picture: (_file, src) => asset(src), url: (_file, src) => asset(src) };
 	return {
-		url: (path: string) => asset(path),
+		media: () => media,
 		set: (next: (path: string) => string) => void (asset = next)
 	};
 }
@@ -137,11 +146,8 @@ export function mdsvexBody(React: ReactLike) {
 		React.useEffect(() => {
 			const app = mount(component, {
 				target: target.current!,
-				// Images from Sveltia's files; links in the file's language.
-				context: new Map<unknown, unknown>([
-					['preview-asset', assets.current!.url],
-					markdownLocaleContext(() => locale)
-				])
+				// Links in the file's language; images and blocks' files from Sveltia.
+				context: markdownContext(() => locale, assets.current!.media)
 			});
 			return () => void unmount(app);
 		}, [component]);

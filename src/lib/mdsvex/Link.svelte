@@ -8,7 +8,7 @@
 	// At run time, not when mdsvex compiles: one compiled body serves every language.
 	import type { Snippet } from 'svelte';
 	import { sitePath } from '#lib/i18n/locales.ts';
-	import { markdownLocale } from './locale.ts';
+	import { markdownLocale } from './context.ts';
 
 	interface Props {
 		href: string;

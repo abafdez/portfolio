@@ -4,12 +4,14 @@
 	import { blogTag } from '#lib/links.ts';
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import { copyCode } from '#lib/markdown/copy.ts';
-	import { setMarkdownLocale } from '#lib/mdsvex/locale.ts';
+	import { setMarkdownLocale, setMarkdownMedia } from '#lib/mdsvex/context.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 	// Links in the body go to pages in this page's language (mdsvex/Link.svelte).
 	setMarkdownLocale(getLocale);
+	// Its blocks' files (videos, thumbnails), loaded in +page.ts.
+	setMarkdownMedia(() => data.media);
 	let { post, body: Body, cover } = $derived(data);
 	// An English post on a Spanish page (not translated yet): the body says it's English.
 	const lang = $derived(post.locale !== getLocale() ? languageTags[post.locale] : undefined);
