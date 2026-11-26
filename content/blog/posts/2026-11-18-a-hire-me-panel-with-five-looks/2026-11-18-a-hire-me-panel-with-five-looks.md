@@ -1,6 +1,5 @@
 ---
 title: A hire-me panel with five looks
-draft: true
 date: 2026-11-18
 tags: [svelte, animation, css, accessibility]
 description: 'My footer now opens a panel about me and how to hire me, with a top card that changes look every time: a terminal, a spotlight, a business card, an open-to-work card and an ID card in 3D. How each one works, and how to keep five effects calm.'

@@ -1,6 +1,5 @@
 ---
 title: Markdown drawn by my own Svelte components
-draft: true
 date: 2026-11-11
 tags: [markdown, svelte, sveltekit, performance]
 description: I replaced mdsvex with svelte-markdown. Posts are rendered on the server by my own components, the CMS preview mounts the same ones, and every page got lighter.

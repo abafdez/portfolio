@@ -6,7 +6,7 @@ reviewed: false
 
 Mi caja de herramientas ya tiene una tabla de símbolos HTML, y cada símbolo muestra sus **bytes UTF-8**: © es `C2 A9`, € es `E2 82 AC`, 😀 es `F0 9F 98 80`. ¿Por qué un carácter ocupa dos bytes, otro tres y otro cuatro? Eso es UTF-8, la codificación del 99,1 % de la web ([W3Techs](https://w3techs.com/technologies/overview/character_encoding), noviembre de 2026), y merece la pena entenderla una vez.
 
-Si prefieres verlo a leerlo, Dylan Beattie cuenta toda la historia, de los primeros telégrafos británicos a la ortografía danesa y las matrículas ucranianas, en esta charla (en inglés):
+Si prefieres verlo a leerlo, Dylan Beattie cuenta toda la historia, de los primeros telégrafos británicos a la ortografía danesa y las matrículas ucranianas (PIKE MATCHBOX), en esta charla (en inglés):
 
 ```yt
 src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo

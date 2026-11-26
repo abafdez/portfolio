@@ -1,6 +1,5 @@
 ---
 title: My CMS from npm, and three traps on the way
-draft: true
 date: 2026-11-11
 tags: [cms, vite, svelte, react]
 description: 'Importing Sveltia CMS from npm instead of serving its files made my setup half the size. On the way: a deadlock with no error, a bundler that lost the fonts, and a React effect that returned the wrong thing.'

@@ -1,6 +1,5 @@
 ---
 title: Least privilege for a GitHub Pages workflow
-draft: true
 date: 2026-11-18
 tags: [ci, security, github]
 description: My build job could push to main, and it runs code from hundreds of packages. Splitting the one job that writes from the ones that build, pinning actions to commits, and a faster smoke test on the runner's own Chrome.

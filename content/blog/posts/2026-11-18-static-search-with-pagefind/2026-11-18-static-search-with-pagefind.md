@@ -1,6 +1,5 @@
 ---
 title: Static search with Pagefind, and results that fly into the page
-draft: true
 date: 2026-11-18
 tags: [search, sveltekit, view-transitions, animation]
 description: Search on a static site with no server, in two languages, from a button in the header. Then the animations, and the trap of morphing a search result into a page while the search box is still on screen.

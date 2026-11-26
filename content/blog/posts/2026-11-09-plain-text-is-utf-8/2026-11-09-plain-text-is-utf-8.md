@@ -1,6 +1,5 @@
 ---
 title: 'Plain text is never plain: UTF-8 in one post'
-draft: true
 date: 2026-11-09
 tags: [unicode, encoding, html]
 description: Characters, code points and bytes are three different things. How UTF-8 turns one into the other, why "ñ" sometimes shows up as "Ã±", and what it means for HTML, CSS and JavaScript.
@@ -8,7 +7,7 @@ description: Characters, code points and bytes are three different things. How U
 
 My toolbox has an HTML symbols table now, and every symbol in it lists its **UTF-8 bytes**: © is `C2 A9`, € is `E2 82 AC`, 😀 is `F0 9F 98 80`. Why does one character take two bytes, another three, another four? That's UTF-8, the encoding of 99.1% of the web ([W3Techs](https://w3techs.com/technologies/overview/character_encoding), November 2026), and it's worth understanding once.
 
-If you'd rather watch than read, Dylan Beattie tells the whole story, from early British telegraphs to Danish spelling and Ukrainian number plates, in this talk:
+If you'd rather watch than read, Dylan Beattie tells the whole story, from early British telegraphs to Danish spelling and Ukrainian number plates (PIKE MATCHBOX), in this talk:
 
 ```yt
 src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo

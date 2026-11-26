@@ -1,6 +1,5 @@
 ---
 title: A light theme that looks like paper
-draft: true
 date: 2026-11-18
 tags: [css, design-tokens, color, accessibility]
 description: My light theme was the dark one with the lights on. The first fix was too loud; comparing three directions with screenshots found the right one, ink green on warm white, and a test makes sure the grid never takes text below 4.5:1.

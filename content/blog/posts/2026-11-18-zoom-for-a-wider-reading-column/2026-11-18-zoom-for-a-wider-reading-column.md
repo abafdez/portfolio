@@ -1,6 +1,5 @@
 ---
 title: Zoom for a wider reading column, and a text size control
-draft: true
 date: 2026-11-18
 tags: [css, accessibility, layout, fonts]
 description: Full screen on a big monitor, my pages were a narrow strip. Wider pages, a reading column that keeps 80 characters a line but grows, a text size control that's restored before the first paint, and one font fewer.

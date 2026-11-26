@@ -1,6 +1,5 @@
 ---
 title: A CMS on a GitHub Pages site
-draft: true
 date: 2026-11-18
 tags: [cms, github, security, vite]
 description: My CMS only ran in development. Now it's built into the live site at /admin, as a second Vite build, and GitHub sign-in goes through a small Cloudflare Worker that keeps the one secret a static site can't.
