@@ -35,6 +35,10 @@ export function cms(): Plugin {
 					'yaml',
 					'marked',
 					'@humanspeak/svelte-markdown', // the preview's renderers (src/lib/markdown/)
+					// The preview compiles posts in the browser (mdsvex.svelte.ts).
+					'mdsvex/compile',
+					'mdsvex/highlight',
+					'svelte/compiler',
 					'lucide',
 					'prettier/standalone',
 					'prettier/plugins/markdown',
