@@ -1,13 +1,16 @@
-// The files next to the posts and Devlog entries, for the renderers (media.ts), on the server only:
-// what a page gets is the HTML that points at the files, not this list.
-// Lazy globs: each file is imported only when a post uses it, before rendering (a
-// renderer can't wait). Every file a glob matches still goes into
+// The files next to the posts and Devlog entries that our blocks name (```video's src,
+// webm and poster, ```yt's thumbnail), for their components. The blocks plugin lists a
+// post's files (blocks.ts); the [slug] pages' +page.ts loads them before the page shows,
+// on the server while prerendering and in the browser on navigation.
+// (A markdown image doesn't need this: mdsvex imports it from the post itself.)
+// Lazy globs: each file is its own chunk, fetched only by a post that uses it, before
+// rendering (a component can't wait). Every file a glob matches still goes into
 // the build, used or not, so drafts' files are left out with '!/:drafts:' (drafts.ts).
 // Covers are left out (covers.server.ts has them, at the sizes cards need). '!**/cover.*',
 // not '!/content/**/cover.*': a negative pattern that starts with / and has ** in the
 // middle excludes nothing.
 import type { Picture } from '@sveltejs/enhanced-img';
-import type { Media } from './media.ts';
+import type { Media } from '#lib/markdown/media.ts';
 
 type Load<T> = () => Promise<T>;
 
@@ -18,7 +21,8 @@ const pictures: Record<string, Load<Picture>> = import.meta.glob<Picture>(
 		'!**/cover.*',
 		'!/:drafts:'
 	],
-	{ import: 'default', query: { enhanced: true } }
+	// ?enhanced, as mdsvex writes it: an image a post also shows is the same module.
+	{ import: 'default', query: '?enhanced' }
 );
 
 const files: Record<string, Load<string>> = import.meta.glob<string>(
@@ -34,7 +38,7 @@ const missing = (file: string, src: string): never => {
 	throw new Error(`${file}: ${src} isn't next to the post`);
 };
 
-// The files a post uses (parse.ts lists them), loaded, as a Media its renderers can ask
+// The files a post's blocks use, loaded, as a Media its renderers can ask
 // without waiting. A missing file fails the build here, naming the post.
 export async function mediaFor(file: string, sources: Iterable<string>): Promise<Media> {
 	const found = new Map<string, Picture | string>();

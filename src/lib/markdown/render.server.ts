@@ -8,7 +8,7 @@ import { readEntry } from '#lib/content-files.ts';
 import type { Locale } from '#lib/i18n/locales.ts';
 import Markdown from './Markdown.svelte';
 import { parse } from './parse.ts';
-import { mediaFor } from './media.server.ts';
+import { mediaFor } from '#lib/mdsvex/media.ts';
 import type { Media } from './media.ts';
 
 // text: the whole file, frontmatter included. file: its path (/content/…/<slug>.md),

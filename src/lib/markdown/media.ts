@@ -1,7 +1,7 @@
 // How a renderer finds a file written next to a post (./diagram.png, ./clip.mp4).
 // An interface, not globs, so the same renderers can run where the files come from
-// somewhere else: the build uses media.server.ts (Vite's globs); the CMS preview could
-// answer with Sveltia's getAsset() later.
+// somewhere else: the site uses mdsvex/media.ts (Vite's globs); the CMS preview
+// answers with Sveltia's getAsset().
 import type { Picture } from '@sveltejs/enhanced-img';
 
 export interface Media {
