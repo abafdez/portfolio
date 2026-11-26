@@ -39,8 +39,8 @@ function hostedCovers(): Plugin {
 
 export default defineConfig({
 	root: here('.'),
-	// Only warnings and errors: the full report lists ~530 files (Shiki's languages,
-	// Sveltia's locales) and would bury the site's build in the CI log.
+	// Only warnings and errors: the full report lists hundreds of files (Sveltia's
+	// locales and lazy chunks) and would bury the site's build in the CI log.
 	logLevel: 'warn',
 	base: `${base}/admin/`,
 	publicDir: false,

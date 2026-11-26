@@ -618,9 +618,11 @@
 			}
 
 			/* Long lines wrap instead of scrolling, even inside a long word or URL. Nothing
-			   scrolls, so Shiki's tabindex="0" is removed (shiki.ts). */
+			   scrolls, so the block doesn't need to be focusable. */
 			& pre {
 				padding: var(--size-3);
+				background-color: var(--code-background);
+				color: var(--code-foreground);
 				font-size: var(--font-size-1);
 				white-space: pre-wrap;
 				overflow-wrap: anywhere;
@@ -630,7 +632,7 @@
 
 			/* Line numbers: a CSS counter, so they're never copied. Each line is a full-width
 			   inline-block with room for its number on the left: a line that wraps continues
-			   under its own text, not under the number. (inline-block, not block: Shiki puts
+			   under its own text, not under the number. (inline-block, not block: there's
 			   a newline between the lines, and in a <pre> that would add an empty line after
 			   every one.) The number is pulled into that room with a negative margin rather
 			   than position: absolute, so an empty line still holds its number. */
@@ -638,13 +640,13 @@
 				counter-reset: line;
 			}
 
-			& .line {
+			& .l {
 				display: inline-block;
 				inline-size: 100%;
 				padding-inline-start: 4ch;
 			}
 
-			& .line::before {
+			& .l::before {
 				counter-increment: line;
 				content: counter(line);
 				display: inline-block;
@@ -655,12 +657,86 @@
 			}
 
 			/* A one-line block (a single command) doesn't need a number. */
-			& .line:only-child {
+			& .l:only-child {
 				padding-inline-start: 0;
 			}
 
-			& .line:only-child::before {
+			& .l:only-child::before {
 				content: none;
+			}
+
+			/* Token colours. twinkleplop (src/lib/markdown/highlight.ts) gives every token a
+			   class for its type, the same names in every language; each type gets one of
+			   our --code-* tokens, so code follows the theme and every palette. Types not
+			   listed (identifiers, parameters, variables, plain text) keep the foreground. */
+			& .tok {
+				&.comment {
+					color: var(--code-comment);
+				}
+
+				/* Operators (= => ! ?) are muted like punctuation: the words matter more. */
+				&:is(.punctuation, .operator, .heading_marker, .list_marker, .blockquote_marker) {
+					color: var(--code-punctuation);
+				}
+
+				/* { } around Svelte expressions, {#if}, on:, @media. */
+				&:is(.keyword, .expression, .svelte_block, .svelte_directive, .directive) {
+					color: var(--code-keyword);
+				}
+
+				&:is(.string, .template, .regex, .inserted, .code, .url) {
+					color: var(--code-string);
+				}
+
+				&:is(.function, .builtin, .decorator) {
+					color: var(--code-function);
+				}
+
+				/* Numbers, true/false, units, escapes; CSS selectors for classes, ids and
+				   pseudo-classes, and HTML attribute names (Shiki coloured those the same). */
+				&:is(
+					.number,
+					.boolean,
+					.null,
+					.constant,
+					.unit,
+					.entity,
+					.string_escape,
+					.datetime,
+					.attr_name,
+					.attribute,
+					.selector_class,
+					.selector_id,
+					.selector_pseudo
+				) {
+					color: var(--code-constant);
+				}
+
+				/* Types, and the names on the left of "name: value": CSS properties and
+				   custom properties, JSON and YAML keys. */
+				&:is(.type, .class_name, .namespace, .property, .css_variable) {
+					color: var(--code-type);
+				}
+
+				/* HTML tags, element selectors in CSS, removed lines in a diff. */
+				&:is(.tag_name, .selector, .doctype, .deleted) {
+					color: var(--code-tag);
+				}
+			}
+
+			/* The same class means different things in different languages. In scripts,
+			   `property` is any obj.name and `constant` any const binding: plain text, as
+			   before. A CSS value word (none, auto) is a constant, a YAML value a string. */
+			&:is([data-lang='ts'], [data-lang='js'], [data-lang='svelte']) .tok:is(.property, .constant) {
+				color: var(--code-foreground);
+			}
+
+			&[data-lang='css'] .tok.identifier {
+				color: var(--code-constant);
+			}
+
+			&:is([data-lang='yaml'], [data-lang='yml']) .tok.identifier {
+				color: var(--code-string);
 			}
 		}
 	}

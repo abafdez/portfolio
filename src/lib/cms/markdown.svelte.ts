@@ -40,9 +40,6 @@ export function markdownBody(React: ReactLike) {
 					get locale() {
 						return current.locale;
 					},
-					get highlighter() {
-						return current.highlighter;
-					},
 					get media() {
 						return current.media;
 					}

@@ -128,16 +128,6 @@ describe('HTML in the text', () => {
 	});
 });
 
-describe('code languages', () => {
-	test('collected for Shiki, without our blocks', () => {
-		const { languages } = parse(
-			'```ts\na\n```\n\n```yt\nsrc: https://youtu.be/gd5uJ7Nlvvo\ntitle: A talk\n```\n\n> ```css\n> b\n> ```',
-			'post.md'
-		);
-		expect([...languages].sort()).toEqual(['css', 'ts']);
-	});
-});
-
 describe('files next to the post', () => {
 	test("images and our blocks' file fields, so they can be loaded before rendering", () => {
 		const { files } = parse(

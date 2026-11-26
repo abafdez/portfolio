@@ -31,7 +31,7 @@ Sveltia keeps the token in the browser's storage for `abafdez.github.io`, which 
 - `content/awesome/<slug>.yaml`: the Awesome lists, a folder collection (New makes a list, its file name from the English title), every text `{ en, es }`, an icon picked with the icon picker.
 - `content/site.yaml`: the site settings (name, tagline, role, hiring texts, contact email, profile links), a singleton ("Site settings" in the sidebar), read by `src/lib/site.ts`.
 
-The site renders them with [svelte-markdown](https://markdown.svelte.page) (marked's tokens drawn by Svelte components), on the server: `src/lib/markdown/` has the parsing (`parse.ts`: callouts, figures, checks), the renderers, Shiki and enhanced-img. HTML written in a post fails the build: every element comes from a renderer.
+The site renders them with [svelte-markdown](https://markdown.svelte.page) (marked's tokens drawn by Svelte components), on the server: `src/lib/markdown/` has the parsing (`parse.ts`: callouts, figures, checks), the renderers, twinkleplop and enhanced-img. HTML written in a post fails the build: every element comes from a renderer.
 
 ## The files
 
@@ -83,16 +83,16 @@ They're edited in a dialog (`mode: 'dialog'`). A ` ````md ` example containing a
 
 ## The preview
 
-The site's markdown depends on its own code: callouts, code-block components, Shiki with its own theme, covers. Sveltia's default preview doesn't know them, so posts and dev-log entries get a preview template that runs that code (dev and hosted):
+The site's markdown depends on its own code: callouts, code-block components, highlighting with twinkleplop coloured by our tokens, covers. Sveltia's default preview doesn't know them, so posts and dev-log entries get a preview template that runs that code (dev and hosted):
 
 ```text
-entry data (every change) → preview.ts → parse() + Shiki's languages
+entry data (every change) → preview.ts → parse()
                           → <Markdown> mounted live (markdown.svelte.ts) + header, in the preview frame
                                          ↑
                     the site's own src/lib/markdown/: the same code that renders the page
 ```
 
-- `preview.ts` parses the body with the site's `parse()` about 150 ms after the typing pauses, loads the code's languages, and hands the tokens to `markdown.svelte.ts`. That mounts the site's own `Markdown.svelte` (svelte-markdown and our renderers) into the frame from a React component, with the props behind getters over a `$state.raw` value. The page and the preview are drawn by the same components: in the build they're rendered to HTML on the server, here they run in the browser.
+- `preview.ts` parses the body with the site's `parse()` about 150 ms after the typing pauses and hands the tokens to `markdown.svelte.ts`. That mounts the site's own `Markdown.svelte` (svelte-markdown and our renderers) into the frame from a React component, with the props behind getters over a `$state.raw` value. The page and the preview are drawn by the same components: in the build they're rendered to HTML on the server, here they run in the browser.
 - `parse()` throws everything the build would stop on (HTML in the text, an unknown callout, a block with a wrong field, an image without alt text or from another site): the preview shows that error instead of the body.
 - `./` files go through `getAsset()` on every render, as a `Media` the renderers ask (`src/lib/markdown/media.ts`; the build's is `media.server.ts`). A picture is shown as it is: enhanced-img's copies only exist in the build.
 - It also draws the post's header (date, reading time from the site's `readingTime()`, title, description, tags, and the cover: one just added, from `getAsset()`, or the saved one from `covers.ts`).

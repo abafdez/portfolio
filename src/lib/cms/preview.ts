@@ -5,7 +5,6 @@ import { localizePath, type Locale } from '#lib/i18n/locales.ts';
 import { readingTime } from '#lib/reading-time.ts';
 import { coverOf } from './covers.ts';
 import { parse } from '#lib/markdown/parse.ts';
-import { loadLanguages, type Highlighter } from '#lib/markdown/shiki.ts';
 import type { Media } from '#lib/markdown/media.ts';
 import type { Token } from 'marked';
 import { markdownBody } from './markdown.svelte.ts';
@@ -76,22 +75,18 @@ export function articlePreview(React: ReactLike) {
 		const values = valuesOf(entry, locale);
 		const file = fileOf(entry, locale) || `new${locale === 'es' ? '.es' : ''}.md`;
 		const body = String(values.body ?? '');
-		const [ready, setReady] = React.useState<{ tokens: Token[]; highlighter: Highlighter } | null>(
-			null
-		);
+		const [ready, setReady] = React.useState<{ tokens: Token[] } | null>(null);
 		const [problem, setProblem] = React.useState('');
 
-		// Parsed again after each pause in the typing, with the code's languages loaded (the
-		// build does the same before rendering); the last good body stays meanwhile. parse()
+		// Parsed again after each pause in the typing; the last good body stays meanwhile. parse()
 		// throws everything the build would stop on: that's shown instead of the post.
 		React.useEffect(() => {
 			let stale = false;
-			const timer = setTimeout(async () => {
+			const timer = setTimeout(() => {
 				try {
-					const { tokens, languages } = parse(body, file);
-					const highlighter = await loadLanguages(languages);
+					const { tokens } = parse(body, file);
 					if (stale) return;
-					setReady({ tokens, highlighter });
+					setReady({ tokens });
 					setProblem('');
 				} catch (error) {
 					if (!stale) setProblem((error as Error).message);

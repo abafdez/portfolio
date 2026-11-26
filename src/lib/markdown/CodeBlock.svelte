@@ -1,5 +1,5 @@
 <script lang="ts">
-	// A code block: a bar with the language and a copy button, then the <pre> Shiki made.
+	// A code block: a bar with the language and a copy button, then the <pre> twinkleplop made.
 	// It's rendered on the server into plain HTML (render.server.ts), which shapes it:
 	// - no <style>: CSS from a component only the server uses never reaches the page, so
 	//   its styles are in global.css (.prose .code-block);
@@ -22,7 +22,8 @@
 	const t = $derived({ en, es }[locale]);
 </script>
 
-<figure class="code-block">
+<!-- data-lang: some token colours depend on the language (global.css). -->
+<figure class="code-block" data-lang={lang}>
 	<!-- data-pagefind-ignore: the language name and "copy" aren't worth finding. -->
 	<figcaption data-pagefind-ignore>
 		<span>{lang}</span>

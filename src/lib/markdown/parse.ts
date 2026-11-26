@@ -4,9 +4,9 @@
 //   - a blockquote that starts with [!type] becomes a `callout` token (callouts.ts has
 //     the types and why they're GitHub's five);
 //   - an image with a title, alone in its paragraph, becomes a `figure` with a caption;
-//   - the languages of the code blocks, so Shiki can load them before rendering (a
-//     Svelte component can't wait for anything while it renders), and for the same
-//     reason the files next to the post it uses (images, a block's video);
+//   - the files next to the post it uses (images, a block's video), so they can be
+//     found before rendering (a Svelte component can't wait for anything while it
+//     renders);
 //   - HTML written in the text fails the build: it has to go in backticks. Nothing in a
 //     post reaches the page as raw markup: every element comes from one of our renderers;
 //   - so does an image without alt text, or one that isn't next to the post.
@@ -43,7 +43,6 @@ export interface Figure {
 
 export interface Parsed {
 	tokens: Token[];
-	languages: Set<string>; // of the code blocks, without our ```video-style blocks
 	files: Set<string>; // ./files the post uses: images, and our blocks' file fields
 }
 
@@ -51,7 +50,7 @@ type Found = Omit<Parsed, 'tokens'>;
 
 export function parse(markdown: string, file: string): Parsed {
 	const tokens = new Lexer({ gfm: true }).lex(markdown) as Token[];
-	const found: Found = { languages: new Set(), files: new Set() };
+	const found: Found = { files: new Set() };
 	return { tokens: walk(tokens, file, found), ...found };
 }
 
@@ -65,8 +64,7 @@ function walk(tokens: Token[], file: string, found: Found): Token[] {
 		}
 		if (token.type === 'code' && token.lang) {
 			const block = readBlock(token.lang, (token as Tokens.Code).text, file);
-			if (!block) found.languages.add(token.lang);
-			else {
+			if (block) {
 				for (const [name, field] of Object.entries(blocks[block.name].fields)) {
 					const value = block.values[name];
 					if (field.kind === 'file' && typeof value === 'string') found.files.add(value);

@@ -1,7 +1,7 @@
 // The files next to the posts and Devlog entries, for the renderers (media.ts), on the server only:
 // what a page gets is the HTML that points at the files, not this list.
 // Lazy globs: each file is imported only when a post uses it, before rendering (a
-// renderer can't wait, like Shiki's languages). Every file a glob matches still goes into
+// renderer can't wait). Every file a glob matches still goes into
 // the build, used or not, so drafts' files are left out with '!/:drafts:' (drafts.ts).
 // Covers are left out (covers.server.ts has them, at the sizes cards need). '!**/cover.*',
 // not '!/content/**/cover.*': a negative pattern that starts with / and has ** in the

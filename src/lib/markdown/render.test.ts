@@ -33,10 +33,12 @@ describe('renderMarkdown', () => {
 	test('a code block is highlighted, with its language and a hidden copy button', async () => {
 		const out = await html('```ts\nconst a = 1;\n```');
 		expect(out).toMatch(
-			/^<figure class="code-block"><figcaption data-pagefind-ignore=""><span>ts<\/span>/
+			/^<figure class="code-block" data-lang="ts"><figcaption data-pagefind-ignore=""><span>ts<\/span>/
 		);
 		expect(out).toContain('<button type="button" hidden="" data-copy=""');
-		expect(out).toContain('<pre class="shiki tokens"');
+		expect(out).toContain(
+			'<pre class="twinkleplop"><code><span class="l"><span class="tok keyword">const</span>'
+		);
 		expect(out).not.toContain('tabindex');
 		expect(out).not.toContain('<!--'); // Svelte's hydration markers are gone
 	});
