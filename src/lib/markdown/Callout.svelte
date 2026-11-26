@@ -1,6 +1,6 @@
 <script lang="ts">
-	// > [!tip] … as a box (parse.ts makes the token; callouts.ts has the types). Its first
-	// child is the title (CalloutTitle), then the text.
+	// > [!tip] … as a box (a parse plugin marks the blockquote, mdsvex/plugins.ts; callouts.ts
+	// has the types). Its first child is the title (CalloutTitle), then the text.
 	import type { Snippet } from 'svelte';
 	import type { CalloutType } from '#lib/callouts.ts';
 

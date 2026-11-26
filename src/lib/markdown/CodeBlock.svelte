@@ -1,8 +1,8 @@
 <script lang="ts">
 	// A code block: a bar with the language and a copy button, then the <pre> twinkleplop made.
-	// It's rendered on the server into plain HTML (render.server.ts), which shapes it:
-	// - no <style>: CSS from a component only the server uses never reaches the page, so
-	//   its styles are in global.css (.prose .code-block);
+	// Made when post bodies were HTML from the server, and still fine now that they're
+	// components (mdsvex):
+	// - its styles are in global.css (.prose .code-block), with the rest of the body's;
 	// - no script: the button is in the HTML, hidden, and copy.ts makes it work once JS
 	//   runs (and only if the browser can copy). Its texts come along as data-*.
 	import type { Snippet } from 'svelte';

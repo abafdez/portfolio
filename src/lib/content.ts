@@ -261,14 +261,6 @@ export const isTranslated = (entry: { locales: Locale[] }) =>
 export const allPosts = toList<PostMeta>(posts);
 export const allLog = toList<LogMeta>(log);
 
-// A file's text as written, frontmatter included: the [slug] pages render its body on
-// the server (render.server.ts).
-export function sourceOf(path: string): string {
-	const text = posts[path] ?? log[path];
-	if (text === undefined) throw new Error(`${path}: no such content file`);
-	return text;
-}
-
 // Every tag a post uses, once, A to Z. The tag pages are made from this list, so in a
 // build (no drafts) a tag that only drafts use has no page.
 export const postTags = [...new Set(allPosts.flatMap((post) => post.tags ?? []))].sort();

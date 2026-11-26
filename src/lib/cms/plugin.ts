@@ -33,8 +33,6 @@ export function cms(): Plugin {
 				// Vite client to do it: a 504 Outdated Optimize Dep in the console.
 				include: [
 					'yaml',
-					'marked',
-					'@humanspeak/svelte-markdown', // the preview's renderers (src/lib/markdown/)
 					// The preview compiles posts in the browser (mdsvex.svelte.ts).
 					'mdsvex/compile',
 					'mdsvex/highlight',

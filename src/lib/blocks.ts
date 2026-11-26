@@ -9,9 +9,9 @@
 //   ```
 //
 // Anywhere else (Obsidian, GitHub, a plain editor) it's a readable block of YAML.
-// markdown/parse.ts reads every code block with readBlock() (a wrong field fails the
-// build there), and markdown/Code.svelte draws ours with their components
-// (markdown/blocks/; a test checks each block has one). The CMS makes its editor
+// The blocks plugin (mdsvex/blocks.ts) reads each of these fences with readBlock() (a
+// wrong field fails the build there) and draws it with its component (mdsvex/blocks/; a
+// test checks each block has one). The CMS makes its editor
 // components from the same fields (src/lib/cms/components.ts). Its own file so it can be
 // unit-tested (blocks.test.ts).
 import { parse } from 'yaml';

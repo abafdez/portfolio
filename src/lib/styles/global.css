@@ -454,7 +454,7 @@
 			}
 		}
 
-		/* Images and videos next to the post (markdown/Image.svelte, blocks/Video.svelte). They come with
+		/* Images and videos next to the post (mdsvex draws images, blocks/Video.svelte videos). They come with
 		   width and height, so their space is kept while they load; block-size: auto
 		   keeps the proportions when max-inline-size makes them narrower. */
 		& :is(img, video) {
@@ -665,7 +665,7 @@
 				content: none;
 			}
 
-			/* Token colours. twinkleplop (src/lib/markdown/highlight.ts) gives every token a
+			/* Token colours. twinkleplop (mdsvex's highlighter) gives every token a
 			   class for its type, the same names in every language; each type gets one of
 			   our --code-* tokens, so code follows the theme and every palette. Types not
 			   listed (identifiers, parameters, variables, plain text) keep the foreground. */
