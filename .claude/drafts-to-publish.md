@@ -6,7 +6,7 @@ New posts start as drafts in `content/blog/posts/<slug>/` with `draft: true` (de
 
 List new drafts here, with their TODOs and the drafts they link to, until they go up.
 
-## Phase 8.5 (toolbox), 2026-11-09
+**2026-11-26 (branch `articles`, Alfonso's call):** the 15 drafts from 2026-11-09 to 2026-11-18 were published **without covers** (the cards show the #tag tile); covers come with the cover pipeline (`design/cover-generation.md`). Their Spanish files are still `reviewed: false`. The spotlight post's update note now links to `2026-11-09-text-never-sits-on-the-grid` instead of the Devlog entry.
 
 - `2026-11-09-what-the-mit-licence-asks`: porting MIT code and what its licence asks. Links to the Base64 draft: **publish both together** (a published post can't link to a draft).
 - `2026-11-09-base64-encodes-bytes-not-text`: `btoa()` and UTF-8, `TextDecoder` `fatal`, base64url, data URLs. Links back to the licence draft.

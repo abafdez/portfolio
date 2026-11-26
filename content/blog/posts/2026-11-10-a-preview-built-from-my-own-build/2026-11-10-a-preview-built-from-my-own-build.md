@@ -1,6 +1,5 @@
 ---
 title: A CMS preview built from my own build
-draft: true
 date: 2026-11-10
 tags: [cms, markdown, svelte, vite]
 description: My CMS showed a preview of something that wasn't my site. Four tries later, it draws the post with the same Svelte components as the page, in the browser, as I type.

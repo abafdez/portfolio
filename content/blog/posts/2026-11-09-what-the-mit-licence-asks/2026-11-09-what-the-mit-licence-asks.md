@@ -1,6 +1,5 @@
 ---
 title: "Borrowing from open-source tools: what the licence asks, and what it doesn't"
-draft: true
 date: 2026-11-09
 tags: [open-source, licensing, svelte]
 description: My site has a new toolbox, with ideas picked from several open-source collections. Before borrowing anything I read their licences, and ended up removing a credit line I had just added.

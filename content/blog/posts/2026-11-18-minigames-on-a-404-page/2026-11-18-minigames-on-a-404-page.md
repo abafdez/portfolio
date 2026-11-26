@@ -1,6 +1,5 @@
 ---
 title: Minigames on a 404 page
-draft: true
 date: 2026-11-18
 tags: [games, canvas, svelte, accessibility]
 description: My 404 page now picks one of four toys at random, Breakout, Snake, an ASCII wave and loose dots, all made of the 404 itself. How it works on GitHub Pages, and why the game rules have no canvas in them.

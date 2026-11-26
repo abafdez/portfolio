@@ -1,6 +1,5 @@
 ---
 title: A CMS that only changes what you edit
-draft: true
 date: 2026-11-09
 tags: [cms, markdown, testing, yaml]
 description: I added Sveltia CMS to my site's dev server. Its first save rewrote lines I never touched, so I gave it my own file format and a test that saves every file and compares the bytes.
