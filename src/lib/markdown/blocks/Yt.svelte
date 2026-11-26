@@ -2,7 +2,7 @@
 	// ```yt: a YouTube video without YouTube on the page, as a link that opens it on
 	// youtube.com in a new tab (why: blocks.ts). The same markup as blocks.ts's render().
 	// The thumbnail comes from the page (context.ts).
-	import { watchOnYoutube, youtubeUrl } from '#lib/blocks.ts';
+	import { watchOnYoutube, youtubeUrl } from './values.ts';
 	import { fileLocale } from '#lib/i18n/locales.ts';
 	import { markdownMedia } from '../context.ts';
 

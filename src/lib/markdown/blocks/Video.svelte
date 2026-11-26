@@ -4,7 +4,7 @@
 	// blocks.ts's render(), which the CMS's editor components use. The blocks plugin
 	// (../blocks-plugin.ts) gives the fields as props, all strings; the files come from the
 	// page (context.ts).
-	import { videoType } from '#lib/blocks.ts';
+	import { videoType } from './values.ts';
 	import { markdownMedia } from '../context.ts';
 
 	interface Props {
