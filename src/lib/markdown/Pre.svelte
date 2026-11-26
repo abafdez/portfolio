@@ -1,5 +1,6 @@
 <script lang="ts">
-	// A code block: a bar with the language and a copy button, then the <pre> twinkleplop made.
+	// A code block (it replaces mdsvex's <pre>): a bar with the language and a copy button,
+	// then the <pre> mdsvex highlighted with twinkleplop (`children` is that whole <pre>).
 	// Made when post bodies were HTML from the server, and still fine now that they're
 	// components (mdsvex):
 	// - its styles are in global.css (.prose .code-block), with the rest of the body's;
@@ -9,17 +10,17 @@
 	// The message files themselves, not #lib/i18n/index.ts, which needs SvelteKit's page.
 	import { en } from '#lib/i18n/en.ts';
 	import { es } from '#lib/i18n/es.ts';
-	import type { Locale } from '#lib/i18n/locales.ts';
+	import { markdownLocale } from './context.ts';
 
 	interface Props {
-		lang: string; // after the opening ``` ('text' when there's none)
-		locale: Locale; // the page's, for the button
+		lang?: string; // after the opening ```
 		children: Snippet;
 	}
 
-	let { lang, locale, children }: Props = $props();
+	let { lang = 'text', children }: Props = $props();
 
-	const t = $derived({ en, es }[locale]);
+	// The button speaks the page's language (context.ts).
+	const t = { en, es }[markdownLocale()];
 </script>
 
 <!-- data-lang: some token colours depend on the language (global.css). -->

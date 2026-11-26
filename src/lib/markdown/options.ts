@@ -1,7 +1,7 @@
 // The mdsvex options the build (vite.config.ts) and the CMS preview
 // (cms/mdsvex.svelte.ts) share, so a post compiles the same way in both.
 import { external_links } from '@mdsvex/plugin-external-links';
-import { blocksPlugin } from './blocks.ts';
+import { blocksPlugin } from './blocks-plugin.ts';
 import { parsePlugins } from './plugins.ts';
 
 export const compileOptions = {

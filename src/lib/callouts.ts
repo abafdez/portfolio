@@ -5,7 +5,7 @@
 //   > [!tip]                     > [!warning] Not on GitHub Pages
 //   > Text of the tip.           > Custom title, then the text.
 //
-// The types live here; a parse plugin finds the callouts (mdsvex/plugins.ts) and
+// The types live here; a parse plugin finds the callouts (markdown/plugins.ts) and
 // markdown/Callout.svelte and CalloutTitle.svelte draw them.
 // One icon at a time from 'lucide' (each is a list of SVG elements), not its `icons`
 // object: that one holds every icon, and the CMS preview bundles this file.

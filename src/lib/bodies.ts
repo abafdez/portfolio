@@ -5,9 +5,9 @@
 // leaves drafts out; the Devlog has no drafts.
 import type { Component } from 'svelte';
 import type { Media } from '#lib/markdown/media.ts';
-import { mediaFor } from '#lib/mdsvex/media.ts';
+import { mediaFor } from '#lib/markdown/media.ts';
 
-// plugin_data.blocks.files: the ./files the post's blocks name (mdsvex/blocks.ts).
+// plugin_data.blocks.files: the ./files the post's blocks name (markdown/blocks-plugin.ts).
 type Body = { default: Component; plugin_data?: { blocks?: { files?: string[] } } };
 
 const bodies: Record<string, () => Promise<Body>> = {

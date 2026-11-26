@@ -11,7 +11,7 @@ const names = Object.keys(blocks);
 
 export const blocksPlugin: Bundle = {
 	name: 'blocks',
-	module: '/src/lib/mdsvex/blocks/index.ts',
+	module: '/src/lib/markdown/blocks/index.ts',
 	directives: Object.fromEntries(names.map((name) => [name, {}])),
 	fences: names,
 	parse: {

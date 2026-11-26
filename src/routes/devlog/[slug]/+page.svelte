@@ -4,11 +4,11 @@
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import { devlogTag } from '#lib/links.ts';
 	import { copyCode } from '#lib/markdown/copy.ts';
-	import { setMarkdownLocale, setMarkdownMedia } from '#lib/mdsvex/context.ts';
+	import { setMarkdownLocale, setMarkdownMedia } from '#lib/markdown/context.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	// Links in the body go to pages in this page's language (mdsvex/Link.svelte).
+	// Links in the body go to pages in this page's language (markdown/Link.svelte).
 	setMarkdownLocale(getLocale);
 	// Its blocks' files (videos, thumbnails), loaded in +page.ts.
 	setMarkdownMedia(() => data.media);

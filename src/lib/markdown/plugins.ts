@@ -6,12 +6,12 @@ import { calloutTypes, marker } from '#lib/callouts.ts';
 
 type Context = { readonly filename: string | undefined };
 
-// The file goes on the nodes our replacement components need it for: a table's label and
-// a code block's button follow the file's language (mdsvex passes attrs on as props).
+// The file goes on tables: their label follows the file's language (mdsvex passes attrs
+// on as props). A code block's button follows the page's (Pre.svelte).
 const withFile = (node: NodeView, ctx: Context) => () => void (node.attrs.file = ctx.filename);
 
 // > [!tip] Optional title     ->  a blockquote with kind="tip" title="Optional title"
-// > The text.                       file=…, drawn as a callout by mdsvex/Blockquote.svelte
+// > The text.                       file=…, drawn as a callout by markdown/Blockquote.svelte
 // The [!type] line is taken out of the first paragraph: every node up to the first line
 // break (or the whole paragraph, when the marker line is all there is).
 function callout(node: NodeView, ctx: Context) {
@@ -85,7 +85,6 @@ export const parsePlugins: ParsePlugin[] = [
 		paragraph: { parse: figure },
 		image: { parse: checkImage },
 		table: { parse: withFile },
-		code_fence: { parse: withFile },
 		html: { parse: noHtml },
 		mustache: { parse: noSvelte },
 		svelte_block: { parse: noSvelte }

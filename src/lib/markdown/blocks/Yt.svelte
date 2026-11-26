@@ -1,9 +1,10 @@
 <script lang="ts">
 	// ```yt: a YouTube video without YouTube on the page, as a link that opens it on
 	// youtube.com in a new tab (why: blocks.ts). The same markup as blocks.ts's render().
+	// The thumbnail comes from the page (context.ts).
 	import { watchOnYoutube, youtubeUrl } from '#lib/blocks.ts';
 	import { fileLocale } from '#lib/i18n/locales.ts';
-	import type { Media } from '../media.ts';
+	import { markdownMedia } from '../context.ts';
 
 	interface Props {
 		src: string;
@@ -11,10 +12,11 @@
 		thumbnail?: string; // a file next to the post: a picture from Google is a request to Google
 		caption?: string;
 		file: string;
-		media: Media;
 	}
 
-	let { src, title, thumbnail, caption, file, media }: Props = $props();
+	let { src, title, thumbnail, caption, file }: Props = $props();
+	const files = markdownMedia();
+	const media = $derived(files());
 </script>
 
 <figure class="yt">

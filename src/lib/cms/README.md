@@ -31,7 +31,7 @@ Sveltia keeps the token in the browser's storage for `abafdez.github.io`, which 
 - `content/awesome/<slug>.yaml`: the Awesome lists, a folder collection (New makes a list, its file name from the English title), every text `{ en, es }`, an icon picked with the icon picker.
 - `content/site.yaml`: the site settings (name, tagline, role, hiring texts, contact email, profile links), a singleton ("Site settings" in the sidebar), read by `src/lib/site.ts`.
 
-The site compiles them with [mdsvex](https://mdsvex.pngwn.at) 1.0: each `.md` file is a Svelte component. `src/lib/mdsvex/` has our parse plugins (`plugins.ts`: callouts, figures, checks) and the components that replace elements (headings, code blocks, tables, links). HTML or `{ }` written in a post fails the build.
+The site compiles them with [mdsvex](https://mdsvex.pngwn.at) 1.0: each `.md` file is a Svelte component. `src/lib/markdown/` has our parse plugins (`plugins.ts`: callouts, figures, checks) and the components that replace elements (headings, code blocks, tables, links). HTML or `{ }` written in a post fails the build.
 
 ## The files
 
@@ -88,13 +88,13 @@ The site's markdown depends on its own code: callouts, code-block components, hi
 ```text
 entry data (every change) → preview.ts → compilePost() (mdsvex.svelte.ts)
      markdown → mdsvex compile() → Svelte source → svelte/compiler → a module → mount()
-                    ↑ the build's own options (src/lib/mdsvex/options.ts) and replacements
+                    ↑ the build's own options (src/lib/markdown/options.ts) and replacements
 ```
 
 - A post is a Svelte component in the build (mdsvex), so `preview.ts` compiles the body in the browser the same way, about 150 ms after the typing pauses: `mdsvex/compile` with the build's options (`compileOptions`: heading ids, our parse plugins, external links) and highlighting (`create_highlight` over mdsvex's languages), then Svelte's compiler, then `mount()` into the frame from a React component. Each compile is a new component, mounted in place of the last.
 - The compiled module imports Svelte's runtime and our replacements by name (`'svelte/internal/client'`, `'preview:components'`). A browser can't resolve names, so only the imports at the top are rewritten to `blob:` modules that hand out this bundle's own copies: the same Svelte that mounts the post. Svelte forbids importing `svelte/internal/*` in `.svelte.ts` (it's private), so that import lives in `svelte-runtime.ts`.
 - The parse plugins throw everything the build would stop on (HTML or `{ }` in the text, an unknown callout): the preview shows that error instead of the body. Svelte code can't reach the preview (it would run in the CMS page, next to the GitHub token).
-- `./` images are drawn by `PreviewImage.svelte` (replacing `img` here only) from `getAsset()`, through a context backed by `$state.raw`: Sveltia answers with an empty URL while it reads a file. Links get the file's language through `mdsvex/locale.ts`'s context.
+- `./` images are drawn by `PreviewImage.svelte` (replacing `img` here only) from `getAsset()`, through a context backed by `$state.raw`: Sveltia answers with an empty URL while it reads a file. Links get the file's language through `markdown/context.ts`'s context.
 - About 490 kB gzip more than svelte-markdown's preview (Svelte's compiler, mdsvex's compiler and grammars), loaded only by the CMS; a warm compile takes a few milliseconds.
 - It also draws the post's header (date, reading time from the site's `readingTime()`, title, description, tags, and the cover: one just added, from `getAsset()`, or the saved one from `covers.ts`).
 - `registerPreviewStyle(css, { raw: true })` gives the frame the site's own CSS (`?inline` imports of the fonts, `tokens.css`, `global.css`, where the body's styles live) plus `preview.css`, a copy of `ArticleHeader.svelte`'s styles, which can't reach the frame.

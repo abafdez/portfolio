@@ -11,10 +11,10 @@ import { mount, unmount, type Component } from 'svelte';
 import { client } from './svelte-runtime.ts';
 import { compile } from 'mdsvex/compile';
 import { create_highlight, load_default_languages, type HighlightConfig } from 'mdsvex/highlight';
-import * as components from '#lib/mdsvex/components.ts';
-import { compileOptions } from '#lib/mdsvex/options.ts';
-import * as blockComponents from '#lib/mdsvex/blocks/index.ts';
-import { markdownContext } from '#lib/mdsvex/context.ts';
+import * as components from '#lib/markdown/components.ts';
+import { compileOptions } from '#lib/markdown/options.ts';
+import * as blockComponents from '#lib/markdown/blocks/index.ts';
+import { markdownContext } from '#lib/markdown/context.ts';
 import type { Media } from '#lib/markdown/media.ts';
 import type { Locale } from '#lib/i18n/locales.ts';
 import PreviewImage from './PreviewImage.svelte';
@@ -29,8 +29,8 @@ const modules: Record<string, Record<string, unknown>> = {
 	svelte: svelteApi,
 	'svelte/internal/disclose-version': {},
 	'preview:components': replacements,
-	// The blocks plugin's components (mdsvex/blocks.ts), under the module name it gives.
-	'/src/lib/mdsvex/blocks/index.ts': blockComponents
+	// The blocks plugin's components (markdown/blocks-plugin.ts), under the module name it gives.
+	'/src/lib/markdown/blocks/index.ts': blockComponents
 };
 
 declare global {

@@ -10,7 +10,7 @@ import { drafts } from './src/lib/drafts.ts'; // leaves draft posts out of a bui
 import { lucideNames } from './src/lib/cms/lucide-names.ts'; // the CMS icon picker's list
 import { yamlData } from './src/lib/yaml-data.ts'; // import x from '/content/x.yaml?data'
 import { mdsvex } from 'mdsvex'; // markdown files as Svelte components
-import { compileOptions } from './src/lib/mdsvex/options.ts';
+import { compileOptions } from './src/lib/markdown/options.ts';
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -20,7 +20,7 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 }
 
 // Markdown (posts and Devlog entries) is compiled by mdsvex: each .md file becomes a
-// Svelte component (src/lib/mdsvex/ has our replacements and parse plugins), which the
+// Svelte component (src/lib/markdown/ has our replacements and parse plugins), which the
 // [slug] pages load through src/lib/bodies.ts. content.ts still reads the frontmatter
 // with ?raw imports, which mdsvex leaves alone.
 
@@ -51,7 +51,7 @@ export default defineConfig({
 		mdsvex({
 			extensions: ['.md'],
 			...compileOptions,
-			components: '/src/lib/mdsvex/components.ts'
+			components: '/src/lib/markdown/components.ts'
 		}),
 		enhancedImagesExceptMarkdown(),
 		sveltekit({
