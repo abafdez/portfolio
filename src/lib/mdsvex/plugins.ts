@@ -51,6 +51,18 @@ function figure(node: NodeView) {
 	};
 }
 
+// An image is a file next to the post, with alt text: anything else fails the build.
+// (A missing file fails too: mdsvex imports it.)
+function checkImage(node: NodeView, ctx: Context) {
+	return () => {
+		const src = String(node.attrs.src ?? '');
+		if (!src.startsWith('./'))
+			throw new Error(`${ctx.filename}: ${src} should be a file next to the post (./…)`);
+		if (!node.text_content.trim())
+			throw new Error(`${ctx.filename}: ${src} needs alt text: ![What it shows](${src})`);
+	};
+}
+
 // HTML written in the text fails the build: it goes in backticks (our rule).
 function noHtml(node: NodeView, ctx: Context) {
 	return () => {
@@ -71,6 +83,7 @@ export const parsePlugins: ParsePlugin[] = [
 	{
 		block_quote: { parse: callout },
 		paragraph: { parse: figure },
+		image: { parse: checkImage },
 		table: { parse: withFile },
 		code_fence: { parse: withFile },
 		html: { parse: noHtml },
