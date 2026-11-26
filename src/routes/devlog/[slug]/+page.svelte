@@ -4,10 +4,13 @@
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import { devlogTag } from '#lib/links.ts';
 	import { copyCode } from '#lib/markdown/copy.ts';
+	import { setMarkdownLocale } from '#lib/mdsvex/locale.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-	let { entry, html } = $derived(data);
+	// Links in the body go to pages in this page's language (mdsvex/Link.svelte).
+	setMarkdownLocale(getLocale);
+	let { entry, body: Body } = $derived(data);
 	// An English entry on a Spanish page (not translated yet): the body says it's English.
 	const lang = $derived(entry.locale !== getLocale() ? languageTags[entry.locale] : undefined);
 </script>
@@ -24,9 +27,9 @@
 <!-- data-pagefind-*: what search indexes, and its label (search.ts). -->
 <article class="sheet" data-pagefind-body data-pagefind-meta="section:{m.navDevlog()}">
 	<ArticleHeader {...entry} tagHref={devlogTag} />
-	<!-- The body as HTML, made on the server (+page.server.ts). {#key}: new HTML, and
-	     copyCode shows its copy buttons again. -->
-	{#key html}
-		<div class="prose" {lang} {@attach copyCode}>{@html html}</div>
+	<!-- The body, a component (+page.ts). {#key}: a new entry is a new body, and copyCode
+	     shows its copy buttons again. -->
+	{#key entry.path}
+		<div class="prose" {lang} {@attach copyCode}><Body /></div>
 	{/key}
 </article>

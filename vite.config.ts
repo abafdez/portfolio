@@ -19,10 +19,10 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 	throw new Error(`BASE_PATH must look like '/portfolio'. Got: "${base}"`);
 }
 
-// mdsvex compiles each markdown file to a Svelte component (src/lib/mdsvex/ has our
-// replacements and parse plugins). Nothing imports them yet: the [slug] pages still
-// render with svelte-markdown (src/lib/markdown/render.server.ts). content.ts reads the
-// frontmatter with ?raw imports, which mdsvex leaves alone.
+// Markdown (posts and Devlog entries) is compiled by mdsvex: each .md file becomes a
+// Svelte component (src/lib/mdsvex/ has our replacements and parse plugins), which the
+// [slug] pages load through src/lib/bodies.ts. content.ts still reads the frontmatter
+// with ?raw imports, which mdsvex leaves alone.
 
 // mdsvex makes .md a Svelte extension, and enhanced-img's markup step, whose
 // transform runs before every other one (order: 'pre'), then parses the raw markdown of

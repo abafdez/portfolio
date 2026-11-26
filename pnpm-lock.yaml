@@ -122,6 +122,9 @@ importers:
       '@humanspeak/svelte-markdown':
         specifier: 2.2.0
         version: 2.2.0(shiki@4.6.0)(svelte@5.57.3)
+      '@mdsvex/plugin-external-links':
+        specifier: 0.1.1
+        version: 0.1.1(mdsvex@1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -460,6 +463,11 @@ packages:
 
   '@mdsvex/parse@1.0.0':
     resolution: {integrity: sha512-Sry8euoZgvG+GSFsuvI1KhZXXIePe+WQwddXcQEkd4UKBvjx5KCtOHMam9Cwd+li3URRKs4LjvauCaXwz706MA==}
+
+  '@mdsvex/plugin-external-links@0.1.1':
+    resolution: {integrity: sha512-cShZSPS+9mLuHjbSNYyhTjU01vtCcze/ivIQkrBCyKVmgTGswBw6uJg9f/6+AsKbdZQOpbrhShT/N0l1bHkiMQ==}
+    peerDependencies:
+      mdsvex: ^1.0.0-next.2
 
   '@mdsvex/render@1.0.0':
     resolution: {integrity: sha512-lCAWapnbu5jUEsRjxv/vq7Y7MMri12WoNYyh54uLaiyIe1Zv3+kgbyXqSW1Sl35uQrYRORqUvcTu+4Wab59hiQ==}
@@ -1941,6 +1949,10 @@ snapshots:
       svelte: 5.57.3
 
   '@mdsvex/parse@1.0.0': {}
+
+  '@mdsvex/plugin-external-links@0.1.1(mdsvex@1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))':
+    dependencies:
+      mdsvex: 1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
 
   '@mdsvex/render@1.0.0(svelte@5.57.3)':
     dependencies:

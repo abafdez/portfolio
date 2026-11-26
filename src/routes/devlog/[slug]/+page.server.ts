@@ -1,7 +1,6 @@
 import { error } from '@sveltejs/kit';
-import { allLog, inLocale, isTranslated, sourceOf } from '#lib/content.ts';
+import { allLog, inLocale, isTranslated } from '#lib/content.ts';
 import { localeOf } from '#lib/i18n/locales.ts';
-import { renderMarkdown } from '#lib/markdown/render.server.ts';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 // The pages to prerender: one per file in content/bitacora. Without this, the build
@@ -15,8 +14,5 @@ export const load: PageServerLoad = async ({ params, url }) => {
 	if (!original) error(404, 'No devlog entry with that name');
 	const locale = localeOf(url);
 	const entry = inLocale(original, locale);
-	const text = sourceOf(entry.path);
-	// The body as HTML, made here on the server (render.server.ts, like the blog's posts).
-	const html = await renderMarkdown(text, entry.path, locale);
-	return { entry, html, translated: isTranslated(entry), crumb: entry.title };
+	return { entry, translated: isTranslated(entry), crumb: entry.title };
 };

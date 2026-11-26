@@ -1,0 +1,10 @@
+import { bodyOf } from '#lib/bodies.ts';
+import type { PageLoad } from './$types';
+
+// The body is a component (mdsvex compiles the markdown file, bodies.ts), and a server
+// load can only return data, so it's added here, in a universal load: on the server
+// while prerendering, in the browser when you navigate to the page.
+export const load: PageLoad = async ({ data }) => ({
+	...data,
+	body: await bodyOf(data.entry.path)
+});

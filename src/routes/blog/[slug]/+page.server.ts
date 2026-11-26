@@ -1,8 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { allPosts, inLocale, isTranslated, sourceOf } from '#lib/content.ts';
+import { allPosts, inLocale, isTranslated } from '#lib/content.ts';
 import { coverOf } from '#lib/covers.server.ts';
 import { localeOf } from '#lib/i18n/locales.ts';
-import { renderMarkdown } from '#lib/markdown/render.server.ts';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 // One page per post. In a build allPosts has no drafts, so no draft page is made.
@@ -15,10 +14,6 @@ export const load: PageServerLoad = async ({ params, url }) => {
 	if (!original) error(404, 'No post with that name');
 	const locale = localeOf(url);
 	const post = inLocale(original, locale);
-	const text = sourceOf(post.path);
-	// The body as HTML, made here on the server (render.server.ts); the page shows it with
-	// {@html}.
-	const html = await renderMarkdown(text, post.path, locale);
 	const cover = await coverOf(post.folder);
-	return { post, html, cover, translated: isTranslated(post), crumb: post.title };
+	return { post, cover, translated: isTranslated(post), crumb: post.title };
 };
