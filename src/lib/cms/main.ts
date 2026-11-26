@@ -4,6 +4,7 @@ import { parse } from 'yaml';
 import source from './config.yml?raw';
 import { blockComponents } from './components.ts';
 import { focalControl } from './focal.svelte.ts';
+import { iconControl } from './icon.svelte.ts';
 import { formats } from './formats.ts';
 import { articlePreview, savedPage, previewStyles, saved } from './preview.ts';
 
@@ -32,6 +33,8 @@ function setUp(CMS: typeof import('@sveltia/cms')) {
 	const React = CMS.React as unknown as Parameters<typeof focalControl>[0] &
 		Parameters<typeof articlePreview>[0];
 	CMS.registerFieldType('focal', focalControl(React) as never);
+	// A Lucide icon, picked from a grid of the real icons (IconPicker.svelte).
+	CMS.registerFieldType('lucide', iconControl(React) as never);
 
 	// The preview pane: posts and Devlog entries drawn with the site's own markdown components
 	// and CSS (preview.ts); the Awesome list, in dev, its page as last saved (hosted, Sveltia's
@@ -41,7 +44,10 @@ function setUp(CMS: typeof import('@sveltia/cms')) {
 		CMS.registerPreviewTemplate(name, articlePreview(React) as never);
 	}
 	if (import.meta.env.DEV) {
-		CMS.registerPreviewTemplate('modern-css', savedPage(React, '/awesome/modern-css') as never);
+		CMS.registerPreviewTemplate(
+			'awesome',
+			savedPage(React, (entry) => `/awesome/${String(entry.get('slug'))}`) as never
+		);
 	}
 	CMS.registerEventListener({ name: 'postSave', handler: saved } as never);
 

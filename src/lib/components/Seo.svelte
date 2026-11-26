@@ -1,6 +1,8 @@
 <script lang="ts" module>
 	// The name at the end of every <title> and in link previews (og:site_name).
-	export const siteName = 'Alfonso Baeza';
+	import { site } from '#lib/site.ts';
+	// From the site settings (content/site.yaml).
+	export const siteName = site.name;
 </script>
 
 <script lang="ts">

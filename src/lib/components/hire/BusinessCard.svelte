@@ -2,8 +2,9 @@
 	// Look 3: a business card. It flips in when the panel opens; the button (or a click on
 	// the card) turns it over: the front has the photo, name and role, the back how to
 	// hire me and my links. The face turned away is inert: no focus, no screen reader.
+	import { site } from '#lib/site.ts';
 	import RotateCw from '@lucide/svelte/icons/rotate-cw';
-	import { m } from '#lib/i18n/index.ts';
+	import { m, text } from '#lib/i18n/index.ts';
 	import type { LookProps } from './looks.ts';
 
 	let { photo, linkedin, github }: LookProps = $props();
@@ -24,13 +25,13 @@
 			<div class="face front" inert={back}>
 				<enhanced:img src={photo} alt="" sizes="7rem" />
 				<div>
-					<p class="name">Alfonso Baeza</p>
-					<p class="role">{m.hireRole()}</p>
+					<p class="name">{site.name}</p>
+					<p class="role">{text(site.role)}</p>
 				</div>
 			</div>
 			<div class="face rear" inert={!back}>
 				<p class="name">{m.footerHire()}</p>
-				<p>{m.footerHireText()}</p>
+				<p>{text(site.hire.text)}</p>
 				<p class="links">
 					<a class="cta" href={linkedin} rel="external">{m.aboutAskLinkedIn()}</a>
 					<a href={github} rel="external">GitHub</a>

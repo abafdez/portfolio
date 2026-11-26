@@ -31,8 +31,9 @@ Everything else (callouts, videos, YouTube cards, headings, links) is in `conten
 
 1. Make a folder `src/lib/projects/<slug>/` with its component and logic.
 2. Add an entry to `projects` in `src/lib/projects/projects.ts`: `slug`, `title` and `description` (`{ en, es }`), `date`, `tags`, `source` (the folder, for the "Source code on GitHub" link) and `tool: () => import('./<slug>/Thing.svelte')`. The dynamic `import()` means its code only downloads on its own page.
-3. `/projects/[tool]` builds its page; the sitemap, the projects list and the home page's teasers pick it up from the list.
-4. `src/lib/projects/sources.test.ts` fails if `source` points at nothing.
+3. A cover: a 16:9 screenshot (1600 × 900, dark theme, nothing personal in it) as `content/projects/<slug>/cover.avif`, and its alt text as `cover: { en, es }` in the entry. `src/lib/projects/projects.test.ts` fails if one comes without the other.
+4. `/projects/[tool]` builds its page; the sitemap, the projects list and the home page's teasers pick it up from the list.
+5. `src/lib/projects/sources.test.ts` fails if `source` points at nothing.
 
 A project that needs a route of its own (like `/projects/cv`) leaves out `tool` and has its own `src/routes/projects/<slug>/`.
 
@@ -75,8 +76,13 @@ Like ` ```video ` and ` ```yt `:
 
 ## An Awesome list
 
-1. `content/awesome/<slug>.yaml`: `title` and `description` as `{ en, es }`, `updated`, and `categories` with `name` (`{ en, es }`) and `links` (`title`, `url` that must be `https://`, `description` as `{ en, es }`, `tags`).
+1. `content/awesome/<slug>.yaml`: `title` and `description` as `{ en, es }`, an `icon:` (a Lucide name, lucide.dev/icons) or a `logo:` (a Simple Icons slug, simpleicons.org) for its card, `updated`, and `categories` with `name` (`{ en, es }`) and `links` (`title`, `url` that must be `https://`, `description` as `{ en, es }`, `tags`).
 2. Run `pnpm content:format`. `content/awesome/README.md` has the rules.
+3. Or make it in the CMS: Awesome lists → New. Every `.yaml` file in the folder shows up there; the icon has its own picker.
+
+## The site's name, tagline, hiring texts, email or links
+
+They're in `content/site.yaml` (or the CMS's "Site settings"), not in the code: `src/lib/site.ts` reads and checks them. To add a setting: a field in the YAML, its type and check in `site.ts`, a field in the `site` singleton in `src/lib/cms/config.yml`, then use `site.yourField` (with `text()` for a `{ en, es }` one).
 
 ## A UI string
 

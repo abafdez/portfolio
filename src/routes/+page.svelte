@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { site } from '#lib/site.ts';
 	import Seo from '#lib/components/Seo.svelte';
 	import { m, route, text } from '#lib/i18n/index.ts';
 	import Hero from '#lib/components/Hero.svelte';
@@ -29,7 +30,8 @@
 			description: text(description),
 			date,
 			tags,
-			href: route('/projects/[tool]', { tool: slug })
+			href: route('/projects/[tool]', { tool: slug }),
+			thumbnail: { cover: data.projectCovers[slug], label: `#${tags[0]}` }
 		}));
 
 	// The sections on the right, in order. The intro's nav is built from this list.
@@ -45,7 +47,7 @@
 	const enter = (delay: number) => `home-enter 600ms ease-out ${delay}ms both`;
 </script>
 
-<Seo description={m.homeTagline()} />
+<Seo description={text(site.tagline)} />
 
 <!-- Wide screens: the intro stays put on the left while the sections scroll on the
      right. Narrow screens: one column, intro first. -->
@@ -53,8 +55,8 @@
 	<!-- On a sheet: the tagline and the section links are body text. -->
 	<div class="intro sheet">
 		<Hero
-			name="Alfonso Baeza"
-			tagline={m.homeTagline()}
+			name={site.name}
+			tagline={text(site.tagline)}
 			{photo}
 			{links}
 			--photo-animation={enter(0)}

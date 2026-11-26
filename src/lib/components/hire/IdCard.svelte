@@ -3,7 +3,8 @@
 	// parts sit at different depths, so they come apart as it turns: the photo nearest,
 	// then the name, the button, the chip. A foil sheen and a light follow the pointer.
 	// On touch, or with reduced motion, it's a flat card.
-	import { m } from '#lib/i18n/index.ts';
+	import { site } from '#lib/site.ts';
+	import { m, text } from '#lib/i18n/index.ts';
 	import { tilt } from './tilt.ts';
 	import type { LookProps } from './looks.ts';
 
@@ -18,8 +19,8 @@
 			<enhanced:img src={photo} alt="" sizes="9rem" />
 		</div>
 		<div class="text">
-			<p class="role">{m.hireRole()}</p>
-			<p class="name">Alfonso Baeza</p>
+			<p class="role">{text(site.role)}</p>
+			<p class="name">{site.name}</p>
 		</div>
 		<p class="links">
 			<a class="cta" href={linkedin} rel="external">{m.aboutAskLinkedIn()}</a>

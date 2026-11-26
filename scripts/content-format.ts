@@ -11,7 +11,7 @@ const { plugins: _plugins, overrides: _overrides, ...options } = config;
 const entries = globSync('content/{blog,bitacora}/**/*.md').filter(
 	(f) => !f.endsWith('README.md') && !f.includes('/.preview')
 );
-const lists = globSync('content/awesome/*.yaml');
+const lists = globSync('content/{awesome/*,site}.yaml');
 
 let changed = 0;
 for (const file of [...entries, ...lists]) {
