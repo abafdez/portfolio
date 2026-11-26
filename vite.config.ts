@@ -9,6 +9,8 @@ import { cms } from './src/lib/cms/plugin.ts'; // Sveltia CMS at /admin, dev onl
 import { drafts } from './src/lib/drafts.ts'; // leaves draft posts out of a build
 import { lucideNames } from './src/lib/cms/lucide-names.ts'; // the CMS icon picker's list
 import { yamlData } from './src/lib/yaml-data.ts'; // import x from '/content/x.yaml?data'
+import { mdsvex } from 'mdsvex'; // markdown files as Svelte components
+import { compileOptions } from './src/lib/mdsvex/options.ts';
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -17,8 +19,28 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 	throw new Error(`BASE_PATH must look like '/portfolio'. Got: "${base}"`);
 }
 
-// Markdown (posts and Devlog entries) isn't compiled by Vite: each [slug] page renders its
-// file to HTML on the server with svelte-markdown (src/lib/markdown/render.server.ts).
+// mdsvex compiles each markdown file to a Svelte component (src/lib/mdsvex/ has our
+// replacements and parse plugins). Nothing imports them yet: the [slug] pages still
+// render with svelte-markdown (src/lib/markdown/render.server.ts). content.ts reads the
+// frontmatter with ?raw imports, which mdsvex leaves alone.
+
+// mdsvex makes .md a Svelte extension, and enhanced-img's markup step, whose
+// transform runs before every other one (order: 'pre'), then parses the raw markdown of
+// any post whose text mentions <enhanced:img> (in a code example) and fails. mdsvex draws
+// the <picture> of markdown images itself, so that step can skip .md files.
+async function enhancedImagesExceptMarkdown() {
+	const plugins = await enhancedImages();
+	for (const plugin of plugins) {
+		const hook = plugin.transform;
+		if (plugin.name !== 'vite-plugin-enhanced-img-markup' || typeof hook !== 'object') continue;
+		const handler = hook.handler;
+		hook.handler = function (code, id, ...rest) {
+			if (id.split('?')[0].endsWith('.md')) return;
+			return handler.call(this, code, id, ...rest);
+		};
+	}
+	return plugins;
+}
 
 export default defineConfig({
 	plugins: [
@@ -26,7 +48,12 @@ export default defineConfig({
 		drafts(),
 		lucideNames(),
 		yamlData(),
-		enhancedImages(),
+		mdsvex({
+			extensions: ['.md'],
+			...compileOptions,
+			components: '/src/lib/mdsvex/components.ts'
+		}),
+		enhancedImagesExceptMarkdown(),
 		sveltekit({
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
