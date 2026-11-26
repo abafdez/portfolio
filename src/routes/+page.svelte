@@ -29,7 +29,8 @@
 			description: text(description),
 			date,
 			tags,
-			href: route('/projects/[tool]', { tool: slug })
+			href: route('/projects/[tool]', { tool: slug }),
+			thumbnail: { cover: data.projectCovers[slug], label: `#${tags[0]}` }
 		}));
 
 	// The sections on the right, in order. The intro's nav is built from this list.

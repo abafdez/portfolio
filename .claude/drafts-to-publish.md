@@ -36,3 +36,7 @@ All seven have an `.es.md` with `reviewed: false`, no cover, and screenshots Cla
 - `2026-11-18-zoom-for-a-wider-reading-column`: wider pages, `zoom` for the reading column, the text size control, the Devlog font. Screenshot at 1920.
 - `2026-11-18-a-hire-me-panel-with-five-looks`: the handle, the sheet, the five looks, the tilt overflow fix. Three screenshots. **Mentions "open to work": publish only if you're fine saying so.**
 - `2026-11-18-a-cms-on-github-pages`: the second Vite build, the covers swap, what the authenticator Worker does, the shared-origin caveat. **Publish once GitHub sign-in works on the live site** (the Worker and GitHub App exist).
+
+## 2026-11-19 (branch `feat/covers-icons-and-motion`)
+
+- `2026-11-19-a-timeline-that-fills-as-you-read`: the Devlog timeline's three scroll-driven animations, the `view(50% 50%)` inset trick, the wipe's clip room for the dot. Screenshot Claude took. No cover, `.es.md` with `reviewed: false`, no links to drafts.

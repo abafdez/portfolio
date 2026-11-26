@@ -5,6 +5,8 @@
 	import PostStatus from './PostStatus.svelte';
 	import TranslationStatus from './TranslationStatus.svelte';
 	import type { Locale } from '#lib/i18n/locales.ts';
+	import type { Glyph as GlyphData } from '#lib/glyph.ts';
+	import Glyph from './Glyph.svelte';
 
 	// Exported so pages can type their lists: const posts: Teaser[] = [...]
 	export interface Teaser {
@@ -22,8 +24,8 @@
 		// Links each tag to its page (see TagList).
 		tagHref?: (tag: string) => ResolvedPathname;
 		// A picture, for content with covers (thumbnailOf() in covers.ts): the cover, or
-		// without one a tile with the label.
-		thumbnail?: { cover?: Cover; label: string };
+		// without one a tile with the label, or with an icon (an Awesome list's glyph).
+		thumbnail?: { cover?: Cover; label: string; glyph?: GlyphData };
 		// Blog posts: a draft or published badge, shown in dev only (PostStatus).
 		status?: 'draft' | 'published';
 		// The language of title and description (posts and entries: Entry.locale), when
@@ -93,6 +95,10 @@
 							{loading}
 							{fetchpriority}
 						/>
+					</div>
+				{:else if thumbnail.glyph}
+					<div class="tile glyph" aria-hidden="true">
+						<Glyph glyph={thumbnail.glyph} size="3.5rem" />
 					</div>
 				{:else}
 					<div class="tile" aria-hidden="true">{thumbnail.label}</div>
@@ -194,6 +200,11 @@
 		&:has(.tile) {
 			aspect-ratio: 4 / 1;
 		}
+
+		/* An icon needs more height than a strip gives it. */
+		&:has(.tile.glyph) {
+			aspect-ratio: 5 / 2;
+		}
 	}
 
 	.square {
@@ -209,7 +220,8 @@
 		}
 
 		.thumbnail,
-		.thumbnail:has(.tile) {
+		.thumbnail:has(.tile),
+		.thumbnail:has(.tile.glyph) {
 			aspect-ratio: 1;
 		}
 
@@ -248,6 +260,18 @@
 		color: var(--brand);
 		text-align: center;
 		overflow-wrap: anywhere;
+	}
+
+	/* An icon instead of a label: the brand colour, with a soft glow of it behind. */
+	.tile.glyph {
+		background-image:
+			radial-gradient(circle, color-mix(in oklab, var(--brand) 14%, transparent), transparent 60%),
+			linear-gradient(var(--grid-line-major) 1px, transparent 1px),
+			linear-gradient(90deg, var(--grid-line-major) 1px, transparent 1px);
+		background-size:
+			100% 100%,
+			var(--grid-size) var(--grid-size),
+			var(--grid-size) var(--grid-size);
 	}
 
 	.meta {
