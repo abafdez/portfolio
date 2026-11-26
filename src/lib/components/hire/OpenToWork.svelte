@@ -3,7 +3,8 @@
 	// hover (the colour themes' RGB split filter, #palette-rgb-split, drawn by
 	// PalettePicker in the header), and an "Ask on LinkedIn" button that leans toward the
 	// pointer and gives off sparkles.
-	import { m } from '#lib/i18n/index.ts';
+	import { site } from '#lib/site.ts';
+	import { m, text } from '#lib/i18n/index.ts';
 	import { magnet } from './tilt.ts';
 	import type { LookProps } from './looks.ts';
 
@@ -17,9 +18,9 @@
 			<enhanced:img src={photo} alt="" sizes="8rem" />
 		</div>
 		<div>
-			<p class="name">Alfonso Baeza</p>
-			<p class="tagline">{m.homeTagline()}</p>
-			<p class="pitch">{m.footerHireText()}</p>
+			<p class="name">{site.name}</p>
+			<p class="tagline">{text(site.tagline)}</p>
+			<p class="pitch">{text(site.hire.text)}</p>
 		</div>
 	</div>
 	<div class="action">

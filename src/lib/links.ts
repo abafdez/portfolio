@@ -1,5 +1,6 @@
 import type { RouteId } from '$app/types';
 import { m, route } from '#lib/i18n/index.ts';
+import { site } from '#lib/site.ts';
 
 // The routes resolve() can build from the id alone: those without a [param].
 // '/devlog/[slug]' needs a slug too, so it's left out.
@@ -14,18 +15,19 @@ export type Link =
 // `satisfies` checks each entry is a valid Link but keeps the exact type, so code
 // using profiles knows every entry has a url (with `: Link[]` it could be a route).
 export const profiles = [
-	{ label: 'GitHub', url: 'https://github.com/abafdez' },
-	{ label: 'LinkedIn', url: 'https://www.linkedin.com/in/alfonso-baeza-fdez/' }
+	{ label: 'GitHub', url: site.github },
+	{ label: 'LinkedIn', url: site.linkedin }
 ] as const satisfies readonly Link[];
 
 // This site's code, on GitHub. sourceUrl() links a file or folder in it, as it is on main:
 // 'src/lib/projects/contrast' -> https://github.com/abafdez/portfolio/tree/main/src/lib/projects/contrast
 // GitHub shows a folder under /tree/ and a file under /blob/ (a name with a dot is a file).
-// The address for the hire panel's email button (Footer.svelte). Empty: no button.
-// Not a personal address: one made for this (a forwarding alias). Two halves, joined
-// in the browser once the page runs, so the address isn't in the HTML that address
-// scrapers read. GitHub's private noreply address can't be used: it receives nothing.
-export const email = { user: '', domain: '' };
+// The hire panel's email button (Footer.svelte), from the site settings: empty, no button.
+// In two halves, joined in the browser once the page runs, so the address isn't in the
+// HTML that address scrapers read (it's still in the JavaScript and in content/site.yaml).
+// GitHub's private noreply address can't be used: it receives nothing.
+const [user = '', domain = ''] = site.email.split('@');
+export const email = { user, domain };
 
 export const repository = 'https://github.com/abafdez/portfolio';
 export const sourceUrl = (path: string): `https://${string}` =>

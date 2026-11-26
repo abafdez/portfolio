@@ -78,7 +78,11 @@ Like ` ```video ` and ` ```yt `:
 
 1. `content/awesome/<slug>.yaml`: `title` and `description` as `{ en, es }`, an `icon:` (a Lucide name, lucide.dev/icons) or a `logo:` (a Simple Icons slug, simpleicons.org) for its card, `updated`, and `categories` with `name` (`{ en, es }`) and `links` (`title`, `url` that must be `https://`, `description` as `{ en, es }`, `tags`).
 2. Run `pnpm content:format`. `content/awesome/README.md` has the rules.
-3. Add it to the `awesome` collection in `src/lib/cms/config.yml` (`file:` and `fields: *awesome-fields`), or the CMS won't show it.
+3. Or make it in the CMS: Awesome lists → New. Every `.yaml` file in the folder shows up there; the icon has its own picker.
+
+## The site's name, tagline, hiring texts, email or links
+
+They're in `content/site.yaml` (or the CMS's "Site settings"), not in the code: `src/lib/site.ts` reads and checks them. To add a setting: a field in the YAML, its type and check in `site.ts`, a field in the `site` singleton in `src/lib/cms/config.yml`, then use `site.yourField` (with `text()` for a `{ en, es }` one).
 
 ## A UI string
 

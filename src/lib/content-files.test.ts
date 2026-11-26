@@ -14,7 +14,7 @@ describe('every content file survives a save unchanged', () => {
 	const entries = globSync('content/{blog,bitacora}/**/*.md').filter(
 		(f) => !f.endsWith('README.md')
 	);
-	const lists = globSync('content/awesome/*.yaml');
+	const lists = globSync('content/{awesome/*,site}.yaml');
 
 	test('finds the files', () => {
 		expect(entries.length).toBeGreaterThan(100);

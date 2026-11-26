@@ -28,22 +28,24 @@ Sveltia keeps the token in the browser's storage for `abafdez.github.io`, which 
 - `content/blog/{published,drafts}/<slug>/<slug>.md`, and `content/bitacora/<slug>/<slug>.md` (the dev log): one folder per entry, its images next to it, written `![alt](./diagram.png)`.
 - `<slug>.es.md` next to the English file: the Spanish version, with only the words in its frontmatter (`title`, `description`, `cover` (the cover's alt text), `reviewed`).
 - Code blocks whose language is a component name (` ```yt `, ` ```video `) with YAML inside: the build turns them into components (`src/lib/blocks.ts`).
-- `content/awesome/modern-css.yaml`: a list, every text `{ en, es }`.
+- `content/awesome/<slug>.yaml`: the Awesome lists, a folder collection (New makes a list, its file name from the English title), every text `{ en, es }`, an icon picked with the icon picker.
+- `content/site.yaml`: the site settings (name, tagline, role, hiring texts, contact email, profile links), a singleton ("Site settings" in the sidebar), read by `src/lib/site.ts`.
 
 The site renders them with [svelte-markdown](https://markdown.svelte.page) (marked's tokens drawn by Svelte components), on the server: `src/lib/markdown/` has the parsing (`parse.ts`: callouts, figures, checks), the renderers, Shiki and enhanced-img. HTML written in a post fails the build: every element comes from a renderer.
 
 ## The files
 
-| File                                              | What it does                                                                                             | Sveltia API                                                                      |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `plugin.ts`                                       | A Vite plugin, dev only (`apply: 'serve'`): serves `index.html` at `/admin`, and two dev-server settings | –                                                                                |
-| `main.ts`                                         | Imports Sveltia from npm, registers everything below, then starts it with `config.yml`                   | `CMS_MANUAL_INIT`, `init({ config })`                                            |
-| `config.yml`                                      | Collections, fields, i18n, media folders                                                                 | config                                                                           |
-| `formats.ts` + `../content-files.ts`              | How files are read and written                                                                           | `registerCustomFormat()`                                                         |
-| `components.ts`                                   | The code-block components as editor components                                                           | `registerEditorComponent()`                                                      |
-| `preview.ts`, `markdown.svelte.ts`, `preview.css` | The preview pane                                                                                         | `registerPreviewTemplate()`, `registerPreviewStyle()`, `registerEventListener()` |
-| `focal.svelte.ts`, `Focal.svelte`                 | A field for the cover's focal point                                                                      | `registerFieldType()`                                                            |
-| `covers.ts`                                       | The cover next to each entry, as a URL (a Vite glob): for the focal field and the preview's header       | –                                                                                |
+| File                                                     | What it does                                                                                             | Sveltia API                                                                      |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `plugin.ts`                                              | A Vite plugin, dev only (`apply: 'serve'`): serves `index.html` at `/admin`, and two dev-server settings | –                                                                                |
+| `main.ts`                                                | Imports Sveltia from npm, registers everything below, then starts it with `config.yml`                   | `CMS_MANUAL_INIT`, `init({ config })`                                            |
+| `config.yml`                                             | Collections, fields, i18n, media folders                                                                 | config                                                                           |
+| `formats.ts` + `../content-files.ts`                     | How files are read and written                                                                           | `registerCustomFormat()`                                                         |
+| `components.ts`                                          | The code-block components as editor components                                                           | `registerEditorComponent()`                                                      |
+| `preview.ts`, `markdown.svelte.ts`, `preview.css`        | The preview pane                                                                                         | `registerPreviewTemplate()`, `registerPreviewStyle()`, `registerEventListener()` |
+| `focal.svelte.ts`, `Focal.svelte`                        | A field for the cover's focal point                                                                      | `registerFieldType()`                                                            |
+| `icon.svelte.ts`, `IconPicker.svelte`, `lucide-names.ts` | The icon picker (field type `lucide`), and the Vite plugin that lists Lucide's icon names                | `registerFieldType()`                                                            |
+| `covers.ts`                                              | The cover next to each entry, as a URL (a Vite glob): for the focal field and the preview's header       | –                                                                                |
 
 ## Loading it
 
@@ -97,6 +99,23 @@ entry data (every change) → preview.ts → parse() + Shiki's languages
 - `registerPreviewStyle(css, { raw: true })` gives the frame the site's own CSS (`?inline` imports of the fonts, `tokens.css`, `global.css`, where the body's styles live) plus `preview.css`, a copy of `ArticleHeader.svelte`'s styles, which can't reach the frame.
 
 The Awesome list keeps Sveltia's default preview when hosted, and in dev shows its page as last saved (reloaded on `postSave`).
+
+## The icon picker (field type `lucide`)
+
+A searchable grid of the real Lucide icons, for an Awesome list's `icon`. It stores the name as written on lucide.dev (`sparkles`), which `src/lib/glyph.server.ts` turns into the icon at build time (and fails on a name that doesn't exist). Built like the focal field: `icon.svelte.ts` is a small React control that mounts `IconPicker.svelte`.
+
+- **The names** come from the package's file names, one file per icon: `lucide`'s `icons` object has PascalCase keys plus old aliases of the same icons, and a browser can't list files. So `lucide-names.ts` is a Vite plugin that reads them at build time and serves them as `virtual:lucide-names` (in both the main config, for dev, and the CMS build's).
+- **The drawings** come from `lucide` itself, imported only when a picker is shown, and drawn with the site's own `Glyph.svelte`.
+- The grid shows the first 96 matches; every word typed must be in the name ("arrow up" finds `arrow-up-right`).
+- Sveltia's own interface uses Material Symbols for its buttons (`icon:` on a collection or a custom page); those can't be Lucide.
+
+## Site settings (a singleton)
+
+`content/site.yaml` holds what used to be hardcoded or in the message files: the site name (header, page titles, footer), the tagline (home page, hire panel), the role (business-card looks), the hiring texts, the contact email (the hire panel's Email me button; empty, no button) and the GitHub and LinkedIn links. It's a [singleton](https://sveltiacms.app/en/docs/collections/singletons): "Site settings" in the sidebar, with `format: list`.
+
+The site reads it through `src/lib/site.ts`, which imports `/content/site.yaml?data`: a small Vite plugin (`src/lib/yaml-data.ts`) parses the YAML at build time, so pages get plain JSON and no YAML parser ships to visitors. `checkSite()` fails the build on a missing translation, a link that isn't `https://` or an email that isn't one.
+
+`writeList()` (`content-files.ts`) leaves out empty top-level fields, so an unset email or icon isn't written as `''`.
 
 ## The focal-point field
 

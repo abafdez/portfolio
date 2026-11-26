@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { site } from '#lib/site.ts';
 	import { route } from '#lib/i18n/index.ts';
 	import Nav from '#lib/components/Nav.svelte';
 	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
@@ -9,7 +10,7 @@
 
 <header class="site-header">
 	<div class="inner">
-		<a class="site-name" href={route('/')}>Alfonso Baeza</a>
+		<a class="site-name" href={route('/')}>{site.name}</a>
 		<div class="nav"><Nav /></div>
 		<div class="toggle">
 			<Search /><LanguageSwitch /><PalettePicker /><ThemeToggle duration={500} blur={50} />

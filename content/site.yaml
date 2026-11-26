@@ -1,0 +1,19 @@
+name: Alfonso Baeza
+tagline:
+  en: Web developer. I make websites that are fast, accessible and a little playful.
+  es: Desarrollo web. Diseño sitios rápidos, accesibles y con un toque diferenciador.
+role:
+  en: Web developer
+  es: Desarrollo web
+hire:
+  text:
+    en: I'm looking for my next role in web development, front end first. I also bring years of IT support and mainframe work (Natural, Adabas, COBOL).
+    es: Busco mi próximo puesto en desarrollo web, sobre todo front-end. También aporto años de soporte informático y de trabajo en mainframe (Natural, Adabas, COBOL).
+  contact:
+    en: "Send me a message on LinkedIn: I'll answer and send you my CV."
+    es: 'Escríbeme por LinkedIn: te contesto y te envío mi CV.'
+  contactWithEmail:
+    en: "Send me a message on LinkedIn or by email: I'll answer and send you my CV."
+    es: 'Escríbeme por LinkedIn o por correo: te contesto y te envío mi CV.'
+github: https://github.com/abafdez
+linkedin: https://www.linkedin.com/in/alfonso-baeza-fdez/

@@ -40,3 +40,5 @@ All seven have an `.es.md` with `reviewed: false`, no cover, and screenshots Cla
 ## 2026-11-19 (branch `feat/covers-icons-and-motion`)
 
 - `2026-11-19-a-timeline-that-fills-as-you-read`: the Devlog timeline's three scroll-driven animations, the `view(50% 50%)` inset trick, the wipe's clip room for the dot. Screenshot Claude took. No cover, `.es.md` with `reviewed: false`, no links to drafts.
+- `2026-11-19-an-icon-picker-inside-sveltia-cms`: a Svelte field inside Sveltia's React, the Lucide names from the package's files through a virtual module. Screenshot Claude took (Sveltia's test backend). No cover, `.es.md` with `reviewed: false`.
+- `2026-11-19-site-settings-without-a-yaml-parser`: `content/site.yaml` as a singleton, the `?data` Vite plugin, the build-time checks, empty fields left out. No cover, `.es.md` with `reviewed: false`. **Publish after a real save from the CMS has worked** (the singleton with our `list` format).

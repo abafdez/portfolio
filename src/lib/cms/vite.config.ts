@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig, type Plugin } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { enhancedImages } from '@sveltejs/enhanced-img';
+import { lucideNames } from './lucide-names.ts';
 import { parse } from 'yaml';
 
 const here = (path: string) => fileURLToPath(new URL(path, import.meta.url));
@@ -45,6 +46,7 @@ export default defineConfig({
 	publicDir: false,
 	plugins: [
 		hostedCovers(),
+		lucideNames(), // virtual:lucide-names, for the icon picker
 		// enhanced-img compiles the <enhanced:img> in the markdown components (Image.svelte).
 		// Their src is a value at run time, so it never encodes an image here.
 		enhancedImages(),
