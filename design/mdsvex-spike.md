@@ -118,4 +118,15 @@ Other first-party plugins, looked at 2026-11-26 (all MIT, 0.1.x): later, `page-d
 
 **Decided (Alfonso, 2026-11-26): components in posts are directives**, all three forms: `:name[text](args)` inline, `::name[label](args)` a leaf on its own line, `:::name … :::` a container. No `<Component>` tags or `{ }` in posts (those rules stay). Obsidian and GitHub show directives as plain text; the site draws them. First candidates: the first-party plugins (tabs, steps, elements: details, kbd, badge, abbr) and our own (live demos).
 
-Next: Lighthouse on a long post and the video post against `main`; then step 4, clean-up: docs (`docs/customizing/` 01, 02, 08, the publishing guide, CLAUDE.md), dated update notes on the posts that describe svelte-markdown and Shiki (en + es), a Devlog entry, a draft and the vault copy, the board card; upstream reports; mdsvex 1.1.0 once pnpm allows it.
+**Lighthouse (2026-11-26, mobile, median of 3, five pages, against `main`'s build):** accessibility, best practices and SEO 100 on both, CLS 0, TBT 0. First measured, mdsvex was 1–5 performance points lower and 13–26 kB gzip heavier on a first visit; two causes, both fixed: one glob of every body in both sections and languages (11 kB on every post page; now one glob per section with short keys, `base`, and the files' list only when a post's blocks have files) and the YAML parser in posts with a block (12 kB; the components' helpers moved to `markdown/blocks/values.ts`). After the fixes:
+
+| page                                          | perf `main` → mdsvex | FCP s       | LCP s       | first visit kB gzip |
+| --------------------------------------------- | -------------------- | ----------- | ----------- | ------------------- |
+| longest post (`theme-toggle-view-transition`) | 79 → 80              | 3.53 → 3.61 | 4.06 → 3.90 | 94.3 → 102.8        |
+| video post                                    | 82 → 81              | 3.16 → 3.46 | 3.83 → 3.83 | 86.1 → 97.6         |
+| YouTube post                                  | 85 → 82              | 3.16 → 3.46 | 3.46 → 3.75 | 87.4 → 99.8         |
+| Devlog entry (`colour-themes`)                | 86 → 82              | 3.08 → 3.45 | 3.31 → 3.75 | 86.0 → 95.9         |
+
+What's left of the gap: the body is a JS chunk now (its HTML is smaller, the two about even out), the replacement components, and one section's list of bodies (a few kB). Hydrating a long body costs nothing measurable (TBT 0).
+
+Next: step 4, clean-up: docs (`docs/customizing/` 01, 02, 08, the publishing guide, CLAUDE.md), dated update notes on the posts that describe svelte-markdown and Shiki (en + es), a Devlog entry, a draft and the vault copy, the board card; upstream reports; mdsvex 1.1.0 once pnpm allows it.
