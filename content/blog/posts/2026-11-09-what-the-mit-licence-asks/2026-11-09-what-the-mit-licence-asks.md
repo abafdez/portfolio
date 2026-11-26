@@ -46,7 +46,7 @@ Data counts as much as code. The next tool, an HTML symbols table, could use the
 
 Even MIT code doesn't come with its project's name or look. My tools don't take anyone's logo or layout: each one is a small terminal window on the dashboard, like the rest of the site.
 
-![A tool on the dashboard: a terminal window titled ~/toolbox/base64, with an icon, its name and a one-line description](./tool-window.png)
+![A tool on the dashboard: a terminal window titled \~/toolbox/base64, with an icon, its name and a one-line description](./tool-window.png)
 
 ## Read before you borrow
 

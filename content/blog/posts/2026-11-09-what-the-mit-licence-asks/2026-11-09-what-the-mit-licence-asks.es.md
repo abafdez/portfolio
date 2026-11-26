@@ -45,7 +45,7 @@ Los datos cuentan tanto como el código. La próxima herramienta, una tabla de s
 
 Ni siquiera el código MIT viene con el nombre o el aspecto de su proyecto. Mis herramientas no cogen el logo ni el diseño de nadie: cada una es una pequeña ventana de terminal en el panel, como el resto del sitio.
 
-![Una herramienta en el panel: una ventana de terminal titulada ~/toolbox/base64, con un icono, su nombre y una descripción de una línea](./tool-window.png)
+![Una herramienta en el panel: una ventana de terminal titulada \~/toolbox/base64, con un icono, su nombre y una descripción de una línea](./tool-window.png)
 
 ## Lee antes de tomar prestado
 
