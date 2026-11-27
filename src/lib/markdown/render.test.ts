@@ -141,3 +141,45 @@ describe('our blocks', () => {
 		);
 	});
 });
+
+describe('directives', () => {
+	test(':kbd draws a keycap per key, the + between them as text', async () => {
+		expect(await html('Press :kbd[Ctrl+Shift+P] or :kbd[Ctrl++].')).toBe(
+			'<p>Press <kbd class="keys"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd></kbd> or ' +
+				'<kbd class="keys"><kbd>Ctrl</kbd>+<kbd>+</kbd></kbd>.</p>'
+		);
+	});
+
+	test(':::details is a native details, closed unless open=true', async () => {
+		expect(await html(':::details[Show _it_]\nBody.\n:::')).toBe(
+			'<details class="details"><summary>Show <em>it</em></summary> ' +
+				'<div class="details-body"><p>Body.</p></div></details>'
+		);
+		expect(await html(':::details[Open](open=true)\nBody.\n:::')).toContain(
+			'<details class="details" open="">'
+		);
+	});
+
+	test(':::compare: a section per side, its heading still a linked heading', async () => {
+		expect(await html(':::compare\n## Before\nOld.\n## After\nNew.\n:::')).toBe(
+			'<div class="compare">' +
+				'<section class="compare-side"><h2 id="before"><a href="#before">Before</a></h2> <p>Old.</p></section>' +
+				'<section class="compare-side"><h2 id="after"><a href="#after">After</a></h2> <p>New.</p></section>' +
+				'</div>'
+		);
+	});
+
+	test("mdsvex's steps, tabs and toc", async () => {
+		expect(await html(':::steps\n## Install\nAdd it.\n## Use\nRun it.\n:::')).toMatch(
+			/^<ol class="steps" role="list"><li class="step"><div class="step-title"><h2 id="install">/
+		);
+		const tabs = await html(
+			':::tabs\n```sh [npm]\nnpm i x\n```\n```sh [pnpm]\npnpm add x\n```\n:::'
+		);
+		expect(tabs).toMatch(/role="tab"[^>]*aria-selected="true"[^>]*>npm<\/button>/);
+		expect(tabs).toMatch(/role="tabpanel"[^>]*hidden=""/);
+		expect(await html('::toc[On this page]\n\n## One\n\n### Two')).toContain(
+			'<ul><li><a href="#one">One</a><ul><li><a href="#two">Two</a></li></ul></li></ul></nav>'
+		);
+	});
+});

@@ -106,3 +106,37 @@ test('links that leave the site are rel="external"; our own full links are not',
 		'<p><a href="https://svelte.dev" rel="external">a</a> <a href="https://abafdez.github.io/portfolio/">b</a> <a href="/about">c</a></p>'
 	);
 });
+
+describe('our directives', () => {
+	test(':kbd gets its text as keys', () => {
+		expect(svelte('Press :kbd[Ctrl+Shift+P].')).toMatch(/<Kbd_\w+ keys="Ctrl\+Shift\+P">/);
+	});
+
+	test('a :::details without a summary fails, naming the file and line', () => {
+		expect(() => compiled('Text.\n\n:::details\nBody.\n:::')).toThrow(
+			`${file}:3: :::details needs a summary`
+		);
+	});
+
+	test('each heading of the first depth inside :::compare starts a side', () => {
+		const out = svelte(':::compare\n## Before\nOld.\n\n### More\nx\n## After\nNew.\n:::');
+		expect(out.match(/<Compare_side_\w+>/g)).toHaveLength(2);
+		// A deeper heading stays inside its side.
+		expect(out).toMatch(/<h3 id="more">More<\/h3><p>x<\/p>\s*<\/Compare_side/);
+	});
+
+	test('a :::compare must start with a heading, and needs two sides', () => {
+		expect(() => compiled(':::compare\nIntro.\n## A\na\n## B\nb\n:::')).toThrow(
+			`${file}:2: a :::compare starts with a heading`
+		);
+		expect(() => compiled(':::compare\n## Only\nOne.\n:::')).toThrow(
+			`${file}:1: :::compare needs two headings or more`
+		);
+	});
+
+	test('an unknown directive fails, naming it', () => {
+		expect(() => compiled(':::kdb[x]\ny\n:::')).toThrow(
+			/no component renders the directive :::kdb/
+		);
+	});
+});
