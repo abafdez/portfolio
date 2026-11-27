@@ -32,7 +32,7 @@ for (const md of [
 
 **Expected:** a link (`<p><a href="https://example.com">~/dir</a></p>`) and an image whose alt is `a ~/toolbox window`. [PFM.md](https://github.com/pngwn/MDsveX/blob/main/PFM.md) says a mark that is never closed stays literal text, and outside link text it does (the last line).
 
-**Our workaround:** `\~` in the one alt text that hit it (`2026-11-09-what-the-mit-licence-asks`, both languages); the publishing guide warns about it.
+**Our workaround:** `\~` in the one alt text that hit it (`2026-11-09-what-the-mit-licence-asks`, both languages); the publishing guide warns about it under "Markdown that reads a little differently" ([content/blog/posts/README.md](../content/blog/posts/README.md), line 211).
 
 ## 2. enhanced-img's markup step parses mdsvex's raw markdown
 
@@ -58,9 +58,11 @@ https://svelte.dev/e/js_parse_error
 
 (16 errors on this site, one per post and language that mentions the tag in code; some say `Expected whitespace`.)
 
-**Why:** mdsvex registers `.md` as a Svelte extension. enhanced-img's markup plugin has a `transform` with `order: 'pre'` and a code filter for `<enhanced:img`, so it runs before mdsvex has compiled the file and parses the markdown as Svelte. Putting `mdsvex()` before `enhancedImages()` in `plugins` doesn't help (`order: 'pre'` wins over plugin order), and changing the hook's `filter` had no effect.
+**Not about `.md`:** the same happens with mdsvex's default `.svx`. Checked on 2026-11-27 with a minimal Vite build (`svelte()`, `enhancedImages()`, `mdsvex()` with no options, one `post.svx` holding the fence above): it fails the same way. And when the example's `./photo.jpg` does exist, the build **passes** but the code sample readers see is rewritten into enhanced-img's generated `<picture>` markup (`srcset={"/photo.avif 1x, /photo2.avif 2x"}` …), and the image files are emitted for nothing.
 
-**Expected:** markdown files reach enhanced-img only after mdsvex has turned them into Svelte (or enhanced-img skips ids that aren't `.svelte`).
+**Why:** mdsvex adds its extensions (`.svx` by default) to vite-plugin-svelte's, and compiles markdown inside vite-plugin-svelte's compile step. enhanced-img's markup plugin takes its id filter from vite-plugin-svelte (every Svelte extension) and runs a `transform` with `order: 'pre'` and a code filter for `<enhanced:img`, so it runs before mdsvex has compiled the file and parses the markdown as Svelte. Putting `mdsvex()` before `enhancedImages()` in `plugins` doesn't help (`order: 'pre'` wins over plugin order), and changing the hook's `filter` had no effect.
+
+**Expected:** markdown files reach enhanced-img only after mdsvex has turned them into Svelte, so text inside code stays text. mdsvex checks for this very plugin (`import_images.enhanced`), so it's the likelier place to fix the order.
 
 **Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts` wraps that plugin's transform handler to skip `.md` ids; mdsvex imports markdown images through enhanced-img itself.
 
@@ -90,4 +92,4 @@ for (const code of [
 
 **Expected:** what the same declaration gets inside `:root { … }` (third snippet): `--accent` = `css_variable`, `oklch` = `function`, `70` = `number`, `%` = `unit`. Posts and docs show CSS as bare declarations all the time; Shiki and GitHub highlight them as declarations.
 
-**Our workaround:** none; those words show in the selector colour in a few posts.
+**Our workaround:** none; those words show in the selector colour (10 CSS blocks in 7 posts and entries). Only colours are wrong; the text is right.
