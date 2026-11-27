@@ -150,7 +150,7 @@ async function enhancedImagesExceptMarkdown() {
 Versions: mdsvex 1.1.0, @sveltejs/enhanced-img 1.0.1, @sveltejs/vite-plugin-svelte 7.3.1, Svelte 5.57.3, Vite 8.3.8, Node 24.
 `````
 
-**Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts` (the same as in the issue, for `.md` only).
+**Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts`, the same wrapper as in the issue. Ours checks `.md` only: this site gives mdsvex `extensions: ['.md']`, so `.svx` isn't a Svelte extension here and enhanced-img never sees a `.svx` file. The issue's copy checks both, for readers on mdsvex's default.
 
 ## 3. twinkleplop: CSS declarations outside a rule are read as a selector
 
