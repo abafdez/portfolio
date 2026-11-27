@@ -192,7 +192,7 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Rule:** no switch until nothing is lost. `main` built in a worktree; every blog and Devlog page compared block by block in both languages (158 of 158 each), the CMS preview against the built pages (72 of 72), Lighthouse on five pages (within a few points).
 - **Done:** step 1 twinkleplop instead of Shiki (colours as CSS classes); step 2 mdsvex for every page (parse plugins, links per language at run time, the blocks as a plugin bundle, block files through plugin data); the CMS preview compiling in the browser; step 3 svelte-markdown removed, one `src/lib/markdown/` folder, new tests; two weight leaks fixed; mdsvex 1.1.0; the built CMS preview's missing Open Props variables fixed. Notes: [design/mdsvex-spike.md](../design/mdsvex-spike.md).
 - **Decided:** components in posts are directives (`:name[…]`, `::name`, `:::name`); braces in posts fail the build for now (review later: the CMS preview runs what it compiles).
-- **Next:** directives and live demos (first-party plugins first: tabs, steps, elements, diagram), page-data + `?data` for the lists, an RSS feed, upstream bug reports.
+- **Done on `feat/directives` (2026-11-27, stacked on `feat/mdsvex`):** directives (`:kbd`, `:::details`, `:::compare`, `:::demo`; mdsvex's tabs, steps, toc), `::video`/`::yt` replacing the fences, live demos with a sandboxed CMS preview, plain `{expressions}` (shown as code in the preview), updated dates from git (page-data explored and dropped). Upstream reports filed by Alfonso. **No RSS feed** (Alfonso, 2026-11-27: nobody uses it).
 
 ## Phase 13 — Covers from our own GPU (planned 2026-11-26)
 
