@@ -129,4 +129,6 @@ Other first-party plugins, looked at 2026-11-26 (all MIT, 0.1.x): later, `page-d
 
 What's left of the gap: the body is a JS chunk now (its HTML is smaller, the two about even out), the replacement components, and one section's list of bodies (a few kB). Hydrating a long body costs nothing measurable (TBT 0).
 
+**To review later (Alfonso, 2026-11-27):** braces in posts. `{ }` outside backticks fails the build now (`noSvelte` in `plugins.ts`), but expressions could be useful (a value computed at build time). The rule exists for the CMS preview, which runs what it compiles next to the GitHub token: harmless for posts Alfonso writes, a risk for content from someone else (a pull request in the editorial workflow). Options: allow them in the build and show the source in the preview, an allowlist, or `[!eval]` in code blocks only. Card on the board.
+
 Next: step 4, clean-up: docs (`docs/customizing/` 01, 02, 08, the publishing guide, CLAUDE.md), dated update notes on the posts that describe svelte-markdown and Shiki (en + es), a Devlog entry, a draft and the vault copy, the board card; upstream reports; mdsvex 1.1.0 once pnpm allows it.
