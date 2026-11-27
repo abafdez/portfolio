@@ -1,6 +1,6 @@
 ---
 title: Live demos in my posts, and a sandbox to preview them
-draft: true
+draft: false
 date: 2026-11-27
 tags: [mdsvex, svelte, cms, security]
 description: "A code block in my posts can now run: the page shows what the code makes above the code itself. In the CMS, where my GitHub token lives, the same demo runs in a sandboxed frame that can't reach it."
@@ -35,10 +35,34 @@ The demo is part of the page: rendered on the server with the rest of the post, 
 
 ## A demo that waits
 
-Some code can only run in a browser, or is heavy enough that it shouldn't load until someone wants it. `run=client` leaves it out of the page and puts a button in its place:
+Some code can only run in a browser, or is heavy enough that it shouldn't load until someone wants it. `run=client` leaves it out of the page and puts a button in its place. This one follows the window once it runs: resize it, or scroll, and watch the numbers.
 
-```js run=client
-export default () => `This window is ${innerWidth} pixels wide.`;
+```svelte run=client
+<script>
+	let width = $state(0);
+	let scrolled = $state(0);
+
+	// How wide the window is, and how much of the page is above its bottom edge.
+	function measure() {
+		width = innerWidth;
+		const room = document.documentElement.scrollHeight - innerHeight;
+		scrolled = room > 0 ? Math.round((scrollY / room) * 100) : 100;
+	}
+
+	$effect(measure);
+</script>
+
+<svelte:window onresize={measure} onscroll={measure} />
+
+<p>This window is {width} pixels wide, and you've read {scrolled}% of the page.</p>
+<progress max="100" value={scrolled} aria-label="How much of the page you've read"></progress>
+
+<style>
+	progress {
+		inline-size: 100%;
+		accent-color: var(--brand, currentColor);
+	}
+</style>
 ```
 
 ## A frame around it

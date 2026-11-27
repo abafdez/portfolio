@@ -33,10 +33,34 @@ La demo es parte de la página: se renderiza en el servidor con el resto del art
 
 ## Una demo que espera
 
-Hay código que solo puede ejecutarse en un navegador, o que pesa lo bastante como para no cargarlo hasta que alguien lo quiera. `run=client` lo deja fuera de la página y pone un botón en su lugar:
+Hay código que solo puede ejecutarse en un navegador, o que pesa lo bastante como para no cargarlo hasta que alguien lo quiera. `run=client` lo deja fuera de la página y pone un botón en su lugar. Esta sigue a la ventana en cuanto se ejecuta: cambia su tamaño, o desplázate, y mira los números.
 
-```js run=client
-export default () => `Esta ventana mide ${innerWidth} píxeles de ancho.`;
+```svelte run=client
+<script>
+	let width = $state(0);
+	let scrolled = $state(0);
+
+	// Lo ancha que es la ventana, y cuánto de la página queda por encima de su borde inferior.
+	function measure() {
+		width = innerWidth;
+		const room = document.documentElement.scrollHeight - innerHeight;
+		scrolled = room > 0 ? Math.round((scrollY / room) * 100) : 100;
+	}
+
+	$effect(measure);
+</script>
+
+<svelte:window onresize={measure} onscroll={measure} />
+
+<p>Esta ventana mide {width} píxeles de ancho, y has leído el {scrolled} % de la página.</p>
+<progress max="100" value={scrolled} aria-label="Cuánto de la página has leído"></progress>
+
+<style>
+	progress {
+		inline-size: 100%;
+		accent-color: var(--brand, currentColor);
+	}
+</style>
 ```
 
 ## Un marco alrededor
