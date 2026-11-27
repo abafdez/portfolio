@@ -178,6 +178,24 @@ A box for a note, a tip or a warning. It's a blockquote whose first line is `[!t
 - **Folding** (Obsidian's `[!note]-`) is accepted, but the box is always shown open.
 - **Use them sparingly**: one or two per post. When everything is a callout, nothing stands out.
 
+## Components (directives)
+
+A colon, a name and brackets draw a component, with no HTML. `:name[…]` sits in a sentence, `::name[…]` takes a line of its own, and `:::name[…]` opens a block that ends at a line of `:::`. Arguments go in parentheses after the brackets: `(open=true)`.
+
+| Write                                        | You get                                                                                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `:kbd[Ctrl+Shift+P]`                         | Keycaps, one per key. A `+` at the end is a key: `:kbd[Ctrl++]`.                                                                     |
+| `:::details[The summary]` … `:::`            | A section the reader opens. The summary is required; `(open=true)` starts it open.                                                   |
+| `:::compare` with a heading per side … `:::` | Sides next to each other, stacked on a phone. Start with a heading (`### Before`); headings of that depth start a side. Two or more. |
+| `:::steps` with a heading per step … `:::`   | Numbered steps (mdsvex's plugin).                                                                                                    |
+| `:::tabs` … `:::`                            | Tabs: a heading per tab, or code blocks named after their language (` ```sh [pnpm] `), one tab each (mdsvex's plugin).               |
+| `::toc[On this page]`                        | The post's headings, nested (mdsvex's plugin). `<!-- no-toc -->` in a heading leaves it out.                                         |
+
+- **Mistakes fail the build**, naming the file and line: an unknown name (`:::kdb`), a `:::details` without a summary, a `:::compare` that doesn't start with a heading or has one side.
+- **A block inside a block** needs more colons on the outer one: `::::tabs` around a `:::details`.
+- **GitHub and Obsidian show directives as plain text** (`:kbd[Esc]` with its colon and brackets), so keep the text inside them readable on its own.
+- **A line that is only `::word` or `:::word`** is a directive. Write `\::word` to keep it as text.
+
 ## In Spanish
 
 A post's Spanish version is a second file in the same folder, `<slug>.es.md`, next to `<slug>.md`. It shares the images (`./diagram.png` works from both) and is published with it: `draft` is only read from the English file.
