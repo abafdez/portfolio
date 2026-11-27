@@ -36,35 +36,121 @@ for (const md of [
 
 ## 2. enhanced-img's markup step parses mdsvex's raw markdown
 
-**Where:** probably [pngwn/MDsveX](https://github.com/pngwn/MDsveX/issues) first (its docs build `import_images` on enhanced-img), and/or [sveltejs/kit](https://github.com/sveltejs/kit/issues) (package `@sveltejs/enhanced-img`). Check which one already knows.
+**Where:** [pngwn/MDsveX](https://github.com/pngwn/MDsveX/issues). mdsvex is the one that turns on enhanced-img for markdown images, and it already looks for this plugin. Search for "enhanced-img" in its open and closed issues first; if the maintainer says it belongs to enhanced-img, the same text works in [sveltejs/kit](https://github.com/sveltejs/kit/issues) (package `@sveltejs/enhanced-img`).
 
-**Title:** With mdsvex's Vite plugin, enhanced-img parses the raw markdown of any `.md` file that mentions `<enhanced:img` and fails
+**Only with `enhancedImages()` in the Vite plugins.** Without it the markup step doesn't exist and the same post builds (case D below). But that plugin is what makes mdsvex enhance markdown images (`import_images` is on by default and uses enhanced-img when the plugin is there), so anyone who wants optimised images in posts has it.
 
-**Setup:** SvelteKit with `mdsvex({ extensions: ['.md'] })` and `enhancedImages()` in `vite.config`, and a post whose text mentions the tag in code, for example a fenced block:
+Reproduced on 2026-11-27 with a minimal Vite build (no SvelteKit). Ready to paste:
+
+**Title:** With `enhancedImages()`, a `.svx` file that shows `<enhanced:img>` in a code block fails to build, or its code sample is rewritten
+
+`````md
+mdsvex uses enhanced-img for markdown images when `enhancedImages()` is in the Vite plugins. With that setup, a document that _shows_ the tag in a code block (a post about enhanced-img, say) goes through enhanced-img's markup step before mdsvex has compiled it. That step parses the raw markdown as a Svelte component, and one of three things happens:
+
+1. The markdown isn't valid Svelte (a CSS block is enough): the build fails.
+2. It parses, and the sample's image doesn't exist: the build fails.
+3. It parses, and the image exists: the build passes, and the code sample readers see is enhanced-img's generated markup instead of the line I wrote. Nothing warns about it.
+
+Without `enhancedImages()` the same files build and the sample shows as written.
+
+### Reproduction
+
+`vite.config.js`:
+
+```js
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { enhancedImages } from '@sveltejs/enhanced-img';
+import { mdsvex } from 'mdsvex';
+
+export default {
+	build: { ssr: 'src/main.js' },
+	plugins: [
+		mdsvex(),
+		enhancedImages(),
+		svelte({ extensions: ['.svelte', '.svx'], compilerOptions: { generate: 'server' } })
+	]
+};
+```
+
+`src/main.js`:
+
+```js
+export { default } from './post.svx';
+```
+
+`src/post.svx`:
 
 ````md
+A post about images.
+
 ```svelte
 <enhanced:img src="./photo.jpg" alt="A photo" />
 ```
 ````
 
-**Actual:** `vite build` fails:
+Then `vite build`:
 
-```text
-[plugin vite-plugin-enhanced-img-markup] /…/content/blog/posts/2026-10-29-enhanced-img/2026-10-29-enhanced-img.md
-CompileError: Unexpected token
-https://svelte.dev/e/js_parse_error
+- **As above, no `src/photo.jpg`:**
+
+  ```text
+  [plugin vite-plugin-enhanced-img-markup] src/post.svx
+  Error: Could not locate ./photo.jpg. See https://vitejs.dev/guide/assets for more details on referencing assets.
+  ```
+
+- **Add a CSS block to the post** (`img { border-radius: 8px; }` in a `css` fence):
+
+  ```text
+  [plugin vite-plugin-enhanced-img-markup] src/post.svx
+  CompileError: Expected token }
+  https://svelte.dev/e/expected_token
+  ```
+
+- **Without the CSS block, with a real `src/photo.jpg`:** the build passes, and rendering the component (`svelte/server`), the code block reads:
+
+  ```text
+  <picture><source srcset={"/assets/photo-BgsjhETJ.avif 1x, /assets/photo-BvssZlEW.avif 2x"} type="image/avif" /><source srcset={"/assets/photo-DO1uQ9Dn.webp 1x, /assets/photo-m0Lrat1L.webp 2x"} type="image/webp" /><source srcset={"/assets/photo-DkHErv_p.jpg 1x, /assets/photo-CK7tdQkH.jpg 2x"} type="image/jpeg" /><img src={"/assets/photo-CK7tdQkH.jpg"} alt="A photo" width=40 height=30 /></picture>
+  ```
+
+  The image was processed into the six versions it names, for an image nobody shows.
+
+- **The same, without `enhancedImages()`:** the build passes and the code block reads `<enhanced:img src="./photo.jpg" alt="A photo" />`.
+
+### Expected
+
+Code samples stay text. Markdown should reach enhanced-img's markup step only after mdsvex has compiled it (by then the sample is escaped and doesn't match), or that step should skip mdsvex's extensions, since mdsvex already enhances markdown images itself.
+
+### Why, as far as I can tell
+
+mdsvex adds its extensions to vite-plugin-svelte's and compiles markdown inside vite-plugin-svelte's compile step. enhanced-img's markup plugin takes its id filter from vite-plugin-svelte (every Svelte extension, so `.svx` too) and its transform has `order: 'pre'` with a code filter for `<enhanced:img`, so it runs before that compile step and gets the raw markdown. Putting `mdsvex()` before `enhancedImages()` doesn't change it: `order: 'pre'` runs first whatever the plugin order.
+
+### Also with `.md`
+
+My site uses `mdsvex({ extensions: ['.md'] })` with SvelteKit; the same thing happens (16 build errors, one per post and language that mentions the tag in code, `Unexpected token` or `Expected whitespace`).
+
+### Workaround
+
+Wrap the markup step's handler so it skips markdown files. mdsvex still enhances markdown images, so nothing is lost:
+
+```js
+async function enhancedImagesExceptMarkdown() {
+	const plugins = await enhancedImages();
+	for (const plugin of plugins) {
+		const hook = plugin.transform;
+		if (plugin.name !== 'vite-plugin-enhanced-img-markup' || typeof hook !== 'object') continue;
+		const handler = hook.handler;
+		hook.handler = function (code, id, ...rest) {
+			if (/\.(svx|md)$/.test(id.split('?')[0])) return;
+			return handler.call(this, code, id, ...rest);
+		};
+	}
+	return plugins;
+}
 ```
 
-(16 errors on this site, one per post and language that mentions the tag in code; some say `Expected whitespace`.)
+Versions: mdsvex 1.1.0, @sveltejs/enhanced-img 1.0.1, @sveltejs/vite-plugin-svelte 7.3.1, Svelte 5.57.3, Vite 8.3.8, Node 24.
+`````
 
-**Not about `.md`:** the same happens with mdsvex's default `.svx`. Checked on 2026-11-27 with a minimal Vite build (`svelte()`, `enhancedImages()`, `mdsvex()` with no options, one `post.svx` holding the fence above): it fails the same way. And when the example's `./photo.jpg` does exist, the build **passes** but the code sample readers see is rewritten into enhanced-img's generated `<picture>` markup (`srcset={"/photo.avif 1x, /photo2.avif 2x"}` …), and the image files are emitted for nothing.
-
-**Why:** mdsvex adds its extensions (`.svx` by default) to vite-plugin-svelte's, and compiles markdown inside vite-plugin-svelte's compile step. enhanced-img's markup plugin takes its id filter from vite-plugin-svelte (every Svelte extension) and runs a `transform` with `order: 'pre'` and a code filter for `<enhanced:img`, so it runs before mdsvex has compiled the file and parses the markdown as Svelte. Putting `mdsvex()` before `enhancedImages()` in `plugins` doesn't help (`order: 'pre'` wins over plugin order), and changing the hook's `filter` had no effect.
-
-**Expected:** markdown files reach enhanced-img only after mdsvex has turned them into Svelte, so text inside code stays text. mdsvex checks for this very plugin (`import_images.enhanced`), so it's the likelier place to fix the order.
-
-**Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts` wraps that plugin's transform handler to skip `.md` ids; mdsvex imports markdown images through enhanced-img itself.
+**Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts` (the same as in the issue, for `.md` only).
 
 ## 3. twinkleplop: CSS declarations outside a rule are read as a selector
 
