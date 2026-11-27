@@ -186,6 +186,26 @@ A colon, a name and brackets draw a component, with no HTML. `:name[…]` sits i
 - **GitHub and Obsidian show directives as plain text** (`:kbd[Esc]` with its colon and brackets), so keep the text inside them readable on its own.
 - **A line that is only `::word` or `:::word`** is a directive. Write `\::word` to keep it as text.
 
+## Live demos
+
+Write `run` after a code block's language and the page runs it, above its code:
+
+````md
+```svelte run
+<script>
+	let count = $state(0);
+</script>
+
+<button onclick={() => count++}>Clicked {count}</button>
+```
+````
+
+- **A Svelte block** draws its component (braces are fine inside a code block, it's code). **A `ts` or `js` block** calls its default export and shows what it returns.
+- **`run=client`** leaves it out of the page and puts a "Run the demo" button in its place: for code that needs a browser (`window`) or is heavy.
+- **`:::demo[A title]`** around the block (and some text about it) draws a window with the title in its bar.
+- Imports in a block work as in any file of the site (`./Button.svelte` next to the post, `#lib/…`).
+- **In the CMS preview** a Svelte demo runs in a sandboxed frame that can't reach your GitHub token, and only imports of `svelte` work there. Script blocks don't run in the preview: a line says the result shows on the published page.
+
 ## In Spanish
 
 A post's Spanish version is a second file in the same folder, `<slug>.es.md`, next to `<slug>.md`. It shares the images (`./diagram.png` works from both) and is published with it: `draft` is only read from the English file.

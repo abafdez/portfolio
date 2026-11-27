@@ -55,3 +55,4 @@ All four only make sense once `feat/mdsvex` is merged. Each has an `.es.md` with
 ## Directives and live demos, 2026-11-27 (branch `feat/directives`, stacked on `feat/mdsvex`)
 
 - `2026-11-27-components-as-directives`: what directives are, and every one the site has (`:kbd`, `:::details`, `:::compare`, mdsvex's steps, tabs and toc), each used in the post itself; the `keys` trick; what GitHub and Obsidian show. No links to drafts. Needs `feat/mdsvex` and `feat/directives` merged.
+- `2026-11-27-live-demos-in-posts`: ` ```svelte run ` blocks, `run=client`, `:::demo`, and the CMS preview's sandboxed frame (opaque origin, CORS from `null`, the hostile-demo test, the `parent` surprise). No links to drafts. Same branches.
