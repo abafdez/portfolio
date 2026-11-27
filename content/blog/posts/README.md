@@ -34,6 +34,8 @@ posts/
 
 ## Frontmatter
 
+The date a post was **last updated** isn't written anywhere: it's the day of the last commit that changed the file (English and Spanish each their own), shown after the date ("updated 2026-11-27") when it's a later day, and given to search engines and the sitemap. Any committed change counts, a typo fix too.
+
 ```yaml
 ---
 title: Deploying SvelteKit 3 to GitHub Pages, step by step
