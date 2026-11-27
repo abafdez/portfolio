@@ -10,6 +10,7 @@ import { drafts } from './src/lib/drafts.ts'; // leaves draft posts out of a bui
 import { lucideNames } from './src/lib/cms/lucide-names.ts'; // the CMS icon picker's list
 import { yamlData } from './src/lib/yaml-data.ts'; // import x from '/content/x.yaml?data'
 import { mdsvex } from 'mdsvex'; // markdown files as Svelte components
+import type { Plugin } from 'vite';
 import { compileOptions } from './src/lib/markdown/options.ts';
 
 // base path for using github pages
@@ -24,20 +25,19 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 // [slug] pages load through src/lib/bodies.ts. content.ts still reads the frontmatter
 // with ?raw imports, which mdsvex leaves alone.
 
-// mdsvex makes .md a Svelte extension, and enhanced-img's markup step, whose
-// transform runs before every other one (order: 'pre'), then parses the raw markdown of
-// any post whose text mentions <enhanced:img> (in a code example) and fails. mdsvex draws
-// the <picture> of markdown images itself, so that step can skip .md files.
-async function enhancedImagesExceptMarkdown() {
-	const plugins = await enhancedImages();
+// mdsvex's transform must run before enhanced-img's markup step. That step's transform has
+// order: 'pre', which Vite runs before every hook without an order, whatever a plugin's
+// enforce says (mdsvex's plugin has enforce: 'pre', its transform no order). So it got
+// the raw markdown of any post that shows <enhanced:img> in a code example, parsed it as
+// Svelte, and failed, or rewrote the example. With order: 'pre' on mdsvex's transform too,
+// mdsvex goes first (its enforce decides among 'pre' hooks, not the list below), and the
+// example reaches enhanced-img as escaped text. mdsvex has no option for this; reported
+// upstream (design/upstream-reports.md). Drop this once mdsvex sets the order itself.
+function mdsvexFirst(plugins: Plugin[]) {
 	for (const plugin of plugins) {
 		const hook = plugin.transform;
-		if (plugin.name !== 'vite-plugin-enhanced-img-markup' || typeof hook !== 'object') continue;
-		const handler = hook.handler;
-		hook.handler = function (code, id, ...rest) {
-			if (id.split('?')[0].endsWith('.md')) return;
-			return handler.call(this, code, id, ...rest);
-		};
+		if (plugin.name !== 'mdsvex' || !hook) continue;
+		plugin.transform = { order: 'pre', handler: typeof hook === 'function' ? hook : hook.handler };
 	}
 	return plugins;
 }
@@ -48,12 +48,14 @@ export default defineConfig({
 		drafts(),
 		lucideNames(),
 		yamlData(),
-		mdsvex({
-			extensions: ['.md'],
-			...compileOptions,
-			components: '/src/lib/markdown/components.ts'
-		}),
-		enhancedImagesExceptMarkdown(),
+		mdsvexFirst(
+			mdsvex({
+				extensions: ['.md'],
+				...compileOptions,
+				components: '/src/lib/markdown/components.ts'
+			})
+		),
+		enhancedImages(),
 		sveltekit({
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
