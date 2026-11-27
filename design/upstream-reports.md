@@ -51,7 +51,7 @@ mdsvex uses enhanced-img for markdown images when `enhancedImages()` is in the V
 2. It parses, and the sample's image doesn't exist: the build fails.
 3. It parses, and the image exists: the build passes, and the code sample readers see is enhanced-img's generated markup instead of the line I wrote. Nothing warns about it.
 
-Without `enhancedImages()` the same files build and the sample shows as written.
+Without `enhancedImages()` the same files build and the sample shows as written. The setup is the one in the [images docs](https://mdsvex.pngwn.at/docs/reference/images#with-enhanced-img) (`plugins: [mdsvex(), enhancedImages(), sveltekit()]`), and nothing there mentions code samples.
 
 ### Reproduction
 
@@ -126,6 +126,8 @@ mdsvex compiles markdown in its own `transform`. Its plugin has `enforce: 'pre'`
 ### Suggested fix
 
 `order: 'pre'` on mdsvex's transform. Both hooks are then `pre`, and mdsvex's plugin comes first because of its `enforce: 'pre'`. I tried it by wrapping the plugin (below) with the reproduction's post plus a CSS block and a real markdown image: the transforms on `post.svx` were `mdsvex`, then `mdsvex:sourcemap`, and enhanced-img's markup step didn't run at all. The build passed, the code block shows `<enhanced:img src="./photo.jpg" alt="A photo" />`, and the markdown image is still a `<picture>`. I haven't checked whether some other plugin needs the raw markdown before mdsvex.
+
+A test could go in `test/enhanced_app`: a code block showing `<enhanced:img src="./red.png" alt="a red box" />` in `src/routes/pictured/+page.svx`, and a check that the built page still shows it as text. Today the build would turn it into a `<picture>`, since `red.png` is beside that page. With `MDSVEX_LAST` the same test covers the other plugin order.
 
 ### Also with `.md`
 
