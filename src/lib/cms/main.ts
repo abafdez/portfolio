@@ -26,7 +26,7 @@ function setUp(CMS: typeof import('@sveltia/cms')) {
 		CMS.registerCustomFormat(name, extension, format as never);
 	}
 
-	// ```yt, ```video… from src/lib/blocks.ts.
+	// ::yt, ::video… from src/lib/blocks.ts.
 	for (const component of blockComponents()) CMS.registerEditorComponent(component as never);
 
 	// The cover's focal point: a Svelte component inside Sveltia's React.
