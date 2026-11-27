@@ -29,4 +29,4 @@ reviewed: false
 
 ## Siguiente
 
-- El artículo sobre las llaves (qué podrían hacer `{ }`, que siguen prohibidas), y luego page-data y un feed RSS.
+- Page-data, y luego un feed RSS. (Las llaves se permitieron ese mismo día en lugar de escribir sobre ellas: entrada `2026-11-27-braces-in-posts`.)

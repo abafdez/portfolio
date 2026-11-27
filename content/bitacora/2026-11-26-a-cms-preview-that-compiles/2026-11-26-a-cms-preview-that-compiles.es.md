@@ -9,7 +9,7 @@ reviewed: false
 - El módulo compilado importa por nombre el motor de Svelte y nuestros componentes; cada nombre se convierte en un módulo `blob:` que entrega la copia del propio CMS, y solo se reescriben los imports del principio.
 - Las imágenes y los archivos de los bloques vienen del `getAsset()` de Sveltia, y los enlaces toman el idioma del archivo, las dos cosas mediante los mismos contextos que ponen las páginas del sitio.
 - Comprobado con el backend de prueba de Sveltia: los 72 artículos publicados se ven en la vista previa idénticos a las páginas construidas, colores del código incluidos. Una compilación en caliente tarda unos 6 ms.
-- **Las llaves en los artículos ahora hacen fallar la construcción y la vista previa**, igual que el HTML: la vista previa ejecuta lo que compila, en la página que guarda el token de GitHub.
+- **Las llaves en los artículos ahora hacen fallar la construcción y la vista previa**, igual que el HTML: la vista previa ejecuta lo que compila, en la página que guarda el token de GitHub. **Actualización (2026-11-27):** ahora se permite una `{expresión}` simple; la vista previa la enseña como código en lugar de ejecutarla (entrada `2026-11-27-braces-in-posts`).
 
 ## Qué aprendí
 

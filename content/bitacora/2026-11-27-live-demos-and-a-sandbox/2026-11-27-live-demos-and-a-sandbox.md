@@ -31,4 +31,4 @@ tags: [mdsvex, svelte, cms, security]
 
 ## Next
 
-- The braces post (what `{ }` could do, kept banned), then page-data and an RSS feed.
+- Page-data, then an RSS feed. (Braces were allowed the same day instead of a post about them: entry `2026-11-27-braces-in-posts`.)
