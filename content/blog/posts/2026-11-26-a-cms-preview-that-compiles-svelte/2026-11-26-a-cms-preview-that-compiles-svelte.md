@@ -1,6 +1,5 @@
 ---
 title: A CMS preview that compiles Svelte in the browser
-draft: true
 date: 2026-11-26
 tags: [cms, svelte, mdsvex, security]
 description: "Once my posts became Svelte components, the CMS preview had nothing to mount until the post was compiled. So it compiles it, in the browser, the way the build does: mdsvex, then Svelte's compiler, then a module whose imports point at the CMS's own copies. All 72 posts preview exactly as the site shows them."

@@ -1,6 +1,5 @@
 ---
 title: Back to mdsvex, and this time I measured first
-draft: true
 date: 2026-11-26
 tags: [markdown, mdsvex, sveltekit, testing]
 description: Two weeks after leaving mdsvex for svelte-markdown, mdsvex 1.0 came out and I moved back. I only switched once every blog and Devlog page, in both languages, matched the old build block by block. Here's what changed, and the two things a compiled post forced me to rethink.

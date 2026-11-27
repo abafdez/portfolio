@@ -1,6 +1,5 @@
 ---
 title: Components in my posts, written as directives
-draft: true
 date: 2026-11-27
 tags: [markdown, mdsvex, svelte, components]
 description: "Since my posts are Svelte components, they can hold components too. I write them as directives: a colon, a name and some brackets, no HTML. Keycaps, a section you open, two things side by side, steps, tabs and a table of contents, each one a few lines of Svelte and drawn in the site's own look."

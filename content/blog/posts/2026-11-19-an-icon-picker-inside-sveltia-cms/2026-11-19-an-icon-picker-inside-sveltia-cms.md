@@ -1,6 +1,5 @@
 ---
 title: An icon picker inside Sveltia CMS
-draft: true
 date: 2026-11-19
 tags: [cms, svelte, vite]
 description: My Awesome lists each have a Lucide icon, chosen by name. Typing names from a website is no way to pick an icon, so the CMS got a field of its own, a Svelte component inside a React app, with the icon names read from the package at build time.

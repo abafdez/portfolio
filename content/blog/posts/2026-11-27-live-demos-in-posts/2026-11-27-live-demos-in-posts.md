@@ -1,6 +1,5 @@
 ---
 title: Live demos in my posts, and a sandbox to preview them
-draft: false
 date: 2026-11-27
 tags: [mdsvex, svelte, cms, security]
 description: "A code block in my posts can now run: the page shows what the code makes above the code itself. In the CMS, where my GitHub token lives, the same demo runs in a sandboxed frame that can't reach it."

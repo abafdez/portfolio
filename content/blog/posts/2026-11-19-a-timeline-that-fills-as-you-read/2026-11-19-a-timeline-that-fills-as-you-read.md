@@ -1,6 +1,5 @@
 ---
 title: A timeline that fills as you read
-draft: true
 date: 2026-11-19
 tags: [css, animation, scroll-driven-animations]
 description: 'Three scroll-driven animations on my Devlog timeline, no JavaScript: a line that fills as the middle of the screen passes it, entries that wipe in, dots that pop. And the one inset trick that makes the line follow your reading.'
