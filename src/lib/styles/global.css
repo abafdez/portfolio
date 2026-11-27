@@ -798,8 +798,86 @@
 			}
 		}
 
+		/* A live demo (```svelte run, markdown/Pre.svelte): the demo on the page's surface
+		   above its code block, in one frame, so it reads as the thing the code makes. */
+		& .code-demo {
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			overflow: clip;
+
+			& > .code-block {
+				border: none;
+				border-radius: 0;
+			}
+		}
+
+		& .demo {
+			padding: var(--size-4);
+			border-block-end: var(--border-size-1) solid var(--surface-3);
+			background-color: var(--surface-1);
+
+			& > * + * {
+				margin-block-start: var(--size-2);
+			}
+		}
+
+		& .demo-run {
+			padding: var(--size-1) var(--size-3);
+			border: var(--border-size-1) solid var(--brand);
+			border-radius: var(--radius-2);
+			background: none;
+			font-family: var(--font-label);
+			color: var(--brand);
+			cursor: pointer;
+
+			&:is(:hover, :focus-visible) {
+				background-color: color-mix(in oklab, var(--brand) 12%, transparent);
+			}
+		}
+
+		/* :::demo[Title]: a window, its title in a bar with three lights, around the demo
+		   and anything said about it. */
+		& .demo-frame {
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			overflow: clip;
+		}
+
+		& .demo-title {
+			display: flex;
+			align-items: center;
+			gap: var(--size-3);
+			padding: var(--size-2) var(--size-3);
+			border-block-end: var(--border-size-1) solid var(--surface-3);
+			background-color: var(--surface-1);
+			font-family: var(--font-label);
+			color: var(--text-2);
+		}
+
+		/* Three dots from one element: the window's lights, decoration only. */
+		& .demo-lights {
+			flex: none;
+			inline-size: 0.6rem;
+			aspect-ratio: 1;
+			margin-inline-end: 1.6rem;
+			border-radius: var(--radius-round);
+			background-color: var(--surface-3);
+			box-shadow:
+				0.9rem 0 var(--surface-3),
+				1.8rem 0 var(--surface-3);
+		}
+
+		& .demo-body {
+			padding: var(--size-3);
+			background-color: var(--surface-2);
+
+			& > * + * {
+				margin-block-start: var(--size-3);
+			}
+		}
+
 		/* Inline code would vanish on the same surface as these boxes (as in callouts). */
-		& :is(.details-body, .tab-panel, .toc) :not(pre) > code {
+		& :is(.details-body, .tab-panel, .toc, .demo-body) :not(pre) > code {
 			background-color: var(--surface-3);
 		}
 

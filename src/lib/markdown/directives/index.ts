@@ -4,3 +4,4 @@ export { default as kbd } from './Kbd.svelte';
 export { default as details } from './Details.svelte';
 export { default as compare } from './Compare.svelte';
 export { default as 'compare-side' } from './CompareSide.svelte';
+export { default as demo } from './Demo.svelte';

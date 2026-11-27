@@ -65,6 +65,12 @@ export const en = {
 	codeCopy: () => 'copy',
 	codeCopied: () => 'copied',
 	codeCopyFailed: () => "couldn't copy",
+	// A live demo in a post (markdown/Pre.svelte): the region's name and the button that
+	// loads a demo that only runs in the browser.
+	demoLabel: () => 'Live demo',
+	demoRun: () => 'Run the demo',
+	// In the CMS preview, which runs Svelte demos in a sandbox but no scripts.
+	demoPreviewScript: () => 'This script runs on the published page, not in the preview.',
 
 	// Home.
 	homeAboutMe: () => 'About me',

@@ -3,6 +3,7 @@
 //   :::details[Summary](open=true)  a collapsible section, summary required
 //   :::compare                      panels side by side, one per heading inside,
 //                                   like the tabs and steps plugins split theirs
+//   :::demo[Title]                  a window around a live demo
 // Mistakes fail the build, naming the file and line, like the parse plugins (plugins.ts).
 import type { Bundle, DirectiveContext, NodeView } from 'mdsvex/compile';
 
@@ -51,6 +52,8 @@ export const directivesPlugin: Bundle = {
 				}
 			}
 		},
-		'compare-side': {}
+		'compare-side': {},
+		// A window around a live demo (a ```svelte run block inside).
+		demo: {}
 	}
 };

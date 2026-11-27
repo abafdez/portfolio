@@ -205,3 +205,35 @@ describe('directives', () => {
 		);
 	});
 });
+
+describe('live demos', () => {
+	test('a ```svelte run block draws its component above its code, named as a demo', async () => {
+		const out = await html(
+			'```svelte run\n<script>\n\tlet count = $state(2);\n</script>\n\n<button>clicked {count}</button>\n```'
+		);
+		expect(out).toMatch(
+			/^<div class="code-demo"><div class="demo" role="group" aria-label="Live demo"><button>clicked 2<\/button><\/div> <figure class="code-block" data-lang="svelte"><figcaption/
+		);
+		// The code is still shown, as written.
+		expect(out).toContain('clicked');
+	});
+
+	test("a script block's default export is called and its result shown", async () => {
+		expect(await html('```ts run\nexport default () => 6 * 7;\n```')).toContain(
+			'<div class="demo" role="group" aria-label="Live demo"><output>42</output></div>'
+		);
+	});
+
+	test('a run=client block waits for a button, in the page language', async () => {
+		expect(
+			await html('```js run=client\nexport default () => innerWidth;\n```', { page: 'es' })
+		).toContain('<button type="button" class="demo-run">Ejecutar la demo</button>');
+	});
+
+	test(':::demo is a window with its title in the bar', async () => {
+		const out = await html(':::demo[A counter]\n```ts run\nexport default () => 1;\n```\n:::');
+		expect(out).toMatch(
+			/^<section class="demo-frame"><p class="demo-title"><span class="demo-lights" aria-hidden="true"><\/span>A counter<\/p> <div class="demo-body"><div class="code-demo">/
+		);
+	});
+});
