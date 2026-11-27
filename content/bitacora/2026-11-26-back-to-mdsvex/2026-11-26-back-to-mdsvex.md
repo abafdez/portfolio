@@ -23,7 +23,7 @@ tags: [markdown, mdsvex, sveltekit, testing]
 
 ## Problems & fixes
 
-- enhanced-img parsed the raw markdown of posts that mention `<enhanced:img>` in code (its step runs before every plugin): a wrapper makes it skip `.md` files.
+- enhanced-img parsed the raw markdown of posts that mention `<enhanced:img>` in code (its step runs before every plugin): a wrapper made it skip `.md` files. **Update (2026-11-27):** the cause is hook order (enhanced-img's transform is `order: 'pre'`, mdsvex's had no order), so now mdsvex's transform gets `order: 'pre'` too and runs first; the build is identical apart from the build version.
 - A mark that never closes inside link or image text cancels the link (`[~/dir](…)`): an mdsvex bug; `\~` fixed our one case.
 - A callout's custom title keeps only its text now (no post uses markup there).
 

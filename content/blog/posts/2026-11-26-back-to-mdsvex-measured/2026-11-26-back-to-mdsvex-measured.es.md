@@ -53,7 +53,9 @@ Antes, el servidor convertía cada artículo en HTML y la página lo insertaba. 
 
 ## El choque de antes, más pequeño
 
-mdsvex le dice a Vite que los archivos `.md` son archivos de Svelte. enhanced-img tiene un paso que se ejecuta antes que cualquier otro plugin y analiza todo archivo de Svelte que contenga `<enhanced:img`. Cuatro de mis artículos mencionan esa etiqueta en ejemplos de código, así que enhanced-img intentaba analizar su markdown sin compilar y fallaba. Un pequeño envoltorio hace que ese paso se salte los `.md`; mdsvex ya se ocupa de las imágenes del markdown.
+mdsvex le dice a Vite que los archivos `.md` son archivos de Svelte. enhanced-img tiene un paso que analiza todo archivo de Svelte que contenga `<enhanced:img`, y su hook lleva `order: 'pre'`, que Vite ejecuta antes que cualquier hook sin orden. El de mdsvex no lleva ninguno. Cuatro de mis artículos mencionan esa etiqueta en ejemplos de código, así que enhanced-img recibía su markdown sin compilar, lo analizaba como Svelte y fallaba.
+
+Es el choque de [la primera vez que usé mdsvex](/blog/2026-10-31-markdown-with-mdsvex), y la solución es la misma: el transform de mdsvex también recibe `order: 'pre'`. Entre los hooks `pre`, el plugin de mdsvex va primero (es `enforce: 'pre'`), así que enhanced-img ve el artículo compilado, donde el ejemplo es texto escapado. mdsvex no tiene una opción para eso, así que unas líneas en `vite.config.ts` lo ponen, y lo he reportado.
 
 ## Qué gané, y qué viene
 

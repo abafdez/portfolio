@@ -21,7 +21,7 @@ reviewed: false
 
 ## Problemas y soluciones
 
-- enhanced-img analizaba el markdown sin compilar de los artículos que mencionan `<enhanced:img>` en el código (su paso va antes que cualquier plugin): un envoltorio hace que se salte los `.md`.
+- enhanced-img analizaba el markdown sin compilar de los artículos que mencionan `<enhanced:img>` en el código (su paso va antes que cualquier plugin): un envoltorio hacía que se saltara los `.md`. **Actualización (2026-11-27):** la causa es el orden de los hooks (el transform de enhanced-img es `order: 'pre'` y el de mdsvex no tenía orden), así que ahora el transform de mdsvex también recibe `order: 'pre'` y va primero; la construcción es idéntica salvo por la versión de construcción.
 - Una marca que nunca se cierra dentro del texto de un enlace o una imagen anula el enlace (`[~/dir](…)`): un fallo de mdsvex; `\~` arregló nuestro único caso.
 - El título propio de un aviso conserva ahora solo su texto (ningún artículo usa formato ahí).
 

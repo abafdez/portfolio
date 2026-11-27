@@ -55,7 +55,9 @@ Before, the server turned each post into HTML and the page inserted it. Now each
 
 ## The old clash, smaller
 
-mdsvex tells Vite that `.md` files are Svelte files. enhanced-img has a step that runs before every other plugin and parses any Svelte file containing `<enhanced:img`. Four of my posts mention that tag in code examples, so enhanced-img tried to parse their raw markdown and failed. A small wrapper makes that step skip `.md` files; mdsvex handles markdown images itself anyway.
+mdsvex tells Vite that `.md` files are Svelte files. enhanced-img has a step that parses any Svelte file containing `<enhanced:img`, and its hook is marked `order: 'pre'`, which Vite runs before every hook without an order. mdsvex's hook has none. Four of my posts mention that tag in code examples, so enhanced-img got their raw markdown, parsed it as Svelte and failed.
+
+It's the clash from [when I first used mdsvex](/blog/2026-10-31-markdown-with-mdsvex), and the fix is the same: mdsvex's transform gets `order: 'pre'` too. Among `pre` hooks, mdsvex's plugin goes first (it's `enforce: 'pre'`), so enhanced-img sees the compiled post, where the example is escaped text. mdsvex has no option for that, so a few lines in `vite.config.ts` set it, and I've reported it.
 
 ## What I got, and what's next
 

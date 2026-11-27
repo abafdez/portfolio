@@ -133,7 +133,7 @@ Any route id with a `[` in it is left out.
 
 **Update (2026-11-11):** the site no longer uses mdsvex. Posts and entries are parsed with marked and drawn by [svelte-markdown](https://markdown.svelte.page) with my own components, on the server: each `[slug]` page renders its file to HTML in `+page.server.ts` and shows it with `{@html}`. The Vite plugin, the `<script module>` rewrite and the `.md` component chunks are gone, so the plugin-ordering problem above no longer exists. Curly quotes are gone too: the text is shown as typed.
 
-**Update (2026-11-26):** mdsvex is back, as 1.0: a rewrite with its own parser, highlighter and plugins. It replaced svelte-markdown after two weeks, so posts can hold components and live demos. The plugin-order problem above came back in a smaller form: enhanced-img's markup step still runs before every other plugin and parsed the raw markdown of posts that mention `<enhanced:img>` in code, so a small wrapper makes it skip `.md` files. Quotes stay straight. The whole story: [back to mdsvex](/devlog/2026-11-26-back-to-mdsvex).
+**Update (2026-11-26):** mdsvex is back, as 1.0: a rewrite with its own parser, highlighter and plugins. It replaced svelte-markdown after two weeks, so posts can hold components and live demos. The plugin-order problem above came back in a smaller form: enhanced-img's markup step still runs before every other plugin and parsed the raw markdown of posts that mention `<enhanced:img>` in code, so for a day a small wrapper made it skip `.md` files. Since 2026-11-27 the fix is the one in this post again: mdsvex's own transform gets `order: 'pre'`, so it runs first. Quotes stay straight. The whole story: [back to mdsvex](/devlog/2026-11-26-back-to-mdsvex).
 
 ## Links
 
