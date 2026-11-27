@@ -9,7 +9,7 @@
 import * as svelteApi from 'svelte';
 import { mount, unmount, type Component } from 'svelte';
 import { client } from './svelte-runtime.ts';
-import { compile } from 'mdsvex/compile';
+import { compile, type Snippet } from 'mdsvex/compile';
 import { create_highlight, load_default_languages, type HighlightConfig } from 'mdsvex/highlight';
 import * as components from '#lib/markdown/components.ts';
 import { compileOptions } from '#lib/markdown/options.ts';
@@ -22,6 +22,8 @@ import { markdownContext } from '#lib/markdown/context.ts';
 import type { Media } from '#lib/markdown/media.ts';
 import type { Locale } from '#lib/i18n/locales.ts';
 import PreviewImage from './PreviewImage.svelte';
+import SandboxDemo from './SandboxDemo.svelte';
+import { blobModules, importCode, rewriteImports } from './blob-modules.ts';
 
 // The build's replacements, plus images drawn from Sveltia's files (the build's are imports).
 const replacements: Record<string, unknown> = { ...components, img: PreviewImage };
@@ -42,55 +44,36 @@ const modules: Record<string, Record<string, unknown>> = {
 	'@mdsvex/plugin-toc/directives': tocComponents
 };
 
-declare global {
-	var __previewModules: typeof modules;
-}
-
-// One blob: module per name, made once: `export const { a, b } = <this bundle's module>`.
+// One blob: module per name, made once (blob-modules.ts).
 let urls: Record<string, string> | undefined;
-function moduleUrls() {
-	if (urls) return urls;
-	globalThis.__previewModules = modules;
-	urls = {};
-	for (const [name, exports] of Object.entries(modules)) {
-		// Through locals: some export names are reserved words (Svelte's runtime has `await`).
-		const keys = Object.keys(exports);
-		const code = [
-			`const m = globalThis.__previewModules[${JSON.stringify(name)}];`,
-			...keys.map((key, i) => `const v${i} = m[${JSON.stringify(key)}];`),
-			`export { ${keys.map((key, i) => `v${i} as ${JSON.stringify(key)}`).join(', ')} };`
-		].join('\n');
-		urls[name] = URL.createObjectURL(new Blob([code], { type: 'text/javascript' }));
+const moduleUrls = () => (urls ??= blobModules(modules, '__previewModules'));
+
+// A demo (a ```svelte run block) is code the post's author wrote, and the preview runs in
+// the page that holds the GitHub token. So it never runs here: its module is the sandbox
+// component (SandboxDemo.svelte), bound to the block's code, which runs it in a sandboxed
+// frame. `sandboxed` tells Pre.svelte to draw it, whatever the block's language. One
+// module per block, kept: the same code has the same hash.
+const snippetUrls = new Map<string, string>();
+const snippetName = (snippet: Snippet) => `preview:snippet/${snippet.hash}`;
+function snippetUrl(snippet: Snippet) {
+	const name = snippetName(snippet);
+	let url = snippetUrls.get(name);
+	if (!url) {
+		const bound = ((internals: Parameters<typeof SandboxDemo>[0], props: object) =>
+			SandboxDemo(internals, { ...props, snippet })) as Component;
+		url = blobModules(
+			{ [name]: { default: bound, sandboxed: true } },
+			`__previewSnippet_${snippet.hash}`
+		)[name];
+		snippetUrls.set(name, url);
 	}
-	return urls;
+	return url;
 }
 
 // The languages load once (mdsvex's own list, like the build's).
 let highlight: Promise<HighlightConfig> | undefined;
 const highlighter = () =>
 	(highlight ??= load_default_languages().then((languages) => create_highlight({ languages })));
-
-// Only the import statements at the top of the module are rewritten: the same text can
-// appear in a post's code blocks, further down.
-function resolveImports(code: string) {
-	const header = /^\s*import\b[^;]*;/;
-	let rest = code;
-	let head = '';
-	for (let match = header.exec(rest); match; match = header.exec(rest)) {
-		// The module name is the string after `from` (or a bare `import '…'`), the last one in
-		// the statement: an export name can be a string too, as in { 'compare-side' as C }.
-		head += match[0].replace(
-			/(from|import)(\s*)(['"])([^'"]+)\3(\s*;)$/,
-			(_, keyword: string, space: string, quote: string, name: string, end: string) => {
-				const url = moduleUrls()[name];
-				if (!url) throw new Error(`The preview can't import ${name}`);
-				return keyword + space + quote + url + quote + end;
-			}
-		);
-		rest = rest.slice(match[0].length);
-	}
-	return head + rest;
-}
 
 // A post's body as a component, compiled the way the build compiles it. Throws what the
 // build would stop on (the parse plugins' errors, Svelte's).
@@ -103,20 +86,22 @@ export async function compilePost(body: string, file: string) {
 		filename: file,
 		...compileOptions,
 		highlight: config,
-		components: [{ specifier: 'preview:components', names: Object.keys(replacements) }]
+		components: [{ specifier: 'preview:components', names: Object.keys(replacements) }],
+		// Blocks that run import preview:snippet/<hash>, answered by snippetUrl().
+		snippets: snippetName
 	});
 	const { js } = svelte(markdown.code, {
 		filename: `${file}.svelte`,
 		generate: 'client',
 		runes: true
 	});
-	const url = URL.createObjectURL(new Blob([resolveImports(js.code)], { type: 'text/javascript' }));
-	try {
-		const module = await import(/* @vite-ignore */ url);
-		return module.default as Component;
-	} finally {
-		URL.revokeObjectURL(url);
-	}
+	const snippets = markdown.snippets ?? [];
+	const urls = {
+		...moduleUrls(),
+		...Object.fromEntries(snippets.map((snippet) => [snippetName(snippet), snippetUrl(snippet)]))
+	};
+	const module = await importCode(rewriteImports(js.code, urls, snippets.map(snippetName)));
+	return module.default as Component;
 }
 
 type ReactLike = {
