@@ -36,9 +36,9 @@ for (const md of [
 
 ## 2. enhanced-img's markup step parses mdsvex's raw markdown
 
-**Where:** [pngwn/MDsveX](https://github.com/pngwn/MDsveX/issues). mdsvex is the one that turns on enhanced-img for markdown images, and it already looks for this plugin. Search for "enhanced-img" in its open and closed issues first; if the maintainer says it belongs to enhanced-img, the same text works in [sveltejs/kit](https://github.com/sveltejs/kit/issues) (package `@sveltejs/enhanced-img`).
+**Where:** [pngwn/MDsveX](https://github.com/pngwn/MDsveX/issues). The fix is one line in mdsvex (`order: 'pre'` on its transform, tested below), and mdsvex is the one that turns on enhanced-img for markdown images. Search for "enhanced-img" in its open and closed issues first.
 
-**Only with `enhancedImages()` in the Vite plugins.** Without it the markup step doesn't exist and the same post builds (case D below). But that plugin is what makes mdsvex enhance markdown images (`import_images` is on by default and uses enhanced-img when the plugin is there), so anyone who wants optimised images in posts has it.
+**Only with `enhancedImages()` in the Vite plugins.** Without it the markup step doesn't exist and the same post builds (the last case below). But that plugin is what makes mdsvex enhance markdown images (`import_images` is on by default and uses enhanced-img when the plugin is there), so anyone who wants optimised images in posts has it.
 
 Reproduced on 2026-11-27 with a minimal Vite build (no SvelteKit). Ready to paste:
 
@@ -117,11 +117,15 @@ Then `vite build`:
 
 ### Expected
 
-Code samples stay text. Markdown should reach enhanced-img's markup step only after mdsvex has compiled it (by then the sample is escaped and doesn't match), or that step should skip mdsvex's extensions, since mdsvex already enhances markdown images itself.
+Code samples stay text: markdown reaches enhanced-img's markup step only after mdsvex has compiled it. By then the sample is escaped, so the step's code filter doesn't match and it leaves the file alone.
 
-### Why, as far as I can tell
+### Why
 
-mdsvex adds its extensions to vite-plugin-svelte's and compiles markdown inside vite-plugin-svelte's compile step. enhanced-img's markup plugin takes its id filter from vite-plugin-svelte (every Svelte extension, so `.svx` too) and its transform has `order: 'pre'` with a code filter for `<enhanced:img`, so it runs before that compile step and gets the raw markdown. Putting `mdsvex()` before `enhancedImages()` doesn't change it: `order: 'pre'` runs first whatever the plugin order.
+mdsvex compiles markdown in its own `transform`. Its plugin has `enforce: 'pre'`, but the hook itself has no `order`. enhanced-img's markup plugin takes its id filter from vite-plugin-svelte (every Svelte extension, and mdsvex adds `.svx` to them), and its transform has `order: 'pre'` with a code filter for `<enhanced:img`. Vite runs hooks with `order: 'pre'` before hooks without one, whatever the plugin's `enforce`, so enhanced-img gets the file first, as raw markdown. Logging each transform on `post.svx` shows exactly that: `vite-plugin-enhanced-img-markup`, then the build error. Putting `mdsvex()` before `enhancedImages()` in `plugins` doesn't change it.
+
+### Suggested fix
+
+`order: 'pre'` on mdsvex's transform. Both hooks are then `pre`, and mdsvex's plugin comes first because of its `enforce: 'pre'`. I tried it by wrapping the plugin (below) with the reproduction's post plus a CSS block and a real markdown image: the transforms on `post.svx` were `mdsvex`, then `mdsvex:sourcemap`, and enhanced-img's markup step didn't run at all. The build passed, the code block shows `<enhanced:img src="./photo.jpg" alt="A photo" />`, and the markdown image is still a `<picture>`. I haven't checked whether some other plugin needs the raw markdown before mdsvex.
 
 ### Also with `.md`
 
@@ -129,28 +133,25 @@ My site uses `mdsvex({ extensions: ['.md'] })` with SvelteKit; the same thing ha
 
 ### Workaround
 
-Wrap the markup step's handler so it skips markdown files. mdsvex still enhances markdown images, so nothing is lost:
+Until then, the same change from the outside:
 
 ```js
-async function enhancedImagesExceptMarkdown() {
-	const plugins = await enhancedImages();
+function mdsvexFirst(plugins) {
 	for (const plugin of plugins) {
+		if (plugin.name !== 'mdsvex') continue;
 		const hook = plugin.transform;
-		if (plugin.name !== 'vite-plugin-enhanced-img-markup' || typeof hook !== 'object') continue;
-		const handler = hook.handler;
-		hook.handler = function (code, id, ...rest) {
-			if (/\.(svx|md)$/.test(id.split('?')[0])) return;
-			return handler.call(this, code, id, ...rest);
-		};
+		plugin.transform = { order: 'pre', handler: typeof hook === 'function' ? hook : hook.handler };
 	}
 	return plugins;
 }
+
+// plugins: [mdsvexFirst(mdsvex()), enhancedImages(), svelte(…)]
 ```
 
 Versions: mdsvex 1.1.0, @sveltejs/enhanced-img 1.0.1, @sveltejs/vite-plugin-svelte 7.3.1, Svelte 5.57.3, Vite 8.3.8, Node 24.
 `````
 
-**Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts`, the same wrapper as in the issue. Ours checks `.md` only: this site gives mdsvex `extensions: ['.md']`, so `.svx` isn't a Svelte extension here and enhanced-img never sees a `.svx` file. The issue's copy checks both, for readers on mdsvex's default.
+**Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts` wraps enhanced-img's markup step so it skips `.md` files (this site gives mdsvex `extensions: ['.md']`, so `.svx` isn't a Svelte extension here). It treats the symptom; `mdsvexFirst()` from the issue fixes the order instead. Switching is Alfonso's call, and needs the full build and the page comparison first.
 
 ## 3. twinkleplop: CSS declarations outside a rule are read as a selector
 
