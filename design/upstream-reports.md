@@ -129,6 +129,11 @@ mdsvex compiles markdown in its own `transform`. Its plugin has `enforce: 'pre'`
 
 A test could go in `test/enhanced_app`: a code block showing `<enhanced:img src="./red.png" alt="a red box" />` in `src/routes/pictured/+page.svx`, and a check that the built page still shows it as text. Today the build would turn it into a `<picture>`, since `red.png` is beside that page. With `MDSVEX_LAST` the same test covers the other plugin order.
 
+### Related
+
+- sveltejs/kit#13842 reported this in 2025 (code blocks in CSS, JSON or LaTeX failing once enhanced-img stopped being a preprocessor). It was closed because the fix would come from mdsvex becoming a Vite plugin, and #550 and #750 here were closed when it did. Being a Vite plugin isn't quite enough, though: without `order: 'pre'` on its transform, enhanced-img still runs first. #750's case (a real `<enhanced:img>` tag with frontmatter) works now, because that markdown happens to be valid Svelte; #13842's doesn't.
+- sveltejs/kit#17545 and sveltejs/kit#17556: the same `pre` step breaks `<style lang="scss">` in plain components, and the order of that step is being questioned there.
+
 ### Also with `.md`
 
 My site uses `mdsvex({ extensions: ['.md'] })` with SvelteKit; the same thing happens (16 build errors, one per post and language that mentions the tag in code, `Unexpected token` or `Expected whitespace`).
