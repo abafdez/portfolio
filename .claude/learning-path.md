@@ -184,6 +184,19 @@ Each later route phase (5–8) also builds that route's own composition and tric
 - **Adopted (2026-11-09, branch `spike/sveltia-cms`):** Sveltia CMS in dev at `/admin/index.html` (`cms/`). Alfonso checked the WSL folder picker. Saves use our own format (`src/lib/content-files.ts` + Prettier) so only edited lines change; `content-files.test.ts` round-trips every content file; `pnpm content:format` after hand edits. Preview = the real dev page in an iframe. Blocks are editor components from `blocks.ts`. Still open: use `focus` (the focal point field) in `covers.ts`; the standalone CMS (hosting + GitHub sign-in).
 - **Then (2026-11-11, branch `spike/svelte-markdown`):** mdsvex replaced by svelte-markdown; the CMS preview mounts the site's own `Markdown.svelte`. The CMS moved to `src/lib/cms/`, Sveltia is imported from npm (`init({ config })`), `/admin` is the address, and the "Real page" tab is gone. Details in `src/lib/cms/README.md` and `design/svelte-markdown-spike.md`.
 - **Prepared for it:** content metadata lives in frontmatter and YAML (a focal point would sit next to `cover:`), and covers are found by folder, so any content type can get one.
+- **Then (2026-11-26, branch `feat/mdsvex`):** the preview compiles each post in the browser with mdsvex and Svelte, the way the build does (Phase 12).
+
+## Phase 12 — mdsvex 1.0 and twinkleplop (2026-11-26, branch `feat/mdsvex`)
+
+- **Goal:** components and live demos in posts, which svelte-markdown can't do: posts compiled to Svelte components by mdsvex 1.0 (a rewrite, out 2026-11-19), highlighted by its twinkleplop.
+- **Rule:** no switch until nothing is lost. `main` built in a worktree; every blog and Devlog page compared block by block in both languages (158 of 158 each), the CMS preview against the built pages (72 of 72), Lighthouse on five pages (within a few points).
+- **Done:** step 1 twinkleplop instead of Shiki (colours as CSS classes); step 2 mdsvex for every page (parse plugins, links per language at run time, the blocks as a plugin bundle, block files through plugin data); the CMS preview compiling in the browser; step 3 svelte-markdown removed, one `src/lib/markdown/` folder, new tests; two weight leaks fixed; mdsvex 1.1.0; the built CMS preview's missing Open Props variables fixed. Notes: [design/mdsvex-spike.md](../design/mdsvex-spike.md).
+- **Decided:** components in posts are directives (`:name[…]`, `::name`, `:::name`); braces in posts fail the build for now (review later: the CMS preview runs what it compiles).
+- **Next:** directives and live demos (first-party plugins first: tabs, steps, elements, diagram), page-data + `?data` for the lists, an RSS feed, upstream bug reports.
+
+## Phase 13 — Covers from our own GPU (planned 2026-11-26)
+
+- **Goal:** covers for posts in the site's AI style without an image API: ComfyUI inside WSL on the RTX 3080 Ti, Apache 2.0 models (Z-Image-Turbo, Qwen-Image-2512 for drawn titles), `pnpm cover <slug>` and `pnpm cover:pick`. Safety: only safetensors/GGUF weights, no custom nodes beyond ComfyUI-GGUF, listening on 127.0.0.1. Plan: [design/cover-generation.md](../design/cover-generation.md). First job: the 15 posts published without covers on 2026-11-26.
 
 ## Ongoing habits
 
