@@ -151,7 +151,7 @@ function mdsvexFirst(plugins) {
 Versions: mdsvex 1.1.0, @sveltejs/enhanced-img 1.0.1, @sveltejs/vite-plugin-svelte 7.3.1, Svelte 5.57.3, Vite 8.3.8, Node 24.
 `````
 
-**Our workaround:** `enhancedImagesExceptMarkdown()` in `vite.config.ts` wraps enhanced-img's markup step so it skips `.md` files (this site gives mdsvex `extensions: ['.md']`, so `.svx` isn't a Svelte extension here). It treats the symptom; `mdsvexFirst()` from the issue fixes the order instead. Switching is Alfonso's call, and needs the full build and the page comparison first.
+**Our workaround:** `mdsvexFirst()` in `vite.config.ts`, the one in the issue (since 2026-11-27; the site's build is identical apart from the build version). Until then, `enhancedImagesExceptMarkdown()` made enhanced-img's markup step skip `.md` files.
 
 ## 3. twinkleplop: CSS declarations outside a rule are read as a selector
 
