@@ -576,6 +576,237 @@
 		/* Code blocks (src/lib/markdown/CodeBlock.svelte). Here and not in the component,
 		   because it's rendered on the server into plain HTML, and a component only the
 		   server uses never sends its CSS to the page. */
+		/* Directives (markdown/directives/ and mdsvex's tabs, steps and toc plugins, used
+		   unstyled). The boxes are framed like a code block: a --surface-3 border, and a
+		   bar on --surface-1 in the label font for a title or the tab buttons. */
+
+		/* :kbd[Ctrl+B]: one keycap per key, a thicker bottom edge for depth. */
+		& .keys {
+			white-space: nowrap;
+
+			& kbd {
+				padding: 0.05em 0.4em;
+				border: var(--border-size-1) solid var(--surface-3);
+				border-block-end-width: var(--border-size-2);
+				border-radius: var(--radius-2);
+				background-color: var(--surface-2);
+				font-size: 0.85em;
+			}
+		}
+
+		/* :::details[Summary]: the summary is the bar; the brand marker turns when open. */
+		& .details {
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			overflow: clip;
+
+			& summary {
+				padding: var(--size-2) var(--size-3);
+				background-color: var(--surface-1);
+				font-family: var(--font-label);
+				cursor: pointer;
+
+				&::marker {
+					color: var(--brand);
+				}
+
+				&:focus-visible {
+					outline-offset: calc(-1 * var(--border-size-2));
+				}
+			}
+
+			&[open] summary {
+				border-block-end: var(--border-size-1) solid var(--surface-3);
+			}
+
+			& .details-body {
+				padding: var(--size-3);
+				background-color: var(--surface-2);
+
+				& > * + * {
+					margin-block-start: var(--size-2);
+				}
+			}
+		}
+
+		/* :::compare: sides next to each other while each gets 18rem, stacked below that. */
+		& .compare {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+			gap: var(--size-3);
+		}
+
+		& .compare-side {
+			padding: var(--size-3);
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			background-color: var(--surface-2);
+
+			/* The heading that names the side is its title, not a new part of the post. */
+			& > :is(h2, h3, h4):first-child {
+				margin-block-start: 0;
+				font-size: var(--font-size-3);
+				color: var(--brand);
+			}
+
+			& > * + * {
+				margin-block-start: var(--size-2);
+			}
+
+			& :not(pre) > code {
+				background-color: var(--surface-3);
+			}
+		}
+
+		/* :::steps: numbers from a counter in brand circles, joined by a line. */
+		& .steps {
+			counter-reset: step;
+			padding: 0;
+			list-style: none;
+		}
+
+		& .step {
+			position: relative;
+			padding-inline-start: var(--size-8);
+			counter-increment: step;
+
+			& + .step {
+				margin-block-start: var(--size-5);
+			}
+
+			&::before {
+				content: counter(step);
+				position: absolute;
+				inset-inline-start: 0;
+				inset-block-start: 0;
+				display: grid;
+				place-items: center;
+				inline-size: var(--size-6);
+				aspect-ratio: 1;
+				border: var(--border-size-2) solid var(--brand);
+				border-radius: var(--radius-round);
+				font-family: var(--font-code);
+				color: var(--brand);
+			}
+
+			/* The line down to the next step's number. */
+			&:not(:last-child)::after {
+				content: '';
+				position: absolute;
+				inset-inline-start: calc(var(--size-6) / 2 - var(--border-size-1) / 2);
+				inset-block: calc(var(--size-6) + var(--size-1)) calc(-1 * var(--size-4));
+				border-inline-start: var(--border-size-1) solid var(--surface-3);
+			}
+
+			& .step-title > :is(h2, h3, h4) {
+				margin-block-start: 0;
+				font-size: var(--font-size-3);
+			}
+
+			& .step-body {
+				margin-block-start: var(--size-2);
+
+				& > * + * {
+					margin-block-start: var(--size-2);
+				}
+			}
+		}
+
+		& .steps-label,
+		& .tabs-label {
+			font-family: var(--font-label);
+			color: var(--text-2);
+		}
+
+		/* :::tabs: the buttons are the bar; the open one is underlined in brand. A code group
+		   (fences as tabs) keeps each code block's own frame below the bar. */
+		& .tabs {
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			overflow: clip;
+		}
+
+		& .tabs-list {
+			display: flex;
+			flex-wrap: wrap;
+			border-block-end: var(--border-size-1) solid var(--surface-3);
+			background-color: var(--surface-1);
+		}
+
+		& .tab {
+			padding: var(--size-2) var(--size-3);
+			border: none;
+			border-block-end: var(--border-size-2) solid transparent;
+			background: none;
+			font-family: var(--font-label);
+			color: var(--text-2);
+			cursor: pointer;
+
+			&:hover {
+				color: var(--text-1);
+			}
+
+			&[aria-selected='true'] {
+				border-block-end-color: var(--brand);
+				color: var(--brand);
+			}
+
+			&:focus-visible {
+				outline-offset: calc(-1 * var(--border-size-2));
+			}
+		}
+
+		& .tab-panel {
+			padding: var(--size-3);
+			background-color: var(--surface-2);
+
+			& > * + * {
+				margin-block-start: var(--size-2);
+			}
+
+			&[hidden] {
+				display: none;
+			}
+		}
+
+		/* A code group: the code block fills its panel, without a second frame. */
+		& .tabs-code .tab-panel {
+			padding: 0;
+
+			& .code-block {
+				border: none;
+				border-radius: 0;
+			}
+		}
+
+		/* Inline code would vanish on the same surface as these boxes (as in callouts). */
+		& :is(.details-body, .tab-panel, .toc) :not(pre) > code {
+			background-color: var(--surface-3);
+		}
+
+		/* ::toc: the post's headings, nested, in a framed box. */
+		& .toc {
+			padding: var(--size-3);
+			border: var(--border-size-1) solid var(--surface-3);
+			border-radius: var(--radius-3);
+			background-color: var(--surface-2);
+
+			& ul {
+				padding-inline-start: var(--size-4);
+				list-style: none;
+			}
+
+			& > ul {
+				padding-inline-start: 0;
+			}
+		}
+
+		& .toc-label {
+			margin-block-end: var(--size-2);
+			font-family: var(--font-label);
+			color: var(--text-2);
+		}
+
 		& .code-block {
 			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-3);
