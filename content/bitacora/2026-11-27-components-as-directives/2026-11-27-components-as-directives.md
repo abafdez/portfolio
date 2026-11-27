@@ -13,16 +13,19 @@ tags: [markdown, mdsvex, components, cms]
 - The CMS preview maps the new modules, and draws all of them (checked with Sveltia's test backend, the config restored after).
 - 16 new tests (`plugins.test.ts`, `render.test.ts`, `keys.test.ts`), the publishing guide has a "Components (directives)" section, and a draft post shows every directive.
 - A production build with the draft briefly published: every directive in both languages, steps rendered to HTML at build time (its components are `.static.svelte`, no JavaScript).
+- **`::video` and `::yt` replace the YAML fences.** The caption (video) or title (YouTube) goes in the brackets, the rest are arguments: `::yt[Plain Text](src=https://youtu.be/…, thumbnail=./talk.jpg)`. `blocks.ts` checks the arguments (no YAML parser any more), a leftover ` ```video ` fence fails the build with the new syntax, the CMS widgets read and write the line, and the two posts that used blocks were migrated, with an update note on the post about code-block components. Every page matches the build from before, apart from the text I changed.
 
 ## What I learned
 
 - A directive's component gets the text in brackets as a snippet to render, not as a string. To split `Ctrl+Shift+P` into keys, the plugin reads `node.text_content` when the directive closes and passes it as an argument.
 - The steps plugin's trick: on each heading inside the container, close the previous wrapper and open a new one from that heading (`wrap_from('directive_container', …)`), and wrap the heading as its label. `:::compare` does the same.
 - A directive name that isn't a JavaScript identifier (`compare-side`) is exported under a string name: `export { default as 'compare-side' }`.
+- A directive's arguments are strings, written `name=value` or `name="a, b"` when a value has a space or a comma; an escaped `\"` inside keeps its backslash, so the check unescapes it.
 
 ## Problems & fixes
 
 - The preview said "can't import compare-side": it rewrote the first quoted string of each import, and with a string export name that's the name, not the module. It now rewrites the string after `from`.
+- The CMS wrote a title like `Plain Text [NDC]` with only the `]` escaped, and the lone `[` made mdsvex read the line as text. Both brackets are escaped now; a test round-trips each widget through the real build.
 
 ## Links
 
@@ -32,4 +35,4 @@ tags: [markdown, mdsvex, components, cms]
 
 ## Next
 
-- `::video` and `::yt` instead of the fenced blocks, then live demos (`:::demo` and ` ```svelte run `) with a sandboxed preview in the CMS.
+- Live demos (`:::demo` and ` ```svelte run `) with a sandboxed preview in the CMS.

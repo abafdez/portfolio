@@ -9,7 +9,7 @@ Posts (drafts too), the Devlog and the Awesome lists can be edited in a CMS ([Sv
 - **English and Spanish** are side by side. A new entry starts in English only; switch Spanish on from the three-dot menu when you translate it.
 - **A save changes only what you edited**: the CMS writes files in this repo's own style and runs Prettier on them (`src/lib/content-files.ts`, `src/lib/cms/formats.ts`). After editing frontmatter by hand (in Obsidian, say), run `pnpm content:format` so the files stay in that shape; `pnpm test` fails until they are.
 - **The body** opens as markdown; the button at the end of the toolbar switches to rich text. Both keep callouts, HTML in backticks and the blocks below.
-- **` ```yt ` and ` ```video `** are in the Insert menu and filled in a dialog.
+- **`::yt` and `::video`** are in the Insert menu and filled in a dialog.
 - **Images**: the image button uploads next to the post and writes `![alt](./file.png)`; its Title field becomes the caption.
 - **The preview** compiles the post in the browser as you type, the way the build does (mdsvex, then Svelte, with the site's own components and CSS from `src/lib/markdown/`): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img's optimised copies. Anything the build would refuse (HTML or `{ }` in the text, an unknown callout, a block with a wrong field, an image without alt text) shows its error there instead. The Awesome list's preview is the page as last saved, in dev only.
 - **Publishing**: "Hidden on the site (draft)" is the `draft` field. Pick "Yes" for a draft, the empty option to publish. The Drafts button above the list shows only drafts.
@@ -89,38 +89,31 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 
 ### Videos
 
-Markdown has no syntax for video, so write a `video` block: a code block whose language is `video`, with fields in YAML. On the site it becomes the `<video>` below; in Obsidian and on GitHub it reads as five lines of YAML.
+Markdown has no syntax for video, so write a `::video` directive (see [Components](#components-directives)) on a line of its own: the caption in brackets, the rest as arguments. On the site it becomes the `<video>` below; in Obsidian and on GitHub it reads as one line of text.
 
-````md
-```video
-src: ./awesome-list-shift.mp4
-webm: ./awesome-list-shift.webm
-poster: ./awesome-list-shift.png
-width: 1280
-height: 720
-caption: The filters appear after the list has loaded, and push it down.
+```md
+::video[The filters appear after the list has loaded, and push it down.](src=./awesome-list-shift.mp4, webm=./awesome-list-shift.webm, poster=./awesome-list-shift.png, width=1280, height=720)
 ```
-````
 
-| Field     | Required | What                                                            |
-| --------- | -------- | --------------------------------------------------------------- |
-| `src`     | yes      | The video, next to the post (`./`). MP4 plays everywhere.       |
-| `width`   | yes      | The size you exported at, in pixels.                            |
-| `height`  | yes      | Same.                                                           |
-| `webm`    | no       | A smaller WebM copy; browsers that can play it get it first.    |
-| `poster`  | no       | An image shown before it plays, at the video's size.            |
-| `caption` | no       | What it shows (a video has no alt text). Makes it a `<figure>`. |
+| Write              | Required | What                                                                                    |
+| ------------------ | -------- | --------------------------------------------------------------------------------------- |
+| `[…]`, the caption | no       | What it shows (a video has no alt text). Makes it a `<figure>`. Markdown is fine in it. |
+| `src`              | yes      | The video, next to the post (`./`). MP4 plays everywhere.                               |
+| `width`            | yes      | The size you exported at, in pixels.                                                    |
+| `height`           | yes      | Same.                                                                                   |
+| `webm`             | no       | A smaller WebM copy; browsers that can play it get it first.                            |
+| `poster`           | no       | An image shown before it plays, at the video's size.                                    |
 
-The build fails on a missing required field, a field that isn't in the table (`autoplay` included, on purpose), a size that isn't a number, or a file without `./`, naming the post. The block always adds `controls muted playsinline preload="metadata"` (why each one, below).
+A value with a space, comma or parenthesis goes in double quotes: `poster="./first frame.png"`. The build fails on a missing required argument, one that isn't in the table (`autoplay` included, on purpose), a size that isn't a number, or a file without `./`, naming the post. A ` ```video ` code block, the old syntax, fails it too. The directive always adds `controls muted playsinline preload="metadata"` (why each one, below).
 
-The video it makes looks like this (poster, WebM and MP4 sources, a caption). You can't write it as HTML yourself: HTML in a post fails the build (see [Tags and code in the text](#tags-and-code-in-the-text)). If you need something the block doesn't do, ask Claude to add a field.
+You can't write the `<video>` as HTML yourself: HTML in a post fails the build (see [Tags and code in the text](#tags-and-code-in-the-text)). If you need something the directive doesn't do, ask Claude to add an argument.
 
 - **Format:** **MP4** (H.264) plays in every browser; if you make one file, make that one. **WebM** (VP9) is usually smaller for the same quality. With both, put WebM first: the browser plays the first `<source>` it can.
 - **`width` and `height` are required** (the build fails without them): the size you exported at. Like an image, the video's space is kept before the file arrives, so the page doesn't jump.
 - **Short and small:** a few seconds, 1280 px wide, under about 1 MB per file. Unlike images, videos are used as they are: the build doesn't compress them, so compress before committing (below).
 - **No sound, no autoplay.** `controls` lets a reader play and pause it (WCAG asks that anything moving can be paused), `muted` says there's no sound (Svelte asks for captions, a `<track>`, on a video with sound), and without `autoplay` nothing moves until the reader asks, which also respects reduced motion.
 - **`preload="metadata"`** downloads only the start of the file (size, length) until it's played. **`poster`** (optional) is the image shown before that; it's used as it is, so export it at the video's size.
-- **Say what it shows**, in `caption` or in the text around it: a video has no alt text.
+- **Say what it shows**, in the caption or in the text around it: a video has no alt text.
 - **In the vault:** copy the files to `_attachments/` and embed with `![[clip.mp4]]`.
 
 Recording and compressing (install once with `sudo apt install ffmpeg`): record with Snipping Tool (Win+Shift+R) or Game Bar (Win+Alt+R), then:
@@ -140,26 +133,22 @@ Higher `-crf` means a smaller file and lower quality; raise it if a file is too 
 
 ### YouTube videos
 
-Someone else's talk or tutorial: a `yt` block. It shows the video's picture and title as a card that opens the video on YouTube in a new tab. **Nothing loads from Google on your page**: no player, no scripts, no cookies, until a reader clicks.
+Someone else's talk or tutorial: a `::yt` directive, the title in brackets. It shows the video's picture and title as a card that opens the video on YouTube in a new tab. **Nothing loads from Google on your page**: no player, no scripts, no cookies, until a reader clicks.
 
-````md
-```yt
-src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo
-title: Plain Text, by Dylan Beattie (NDC Copenhagen 2022)
-thumbnail: ./plain-text-talk.jpg
+```md
+::yt[Plain Text, by Dylan Beattie (NDC Copenhagen 2022)](src=https://www.youtube.com/watch?v=gd5uJ7Nlvvo, thumbnail=./plain-text-talk.jpg)
 ```
-````
 
-| Field       | Required | What it is                                                                                           |
-| ----------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| `src`       | yes      | The video's link, any shape (`youtube.com/watch?v=…`, `youtu.be/…`, `/shorts/…`). A `?t=90` is kept. |
-| `title`     | yes      | The card's text: what the reader is about to open. Usually the video's title and who made it.        |
-| `thumbnail` | no       | A picture next to the post, 16:9. Without one, a blueprint tile with a play sign.                    |
-| `caption`   | no       | A line under the card, like an image caption.                                                        |
+| Write            | Required | What it is                                                                                           |
+| ---------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `[…]`, the title | yes      | The card's text: what the reader is about to open. Usually the video's title and who made it.        |
+| `src`            | yes      | The video's link, any shape (`youtube.com/watch?v=…`, `youtu.be/…`, `/shorts/…`). A `?t=90` is kept. |
+| `thumbnail`      | no       | A picture next to the post, 16:9. Without one, a blueprint tile with a play sign.                    |
+| `caption`        | no       | A line under the card, like an image caption. In double quotes if it has a space or a comma.         |
 
 - **The thumbnail is a file of yours, not a link to YouTube's**: a picture from `i.ytimg.com` would be a request to Google on every visit. To save the video's own: `https://i.ytimg.com/vi/<id>/maxresdefault.jpg` (1280 × 720; `hqdefault.jpg` if that one is missing, it's 4:3 and loses its black bars). It's the video owner's picture, used to link to their video.
 - **"Opens in a new tab" is written on the card**, in the post's language, so nobody is surprised by a new tab.
-- A link that isn't YouTube, or a missing `title`, fails the build and names the file.
+- A link that isn't YouTube, or a missing title, fails the build and names the file.
 
 ## Callouts
 

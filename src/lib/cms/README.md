@@ -27,7 +27,7 @@ Sveltia keeps the token in the browser's storage for `abafdez.github.io`, which 
 
 - `content/blog/{published,drafts}/<slug>/<slug>.md`, and `content/bitacora/<slug>/<slug>.md` (the dev log): one folder per entry, its images next to it, written `![alt](./diagram.png)`.
 - `<slug>.es.md` next to the English file: the Spanish version, with only the words in its frontmatter (`title`, `description`, `cover` (the cover's alt text), `reviewed`).
-- Code blocks whose language is a component name (` ```yt `, ` ```video `) with YAML inside: the build turns them into components (`src/lib/blocks.ts`).
+- Directives for components: `::yt[…](…)`, `::video[…](…)` (fields checked by `src/lib/blocks.ts`), and `:kbd`, `:::details`, `:::compare`, `:::tabs`, `:::steps`, `::toc`, written by hand (`content/blog/posts/README.md`).
 - `content/awesome/<slug>.yaml`: the Awesome lists, a folder collection (New makes a list, its file name from the English title), every text `{ en, es }`, an icon picked with the icon picker.
 - `content/site.yaml`: the site settings (name, tagline, role, hiring texts, contact email, profile links), a singleton ("Site settings" in the sidebar), read by `src/lib/site.ts`.
 
@@ -75,11 +75,11 @@ file → readEntry() → data → (Sveltia forms) → data → writeEntry() → 
 `components.ts` turns every block in the site's registry (`src/lib/blocks.ts`: field names and kinds) into an editor component, so a new block needs no CMS code:
 
 - `fields`: one per block field (text → `string`, file → `file`, size → `number`);
-- `pattern`: the whole fenced block, `^```name\n…\n```$` with the `m` flag;
-- `fromBlock` / `toBlock`: the YAML inside, one `name: value` line each, `./` added to file paths;
+- `pattern`: the whole line, `::name[label](arguments)` with the `m` flag;
+- `fromBlock` / `toBlock`: the label field in the brackets (`[`, `]` and `\` escaped), the others as `name=value` arguments, in double quotes when a value has a space, a comma, a parenthesis or a quote, `./` added to file paths (`components.test.ts` checks that the build reads back what they write);
 - `toPreview`: one line, the block's name and title. The preview pane next to the editor draws the real block with the site's own component, so there's no second copy of its markup to drift.
 
-They're edited in a dialog (`mode: 'dialog'`). A ` ````md ` example containing a ` ```video ` block stays a code block.
+They're edited in a dialog (`mode: 'dialog'`). A ` ```md ` example containing a `::video` line stays a code block.
 
 ## The preview
 
