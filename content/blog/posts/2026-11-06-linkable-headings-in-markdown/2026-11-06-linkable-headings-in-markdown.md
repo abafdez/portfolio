@@ -86,6 +86,8 @@ html {
 
 **Update (2026-11-11):** mdsvex is gone, and so are rehype-slug and rehype-autolink-headings. svelte-markdown makes the ids with github-slugger (the same ids, checked on every page), and a `heading` renderer of mine wraps the text in the link. The crawler still fails the build on a broken `#link`.
 
+**Update (2026-11-26):** mdsvex is back (1.0), with its own `heading_ids` (github-slugger's ids again, the same on every page), and a `Heading` component of mine replaces `h2` to `h4` to wrap the text in the link. The crawler still fails the build on a broken `#link`.
+
 ## Links
 
 - [rehype-slug](https://github.com/rehypejs/rehype-slug)

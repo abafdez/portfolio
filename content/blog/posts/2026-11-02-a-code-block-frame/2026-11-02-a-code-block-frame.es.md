@@ -94,3 +94,5 @@ El botón necesita JavaScript y la API del portapapeles. Sin ellos, sería un bo
 ```
 
 Copia el `textContent` del `<code>`: el código tal como está escrito, sin los números, y con una línea partida que sigue siendo una línea. Un span con `role="status"` a su lado dice "copiado" (o "no se pudo copiar") durante dos segundos, y los lectores de pantalla lo anuncian cuando cambia.
+
+**Actualización (2026-11-26):** el marco es ahora `Pre.svelte`, el componente que sustituye el `<pre>` que escribe mdsvex 1.0, y el resaltado es de twinkleplop en lugar de Shiki: sus líneas son `<span class="l">`, así que el contador y las reglas de ajuste apuntan a `.l`. El resto funciona como arriba: líneas ajustadas, números de línea con un contador de CSS y un botón de copiar que solo aparece cuando copiar funciona.

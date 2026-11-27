@@ -147,6 +147,8 @@ La expresión regular no coincidía, la imagen se quedaba como un `<img src="./s
 
 **Actualización (2026-11-18):** ahora todos los artículos están en `content/blog/posts/`, también los borradores (`draft: true` en el frontmatter), así que ya no hay glob de borradores. El glob de imágenes termina con un patrón marcador que un pequeño plugin de Vite convierte, en un build, en una exclusión por carpeta de borrador: un glob perezoso sigue metiendo en el build todos los archivos que encuentra, se usen o no.
 
+**Actualización (2026-11-26):** mdsvex ha vuelto (1.0), e importa por sí mismo las imágenes de un artículo, a través de enhanced-img, así que el glob y el componente de imagen de arriba han desaparecido. Las reglas son ahora un plugin de análisis: una imagen que no es un archivo `./` junto al artículo, o que no tiene texto alternativo, hace fallar la construcción, y un archivo que falta la hace fallar porque falla su import. Los archivos que nombran los bloques ` ```video ` y ` ```yt ` siguen viniendo de un glob perezoso, que la página solo carga para un artículo cuyos bloques nombran alguno.
+
 ## Enlaces
 
 - [Vite: recursos estáticos](https://vite.dev/guide/assets)

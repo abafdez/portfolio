@@ -85,3 +85,5 @@ mdsvex adds `rel="nofollow"` to every link. It tells search engines I don't vouc
 mdsvex 0.12 still writes Svelte 4 syntax, and with a layout it adds `{...$$props}` to the layout call. Runes mode has no `$$props`, and nothing passes props to a post anyway, so my Vite plugin removes it with one more `replace`.
 
 **Update (2026-11-11):** mdsvex is gone, and with it the layout and `MarkdownLink`. Links are now drawn by a `link` renderer for svelte-markdown, with the same rules: base path and language for `/about`, `rel="external"` for `https://`, relative links as they are. It renders on the server outside a page, so it can't read the page's language from SvelteKit: the language comes in as a prop. No `nofollow` to drop and no `$$props` to remove any more.
+
+**Update (2026-11-26):** mdsvex is back (1.0), and links are a component again: `Link.svelte` replaces every `<a>` a post makes, with the same rules. One compiled post serves both languages, so the language is added when the page shows, read from a Svelte context the page sets. `rel="external"` now comes from mdsvex's external-links plugin.

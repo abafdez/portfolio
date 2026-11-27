@@ -148,6 +148,8 @@ The regex didn't match, the image stayed a plain `<img src="./screenshot.png">`,
 
 **Update (2026-11-18):** every post is in `content/blog/posts/` now, drafts too (`draft: true` in the frontmatter), so there's no drafts glob any more. The image glob ends with a marker pattern that a small Vite plugin turns into one exclusion per draft folder in a build: a lazy glob still puts every file it matches into the build, used or not.
 
+**Update (2026-11-26):** mdsvex is back (1.0), and it imports a post's images itself, through enhanced-img, so the glob and the image renderer above are gone. The rules are a parse plugin now: an image that isn't a `./` file next to the post, or has no alt text, fails the build, and a missing file fails because its import does. The files named by ` ```video ` and ` ```yt ` blocks still come from a lazy glob, which the page loads only for a post whose blocks name some.
+
 ## Links
 
 - [Vite: static asset handling](https://vite.dev/guide/assets)

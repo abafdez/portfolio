@@ -63,6 +63,8 @@ Los archivos con `./` pasan por el mismo paso que las imágenes: cada uno se con
 
 **Actualización (2026-11-11):** mdsvex ya no está. Los bloques, sus campos y sus comprobaciones son los mismos (`blocks.ts`), pero ahora los dibujan componentes de Svelte de verdad: un renderer `code` de svelte-markdown pasa ` ```video ` y ` ```yt ` a sus componentes, y los archivos que nombran se cargan antes de renderizar el post. La vista previa del CMS monta los mismos componentes.
 
+**Actualización (2026-11-26):** mdsvex ha vuelto (1.0). Los bloques son ahora un paquete de plugin: reclama los bloques ` ```video ` y ` ```yt ` (el resaltador nunca los ve), los comprueba con el mismo `blocks.ts` y convierte cada uno en su componente. Un plugin no puede añadir imports, así que los archivos que nombra un bloque van a los datos de plugin del artículo, y la página los carga antes de mostrarse.
+
 ## Enlaces
 
 - [mdsvex: resaltado](https://mdsvex.pngwn.io/docs#highlight)

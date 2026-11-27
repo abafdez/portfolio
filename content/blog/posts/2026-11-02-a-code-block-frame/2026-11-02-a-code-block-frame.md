@@ -95,3 +95,5 @@ The button needs JavaScript and the Clipboard API. Without them, it would be a b
 ```
 
 It copies the `textContent` of the `<code>`: the code as written, without the numbers, with a wrapped line still one line. A `role="status"` span next to it says "copied" (or "couldn't copy") for two seconds, and screen readers announce it when it changes.
+
+**Update (2026-11-26):** the frame is `Pre.svelte` now, the component that replaces the `<pre>` mdsvex 1.0 writes, and the highlighting is twinkleplop's instead of Shiki's: its lines are `<span class="l">`, so the counter and the wrapping rules target `.l`. The rest works as above: wrapped lines, line numbers from a CSS counter, and a copy button that only shows itself when copying works.

@@ -7,6 +7,8 @@ description: I replaced mdsvex with svelte-markdown. Posts are rendered on the s
 
 My posts are markdown files. Until now, [mdsvex](./2026-10-31-markdown-with-mdsvex) turned each one into a Svelte component at build time, and a stack of plugins around it added what my site needs: callouts, code-block components, Shiki, linked headings, optimised images. It worked, but it had grown hacks: a Vite plugin to run before enhanced-img, a rewrite of the Svelte 4 syntax mdsvex still writes, regexes over its HTML for images, and a second, slightly different pipeline for my CMS's preview.
 
+**Update (2026-11-26):** two weeks later I went back to mdsvex, now 1.0: I want components and live demos in posts, which svelte-markdown can't give me. The comparison method in this post is what made the move back safe, and part of what's here survived it (the strict rules, my components). [The story of the move back](/devlog/2026-11-26-back-to-mdsvex).
+
 So I tried [svelte-markdown](https://markdown.svelte.page): marked turns markdown into tokens, and Svelte components draw them, one per kind of element. You can give it your own components, which is the whole point.
 
 ## Compare before you switch
