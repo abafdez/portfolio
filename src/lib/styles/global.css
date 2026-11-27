@@ -496,7 +496,7 @@
 			color: var(--text-2);
 		}
 
-		/* ```yt (blocks.ts): a YouTube video as a card that links to it. The picture is
+		/* ::yt (blocks.ts): a YouTube video as a card that links to it. The picture is
 		   16:9 (YouTube's 4:3 thumbnails lose their black bars to object-fit), or the
 		   blueprint grid when the post has no thumbnail. */
 		& .yt a {

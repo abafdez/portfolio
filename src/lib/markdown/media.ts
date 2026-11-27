@@ -1,5 +1,5 @@
-// The files next to the posts and Devlog entries that our blocks name (```video's src,
-// webm and poster, ```yt's thumbnail), for their components. The blocks plugin lists a
+// The files next to the posts and Devlog entries that our blocks name (::video's src,
+// webm and poster, ::yt's thumbnail), for their components. The blocks plugin lists a
 // post's files (blocks.ts); the [slug] pages' +page.ts loads them before the page shows,
 // on the server while prerendering and in the browser on navigation.
 // (A markdown image doesn't need this: mdsvex imports it from the post itself.)

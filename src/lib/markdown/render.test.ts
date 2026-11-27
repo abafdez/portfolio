@@ -101,9 +101,9 @@ describe('a body', () => {
 });
 
 describe('our blocks', () => {
-	test('a ```video becomes the video: WebM first, then MP4, and a poster', async () => {
+	test('a ::video becomes the video: WebM first, then MP4, and a poster', async () => {
 		const out = await html(
-			'```video\nsrc: ./clip.mp4\nwebm: ./clip.webm\nposter: ./clip.png\nwidth: 960\nheight: 540\n```'
+			'::video(src=./clip.mp4, webm=./clip.webm, poster=./clip.png, width=960, height=540)'
 		);
 		expect(out).toBe(
 			'<video width="960" height="540" controls="" muted="" playsinline="" preload="metadata"' +
@@ -112,17 +112,21 @@ describe('our blocks', () => {
 		);
 	});
 
-	test('its caption makes a figure, and block text is text, not markup', async () => {
-		const out = await html(
-			'```video\nsrc: ./clip.mp4\nwidth: 960\nheight: 540\ncaption: <b>Bold?</b>\n```'
-		);
+	test('its caption, the text in brackets, makes a figure and can hold markdown', async () => {
+		const out = await html('::video[It _plays_.](src=./clip.mp4, width=960, height=540)');
 		expect(out).toMatch(/^<figure><video/);
-		expect(out).toContain('<figcaption>&lt;b>Bold?&lt;/b></figcaption></figure>');
+		expect(out).toContain('<figcaption>It <em>plays</em>.</figcaption></figure>');
 	});
 
-	test("a ```yt is a link card in the file's language: nothing from Google on the page", async () => {
+	test('HTML in a caption fails the build, like anywhere in a post', async () => {
+		await expect(
+			html('::video[<b>Bold?</b>](src=./clip.mp4, width=960, height=540)')
+		).rejects.toThrow(/<b> is in the text/);
+	});
+
+	test("a ::yt is a link card in the file's language: nothing from Google on the page", async () => {
 		const out = await html(
-			'```yt\nsrc: https://youtu.be/gd5uJ7Nlvvo?t=90\ntitle: Plain Text\nthumbnail: ./talk.jpg\ncaption: A talk.\n```',
+			'::yt[Plain Text](src=https://youtu.be/gd5uJ7Nlvvo?t=90, thumbnail=./talk.jpg, caption="A talk, in 2022.")',
 			{ file: 'es' }
 		);
 		expect(out).toContain(
@@ -131,13 +135,13 @@ describe('our blocks', () => {
 		expect(out).toContain('<img src="/files/talk.jpg" alt="" loading="lazy"/>');
 		expect(out).toContain('<span class="yt-title">Plain Text</span>');
 		expect(out).toContain('Ver en YouTube · se abre en una pestaña nueva');
-		expect(out).toContain('<figcaption>A talk.</figcaption>');
+		expect(out).toContain('<figcaption>A talk, in 2022.</figcaption>');
 		expect(out).not.toMatch(/ytimg|youtube\.com\/embed|<iframe/);
 	});
 
-	test('a wrong field fails the build, naming the file', async () => {
-		await expect(html('```video\nsrc: ./clip.mp4\nwidht: 960\nheight: 540\n```')).rejects.toThrow(
-			/post-\d+\.md: the ```video block has no "widht" field/
+	test('a wrong argument fails the build, naming the file', async () => {
+		await expect(html('::video(src=./clip.mp4, widht=960, height=540)')).rejects.toThrow(
+			/post-\d+\.md: ::video has no "widht" argument/
 		);
 	});
 });

@@ -1,20 +1,21 @@
 <script lang="ts">
-	// ```yt: a YouTube video without YouTube on the page, as a link that opens it on
-	// youtube.com in a new tab (why: blocks.ts). The same markup as blocks.ts's render().
-	// The thumbnail comes from the page (context.ts).
+	// ::yt: a YouTube video without YouTube on the page, as a link that opens it on
+	// youtube.com in a new tab (why: blocks.ts). The text in brackets is `label`, the
+	// title; the thumbnail comes from the page (context.ts).
+	import type { Snippet } from 'svelte';
 	import { watchOnYoutube, youtubeUrl } from './values.ts';
 	import { fileLocale } from '#lib/i18n/locales.ts';
 	import { markdownMedia } from '../context.ts';
 
 	interface Props {
 		src: string;
-		title: string; // the link's text: what the reader is about to open
+		label: Snippet; // the title, the link's text: what the reader is about to open
 		thumbnail?: string; // a file next to the post: a picture from Google is a request to Google
 		caption?: string;
 		file: string;
 	}
 
-	let { src, title, thumbnail, caption, file }: Props = $props();
+	let { src, label, thumbnail, caption, file }: Props = $props();
 	const files = markdownMedia();
 	const media = $derived(files());
 </script>
@@ -30,7 +31,7 @@
 			<svg class="yt-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5v11l9-5.5z" /></svg
 			>
 		</span>
-		<span class="yt-title">{title}</span>
+		<span class="yt-title">{@render label()}</span>
 		<span class="yt-where">{watchOnYoutube[fileLocale(file)]}</span>
 	</a>
 	{#if caption}<figcaption>{caption}</figcaption>{/if}

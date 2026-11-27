@@ -1,61 +1,69 @@
 import { describe, expect, test } from 'vitest';
-import { readBlock, youtubeUrl } from './blocks';
+import { checkBlock, youtubeUrl } from './blocks';
 
 // What the blocks draw is tested through the real renderers (markdown/render.test.ts);
-// here, which blocks exist and what fails the build.
-const video = (yaml: string) => readBlock('video', yaml, 'post.md');
-const minimal = 'src: ./clip.mp4\nwidth: 1280\nheight: 720';
+// here, what checkBlock() gives and what fails the build.
+const minimal = { src: './clip.mp4', width: '1280', height: '720' };
+const video = (args: Record<string, string>, hasLabel = false) =>
+	checkBlock('video', args, hasLabel, 'post.md');
 
-describe('readBlock', () => {
-	test('a language that is not a block is left to the highlighter', () => {
-		expect(readBlock('ts', 'const a = 1;', 'post.md')).toBeUndefined();
-		expect(readBlock(undefined, 'text', 'post.md')).toBeUndefined();
-		// Not one of the object's built-in keys either.
-		expect(readBlock('toString', '', 'post.md')).toBeUndefined();
+describe('checkBlock', () => {
+	test('gives the arguments as strings, with no label field among them', () => {
+		expect(video({ ...minimal, webm: './clip.webm' }, true)).toEqual({
+			...minimal,
+			webm: './clip.webm'
+		});
 	});
 
-	test('gives the block and its values', () => {
-		expect(video(`${minimal}\ncaption: It plays`)).toEqual({
-			name: 'video',
-			values: { src: './clip.mp4', width: 1280, height: 720, caption: 'It plays' }
-		});
+	test('unescapes a \\" in a quoted value', () => {
+		expect(
+			checkBlock(
+				'yt',
+				{ src: 'https://youtu.be/gd5uJ7Nlvvo', caption: 'He said \\"hi\\"' },
+				true,
+				'post.md'
+			).caption
+		).toBe('He said "hi"');
 	});
 
 	test.each([
 		[
 			'a missing field',
-			'src: ./clip.mp4\nwidth: 1280',
-			/post\.md: the ```video block needs a "height" field/
+			{ src: './clip.mp4', width: '1280' },
+			/post\.md: ::video needs a "height" argument/
 		],
 		[
-			'an unknown field',
-			`${minimal}\nautoplay: true`,
-			/has no "autoplay" field\. Its fields: src, webm/
+			'an unknown argument',
+			{ ...minimal, autoplay: 'true' },
+			/has no "autoplay" argument\. Its arguments: src, webm/
 		],
 		[
 			'a size that is not a number',
-			'src: ./clip.mp4\nwidth: wide\nheight: 720',
+			{ ...minimal, width: 'wide' },
 			/"width" should be a size in pixels/
 		],
+		['a size of 0', { ...minimal, height: '0' }, /"height" should be a size in pixels/],
 		[
 			'a file without ./',
-			'src: clip.mp4\nwidth: 1280\nheight: 720',
+			{ ...minimal, src: 'clip.mp4' },
 			/"src" should be a file next to the post/
 		],
-		['a caption YAML reads as a number', `${minimal}\ncaption: 2026`, /"caption" should be text/],
-		['a list instead of fields', '- src: ./clip.mp4', /needs its fields, one per line/],
-		['broken YAML', 'src: [./clip.mp4', /isn't valid YAML/]
-	])('fails on %s', (_, yaml, error) => {
-		expect(() => video(yaml)).toThrow(error);
+		[
+			'the label field as an argument',
+			{ ...minimal, caption: 'x' },
+			/takes its caption in the brackets/
+		]
+	])('fails on %s', (_, args, error) => {
+		expect(() => video(args)).toThrow(error);
 	});
 
-	test('yt fails on a link that is not YouTube, and without a title', () => {
-		expect(() => readBlock('yt', 'src: https://vimeo.com/123\ntitle: T', 'post.md')).toThrow(
+	test('yt fails on a link that is not YouTube, and without a title in brackets', () => {
+		expect(() => checkBlock('yt', { src: 'https://vimeo.com/123' }, true, 'post.md')).toThrow(
 			'should be a YouTube link'
 		);
 		expect(() =>
-			readBlock('yt', 'src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo', 'post.md')
-		).toThrow('needs a "title" field');
+			checkBlock('yt', { src: 'https://youtu.be/gd5uJ7Nlvvo' }, false, 'post.md')
+		).toThrow('needs its title in brackets');
 	});
 });
 

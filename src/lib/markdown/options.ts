@@ -15,7 +15,7 @@ export const compileOptions = {
 		// rel="external" on every link that leaves the site, like the site's own links
 		// (ProjectHeader, ToolCredits…). Full links to the site itself stay plain.
 		external_links({ rel: ['external'], internal_hosts: ['abafdez.github.io'] }),
-		// ```video and ```yt (blocks.ts).
+		// ::video and ::yt (blocks.ts); a ```video fence, the old syntax, fails the build.
 		blocksPlugin,
 		// :kbd, :::details, :::compare (directives/).
 		directivesPlugin,

@@ -1,24 +1,20 @@
-// Fenced-block components: a code block whose language is one of the names below, with
-// YAML fields as its body, becomes that component instead of highlighted code.
+// Block components: a leaf directive whose name is one of the blocks below, its label
+// (the text in brackets) and fields as arguments, drawn by the block's component.
 //
-//   ```video
-//   src: ./filters.mp4
-//   width: 1280
-//   height: 720
-//   caption: The filters appear after the list has loaded.
-//   ```
+//   ::video[The filters appear after the list has loaded.](src=./filters.mp4, width=1280, height=720)
+//   ::yt[Plain Text, by Dylan Beattie](src=https://youtu.be/gd5uJ7Nlvvo, thumbnail=./talk.jpg)
 //
-// Anywhere else (Obsidian, GitHub, a plain editor) it's a readable block of YAML.
-// The blocks plugin (markdown/blocks-plugin.ts) reads each of these fences with readBlock() (a
+// Anywhere else (Obsidian, GitHub, a plain editor) it's a line of text that still reads.
+// The blocks plugin (markdown/blocks-plugin.ts) checks each one with checkBlock() (a
 // wrong field fails the build there) and draws it with its component (markdown/blocks/; a
-// test checks each block has one). The CMS makes its editor
-// components from the same fields (src/lib/cms/components.ts). Its own file so it can be
-// unit-tested (blocks.test.ts).
-import { parse } from 'yaml';
+// test checks each block has one). The CMS makes its editor components from the same
+// fields (src/lib/cms/components.ts). Its own file so it can be unit-tested (blocks.test.ts).
+// Until 2026-11-27 the blocks were code fences with YAML fields (```video); a fence left
+// over fails the build.
 import { youtubeId } from './markdown/blocks/values.ts';
 
-// The helpers the block components use live in values.ts (no YAML parser for the
-// browser); they're re-exported here for the rest.
+// The helpers the block components use live in values.ts, so the browser gets only
+// those; they're re-exported here for the rest.
 export { videoType, watchOnYoutube, youtubeId, youtubeUrl } from './markdown/blocks/values.ts';
 
 // What a field may hold. A file is a path next to the post (./clip.mp4): markdown/blocks-plugin.ts lists it
@@ -29,11 +25,13 @@ type Field = { kind: Kind; required: boolean };
 const required = (kind: Kind): Field => ({ kind, required: true });
 const optional = (kind: Kind): Field => ({ kind, required: false });
 
-// Each block's fields, in the order the CMS shows them and writes them.
-export const blocks: Record<string, { fields: Record<string, Field> }> = {
+// Each block's fields, in the order the CMS shows them and writes them. `label` names the
+// field written in the brackets, the text a reader sees (drawn as inline markdown).
+export const blocks: Record<string, { label: string; fields: Record<string, Field> }> = {
 	// A short screen recording: no sound, no autoplay, the reader presses play. The
 	// <video> rules (why each attribute) are in content/blog/posts/README.md.
 	video: {
+		label: 'caption',
 		fields: {
 			src: required('file'), // MP4 plays everywhere
 			webm: optional('file'), // smaller; played first when the browser can
@@ -50,6 +48,7 @@ export const blocks: Record<string, { fields: Record<string, Field> }> = {
 	// reader clicks. The thumbnail is a file next to the post for the same reason (one
 	// from i.ytimg.com would be a request to Google too). Without one, a blueprint tile.
 	yt: {
+		label: 'title',
 		fields: {
 			src: required('youtube'),
 			title: required('text'), // the link's text: what the reader is about to open
@@ -59,57 +58,50 @@ export const blocks: Record<string, { fields: Record<string, Field> }> = {
 	}
 };
 
-// A ```name block's fields, checked, or undefined if name isn't one of ours. Fails the
-// build on fields the block doesn't have, on missing required ones, and on a value of
-// the wrong kind, naming the file. The components in markdown/blocks/ take these values.
-export function readBlock(
-	lang: string | null | undefined,
-	code: string,
+// A ::name directive's arguments, checked. Fails the build on arguments the block
+// doesn't have, on missing required fields (the label one is the text in brackets), and
+// on a value of the wrong kind, naming the file. Gives the arguments as the components
+// take them: strings, an escaped \" in a quoted value unescaped.
+export function checkBlock(
+	name: string,
+	args: Record<string, string>,
+	hasLabel: boolean,
 	file: string
-): { name: string; values: Record<string, unknown> } | undefined {
-	if (!lang || !Object.hasOwn(blocks, lang)) return;
-	const { fields } = blocks[lang];
+): Record<string, string> {
+	const { label, fields } = blocks[name];
 	const fail = (problem: string): never => {
-		throw new Error(`${file}: the \`\`\`${lang} block ${problem}`);
+		throw new Error(`${file}: ::${name} ${problem}`);
 	};
 
-	let values: unknown;
-	try {
-		values = parse(code);
-	} catch (error) {
-		fail(`isn't valid YAML: ${(error as Error).message}`);
+	const names = Object.keys(fields).filter((field) => field !== label);
+	for (const arg of Object.keys(args)) {
+		if (arg === label) fail(`takes its ${label} in the brackets: ::${name}[…](…)`);
+		if (!Object.hasOwn(fields, arg))
+			fail(`has no "${arg}" argument. Its arguments: ${names.join(', ')}`);
 	}
-	if (typeof values !== 'object' || values === null || Array.isArray(values)) {
-		return fail('needs its fields, one per line: "name: value"');
-	}
-	const given = values as Record<string, unknown>;
-
-	const names = Object.keys(fields);
-	for (const name of Object.keys(given)) {
-		if (!Object.hasOwn(fields, name))
-			fail(`has no "${name}" field. Its fields: ${names.join(', ')}`);
-	}
-	for (const [name, field] of Object.entries(fields)) {
-		const value = given[name];
-		if (value === undefined || value === null) {
-			if (field.required) fail(`needs a "${name}" field`);
+	const values: Record<string, string> = {};
+	for (const [field, { kind, required }] of Object.entries(fields)) {
+		if (field === label) {
+			if (required && !hasLabel) fail(`needs its ${label} in brackets: ::${name}[The ${label}](…)`);
 			continue;
 		}
-		const problem = check(field.kind, value);
-		if (problem) fail(`"${name}" ${problem}`);
+		const value = args[field]?.replaceAll('\\"', '"');
+		if (value === undefined || value === '') {
+			if (required) fail(`needs a "${field}" argument`);
+			continue;
+		}
+		const problem = check(kind, value);
+		if (problem) fail(`"${field}" ${problem}`);
+		values[field] = value;
 	}
-	return { name: lang, values: given };
+	return values;
 }
 
 // What's wrong with a value, or undefined if nothing.
-function check(kind: Kind, value: unknown): string | undefined {
-	if (kind === 'size') {
-		return Number.isInteger(value) && (value as number) > 0
-			? undefined
-			: 'should be a size in pixels, like 1280';
+function check(kind: Kind, value: string): string | undefined {
+	if (kind === 'size' && !/^[1-9]\d*$/.test(value)) {
+		return `should be a size in pixels, like 1280 (got "${value}")`;
 	}
-	if (typeof value !== 'string')
-		return 'should be text (in quotes if YAML reads it as something else)';
 	if (kind === 'youtube' && !youtubeId(value)) {
 		return `should be a YouTube link, like https://www.youtube.com/watch?v=… (got "${value}")`;
 	}

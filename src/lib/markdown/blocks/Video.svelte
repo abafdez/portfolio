@@ -1,9 +1,9 @@
 <script lang="ts">
-	// ```video: a short screen recording. No sound, no autoplay, the reader presses play;
-	// why each attribute is in content/blog/posts/README.md. The same markup as
-	// blocks.ts's render(), which the CMS's editor components use. The blocks plugin
-	// (../blocks-plugin.ts) gives the fields as props, all strings; the files come from the
-	// page (context.ts).
+	// ::video: a short screen recording. No sound, no autoplay, the reader presses play;
+	// why each attribute is in content/blog/posts/README.md. The blocks plugin
+	// (../blocks-plugin.ts) gives the arguments as props, all strings, and the text in
+	// brackets as `label`, the caption; the files come from the page (context.ts).
+	import type { Snippet } from 'svelte';
 	import { videoType } from './values.ts';
 	import { markdownMedia } from '../context.ts';
 
@@ -13,11 +13,11 @@
 		poster?: string;
 		width: string; // its space is kept before the file arrives: the page doesn't jump
 		height: string;
-		caption?: string; // a video has no alt text: say what it shows
+		label?: Snippet; // the caption: a video has no alt text, so say what it shows
 		file: string;
 	}
 
-	let { src, webm, poster, width, height, caption, file }: Props = $props();
+	let { src, webm, poster, width, height, label, file }: Props = $props();
 	const files = markdownMedia();
 	const media = $derived(files());
 
@@ -40,10 +40,10 @@
 	</video>
 {/snippet}
 
-{#if caption}
+{#if label}
 	<figure>
 		{@render video()}
-		<figcaption>{caption}</figcaption>
+		<figcaption>{@render label()}</figcaption>
 	</figure>
 {:else}
 	{@render video()}

@@ -84,17 +84,27 @@ describe('what fails the build', () => {
 });
 
 describe('our blocks', () => {
-	test("a block is its component, its fields as props, and its files in the post's data", () => {
-		const out = compiled(
-			'```video\nsrc: ./clip.mp4\nposter: ./clip.png\nwidth: 960\nheight: 540\n```'
-		);
+	test("a block is its component, its arguments as props, and its files in the post's data", () => {
+		const out = compiled('::video(src=./clip.mp4, poster=./clip.png, width=960, height=540)');
 		expect(out.code).toContain(
-			`<Video_MDSVEX_D_G file="${file}" src="./clip.mp4" poster="./clip.png" width="960" height="540" />`
+			`<Video_MDSVEX_D_G src="./clip.mp4" poster="./clip.png" width="960" height="540" file="${file}" />`
 		);
 		expect(out.data).toEqual({ blocks: { files: ['./clip.mp4', './clip.png'] } });
 	});
 
-	test('every fenced block in blocks.ts has a component', () => {
+	test('a ```video fence, the old syntax, fails with the new one', () => {
+		expect(() => compiled('```video\nsrc: ./clip.mp4\n```')).toThrow(
+			`${file}: a \`\`\`video block is a directive now: ::video[…](…)`
+		);
+	});
+
+	test('a block in a sentence fails: it takes a line of its own', () => {
+		expect(() => compiled('See :yt[A talk](src=https://youtu.be/gd5uJ7Nlvvo) here.')).toThrow(
+			'yt takes a line of its own'
+		);
+	});
+
+	test('every block in blocks.ts has a component', () => {
 		expect(Object.keys(blockComponents).sort()).toEqual(Object.keys(blocks).sort());
 	});
 });
