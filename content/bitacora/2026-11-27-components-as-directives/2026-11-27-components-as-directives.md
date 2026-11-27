@@ -14,6 +14,7 @@ tags: [markdown, mdsvex, components, cms]
 - 16 new tests (`plugins.test.ts`, `render.test.ts`, `keys.test.ts`), the publishing guide has a "Components (directives)" section, and a draft post shows every directive.
 - A production build with the draft briefly published: every directive in both languages, steps rendered to HTML at build time (its components are `.static.svelte`, no JavaScript).
 - **`::video` and `::yt` replace the YAML fences.** The caption (video) or title (YouTube) goes in the brackets, the rest are arguments: `::yt[Plain Text](src=https://youtu.be/…, thumbnail=./talk.jpg)`. `blocks.ts` checks the arguments (no YAML parser any more), a leftover ` ```video ` fence fails the build with the new syntax, the CMS widgets read and write the line, and the two posts that used blocks were migrated, with an update note on the post about code-block components. Every page matches the build from before, apart from the text I changed.
+- **A compact YouTube card**: the picture on the left (on top on a phone), then the play sign beside the title and tip; without a picture, the row alone. **A `::yt` without `thumbnail=` gets the video's picture at build time**: a small Vite plugin downloads it from YouTube before anything compiles and saves it next to the post as `yt-<id>.jpg`. The file is optional, so a failed download leaves the card without a picture instead of failing the build. Fetching it live in dev and the CMS, with an offer to add it, is a card on the board.
 
 ## What I learned
 

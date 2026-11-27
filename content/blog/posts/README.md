@@ -143,10 +143,11 @@ Someone else's talk or tutorial: a `::yt` directive, the title in brackets. It s
 | ---------------- | -------- | ---------------------------------------------------------------------------------------------------- |
 | `[…]`, the title | yes      | The card's text: what the reader is about to open. Usually the video's title and who made it.        |
 | `src`            | yes      | The video's link, any shape (`youtube.com/watch?v=…`, `youtu.be/…`, `/shorts/…`). A `?t=90` is kept. |
-| `thumbnail`      | no       | A picture next to the post, 16:9. Without one, a blueprint tile with a play sign.                    |
+| `thumbnail`      | no       | A picture next to the post, 16:9. Without one, the build fetches the video's own (below).            |
 | `caption`        | no       | A line under the card, like an image caption. In double quotes if it has a space or a comma.         |
 
-- **The thumbnail is a file of yours, not a link to YouTube's**: a picture from `i.ytimg.com` would be a request to Google on every visit. To save the video's own: `https://i.ytimg.com/vi/<id>/maxresdefault.jpg` (1280 × 720; `hqdefault.jpg` if that one is missing, it's 4:3 and loses its black bars). It's the video owner's picture, used to link to their video.
+- **The card is compact**: the picture on the left (on top on a phone), then a play sign beside the title and the "opens in a new tab" line. Without a picture it's that row alone.
+- **The thumbnail is a file of yours, not a link to YouTube's**: a picture from `i.ytimg.com` would be a request to Google on every visit. **Leave `thumbnail` out and the build fetches the video's own** (`https://i.ytimg.com/vi/<id>/maxresdefault.jpg`, 1280 × 720, or `hqdefault.jpg`, 4:3, when there's no large one) and saves it next to the post as `yt-<id>.jpg`. Commit that file, or every build downloads it again. If YouTube doesn't answer, the build warns and the card has no picture. `pnpm dev` doesn't fetch anything: the card shows the picture once a build has saved it. Write `thumbnail=./your.jpg` to use a picture of your own instead. The video's picture belongs to its owner, used to link to their video.
 - **"Opens in a new tab" is written on the card**, in the post's language, so nobody is surprised by a new tab.
 - A link that isn't YouTube, or a missing title, fails the build and names the file.
 
