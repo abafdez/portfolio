@@ -27,7 +27,7 @@ src/routes/         one folder per page; +page.server.ts loads, +page.svelte dra
 src/lib/            everything the pages share
   ├─ components/    header, footer, cards, search, theme controls, hire-panel looks
   ├─ styles/        tokens.css (colours, sizes), global.css (layers), themes/*.css
-  ├─ markdown/      marked + svelte-markdown + Shiki: markdown to HTML on the server
+  ├─ markdown/      mdsvex's plugins and components: markdown compiled to Svelte
   ├─ i18n/          English and Spanish messages, localized links
   ├─ projects/      the tools (contrast checker, CV builder, toolbox, 404 games)
   └─ cms/           Sveltia CMS at /admin (dev, and its own build for the live site)
