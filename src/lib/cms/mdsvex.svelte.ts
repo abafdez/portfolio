@@ -10,6 +10,7 @@ import * as svelteApi from 'svelte';
 import { mount, unmount, type Component } from 'svelte';
 import { client } from './svelte-runtime.ts';
 import { compile, type Snippet } from 'mdsvex/compile';
+import { previewBraces } from './preview-braces.ts';
 import { create_highlight, load_default_languages, type HighlightConfig } from 'mdsvex/highlight';
 import * as components from '#lib/markdown/components.ts';
 import { compileOptions } from '#lib/markdown/options.ts';
@@ -85,6 +86,7 @@ export async function compilePost(body: string, file: string) {
 	const markdown = compile(body, {
 		filename: file,
 		...compileOptions,
+		parse_plugins: [...compileOptions.parse_plugins, previewBraces],
 		highlight: config,
 		components: [{ specifier: 'preview:components', names: Object.keys(replacements) }],
 		// Blocks that run import preview:snippet/<hash>, answered by snippetUrl().

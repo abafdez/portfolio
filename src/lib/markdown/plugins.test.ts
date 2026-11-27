@@ -6,6 +6,7 @@ import { compile } from 'mdsvex/compile';
 import { blocks } from '#lib/blocks.ts';
 import * as blockComponents from './blocks/index.ts';
 import { compileOptions } from './options.ts';
+import { previewBraces } from '#lib/cms/preview-braces.ts';
 
 const file = '/content/blog/posts/x/x.md';
 const compiled = (markdown: string) => compile(markdown, { filename: file, ...compileOptions });
@@ -63,10 +64,23 @@ describe('what fails the build', () => {
 		);
 	});
 
-	test('Svelte in the text: { } and blocks', () => {
-		const message = `${file}: a { } in the text is Svelte code. Put it in backticks.`;
-		expect(() => compiled('An object: {a: 1}.')).toThrow(message);
-		expect(() => compiled('{#if true}x{/if}')).toThrow(message);
+	test('a plain {expression} is allowed; Svelte blocks and tags fail, naming them', () => {
+		expect(svelte('Built in {2026 + 1}, for {metadata.title}.')).toContain(
+			'<p>Built in {2026 + 1}, for {metadata.title}.</p>'
+		);
+		expect(() => compiled('{#if true}x{/if}')).toThrow(`${file}: {#if} is a Svelte block`);
+		expect(() => compiled('{@html "<b>bold</b>"}')).toThrow(`${file}: {@html} is a Svelte tag`);
+		expect(() => compiled('A {@const x = 1} here.')).toThrow('{@const} is a Svelte tag');
+	});
+
+	test("the CMS preview shows an expression's source as code, never running it", () => {
+		const out = compile('Built in {2026 + 1}.', {
+			filename: file,
+			...compileOptions,
+			parse_plugins: [...compileOptions.parse_plugins, previewBraces]
+		}).code;
+		expect(out).toContain('<p>Built in <code>2026 + 1</code>.</p>');
+		expect(out).not.toMatch(/\{2026/);
 	});
 
 	test('in backticks or a code block, all of that is text', () => {

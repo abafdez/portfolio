@@ -237,3 +237,11 @@ describe('live demos', () => {
 		);
 	});
 });
+
+describe('braces', () => {
+	test('an {expression} is evaluated, and sees the frontmatter as metadata', async () => {
+		expect(await html('---\ntitle: Braces\n---\n\n{metadata.title}: {6 * 7} posts.')).toBe(
+			'<p>Braces: 42 posts.</p>'
+		);
+	});
+});
