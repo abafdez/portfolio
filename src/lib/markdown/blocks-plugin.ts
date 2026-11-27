@@ -6,9 +6,12 @@
 // paths go into the post's plugin_data, and the page loads them (media.ts, +page.ts).
 // The old syntax, a ```video fence, is claimed too, to fail the build with the new one.
 import type { Bundle, DirectiveContext, NodeView, PluginContext } from 'mdsvex/compile';
-import { blocks, checkBlock } from '#lib/blocks.ts';
+import { blocks, checkBlock, youtubeId } from '#lib/blocks.ts';
 
 const names = Object.keys(blocks);
+
+// The file the build saves a video's YouTube picture to, next to the post.
+export const ytThumbnail = (src: string) => `./yt-${youtubeId(src)}.jpg`;
 
 function block(name: string) {
 	return {
@@ -20,6 +23,13 @@ function block(name: string) {
 			const values = checkBlock(name, node.attrs.args ?? {}, hasLabel, file);
 			for (const [field, value] of Object.entries(values)) {
 				if (blocks[name].fields[field].kind === 'file') ctx.add('files', value);
+			}
+			// A ::yt without a thumbnail gets the picture the build fetches from YouTube
+			// (ytThumbnails() in vite.config.ts), if it's there: optional, so a failed
+			// download leaves the card without a picture instead of failing the build.
+			if (name === 'yt' && !values.thumbnail) {
+				values.thumbnail = ytThumbnail(values.src);
+				ctx.add('optional', values.thumbnail);
 			}
 			node.attrs.args = { ...values, file };
 		}

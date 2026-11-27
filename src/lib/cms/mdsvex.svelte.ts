@@ -130,7 +130,12 @@ type ReactLike = {
 // the template again when it has it, so the pictures and videos follow.
 function assetState(initial: (path: string) => string) {
 	let asset = $state.raw(initial);
-	const media: Media = { picture: (_file, src) => asset(src), url: (_file, src) => asset(src) };
+	// has(): Sveltia answers an empty URL for a file it doesn't have (or is still reading).
+	const media: Media = {
+		picture: (_file, src) => asset(src),
+		url: (_file, src) => asset(src),
+		has: (_file, src) => asset(src) !== ''
+	};
 	return {
 		media: () => media,
 		set: (next: (path: string) => string) => void (asset = next)

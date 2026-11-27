@@ -46,7 +46,8 @@ export const blocks: Record<string, { label: string; fields: Record<string, Fiel
 	// opens it on youtube.com in a new tab. An embedded player loads Google's scripts and
 	// cookies on every visit, watched or not; this loads nothing from Google until the
 	// reader clicks. The thumbnail is a file next to the post for the same reason (one
-	// from i.ytimg.com would be a request to Google too). Without one, a blueprint tile.
+	// from i.ytimg.com would be a request to Google too). Without one, the build saves
+	// the video's own (markdown/yt-thumbnails.ts), and if that fails the card has none.
 	yt: {
 		label: 'title',
 		fields: {
@@ -95,6 +96,18 @@ export function checkBlock(
 		values[field] = value;
 	}
 	return values;
+}
+
+// A directive's arguments as written, name=value or name="a, b" (\" and \\ escaped
+// inside quotes), as { name: value }: what mdsvex reads, for the code that reads a post's
+// text without compiling it (the CMS widgets, the build's YouTube thumbnails).
+export function readArgs(text: string): Record<string, string> {
+	const args: Record<string, string> = {};
+	for (const match of text.matchAll(/([\w-]+)=("(?:\\.|[^"\\])*"|[^,]*)/g)) {
+		const [, name, raw] = match;
+		args[name] = raw.startsWith('"') ? raw.slice(1, -1).replace(/\\(.)/g, '$1') : raw.trim();
+	}
+	return args;
 }
 
 // What's wrong with a value, or undefined if nothing.

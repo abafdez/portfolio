@@ -7,14 +7,18 @@
 import type { Component } from 'svelte';
 import type { Media } from '#lib/markdown/media.ts';
 
-// plugin_data.blocks.files: the ./files the post's blocks name (markdown/blocks-plugin.ts).
-export type Body = { default: Component; plugin_data?: { blocks?: { files?: string[] } } };
+// plugin_data.blocks: the ./files the post's blocks name, and the optional ones (a ::yt's
+// picture fetched at build time, maybe not there) (markdown/blocks-plugin.ts).
+export type Body = {
+	default: Component;
+	plugin_data?: { blocks?: { files?: string[]; optional?: string[] } };
+};
 export type Bodies = Record<string, () => Promise<Body>>;
 
 const missing = (file: string, src: string): never => {
 	throw new Error(`${file}: ${src} isn't one of the files its blocks name`);
 };
-const noFiles: Media = { picture: missing, url: missing };
+const noFiles: Media = { picture: missing, url: missing, has: () => false };
 
 // bodies: a section's glob, made with base: folder, so its keys are short
 // ('./<slug>/<slug>.md'). path: an entry's path (content.ts). The component, and the
@@ -23,9 +27,10 @@ export async function bodyOf(bodies: Bodies, folder: string, path: string) {
 	const load = bodies[`.${path.slice(folder.length)}`];
 	if (!load) throw new Error(`${path}: no markdown file with that path`);
 	const module = await load();
-	const files = module.plugin_data?.blocks?.files ?? [];
-	const media = files.length
-		? (await import('#lib/markdown/media.ts')).mediaFor(path, files)
-		: noFiles;
+	const { files = [], optional = [] } = module.plugin_data?.blocks ?? {};
+	const media =
+		files.length || optional.length
+			? (await import('#lib/markdown/media.ts')).mediaFor(path, files, optional)
+			: noFiles;
 	return { component: module.default, media: await media };
 }

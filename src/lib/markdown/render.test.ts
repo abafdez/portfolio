@@ -16,10 +16,12 @@ const dir = mkdtempSync(join(tmpdir(), 'markdown-'));
 afterAll(() => rmSync(dir, { recursive: true, force: true }));
 let count = 0;
 
-// Files as plain URLs: enhanced:img draws a plain <img> for a string.
+// Files as plain URLs: enhanced:img draws a plain <img> for a string. The pictures the
+// build would fetch from YouTube (yt-<id>.jpg) aren't there, as when the download fails.
 const media: Media = {
 	picture: (_file, src) => `/files/${src.slice(2)}`,
-	url: (_file, src) => `/files/${src.slice(2)}`
+	url: (_file, src) => `/files/${src.slice(2)}`,
+	has: (_file, src) => !src.startsWith('./yt-')
 };
 
 // file: the language of the file (.es.md is Spanish); page: the page's language.
@@ -137,6 +139,22 @@ describe('our blocks', () => {
 		expect(out).toContain('Ver en YouTube · se abre en una pestaña nueva');
 		expect(out).toContain('<figcaption>A talk, in 2022.</figcaption>');
 		expect(out).not.toMatch(/ytimg|youtube\.com\/embed|<iframe/);
+	});
+
+	test('a ::yt is compact: its picture, then the play sign beside the title', async () => {
+		const out = await html(
+			'::yt[Plain Text](src=https://youtu.be/gd5uJ7Nlvvo, thumbnail=./talk.jpg)'
+		);
+		expect(out).toMatch(
+			/<span class="yt-picture"><img src="\/files\/talk.jpg"[^>]*\/><\/span> <span class="yt-row"><svg class="yt-play"/
+		);
+	});
+
+	test('a ::yt without a thumbnail, when the build found no picture, is the row alone', async () => {
+		const out = await html('::yt[Plain Text](src=https://youtu.be/gd5uJ7Nlvvo)');
+		expect(out).not.toContain('yt-picture');
+		expect(out).toContain('<span class="yt-row"><svg class="yt-play"');
+		expect(out).toContain('<span class="yt-title">Plain Text</span>');
 	});
 
 	test('a wrong argument fails the build, naming the file', async () => {

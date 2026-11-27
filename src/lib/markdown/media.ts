@@ -19,6 +19,8 @@ export interface Media {
 	picture(file: string, src: string): Picture | string;
 	// Any file's URL (a video, a poster). Fails the build if the file isn't there.
 	url(file: string, src: string): string;
+	// Whether the file is there: a ::yt's picture fetched at build time may not be.
+	has(file: string, src: string): boolean;
 }
 
 type Load<T> = () => Promise<T>;
@@ -48,13 +50,20 @@ const missing = (file: string, src: string): never => {
 };
 
 // The files a post's blocks use, loaded, as a Media its renderers can ask
-// without waiting. A missing file fails the build here, naming the post.
-export async function mediaFor(file: string, sources: Iterable<string>): Promise<Media> {
+// without waiting. A missing file fails the build here, naming the post, unless it's
+// optional (a ::yt's picture the build tried to fetch, ytThumbnails() in vite.config.ts).
+export async function mediaFor(
+	file: string,
+	sources: Iterable<string>,
+	optional: Iterable<string> = []
+): Promise<Media> {
 	const found = new Map<string, Picture | string>();
-	for (const src of sources) {
+	const maybe = new Set(optional);
+	for (const src of [...sources, ...maybe]) {
 		const path = pathOf(file, src);
-		const load = pictures[path] ?? files[path] ?? missing(file, src);
-		found.set(src, await load());
+		const load = pictures[path] ?? files[path];
+		if (load) found.set(src, await load());
+		else if (!maybe.has(src)) missing(file, src);
 	}
 	const get = (src: string) => found.get(src) ?? missing(file, src);
 	return {
@@ -63,6 +72,7 @@ export async function mediaFor(file: string, sources: Iterable<string>): Promise
 		url: (_file, src) => {
 			const value = get(src);
 			return typeof value === 'string' ? value : value.img.src;
-		}
+		},
+		has: (_file, src) => found.has(src)
 	};
 }

@@ -6,7 +6,7 @@
 //   ::video[The caption](src=./clip.mp4, width=1280, height=720)
 //
 // The label field goes in the brackets, the others are arguments in the block's order.
-import { blocks } from '#lib/blocks.ts';
+import { blocks, readArgs } from '#lib/blocks.ts';
 
 type Values = Record<string, unknown>;
 
@@ -29,16 +29,6 @@ const unlabel = (text: string) => text.replace(/\\([\\[\]])/g, '$1');
 // quote (a quote inside is escaped).
 const argument = (value: string) =>
 	/[\s,()"]/.test(value) ? `"${value.replace(/["\\]/g, (c) => `\\${c}`)}"` : value;
-
-// name=value, name="a, b" → { name: value }
-function readArgs(text: string): Record<string, string> {
-	const args: Record<string, string> = {};
-	for (const match of text.matchAll(/([\w-]+)=("(?:\\.|[^"\\])*"|[^,]*)/g)) {
-		const [, name, raw] = match;
-		args[name] = raw.startsWith('"') ? raw.slice(1, -1).replace(/\\(.)/g, '$1') : raw.trim();
-	}
-	return args;
-}
 
 export function blockComponents() {
 	return Object.entries(blocks).map(([name, block]) => {

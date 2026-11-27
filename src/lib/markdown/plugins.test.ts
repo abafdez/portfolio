@@ -92,6 +92,12 @@ describe('our blocks', () => {
 		expect(out.data).toEqual({ blocks: { files: ['./clip.mp4', './clip.png'] } });
 	});
 
+	test("a ::yt without a thumbnail gets the build's YouTube picture, as an optional file", () => {
+		const out = compiled('::yt[A talk](src=https://youtu.be/gd5uJ7Nlvvo)');
+		expect(out.code).toContain('thumbnail="./yt-gd5uJ7Nlvvo.jpg"');
+		expect(out.data).toEqual({ blocks: { optional: ['./yt-gd5uJ7Nlvvo.jpg'] } });
+	});
+
 	test('a ```video fence, the old syntax, fails with the new one', () => {
 		expect(() => compiled('```video\nsrc: ./clip.mp4\n```')).toThrow(
 			`${file}: a \`\`\`video block is a directive now: ::video[…](…)`
