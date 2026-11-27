@@ -160,6 +160,83 @@ Versions: mdsvex 1.1.0, @sveltejs/enhanced-img 1.0.1, @sveltejs/vite-plugin-svel
 
 **Our workaround:** `mdsvexFirst()` in `vite.config.ts`, the one in the issue (since 2026-11-27; the site's build is identical apart from the build version). Until then, `enhancedImagesExceptMarkdown()` made enhanced-img's markup step skip `.md` files.
 
+### A pull request for it (draft, not sent)
+
+Only if pngwn wants one: ask on the issue first. Based on `main` as of 2026-11-27 (`packages/mdsvex/src/main.ts` last changed 2026-11-19, "release 1.0"). Not run in their repo: the behaviour is what `mdsvexFirst()` does, tested here.
+
+**Title:** run the markdown transform before enhanced-img's markup step
+
+**1. `packages/mdsvex/src/main.ts`**, the `transform` of the `mdsvex` plugin (lines 1323 to 1388): the method becomes a hook object with `order: 'pre'`. The body doesn't change, only its indentation (one more tab), so the diff is easiest to read with whitespace hidden:
+
+```diff
+-			transform(code, id) {
+-				if (!matches(id)) return;
++			// order: 'pre' like the markup step of @sveltejs/enhanced-img, which
++			// would otherwise parse the raw markdown as svelte first, our
++			// enforce: 'pre' then puts this one before it
++			transform: {
++				order: 'pre',
++				handler(code, id) {
++					if (!matches(id)) return;
+ 				…the rest of the body, one tab deeper…
+-			},
++				},
++			},
+```
+
+`this` is still the plugin context: Vite calls a hook object's `handler` the way it calls a plain hook.
+
+**2. A page in the test app:** `packages/mdsvex/test/enhanced_app/src/routes/sample/+page.svx` (the layout prerenders every page):
+
+````md
+# Sample
+
+```svelte
+<enhanced:img src="../pictured/red.png" alt="a red box" />
+```
+
+```css
+img {
+	border-radius: 8px;
+}
+```
+````
+
+Today that page fails the build (the CSS block isn't valid Svelte). Without the CSS block it would build, with the sample turned into a `<picture>` of `red.png`.
+
+**3. A test** in `packages/mdsvex/test/enhanced_app.spec.ts`, inside the `describe`, both plugin orders like the first test:
+
+```ts
+const SAMPLE = resolve(APP, '.svelte-kit/output/prerendered/pages/sample.html');
+
+test.each([
+	{ name: 'mdsvex before enhancedImages()', env: {} },
+	{ name: 'mdsvex after enhancedImages()', env: { MDSVEX_LAST: '1' } }
+])('$name, a code sample of <enhanced:img> stays text', { timeout: 120_000 }, async ({ env }) => {
+	await build(env);
+	const code = readFileSync(SAMPLE, 'utf8')
+		.match(/<pre[\s\S]*?<\/pre>/g)!
+		.join('');
+	expect(code).toContain('&lt;');
+	expect(code.replace(/<[^>]+>/g, '')).toContain(
+		'&lt;enhanced:img src=&quot;../pictured/red.png&quot;'
+	);
+	expect(code).not.toContain('<picture');
+});
+```
+
+**4. `.changeset/enhanced-img-code-samples.md`**, in the style of their other changesets:
+
+```md
+---
+'mdsvex': patch
+---
+
+A document that shows `<enhanced:img>` in a code block builds with `enhancedImages()` in the Vite plugins, and the sample stays text. The markdown transform now has `order: 'pre'`, so it runs before the markup step of `@sveltejs/enhanced-img`, which parsed the raw markdown as Svelte: the build failed on code that isn't valid Svelte, such as CSS, or turned the sample into a `<picture>`.
+```
+
+**PR description:** "Fixes #1323." plus two lines: what changed (the transform's `order`) and that the new test fails on `main` and passes with the change, in both plugin orders. Run their checks first (`pnpm test` in `packages/mdsvex`, their lint and format).
+
 ## 3. twinkleplop: CSS declarations outside a rule are read as a selector
 
 **Where:** [pngwn/twinkleplop](https://github.com/pngwn/twinkleplop/issues) (`languages/css`)
