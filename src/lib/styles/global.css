@@ -496,9 +496,15 @@
 			color: var(--text-2);
 		}
 
-		/* ::yt (blocks.ts): a YouTube video as a card that links to it. The picture is
-		   16:9 (YouTube's 4:3 thumbnails lose their black bars to object-fit), or the
-		   blueprint grid when the post has no thumbnail. */
+		/* ::yt (blocks.ts): a YouTube video as a compact card that links to it: the
+		   picture (16:9; YouTube's 4:3 thumbnails lose their black bars to object-fit)
+		   beside the row once the card has 32rem, above it before that, and the row alone
+		   when there's no picture (Yt.svelte). The row: the play sign, then the title and
+		   where it opens. */
+		& .yt {
+			container-type: inline-size;
+		}
+
 		& .yt a {
 			display: grid;
 			max-inline-size: 40rem;
@@ -519,16 +525,18 @@
 			}
 		}
 
+		@container (min-width: 32rem) {
+			& .yt a:has(.yt-picture) {
+				grid-template-columns: 13rem 1fr;
+				align-items: center;
+			}
+		}
+
 		& .yt-picture {
 			position: relative;
-			display: grid;
-			place-items: center;
+			display: block;
 			aspect-ratio: 16 / 9;
-			background-image:
-				linear-gradient(var(--grid-line-major) 1px, transparent 1px),
-				linear-gradient(90deg, var(--grid-line-major) 1px, transparent 1px);
-			background-size: var(--grid-size) var(--grid-size);
-			background-position: center;
+			background-color: var(--surface-3);
 
 			/* enhanced:img makes a <picture> around the <img>: both fill the box. */
 			& :is(picture, img) {
@@ -537,18 +545,26 @@
 				inline-size: 100%;
 				block-size: 100%;
 				object-fit: cover;
+				border: none;
+				border-radius: 0;
 			}
 		}
 
+		& .yt-row {
+			display: flex;
+			align-items: center;
+			gap: var(--size-3);
+			padding: var(--size-3) var(--size-4);
+		}
+
 		& .yt-play {
-			position: relative;
-			inline-size: 4rem;
-			block-size: 4rem;
-			padding: var(--size-3);
+			flex: none;
+			inline-size: 2.75rem;
+			block-size: 2.75rem;
+			padding: var(--size-2);
 			border-radius: var(--radius-round);
 			background: var(--brand);
 			fill: var(--surface-1);
-			box-shadow: var(--shadow-3);
 		}
 
 		@media (prefers-reduced-motion: no-preference) {
@@ -561,14 +577,17 @@
 			}
 		}
 
+		& .yt-text {
+			display: grid;
+			gap: var(--size-1);
+		}
+
 		& .yt-title {
-			padding: var(--size-3) var(--size-4) 0;
 			font-family: var(--font-label);
-			font-size: var(--font-size-2);
+			font-size: var(--font-size-1);
 		}
 
 		& .yt-where {
-			padding: var(--size-1) var(--size-4) var(--size-3);
 			font-size: var(--font-size-0);
 			color: var(--text-2);
 		}
