@@ -12,6 +12,7 @@ import { yamlData } from './src/lib/yaml-data.ts'; // import x from '/content/x.
 import { mdsvex } from 'mdsvex'; // markdown files as Svelte components
 import type { Plugin } from 'vite';
 import { compileOptions } from './src/lib/markdown/options.ts';
+import { ytThumbnails } from './src/lib/markdown/yt-thumbnails.ts'; // ::yt pictures, at build
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -48,6 +49,7 @@ export default defineConfig({
 		drafts(),
 		lucideNames(),
 		yamlData(),
+		ytThumbnails(),
 		mdsvexFirst(
 			mdsvex({
 				extensions: ['.md'],

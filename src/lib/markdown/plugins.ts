@@ -70,12 +70,18 @@ function noHtml(node: NodeView, ctx: Context) {
 	};
 }
 
-// So does Svelte: in mdsvex, {…} in the text is an expression that runs, and {#if} a
-// block. Our posts are text (braces go in backticks), and the CMS preview runs what it
-// compiles, so nothing in a post may run.
-function noSvelte(_node: NodeView, ctx: Context) {
+// Braces: in mdsvex, {…} in the text is a Svelte expression. A plain one is allowed: it
+// runs when the page is built and again in the reader's browser, and sees the
+// frontmatter as `metadata` ({metadata.title}). The CMS preview never runs it: it shows
+// its source as code instead (cms/mdsvex.svelte.ts, previewBraces).
+// Blocks ({#if}…{/if}, which in markdown can swallow the paragraphs after them) and tags
+// ({@html}, which would slip HTML past the rule above; {@const}, {@debug}) fail the build.
+function noSvelteBlock(node: NodeView, ctx: Context) {
 	return () => {
-		throw new Error(`${ctx.filename}: a { } in the text is Svelte code. Put it in backticks.`);
+		const kind = node.type === 'svelte_tag' ? `{@${node.attrs.tag}}` : `{#${node.attrs.tag}}`;
+		throw new Error(
+			`${ctx.filename}: ${kind} is a Svelte ${node.type === 'svelte_tag' ? 'tag' : 'block'}, not allowed in a post. A plain {expression} is fine; anything else goes in backticks.`
+		);
 	};
 }
 
@@ -86,7 +92,7 @@ export const parsePlugins: ParsePlugin[] = [
 		image: { parse: checkImage },
 		table: { parse: withFile },
 		html: { parse: noHtml },
-		mustache: { parse: noSvelte },
-		svelte_block: { parse: noSvelte }
+		svelte_block: { parse: noSvelteBlock },
+		svelte_tag: { parse: noSvelteBlock }
 	}
 ];

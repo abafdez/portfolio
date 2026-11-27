@@ -19,12 +19,7 @@ caption: Typing in the search box filters the list as you type.
 
 And on this site, it comes out as:
 
-```video
-src: ./awesome-filter.webm
-width: 960
-height: 540
-caption: Typing in the search box filters the list as you type.
-```
+::video[Typing in the search box filters the list as you type.](src=./awesome-filter.webm, width=960, height=540)
 
 In Obsidian or on GitHub it's a code block of YAML: five lines anyone can read.
 
@@ -65,6 +60,8 @@ The `./` files go through the same step as images: each becomes an import, so a 
 **Update (2026-11-11):** mdsvex is gone. The blocks, their fields and their checks are the same (`blocks.ts`), but they're drawn by real Svelte components now: a `code` renderer for svelte-markdown hands ` ```video ` and ` ```yt ` to their components, and the files they name are loaded before the post renders. The CMS preview mounts the same components.
 
 **Update (2026-11-26):** mdsvex is back (1.0). The blocks are a plugin bundle now: it claims the ` ```video ` and ` ```yt ` fences (the highlighter never sees them), checks them with the same `blocks.ts`, and turns each into its component. A plugin can't add imports, so the files a block names go into the post's plugin data, and the page loads them before it shows.
+
+**Update (2026-11-27):** the blocks are directives now, the syntax mdsvex gives components: `::video[Typing in the search box filters the list as you type.](src=./awesome-filter.webm, width=960, height=540)`. The caption is the text in brackets, the rest are arguments, and the same checks fail the build. On GitHub and in Obsidian it's a line of text instead of a block of YAML, but every post's components now share one syntax. The video above is drawn from that line.
 
 ## Links
 

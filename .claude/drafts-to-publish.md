@@ -51,3 +51,8 @@ All four only make sense once `feat/mdsvex` is merged. Each has an `.es.md` with
 - `2026-11-26-back-to-mdsvex-measured`: why mdsvex again, the block-by-block comparison (158 of 158 in each language), PFM's dialect, parse plugins, links per language at run time, block files through plugin data, the enhanced-img clash, directives next. Links to the published svelte-markdown post only.
 - `2026-11-26-a-cms-preview-that-compiles-svelte`: the preview compiling mdsvex + Svelte in the browser, blob modules, the private runtime import, 72 of 72 identical, why braces are banned. No links to drafts.
 - `2026-11-26-a-glob-is-a-list-you-ship`: Lighthouse after the switch, the two leaks (a glob of every body, the YAML parser) and the numbers before and after. Links to `back-to-mdsvex-measured`: **publish together** (or after it).
+
+## Directives and live demos, 2026-11-27 (branch `feat/directives`, stacked on `feat/mdsvex`)
+
+- `2026-11-27-components-as-directives`: what directives are, and every one the site has (`:kbd`, `:::details`, `:::compare`, mdsvex's steps, tabs and toc), each used in the post itself; the `keys` trick; what GitHub and Obsidian show. No links to drafts. Needs `feat/mdsvex` and `feat/directives` merged.
+- `2026-11-27-live-demos-in-posts`: ` ```svelte run ` blocks, `run=client`, `:::demo`, and the CMS preview's sandboxed frame (opaque origin, CORS from `null`, the hostile-demo test, the `parent` surprise). No links to drafts. Same branches.

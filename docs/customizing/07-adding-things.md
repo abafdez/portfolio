@@ -65,13 +65,13 @@ A project that needs a route of its own (like `/projects/cv`) leaves out `tool` 
 2. Add a line to `looks` in `looks.ts`. The panel shows the next look each time it opens.
 3. Keep it calm under reduced motion and inside the panel's width (the panel never scrolls sideways).
 
-## A fenced-block component in markdown
+## A block component in markdown
 
-Like ` ```video ` and ` ```yt `:
+Like `::video` and `::yt`, a leaf directive with fixed, checked arguments (for a component with free markdown inside, see `src/lib/markdown/directives-plugin.ts`):
 
-1. Declare its fields in `blocks` in `src/lib/blocks.ts` (`required('text' | 'file' | 'size' | 'youtube')` or `optional(…)`). The build fails on unknown, missing or wrong fields.
-2. Write its component in `src/lib/markdown/blocks/` and export it from `blocks/index.ts` under the block's name (a test checks every block has one). The blocks plugin (`src/lib/markdown/blocks-plugin.ts`) claims the fence by itself and passes the fields as props, all strings (turn sizes back into numbers). A `file` field's URL comes from `markdownMedia()` (`context.ts`), loaded by the page before it shows.
-3. Anything the component needs from `blocks.ts` goes in `blocks/values.ts` instead: `blocks.ts` imports a YAML parser that only the build and the CMS need, and importing from it would send that parser to the browser.
+1. Declare its fields in `blocks` in `src/lib/blocks.ts` (`required('text' | 'file' | 'size' | 'youtube')` or `optional(…)`), and which one is its `label`, the text in brackets. The build fails on unknown, missing or wrong arguments.
+2. Write its component in `src/lib/markdown/blocks/` and export it from `blocks/index.ts` under the block's name (a test checks every block has one). The blocks plugin (`src/lib/markdown/blocks-plugin.ts`) checks the directive by itself and passes the arguments as props, all strings (turn sizes back into numbers), and the label as a `label` snippet. A `file` field's URL comes from `markdownMedia()` (`context.ts`), loaded by the page before it shows.
+3. Anything the component needs from `blocks.ts` goes in `blocks/values.ts` instead, so the browser gets only those small helpers, not the block registry and its checks.
 4. The CMS gets an editor component for it automatically (`src/lib/cms/components.ts` reads the same fields).
 5. Document it in `content/blog/posts/README.md`.
 

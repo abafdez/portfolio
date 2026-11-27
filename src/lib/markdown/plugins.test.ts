@@ -6,6 +6,7 @@ import { compile } from 'mdsvex/compile';
 import { blocks } from '#lib/blocks.ts';
 import * as blockComponents from './blocks/index.ts';
 import { compileOptions } from './options.ts';
+import { previewBraces } from '#lib/cms/preview-braces.ts';
 
 const file = '/content/blog/posts/x/x.md';
 const compiled = (markdown: string) => compile(markdown, { filename: file, ...compileOptions });
@@ -63,10 +64,23 @@ describe('what fails the build', () => {
 		);
 	});
 
-	test('Svelte in the text: { } and blocks', () => {
-		const message = `${file}: a { } in the text is Svelte code. Put it in backticks.`;
-		expect(() => compiled('An object: {a: 1}.')).toThrow(message);
-		expect(() => compiled('{#if true}x{/if}')).toThrow(message);
+	test('a plain {expression} is allowed; Svelte blocks and tags fail, naming them', () => {
+		expect(svelte('Built in {2026 + 1}, for {metadata.title}.')).toContain(
+			'<p>Built in {2026 + 1}, for {metadata.title}.</p>'
+		);
+		expect(() => compiled('{#if true}x{/if}')).toThrow(`${file}: {#if} is a Svelte block`);
+		expect(() => compiled('{@html "<b>bold</b>"}')).toThrow(`${file}: {@html} is a Svelte tag`);
+		expect(() => compiled('A {@const x = 1} here.')).toThrow('{@const} is a Svelte tag');
+	});
+
+	test("the CMS preview shows an expression's source as code, never running it", () => {
+		const out = compile('Built in {2026 + 1}.', {
+			filename: file,
+			...compileOptions,
+			parse_plugins: [...compileOptions.parse_plugins, previewBraces]
+		}).code;
+		expect(out).toContain('<p>Built in <code>2026 + 1</code>.</p>');
+		expect(out).not.toMatch(/\{2026/);
 	});
 
 	test('in backticks or a code block, all of that is text', () => {
@@ -84,17 +98,33 @@ describe('what fails the build', () => {
 });
 
 describe('our blocks', () => {
-	test("a block is its component, its fields as props, and its files in the post's data", () => {
-		const out = compiled(
-			'```video\nsrc: ./clip.mp4\nposter: ./clip.png\nwidth: 960\nheight: 540\n```'
-		);
+	test("a block is its component, its arguments as props, and its files in the post's data", () => {
+		const out = compiled('::video(src=./clip.mp4, poster=./clip.png, width=960, height=540)');
 		expect(out.code).toContain(
-			`<Video_MDSVEX_D_G file="${file}" src="./clip.mp4" poster="./clip.png" width="960" height="540" />`
+			`<Video_MDSVEX_D_G src="./clip.mp4" poster="./clip.png" width="960" height="540" file="${file}" />`
 		);
 		expect(out.data).toEqual({ blocks: { files: ['./clip.mp4', './clip.png'] } });
 	});
 
-	test('every fenced block in blocks.ts has a component', () => {
+	test("a ::yt without a thumbnail gets the build's YouTube picture, as an optional file", () => {
+		const out = compiled('::yt[A talk](src=https://youtu.be/gd5uJ7Nlvvo)');
+		expect(out.code).toContain('thumbnail="./yt-gd5uJ7Nlvvo.jpg"');
+		expect(out.data).toEqual({ blocks: { optional: ['./yt-gd5uJ7Nlvvo.jpg'] } });
+	});
+
+	test('a ```video fence, the old syntax, fails with the new one', () => {
+		expect(() => compiled('```video\nsrc: ./clip.mp4\n```')).toThrow(
+			`${file}: a \`\`\`video block is a directive now: ::video[…](…)`
+		);
+	});
+
+	test('a block in a sentence fails: it takes a line of its own', () => {
+		expect(() => compiled('See :yt[A talk](src=https://youtu.be/gd5uJ7Nlvvo) here.')).toThrow(
+			'yt takes a line of its own'
+		);
+	});
+
+	test('every block in blocks.ts has a component', () => {
 		expect(Object.keys(blockComponents).sort()).toEqual(Object.keys(blocks).sort());
 	});
 });
@@ -105,4 +135,38 @@ test('links that leave the site are rel="external"; our own full links are not',
 	).toBe(
 		'<p><a href="https://svelte.dev" rel="external">a</a> <a href="https://abafdez.github.io/portfolio/">b</a> <a href="/about">c</a></p>'
 	);
+});
+
+describe('our directives', () => {
+	test(':kbd gets its text as keys', () => {
+		expect(svelte('Press :kbd[Ctrl+Shift+P].')).toMatch(/<Kbd_\w+ keys="Ctrl\+Shift\+P">/);
+	});
+
+	test('a :::details without a summary fails, naming the file and line', () => {
+		expect(() => compiled('Text.\n\n:::details\nBody.\n:::')).toThrow(
+			`${file}:3: :::details needs a summary`
+		);
+	});
+
+	test('each heading of the first depth inside :::compare starts a side', () => {
+		const out = svelte(':::compare\n## Before\nOld.\n\n### More\nx\n## After\nNew.\n:::');
+		expect(out.match(/<Compare_side_\w+>/g)).toHaveLength(2);
+		// A deeper heading stays inside its side.
+		expect(out).toMatch(/<h3 id="more">More<\/h3><p>x<\/p>\s*<\/Compare_side/);
+	});
+
+	test('a :::compare must start with a heading, and needs two sides', () => {
+		expect(() => compiled(':::compare\nIntro.\n## A\na\n## B\nb\n:::')).toThrow(
+			`${file}:2: a :::compare starts with a heading`
+		);
+		expect(() => compiled(':::compare\n## Only\nOne.\n:::')).toThrow(
+			`${file}:1: :::compare needs two headings or more`
+		);
+	});
+
+	test('an unknown directive fails, naming it', () => {
+		expect(() => compiled(':::kdb[x]\ny\n:::')).toThrow(
+			/no component renders the directive :::kdb/
+		);
+	});
 });

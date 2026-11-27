@@ -9,11 +9,7 @@ My toolbox has an HTML symbols table now, and every symbol in it lists its **UTF
 
 If you'd rather watch than read, Dylan Beattie tells the whole story, from early British telegraphs to Danish spelling and Ukrainian number plates (PIKE MATCHBOX), in this talk:
 
-```yt
-src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo
-title: Plain Text, by Dylan Beattie (NDC Copenhagen 2022)
-thumbnail: ./plain-text-talk.jpg
-```
+::yt[Plain Text, by Dylan Beattie (NDC Copenhagen 2022)](src=https://www.youtube.com/watch?v=gd5uJ7Nlvvo, thumbnail=./plain-text-talk.jpg)
 
 ## Three things, not one
 

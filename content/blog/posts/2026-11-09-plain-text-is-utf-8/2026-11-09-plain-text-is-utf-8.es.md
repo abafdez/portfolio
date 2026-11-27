@@ -8,11 +8,7 @@ Mi caja de herramientas ya tiene una tabla de símbolos HTML, y cada símbolo mu
 
 Si prefieres verlo a leerlo, Dylan Beattie cuenta toda la historia, de los primeros telégrafos británicos a la ortografía danesa y las matrículas ucranianas (PIKE MATCHBOX), en esta charla (en inglés):
 
-```yt
-src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo
-title: Plain Text, de Dylan Beattie (NDC Copenhagen 2022)
-thumbnail: ./plain-text-talk.jpg
-```
+::yt[Plain Text, de Dylan Beattie (NDC Copenhagen 2022)](src=https://www.youtube.com/watch?v=gd5uJ7Nlvvo, thumbnail=./plain-text-talk.jpg)
 
 ## Tres cosas, no una
 

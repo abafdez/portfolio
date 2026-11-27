@@ -72,6 +72,10 @@ export default defineConfig({
 		outDir: here('../../../build/admin'),
 		emptyOutDir: true,
 		// Sveltia alone is a few MB: no point warning about it on every build.
-		chunkSizeWarningLimit: 4096
+		chunkSizeWarningLimit: 4096,
+		// The CMS's page, and the page inside a demo's sandboxed frame (SandboxDemo.svelte).
+		rolldownOptions: {
+			input: { index: here('./index.html'), demo: here('./demo.html') }
+		}
 	}
 });

@@ -27,7 +27,7 @@ Sveltia keeps the token in the browser's storage for `abafdez.github.io`, which 
 
 - `content/blog/{published,drafts}/<slug>/<slug>.md`, and `content/bitacora/<slug>/<slug>.md` (the dev log): one folder per entry, its images next to it, written `![alt](./diagram.png)`.
 - `<slug>.es.md` next to the English file: the Spanish version, with only the words in its frontmatter (`title`, `description`, `cover` (the cover's alt text), `reviewed`).
-- Code blocks whose language is a component name (` ```yt `, ` ```video `) with YAML inside: the build turns them into components (`src/lib/blocks.ts`).
+- Directives for components: `::yt[…](…)`, `::video[…](…)` (fields checked by `src/lib/blocks.ts`), and `:kbd`, `:::details`, `:::compare`, `:::tabs`, `:::steps`, `::toc`, written by hand (`content/blog/posts/README.md`).
 - `content/awesome/<slug>.yaml`: the Awesome lists, a folder collection (New makes a list, its file name from the English title), every text `{ en, es }`, an icon picked with the icon picker.
 - `content/site.yaml`: the site settings (name, tagline, role, hiring texts, contact email, profile links), a singleton ("Site settings" in the sidebar), read by `src/lib/site.ts`.
 
@@ -75,11 +75,11 @@ file → readEntry() → data → (Sveltia forms) → data → writeEntry() → 
 `components.ts` turns every block in the site's registry (`src/lib/blocks.ts`: field names and kinds) into an editor component, so a new block needs no CMS code:
 
 - `fields`: one per block field (text → `string`, file → `file`, size → `number`);
-- `pattern`: the whole fenced block, `^```name\n…\n```$` with the `m` flag;
-- `fromBlock` / `toBlock`: the YAML inside, one `name: value` line each, `./` added to file paths;
+- `pattern`: the whole line, `::name[label](arguments)` with the `m` flag;
+- `fromBlock` / `toBlock`: the label field in the brackets (`[`, `]` and `\` escaped), the others as `name=value` arguments, in double quotes when a value has a space, a comma, a parenthesis or a quote, `./` added to file paths (`components.test.ts` checks that the build reads back what they write);
 - `toPreview`: one line, the block's name and title. The preview pane next to the editor draws the real block with the site's own component, so there's no second copy of its markup to drift.
 
-They're edited in a dialog (`mode: 'dialog'`). A ` ````md ` example containing a ` ```video ` block stays a code block.
+They're edited in a dialog (`mode: 'dialog'`). A ` ```md ` example containing a `::video` line stays a code block.
 
 ## The preview
 
@@ -92,8 +92,9 @@ entry data (every change) → preview.ts → compilePost() (mdsvex.svelte.ts)
 ```
 
 - A post is a Svelte component in the build (mdsvex), so `preview.ts` compiles the body in the browser the same way, about 150 ms after the typing pauses: `mdsvex/compile` with the build's options (`compileOptions`: heading ids, our parse plugins, external links) and highlighting (`create_highlight` over mdsvex's languages), then Svelte's compiler, then `mount()` into the frame from a React component. Each compile is a new component, mounted in place of the last.
-- The compiled module imports Svelte's runtime and our replacements by name (`'svelte/internal/client'`, `'preview:components'`). A browser can't resolve names, so only the imports at the top are rewritten to `blob:` modules that hand out this bundle's own copies: the same Svelte that mounts the post. Svelte forbids importing `svelte/internal/*` in `.svelte.ts` (it's private), so that import lives in `svelte-runtime.ts`.
-- The parse plugins throw everything the build would stop on (HTML or `{ }` in the text, an unknown callout): the preview shows that error instead of the body. Svelte code can't reach the preview (it would run in the CMS page, next to the GitHub token).
+- The compiled module imports Svelte's runtime and our replacements by name (`'svelte/internal/client'`, `'preview:components'`, each plugin's module). A browser can't resolve names, so only the imports at the top are rewritten to `blob:` modules that hand out this bundle's own copies: the same Svelte that mounts the post (`blob-modules.ts`; the module name is the string after `from`, since an export name can be a string too). Svelte forbids importing `svelte/internal/*` in `.svelte.ts` (it's private), so that import lives in `svelte-runtime.ts`.
+- **Live demos run in a sandbox.** A ` ```svelte run ` block is code the post's author wrote, and this page holds the GitHub token, so it never runs here. `compile()` gets `snippets: (s) => 'preview:snippet/' + s.hash`, and each such module is `SandboxDemo.svelte` bound to the block's code (marked `sandboxed`, so `markdown/Pre.svelte` draws it). It compiles the demo and posts the JavaScript to `<iframe sandbox="allow-scripts">` (no `allow-same-origin`: an opaque origin, no storage, no cookies, no access to this page, no navigating the tab) loading `demo.html`, whose `demo-runner.ts` imports it with its own copy of Svelte and mounts it, then sends back its height and any error, the only two messages accepted, and only from that frame. The runner answers the window that asked, not `parent`: Sveltia's preview is a frame of its own. Its module scripts load with CORS from origin `null`: GitHub Pages sends `Access-Control-Allow-Origin: *`, the dev server allows `null` (`plugin.ts`), `scripts/serve.ts` sends `*`. Script blocks (` ```ts run `) don't run in the preview: a line says so. Checked with a demo that tries `localStorage`, `parent.document`, `document.cookie` and `top.location`: all four throw `SecurityError`.
+- The parse plugins throw everything the build would stop on (HTML or a Svelte block or tag in the text, an unknown callout): the preview shows that error instead of the body. A plain `{expression}` (allowed in posts) is shown as inline code, its source, never run (`preview-braces.ts`): the preview runs in the CMS page, next to the GitHub token. Demos run sandboxed (below).
 - `./` images are drawn by `PreviewImage.svelte` (replacing `img` here only) from `getAsset()`, through a context backed by `$state.raw`: Sveltia answers with an empty URL while it reads a file. Links get the file's language through `markdown/context.ts`'s context.
 - About 490 kB gzip more than svelte-markdown's old preview (Svelte's compiler, mdsvex's compiler and its grammars), loaded only by the CMS; a warm compile takes a few milliseconds.
 - It also draws the post's header (date, reading time from the site's `readingTime()`, title, description, tags, and the cover: one just added, from `getAsset()`, or the saved one from `covers.ts`).

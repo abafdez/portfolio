@@ -38,6 +38,9 @@ jobs:
         with:
           # Don't leave the token in .git/config, where any script of the build could read it.
           persist-credentials: false
+          # The whole history, not just the last commit: each post's "updated" date is the
+          # date of the last commit that touched its file (src/lib/git-dates.server.ts).
+          fetch-depth: 0
 
       - name: Setup pnpm with runtime # Install Node & PNPM and install dependencies in the same step
         uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0

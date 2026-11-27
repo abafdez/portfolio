@@ -9,9 +9,9 @@ Posts (drafts too), the Devlog and the Awesome lists can be edited in a CMS ([Sv
 - **English and Spanish** are side by side. A new entry starts in English only; switch Spanish on from the three-dot menu when you translate it.
 - **A save changes only what you edited**: the CMS writes files in this repo's own style and runs Prettier on them (`src/lib/content-files.ts`, `src/lib/cms/formats.ts`). After editing frontmatter by hand (in Obsidian, say), run `pnpm content:format` so the files stay in that shape; `pnpm test` fails until they are.
 - **The body** opens as markdown; the button at the end of the toolbar switches to rich text. Both keep callouts, HTML in backticks and the blocks below.
-- **` ```yt ` and ` ```video `** are in the Insert menu and filled in a dialog.
+- **`::yt` and `::video`** are in the Insert menu and filled in a dialog.
 - **Images**: the image button uploads next to the post and writes `![alt](./file.png)`; its Title field becomes the caption.
-- **The preview** compiles the post in the browser as you type, the way the build does (mdsvex, then Svelte, with the site's own components and CSS from `src/lib/markdown/`): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img's optimised copies. Anything the build would refuse (HTML or `{ }` in the text, an unknown callout, a block with a wrong field, an image without alt text) shows its error there instead. The Awesome list's preview is the page as last saved, in dev only.
+- **The preview** compiles the post in the browser as you type, the way the build does (mdsvex, then Svelte, with the site's own components and CSS from `src/lib/markdown/`): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img's optimised copies. A `{expression}` shows as code there, its source: it only runs on the site. Anything the build would refuse (HTML or a Svelte block in the text, an unknown callout, a block with a wrong field, an image without alt text) shows its error there instead. The Awesome list's preview is the page as last saved, in dev only.
 - **Publishing**: "Hidden on the site (draft)" is the `draft` field. Pick "Yes" for a draft, the empty option to publish. The Drafts button above the list shows only drafts.
 - **Signed in with GitHub** instead ("Sign In Using Access Token", a fine-grained token with Contents and Pull requests permissions on this repo), every change goes through a pull request (Sveltia's editorial workflow): a save commits to a `cms/<collection>/<slug>` branch, CI builds it, and "Publish" on the Workflow page merges it into `main` as one commit. "Save and Publish" skips the pull request, for a typo. Sveltia calls an unmerged pull request a "Draft" too: that one isn't on `main` at all, while a merged post with `draft: true` is on `main` but not on the site. Working with the local repository ignores the workflow and writes the files, as above.
 - **Cover focal point** is stored as `focus: x% y%`; the site doesn't use it yet.
@@ -33,6 +33,8 @@ posts/
 - Once a post is published, don't rename it: the old URL would stop working, and links to it with it.
 
 ## Frontmatter
+
+The date a post was **last updated** isn't written anywhere: it's the day of the last commit that changed the file (English and Spanish each their own), shown after the date ("updated 2026-11-27") when it's a later day, and given to search engines and the sitemap. Any committed change counts, a typo fix too.
 
 ```yaml
 ---
@@ -89,38 +91,31 @@ The cover is used four times: the card's thumbnail (square), the top of the post
 
 ### Videos
 
-Markdown has no syntax for video, so write a `video` block: a code block whose language is `video`, with fields in YAML. On the site it becomes the `<video>` below; in Obsidian and on GitHub it reads as five lines of YAML.
+Markdown has no syntax for video, so write a `::video` directive (see [Components](#components-directives)) on a line of its own: the caption in brackets, the rest as arguments. On the site it becomes the `<video>` below; in Obsidian and on GitHub it reads as one line of text.
 
-````md
-```video
-src: ./awesome-list-shift.mp4
-webm: ./awesome-list-shift.webm
-poster: ./awesome-list-shift.png
-width: 1280
-height: 720
-caption: The filters appear after the list has loaded, and push it down.
+```md
+::video[The filters appear after the list has loaded, and push it down.](src=./awesome-list-shift.mp4, webm=./awesome-list-shift.webm, poster=./awesome-list-shift.png, width=1280, height=720)
 ```
-````
 
-| Field     | Required | What                                                            |
-| --------- | -------- | --------------------------------------------------------------- |
-| `src`     | yes      | The video, next to the post (`./`). MP4 plays everywhere.       |
-| `width`   | yes      | The size you exported at, in pixels.                            |
-| `height`  | yes      | Same.                                                           |
-| `webm`    | no       | A smaller WebM copy; browsers that can play it get it first.    |
-| `poster`  | no       | An image shown before it plays, at the video's size.            |
-| `caption` | no       | What it shows (a video has no alt text). Makes it a `<figure>`. |
+| Write              | Required | What                                                                                    |
+| ------------------ | -------- | --------------------------------------------------------------------------------------- |
+| `[…]`, the caption | no       | What it shows (a video has no alt text). Makes it a `<figure>`. Markdown is fine in it. |
+| `src`              | yes      | The video, next to the post (`./`). MP4 plays everywhere.                               |
+| `width`            | yes      | The size you exported at, in pixels.                                                    |
+| `height`           | yes      | Same.                                                                                   |
+| `webm`             | no       | A smaller WebM copy; browsers that can play it get it first.                            |
+| `poster`           | no       | An image shown before it plays, at the video's size.                                    |
 
-The build fails on a missing required field, a field that isn't in the table (`autoplay` included, on purpose), a size that isn't a number, or a file without `./`, naming the post. The block always adds `controls muted playsinline preload="metadata"` (why each one, below).
+A value with a space, comma or parenthesis goes in double quotes: `poster="./first frame.png"`. The build fails on a missing required argument, one that isn't in the table (`autoplay` included, on purpose), a size that isn't a number, or a file without `./`, naming the post. A ` ```video ` code block, the old syntax, fails it too. The directive always adds `controls muted playsinline preload="metadata"` (why each one, below).
 
-The video it makes looks like this (poster, WebM and MP4 sources, a caption). You can't write it as HTML yourself: HTML in a post fails the build (see [Tags and code in the text](#tags-and-code-in-the-text)). If you need something the block doesn't do, ask Claude to add a field.
+You can't write the `<video>` as HTML yourself: HTML in a post fails the build (see [Tags and code in the text](#tags-and-code-in-the-text)). If you need something the directive doesn't do, ask Claude to add an argument.
 
 - **Format:** **MP4** (H.264) plays in every browser; if you make one file, make that one. **WebM** (VP9) is usually smaller for the same quality. With both, put WebM first: the browser plays the first `<source>` it can.
 - **`width` and `height` are required** (the build fails without them): the size you exported at. Like an image, the video's space is kept before the file arrives, so the page doesn't jump.
 - **Short and small:** a few seconds, 1280 px wide, under about 1 MB per file. Unlike images, videos are used as they are: the build doesn't compress them, so compress before committing (below).
 - **No sound, no autoplay.** `controls` lets a reader play and pause it (WCAG asks that anything moving can be paused), `muted` says there's no sound (Svelte asks for captions, a `<track>`, on a video with sound), and without `autoplay` nothing moves until the reader asks, which also respects reduced motion.
 - **`preload="metadata"`** downloads only the start of the file (size, length) until it's played. **`poster`** (optional) is the image shown before that; it's used as it is, so export it at the video's size.
-- **Say what it shows**, in `caption` or in the text around it: a video has no alt text.
+- **Say what it shows**, in the caption or in the text around it: a video has no alt text.
 - **In the vault:** copy the files to `_attachments/` and embed with `![[clip.mp4]]`.
 
 Recording and compressing (install once with `sudo apt install ffmpeg`): record with Snipping Tool (Win+Shift+R) or Game Bar (Win+Alt+R), then:
@@ -140,26 +135,23 @@ Higher `-crf` means a smaller file and lower quality; raise it if a file is too 
 
 ### YouTube videos
 
-Someone else's talk or tutorial: a `yt` block. It shows the video's picture and title as a card that opens the video on YouTube in a new tab. **Nothing loads from Google on your page**: no player, no scripts, no cookies, until a reader clicks.
+Someone else's talk or tutorial: a `::yt` directive, the title in brackets. It shows the video's picture and title as a card that opens the video on YouTube in a new tab. **Nothing loads from Google on your page**: no player, no scripts, no cookies, until a reader clicks.
 
-````md
-```yt
-src: https://www.youtube.com/watch?v=gd5uJ7Nlvvo
-title: Plain Text, by Dylan Beattie (NDC Copenhagen 2022)
-thumbnail: ./plain-text-talk.jpg
+```md
+::yt[Plain Text, by Dylan Beattie (NDC Copenhagen 2022)](src=https://www.youtube.com/watch?v=gd5uJ7Nlvvo, thumbnail=./plain-text-talk.jpg)
 ```
-````
 
-| Field       | Required | What it is                                                                                           |
-| ----------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| `src`       | yes      | The video's link, any shape (`youtube.com/watch?v=…`, `youtu.be/…`, `/shorts/…`). A `?t=90` is kept. |
-| `title`     | yes      | The card's text: what the reader is about to open. Usually the video's title and who made it.        |
-| `thumbnail` | no       | A picture next to the post, 16:9. Without one, a blueprint tile with a play sign.                    |
-| `caption`   | no       | A line under the card, like an image caption.                                                        |
+| Write            | Required | What it is                                                                                           |
+| ---------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `[…]`, the title | yes      | The card's text: what the reader is about to open. Usually the video's title and who made it.        |
+| `src`            | yes      | The video's link, any shape (`youtube.com/watch?v=…`, `youtu.be/…`, `/shorts/…`). A `?t=90` is kept. |
+| `thumbnail`      | no       | A picture next to the post, 16:9. Without one, the build fetches the video's own (below).            |
+| `caption`        | no       | A line under the card, like an image caption. In double quotes if it has a space or a comma.         |
 
-- **The thumbnail is a file of yours, not a link to YouTube's**: a picture from `i.ytimg.com` would be a request to Google on every visit. To save the video's own: `https://i.ytimg.com/vi/<id>/maxresdefault.jpg` (1280 × 720; `hqdefault.jpg` if that one is missing, it's 4:3 and loses its black bars). It's the video owner's picture, used to link to their video.
+- **The card is compact**: the picture on the left (on top on a phone), then a play sign beside the title and the "opens in a new tab" line. Without a picture it's that row alone.
+- **The thumbnail is a file of yours, not a link to YouTube's**: a picture from `i.ytimg.com` would be a request to Google on every visit. **Leave `thumbnail` out and the build fetches the video's own** (`https://i.ytimg.com/vi/<id>/maxresdefault.jpg`, 1280 × 720, or `hqdefault.jpg`, 4:3, when there's no large one) and saves it next to the post as `yt-<id>.jpg`. Commit that file, or every build downloads it again. If YouTube doesn't answer, the build warns and the card has no picture. `pnpm dev` doesn't fetch anything: the card shows the picture once a build has saved it. Write `thumbnail=./your.jpg` to use a picture of your own instead. The video's picture belongs to its owner, used to link to their video.
 - **"Opens in a new tab" is written on the card**, in the post's language, so nobody is surprised by a new tab.
-- A link that isn't YouTube, or a missing `title`, fails the build and names the file.
+- A link that isn't YouTube, or a missing title, fails the build and names the file.
 
 ## Callouts
 
@@ -177,6 +169,44 @@ A box for a note, a tip or a warning. It's a blockquote whose first line is `[!t
 - **The title** says the type ("Tip") unless you write your own; a screen reader still hears the type first ("Warning: Not on GitHub Pages").
 - **Folding** (Obsidian's `[!note]-`) is accepted, but the box is always shown open.
 - **Use them sparingly**: one or two per post. When everything is a callout, nothing stands out.
+
+## Components (directives)
+
+A colon, a name and brackets draw a component, with no HTML. `:name[…]` sits in a sentence, `::name[…]` takes a line of its own, and `:::name[…]` opens a block that ends at a line of `:::`. Arguments go in parentheses after the brackets: `(open=true)`.
+
+| Write                                        | You get                                                                                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `:kbd[Ctrl+Shift+P]`                         | Keycaps, one per key. A `+` at the end is a key: `:kbd[Ctrl++]`.                                                                     |
+| `:::details[The summary]` … `:::`            | A section the reader opens. The summary is required; `(open=true)` starts it open.                                                   |
+| `:::compare` with a heading per side … `:::` | Sides next to each other, stacked on a phone. Start with a heading (`### Before`); headings of that depth start a side. Two or more. |
+| `:::steps` with a heading per step … `:::`   | Numbered steps (mdsvex's plugin).                                                                                                    |
+| `:::tabs` … `:::`                            | Tabs: a heading per tab, or code blocks named after their language (` ```sh [pnpm] `), one tab each (mdsvex's plugin).               |
+| `::toc[On this page]`                        | The post's headings, nested (mdsvex's plugin). `<!-- no-toc -->` in a heading leaves it out.                                         |
+
+- **Mistakes fail the build**, naming the file and line: an unknown name (`:::kdb`), a `:::details` without a summary, a `:::compare` that doesn't start with a heading or has one side.
+- **A block inside a block** needs more colons on the outer one: `::::tabs` around a `:::details`.
+- **GitHub and Obsidian show directives as plain text** (`:kbd[Esc]` with its colon and brackets), so keep the text inside them readable on its own.
+- **A line that is only `::word` or `:::word`** is a directive. Write `\::word` to keep it as text.
+
+## Live demos
+
+Write `run` after a code block's language and the page runs it, above its code:
+
+````md
+```svelte run
+<script>
+	let count = $state(0);
+</script>
+
+<button onclick={() => count++}>Clicked {count}</button>
+```
+````
+
+- **A Svelte block** draws its component (braces are fine inside a code block, it's code). **A `ts` or `js` block** calls its default export and shows what it returns.
+- **`run=client`** leaves it out of the page and puts a "Run the demo" button in its place: for code that needs a browser (`window`) or is heavy.
+- **`:::demo[A title]`** around the block (and some text about it) draws a window with the title in its bar.
+- Imports in a block work as in any file of the site (`./Button.svelte` next to the post, `#lib/…`).
+- **In the CMS preview** a Svelte demo runs in a sandboxed frame that can't reach your GitHub token, and only imports of `svelte` work there. Script blocks don't run in the preview: a line says the result shows on the published page.
 
 ## In Spanish
 
@@ -200,7 +230,7 @@ reviewed: false
 
 **Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. **HTML outside backticks fails the build**, naming the post and the tag, whether it's a made-up tag like `<profile>` or a real one like `<aside>`: nothing written in a post reaches the page as raw markup. Every element on the page comes from the site's own components (the blocks above for what markdown can't say). The CMS preview shows the same error. A comment (`<!-- note to self -->`) is the one exception: it's dropped.
 
-**Braces go in backticks too.** In mdsvex a `{ }` in a sentence is a Svelte expression (`{1 + 1}` would print `2`), so one outside backticks or a code block fails the build, naming the post. Posts are text, and the CMS preview runs what it compiles, in the page that holds the GitHub token. (Allowing some expressions is on the board to review later.) Frontmatter (`title`, `description`) is plain text, so no backticks there: they'd show as they are.
+**Braces are code.** In mdsvex a `{ }` in a sentence is a Svelte expression: `{1 + 1}` prints `2`, `{metadata.title}` the post's title (the frontmatter is `metadata`). It runs when the site is built and again in the reader's browser, so keep it to values that are the same both times (a `new Date()` would show the build's date until the page's JavaScript runs, then the reader's). The CMS preview never runs it: it shows the expression as code. To write a brace as text, put it in backticks. Svelte blocks (`{#if}`…`{/if}`) and tags (`{@html}`, `{@const}`, `{@debug}`) fail the build, naming the post. Frontmatter (`title`, `description`) is plain text, so no backticks there: they'd show as they are.
 
 ## Markdown that reads a little differently
 

@@ -122,6 +122,15 @@ importers:
       '@mdsvex/plugin-external-links':
         specifier: 0.1.1
         version: 0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))
+      '@mdsvex/plugin-steps':
+        specifier: 0.1.1
+        version: 0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))(svelte@5.57.3)
+      '@mdsvex/plugin-tabs':
+        specifier: 0.1.1
+        version: 0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))(svelte@5.57.3)
+      '@mdsvex/plugin-toc':
+        specifier: 0.1.2
+        version: 0.1.2(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))(svelte@5.57.3)
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -400,6 +409,24 @@ packages:
     resolution: {integrity: sha512-cShZSPS+9mLuHjbSNYyhTjU01vtCcze/ivIQkrBCyKVmgTGswBw6uJg9f/6+AsKbdZQOpbrhShT/N0l1bHkiMQ==}
     peerDependencies:
       mdsvex: ^1.0.0-next.2
+
+  '@mdsvex/plugin-steps@0.1.1':
+    resolution: {integrity: sha512-1bmpuveudoaHFkOzUHZBSS1iRqHYEk1M1EAUh+Wx6OCyCivVQ5gIY5c+Zfh7dZhdZfFUF7V6KyoXsLBWlfhbMA==}
+    peerDependencies:
+      mdsvex: ^1.0.0-next.2
+      svelte: ^5.0.0
+
+  '@mdsvex/plugin-tabs@0.1.1':
+    resolution: {integrity: sha512-7jIAKwroNgcOzu8l6frGcE5SsJvmAqnE73HT5WssfJ2IPxGIrWGGY2+AeH8Yk4ZYyvH4mJ1pbu/Xd1MgyLWc4A==}
+    peerDependencies:
+      mdsvex: ^1.0.0-next.2
+      svelte: ^5.20.0
+
+  '@mdsvex/plugin-toc@0.1.2':
+    resolution: {integrity: sha512-phW4vfZ+AEQM1DCxKz4IEhXXWuTIaaVw5itVnCESb4hWJzZiRwguVYZSXqulDKpK3EP7ie4JC/1iwz6cQOWNhQ==}
+    peerDependencies:
+      mdsvex: ^1.1.0
+      svelte: ^5.20.0
 
   '@mdsvex/render@1.1.0':
     resolution: {integrity: sha512-h5pQ0LVa8DmJIsALzhz/VZojnAw9Hu9yjQihpN5gHQH785ypN8ZsJJM7fKeWdI8jdgh+nndPpxVA10Pu5pH3EA==}
@@ -1715,6 +1742,21 @@ snapshots:
   '@mdsvex/plugin-external-links@0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))':
     dependencies:
       mdsvex: 1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
+
+  '@mdsvex/plugin-steps@0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))(svelte@5.57.3)':
+    dependencies:
+      mdsvex: 1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
+      svelte: 5.57.3
+
+  '@mdsvex/plugin-tabs@0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))(svelte@5.57.3)':
+    dependencies:
+      mdsvex: 1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
+      svelte: 5.57.3
+
+  '@mdsvex/plugin-toc@0.1.2(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))(svelte@5.57.3)':
+    dependencies:
+      mdsvex: 1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
+      svelte: 5.57.3
 
   '@mdsvex/render@1.1.0(svelte@5.57.3)':
     dependencies:

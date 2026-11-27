@@ -57,7 +57,9 @@ createServer(async (request, response) => {
 	const file = await find(path);
 	const shown = file ?? join(root, '404.html');
 	response.writeHead(file ? 200 : 404, {
-		'Content-Type': types[extname(shown)] ?? 'application/octet-stream'
+		'Content-Type': types[extname(shown)] ?? 'application/octet-stream',
+		// Like GitHub Pages: the CMS's demo frame (an opaque origin) loads its scripts with CORS.
+		'Access-Control-Allow-Origin': '*'
 	});
 	response.end(await readFile(shown));
 }).listen(port, () => console.log(`build/ on http://localhost:${port}${base}/`));

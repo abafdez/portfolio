@@ -26,6 +26,7 @@
 		description,
 		section,
 		published,
+		modified,
 		image,
 		noindex = false,
 		translated = true
@@ -38,6 +39,8 @@
 		section?: string;
 		// 'YYYY-MM-DD' for a post or a Devlog entry, which makes it an article.
 		published?: string;
+		// When an article last changed ('YYYY-MM-DD'), if after `published`.
+		modified?: string;
 		// The link preview's picture (coverPreviews in covers.ts) and its alt text.
 		image?: { src: string; alt: string };
 		// Keep this page out of search results (a page that isn't ready, like /mascot).
@@ -99,6 +102,7 @@
 	<meta property="og:type" content={published ? 'article' : 'website'} />
 	{#if published}
 		<meta property="article:published_time" content={published} />
+		{#if modified}<meta property="article:modified_time" content={modified} />{/if}
 	{/if}
 	{#if image && imageUrl}
 		<meta property="og:image" content={imageUrl} />

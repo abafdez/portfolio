@@ -1,6 +1,5 @@
 ---
 title: A CMS preview that compiles Svelte in the browser
-draft: true
 date: 2026-11-26
 tags: [cms, svelte, mdsvex, security]
 description: "Once my posts became Svelte components, the CMS preview had nothing to mount until the post was compiled. So it compiles it, in the browser, the way the build does: mdsvex, then Svelte's compiler, then a module whose imports point at the CMS's own copies. All 72 posts preview exactly as the site shows them."
@@ -54,9 +53,9 @@ With Sveltia's test backend, a script pasted each of my 72 published posts into 
 
 Mistakes show before saving, as "The build would stop here": an unknown callout type, HTML in the text, a block with a misspelled field.
 
-## Why braces are now banned
+## Braces run on the site, not in the preview
 
-In mdsvex, `{…}` in a sentence is a Svelte expression, and the preview _runs_ what it compiles. That's harmless in a build. In the CMS, it runs in the page where my GitHub token is stored: a post someone sent me, opened in the editorial workflow, could read it. So a brace outside backticks now fails the build and the preview alike, like HTML already did. Nothing in my posts runs.
+In mdsvex, `{…}` in a sentence is a Svelte expression, and the preview _runs_ what it compiles. That's harmless in a build. In the CMS, it would run in the page where my GitHub token is stored: a post someone sent me, opened in the editorial workflow, could read it. At first I banned braces outright. Now a plain expression is allowed in a post, and the preview shows it as code, its source, instead of running it: `{metadata.title}` reads `metadata.title` while I write, and the title on the site. Svelte's blocks and tags (`{#if}`, `{@html}`) still fail the build and the preview alike, like HTML.
 
 ## The cost
 

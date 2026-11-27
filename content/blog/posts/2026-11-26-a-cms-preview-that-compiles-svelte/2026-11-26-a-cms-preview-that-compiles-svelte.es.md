@@ -52,9 +52,9 @@ Con el backend de prueba de Sveltia, un script pegó cada uno de mis 72 artícul
 
 Los errores aparecen antes de guardar, como "The build would stop here": un tipo de aviso desconocido, HTML en el texto, un bloque con un campo mal escrito.
 
-## Por qué ahora están prohibidas las llaves
+## Las llaves se ejecutan en el sitio, no en la vista previa
 
-En mdsvex, `{…}` en una frase es una expresión de Svelte, y la vista previa _ejecuta_ lo que compila. En una construcción no hace daño. En el CMS, se ejecuta en la página donde está guardado mi token de GitHub: un artículo que alguien me enviara, abierto en el flujo editorial, podría leerlo. Así que una llave fuera de las comillas invertidas ahora hace fallar tanto la construcción como la vista previa, igual que ya pasaba con el HTML. Nada en mis artículos se ejecuta.
+En mdsvex, `{…}` en una frase es una expresión de Svelte, y la vista previa _ejecuta_ lo que compila. En una construcción no hace daño. En el CMS, se ejecutaría en la página donde está guardado mi token de GitHub: un artículo que alguien me enviara, abierto en el flujo editorial, podría leerlo. Al principio prohibí las llaves del todo. Ahora una expresión simple está permitida en un artículo, y la vista previa la enseña como código, su fuente, en lugar de ejecutarla: `{metadata.title}` se lee `metadata.title` mientras escribo, y como el título en el sitio. Los bloques y etiquetas de Svelte (`{#if}`, `{@html}`) siguen haciendo fallar la construcción y la vista previa, igual que el HTML.
 
 ## El coste
 

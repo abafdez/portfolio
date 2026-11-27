@@ -1,6 +1,5 @@
 ---
 title: Site settings without a YAML parser in the browser
-draft: true
 date: 2026-11-19
 tags: [cms, vite, content]
 description: "My name, tagline, hiring texts and profile links were spread over the code and the message files. Now they're one YAML file the CMS edits, and the browser gets them as plain JSON: a nine-line Vite plugin parses the file at build time."

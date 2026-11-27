@@ -1,6 +1,5 @@
 ---
 title: A glob is a list you ship
-draft: true
 date: 2026-11-26
 tags: [performance, vite, sveltekit, mdsvex]
 description: 'After moving my posts to mdsvex, Lighthouse said every post got heavier: 13 to 26 kB gzipped on a first visit. Two lines of mine were to blame: a glob of every post, sent to every post, and one small import that brought a YAML parser along.'

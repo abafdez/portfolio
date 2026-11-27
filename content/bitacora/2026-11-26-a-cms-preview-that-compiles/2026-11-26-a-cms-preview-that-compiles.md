@@ -11,7 +11,7 @@ tags: [cms, svelte, mdsvex, security]
 - The compiled module imports Svelte's runtime and our components by name; each name becomes a `blob:` module that hands out the CMS's own copy, and only the import statements at the top are rewritten.
 - Images and block files come from Sveltia's `getAsset()`, links get the file's language, both through the same contexts the site's pages set.
 - Checked with Sveltia's test backend: all 72 published posts preview identical to the built pages, code colours included. A warm compile takes about 6 ms.
-- **Braces in posts now fail the build and the preview**, like HTML: the preview runs what it compiles, in the page that holds the GitHub token.
+- **Braces in posts now fail the build and the preview**, like HTML: the preview runs what it compiles, in the page that holds the GitHub token. **Update (2026-11-27):** a plain `{expression}` is allowed now; the preview shows it as code instead of running it (entry `2026-11-27-braces-in-posts`).
 
 ## What I learned
 

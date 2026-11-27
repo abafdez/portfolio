@@ -50,6 +50,7 @@ export const es = {
 
 	tagsLabel: () => 'Etiquetas',
 	minutesRead: ({ minutes }: { minutes: number }) => `${minutes} min de lectura`,
+	updatedOn: () => 'actualizado',
 	statusDraft: () => 'borrador',
 	statusPublished: () => 'publicado',
 	inEnglish: () => 'en inglés',
@@ -57,6 +58,9 @@ export const es = {
 	codeCopy: () => 'copiar',
 	codeCopied: () => 'copiado',
 	codeCopyFailed: () => 'no se pudo copiar',
+	demoLabel: () => 'Demo en vivo',
+	demoRun: () => 'Ejecutar la demo',
+	demoPreviewScript: () => 'Este script se ejecuta en la página publicada, no en la vista previa.',
 
 	homeAboutMe: () => 'Sobre mí',
 	homeSeeProjects: () => 'Ver proyectos',

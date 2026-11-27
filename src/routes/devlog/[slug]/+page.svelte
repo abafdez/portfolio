@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Seo from '#lib/components/Seo.svelte';
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
+	import { updatedDay } from '#lib/content-dates.ts';
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import { devlogTag } from '#lib/links.ts';
 	import { copyCode } from '#lib/markdown/copy.ts';
@@ -22,6 +23,7 @@
 	section={m.devlogTitle()}
 	description={entry.description}
 	published={entry.date}
+	modified={updatedDay(entry)}
 	translated={data.translated}
 />
 

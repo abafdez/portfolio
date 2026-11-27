@@ -1,6 +1,5 @@
 ---
 title: Code colours as classes, not inline styles
-draft: true
 date: 2026-11-26
 tags: [css, markdown, design-tokens, performance]
 description: My code blocks used to carry a style attribute on every word, written by Shiki from a theme file. Now twinkleplop gives each token a class and the site's CSS colours it. I compared the two builds character by character before keeping it.

@@ -6,6 +6,7 @@
 	import PostStatus from './PostStatus.svelte';
 	import TranslationStatus from './TranslationStatus.svelte';
 	import type { Locale } from '#lib/i18n/locales.ts';
+	import { updatedDay } from '#lib/content-dates.ts';
 
 	// The top of a Devlog entry or a blog post, from its frontmatter.
 	interface Props {
@@ -15,6 +16,8 @@
 		description?: string;
 		// Reading time, from content.ts.
 		minutes?: number;
+		// When its file was last committed (content.ts), shown when after `date`.
+		updated?: string;
 		// Blog posts: a draft or published badge, shown in dev only (PostStatus).
 		status?: 'draft' | 'published';
 		// Links each tag to its page (see TagList).
@@ -31,6 +34,7 @@
 		title,
 		date,
 		minutes,
+		updated,
 		tags,
 		description,
 		status,
@@ -40,6 +44,8 @@
 		locale,
 		reviewed
 	}: Props = $props();
+
+	const changed = $derived(updatedDay({ date, updated }));
 
 	// The title, description and cover alt in another language than the page's say so.
 	const lang = $derived(locale && locale !== getLocale() ? languageTags[locale] : undefined);
@@ -52,6 +58,9 @@
 		<time datetime={date}>{date}</time>
 		{#if minutes}
 			<span class="minutes">· {m.minutesRead({ minutes })}</span>
+		{/if}
+		{#if changed}
+			<span class="minutes">· {m.updatedOn()} <time datetime={changed}>{changed}</time></span>
 		{/if}
 		{#if status}
 			<PostStatus {status} />

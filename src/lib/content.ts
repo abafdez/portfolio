@@ -5,6 +5,8 @@
 // Translations sit next to the English file: <slug>/<slug>.es.md (see toTranslation()).
 import { readEntry } from '#lib/content-files.ts';
 import { readingTime } from '#lib/reading-time.ts';
+import { updatedDay } from '#lib/content-dates.ts';
+import { lastCommits } from '#lib/git-dates.server.ts';
 import { baseLocale, fileLocale, locales, type Locale } from '#lib/i18n/locales.ts';
 import { hueOf } from '#lib/hue.ts';
 import { coverFiles } from '#lib/covers.server.ts';
@@ -38,6 +40,8 @@ export interface LogMeta extends Frontmatter {
 // description: the frontmatter's, or one taken from the body (see summary()).
 // locale: the language this text is in. locales: every language the entry exists in.
 // reviewed: translations only, false until I've read it (a badge in dev says so).
+// updated: when this file was last committed, an ISO date-time from git
+// (git-dates.server.ts), or undefined for a file not committed yet.
 export type Entry<T extends Frontmatter> = T & {
 	slug: string;
 	folder: string;
@@ -48,6 +52,7 @@ export type Entry<T extends Frontmatter> = T & {
 	locale: Locale;
 	locales: Locale[];
 	reviewed?: boolean;
+	updated?: string;
 };
 
 // import.meta.glob is a Vite feature: it finds the files at build time and imports
@@ -69,6 +74,10 @@ const log = import.meta.glob<string>('/content/bitacora/*/*.md', {
 	query: '?raw',
 	import: 'default'
 });
+
+// When each file was last committed (git-dates.server.ts).
+const commits = lastCommits();
+const updatedOf = (path: string) => commits.get(path);
 
 // The cover images (cover.avif, .png, .jpg or .webp next to a post's or an entry's
 // markdown) come from covers.server.ts's list. Not a glob of their own: every file a
@@ -179,7 +188,8 @@ function toEntry<T extends Frontmatter>(path: string, text: string): Entry<T> {
 		minutes: readingTime(text),
 		description: meta.description ?? summary(text),
 		locale: baseLocale,
-		locales: [baseLocale]
+		locales: [baseLocale],
+		updated: updatedOf(path)
 	};
 }
 
@@ -217,7 +227,8 @@ export function toTranslation<T extends Frontmatter>(
 		path,
 		minutes: readingTime(text),
 		locale,
-		reviewed: meta.reviewed
+		reviewed: meta.reviewed,
+		updated: updatedOf(path)
 	};
 }
 
@@ -251,6 +262,13 @@ function toList<T extends Frontmatter>(files: Record<string, string>): Entry<T>[
 // (locale says which, so the page can mark it "in English").
 export function inLocale<T extends Frontmatter>(entry: Entry<T>, locale: Locale): Entry<T> {
 	return (translations.get(translationKey(entry.folder, locale)) as Entry<T>) ?? entry;
+}
+
+// The day an entry last changed in any of its languages, never before its date: for the
+// sitemap, which lists one URL per page for both languages.
+export function lastChanged<T extends Frontmatter>(entry: Entry<T>): string {
+	const days = entry.locales.map((locale) => updatedDay(inLocale(entry, locale)) ?? entry.date);
+	return days.sort().at(-1) ?? entry.date;
 }
 
 // Whether an entry exists in every language: only then is its /es/ page a Spanish page

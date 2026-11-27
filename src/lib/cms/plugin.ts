@@ -16,6 +16,11 @@ const page = readFileSync(new URL('./index.html', import.meta.url), 'utf8').repl
 	'src="./main.ts"',
 	'src="/src/lib/cms/main.ts"'
 );
+// The page inside a demo's sandboxed frame (SandboxDemo.svelte), the same way.
+const demo = readFileSync(new URL('./demo.html', import.meta.url), 'utf8').replace(
+	'src="./demo-runner.ts"',
+	'src="/src/lib/cms/demo-runner.ts"'
+);
 
 export function cms(): Plugin {
 	return {
@@ -25,7 +30,12 @@ export function cms(): Plugin {
 			// formats.ts imports the repo's Prettier config, outside the folders SvelteKit lets
 			// Vite serve.
 			server: {
-				fs: { allow: [fileURLToPath(new URL('../../../prettier.config.js', import.meta.url))] }
+				fs: { allow: [fileURLToPath(new URL('../../../prettier.config.js', import.meta.url))] },
+				// A demo's sandboxed frame has an opaque origin, which sends `Origin: null`, and
+				// module scripts need CORS: allowed here like Vite's default (localhost) plus null.
+				cors: {
+					origin: [/^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/, 'null']
+				}
 			},
 			optimizeDeps: {
 				// Pre-bundled when the dev server starts. Otherwise Vite finds them the first time
@@ -52,10 +62,15 @@ export function cms(): Plugin {
 			// A function before Vite's own middleware: /admin is no file and no route.
 			server.middlewares.use((req, res, next) => {
 				const path = (req.url ?? '').split('?')[0];
-				if (!['/admin', '/admin/', '/admin/index.html'].includes(path)) return next();
+				const html = ['/admin', '/admin/', '/admin/index.html'].includes(path)
+					? page
+					: path === '/admin/demo.html'
+						? demo
+						: undefined;
+				if (!html) return next();
 				res.setHeader('Content-Type', 'text/html; charset=utf-8');
 				res.setHeader('Cache-Control', 'no-store');
-				res.end(page);
+				res.end(html);
 			});
 		}
 	};

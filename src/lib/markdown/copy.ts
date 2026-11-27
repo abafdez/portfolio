@@ -16,9 +16,9 @@ export const copyCode: Attachment<HTMLElement> = (container) => {
 		const figure = button?.closest('figure');
 		const status = figure?.querySelector('[role="status"]');
 		if (!button || !figure || !status) return;
-		// textContent is the code as written: the line numbers are CSS (::before), so
+		// The block's own code (a demo above it may hold code too). textContent is the code as written: the line numbers are CSS (::before), so
 		// they're not in it, and a wrapped line is still one line.
-		const code = figure.querySelector('code')?.textContent ?? '';
+		const code = figure.querySelector(':scope > pre code')?.textContent ?? '';
 		try {
 			await navigator.clipboard.writeText(code);
 			status.textContent = button.dataset.copied ?? '';

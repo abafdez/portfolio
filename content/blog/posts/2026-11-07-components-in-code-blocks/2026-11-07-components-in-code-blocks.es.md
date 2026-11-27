@@ -18,12 +18,7 @@ caption: Al escribir en el cuadro de búsqueda, la lista se filtra mientras tecl
 
 Y en este sitio sale así:
 
-```video
-src: ./awesome-filter.webm
-width: 960
-height: 540
-caption: Al escribir en el cuadro de búsqueda, la lista se filtra mientras tecleas.
-```
+::video[Al escribir en el cuadro de búsqueda, la lista se filtra mientras tecleas.](src=./awesome-filter.webm, width=960, height=540)
 
 En Obsidian o en GitHub es un bloque de código con YAML: cinco líneas que cualquiera puede leer.
 
@@ -64,6 +59,8 @@ Los archivos con `./` pasan por el mismo paso que las imágenes: cada uno se con
 **Actualización (2026-11-11):** mdsvex ya no está. Los bloques, sus campos y sus comprobaciones son los mismos (`blocks.ts`), pero ahora los dibujan componentes de Svelte de verdad: un renderer `code` de svelte-markdown pasa ` ```video ` y ` ```yt ` a sus componentes, y los archivos que nombran se cargan antes de renderizar el post. La vista previa del CMS monta los mismos componentes.
 
 **Actualización (2026-11-26):** mdsvex ha vuelto (1.0). Los bloques son ahora un paquete de plugin: reclama los bloques ` ```video ` y ` ```yt ` (el resaltador nunca los ve), los comprueba con el mismo `blocks.ts` y convierte cada uno en su componente. Un plugin no puede añadir imports, así que los archivos que nombra un bloque van a los datos de plugin del artículo, y la página los carga antes de mostrarse.
+
+**Actualización (2026-11-27):** los bloques ahora son directivas, la sintaxis que mdsvex da a los componentes: `::video[Al escribir en el cuadro de búsqueda, la lista se filtra mientras tecleas.](src=./awesome-filter.webm, width=960, height=540)`. El pie de foto es el texto entre corchetes, el resto son argumentos, y las mismas comprobaciones hacen fallar la construcción. En GitHub y en Obsidian es una línea de texto en lugar de un bloque de YAML, pero ahora todos los componentes de los artículos comparten una sintaxis. El vídeo de arriba sale de esa línea.
 
 ## Enlaces
 
