@@ -16,7 +16,7 @@ El panel es un popover, así que Escape y un clic fuera lo cierran, y el foco vu
 
 ## Cinco estilos
 
-![El estilo terminal: una ventana con tres luces, la foto y líneas escritas: whoami, cat hire.txt, contact --linkedin](./terminal.png 'La terminal se escribe sola mientras la foto se enfoca')
+![El estilo terminal: una ventana con tres luces, mi retrato y líneas escritas: whoami, cat hire.txt, contact --linkedin](./terminal.png 'La terminal se escribe sola mientras la foto se enfoca')
 
 1. **Terminal**: `$ whoami`, `$ cat hire.txt` y `$ contact --linkedin` se escriben solos en unos dos segundos, mientras la foto se enfoca desde píxeles grandes. Los píxeles son un canvas: la foto dibujada a 6, 12, 24 y 48 píxeles de ancho, cada vez ampliada sin suavizado. Los lectores de pantalla reciben el texto terminado de golpe; la escritura queda oculta para ellos.
 2. **Foco**: la foto dentro de un anillo que gira, una cuadrícula iluminada bajo el puntero y números que cuentan hacia arriba.
