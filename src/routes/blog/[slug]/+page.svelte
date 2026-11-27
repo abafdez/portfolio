@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Seo from '#lib/components/Seo.svelte';
 	import ArticleHeader from '#lib/components/ArticleHeader.svelte';
+	import { updatedDay } from '#lib/content-dates.ts';
 	import { blogTag } from '#lib/links.ts';
 	import { getLocale, languageTags, m } from '#lib/i18n/index.ts';
 	import { copyCode } from '#lib/markdown/copy.ts';
@@ -22,6 +23,7 @@
 	section={m.navBlog()}
 	description={post.description}
 	published={post.date}
+	modified={updatedDay(post)}
 	translated={data.translated}
 	image={cover && post.cover ? { src: cover.preview, alt: post.cover } : undefined}
 />

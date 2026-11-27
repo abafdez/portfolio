@@ -56,6 +56,8 @@ export const en = {
 	// Cards, posts and code blocks.
 	tagsLabel: () => 'Tags',
 	minutesRead: ({ minutes }: { minutes: number }) => `${minutes} min read`,
+	// After a post's date, when it was last changed (ArticleHeader.svelte).
+	updatedOn: () => 'updated',
 	statusDraft: () => 'draft',
 	statusPublished: () => 'published',
 	// TranslationStatus: text shown in another language than the page's (only ever

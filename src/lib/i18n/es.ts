@@ -50,6 +50,7 @@ export const es = {
 
 	tagsLabel: () => 'Etiquetas',
 	minutesRead: ({ minutes }: { minutes: number }) => `${minutes} min de lectura`,
+	updatedOn: () => 'actualizado',
 	statusDraft: () => 'borrador',
 	statusPublished: () => 'publicado',
 	inEnglish: () => 'en inglés',

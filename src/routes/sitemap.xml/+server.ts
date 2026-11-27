@@ -1,7 +1,7 @@
 import { resolve } from '$app/paths';
 import { baseLocale, languageTags, locales, localizePath } from '#lib/i18n/locales.ts';
 import { allLists } from '#lib/awesome/awesome.ts';
-import { allLog, allPosts, isTranslated, logTags, postTags } from '#lib/content.ts';
+import { allLog, allPosts, isTranslated, lastChanged, logTags, postTags } from '#lib/content.ts';
 import { sections } from '#lib/links.ts';
 import { projects } from '#lib/projects/projects.ts';
 import { tools } from '#lib/projects/toolbox/tools.ts';
@@ -38,13 +38,13 @@ const pages: Page[] = [
 	})),
 	...allPosts.map((post) => ({
 		path: resolve('/blog/[slug]', { slug: post.slug }),
-		updated: post.date,
+		updated: lastChanged(post),
 		translated: isTranslated(post)
 	})),
 	...postTags.map((tag) => ({ path: resolve('/blog/tags/[tag]', { tag }), translated: true })),
 	...allLog.map((entry) => ({
 		path: resolve('/devlog/[slug]', { slug: entry.slug }),
-		updated: entry.date,
+		updated: lastChanged(entry),
 		translated: isTranslated(entry)
 	})),
 	...logTags.map((tag) => ({ path: resolve('/devlog/tags/[tag]', { tag }), translated: true }))
