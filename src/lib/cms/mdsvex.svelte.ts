@@ -14,6 +14,10 @@ import { create_highlight, load_default_languages, type HighlightConfig } from '
 import * as components from '#lib/markdown/components.ts';
 import { compileOptions } from '#lib/markdown/options.ts';
 import * as blockComponents from '#lib/markdown/blocks/index.ts';
+import * as directiveComponents from '#lib/markdown/directives/index.ts';
+import * as stepsComponents from '@mdsvex/plugin-steps/directives/unstyled';
+import * as tabsComponents from '@mdsvex/plugin-tabs/directives/unstyled';
+import * as tocComponents from '@mdsvex/plugin-toc/directives';
 import { markdownContext } from '#lib/markdown/context.ts';
 import type { Media } from '#lib/markdown/media.ts';
 import type { Locale } from '#lib/i18n/locales.ts';
@@ -29,8 +33,13 @@ const modules: Record<string, Record<string, unknown>> = {
 	svelte: svelteApi,
 	'svelte/internal/disclose-version': {},
 	'preview:components': replacements,
-	// The blocks plugin's components (markdown/blocks-plugin.ts), under the module name it gives.
-	'/src/lib/markdown/blocks/index.ts': blockComponents
+	// Each plugin's components, under the module name the plugin gives (markdown/options.ts):
+	// our blocks and directives, and mdsvex's steps, tabs and toc.
+	'/src/lib/markdown/blocks/index.ts': blockComponents,
+	'/src/lib/markdown/directives/index.ts': directiveComponents,
+	'@mdsvex/plugin-steps/directives/unstyled': stepsComponents,
+	'@mdsvex/plugin-tabs/directives/unstyled': tabsComponents,
+	'@mdsvex/plugin-toc/directives': tocComponents
 };
 
 declare global {
@@ -68,11 +77,16 @@ function resolveImports(code: string) {
 	let rest = code;
 	let head = '';
 	for (let match = header.exec(rest); match; match = header.exec(rest)) {
-		head += match[0].replace(/(['"])([^'"]+)\1/, (_, quote: string, name: string) => {
-			const url = moduleUrls()[name];
-			if (!url) throw new Error(`The preview can't import ${name}`);
-			return quote + url + quote;
-		});
+		// The module name is the string after `from` (or a bare `import '…'`), the last one in
+		// the statement: an export name can be a string too, as in { 'compare-side' as C }.
+		head += match[0].replace(
+			/(from|import)(\s*)(['"])([^'"]+)\3(\s*;)$/,
+			(_, keyword: string, space: string, quote: string, name: string, end: string) => {
+				const url = moduleUrls()[name];
+				if (!url) throw new Error(`The preview can't import ${name}`);
+				return keyword + space + quote + url + quote + end;
+			}
+		);
 		rest = rest.slice(match[0].length);
 	}
 	return head + rest;
