@@ -41,7 +41,7 @@
 		"@sveltia/cms": "0.268.0",
 		"@types/node": "^26.6.6",
 		"lucide": "1.66.0",
-		"mdsvex": "1.0.1",
+		"mdsvex": "1.1.0",
 		"open-props": "^1.7.23",
 		"pagefind": "1.6.0",
 		"postcss-jit-props": "^1.0.16",

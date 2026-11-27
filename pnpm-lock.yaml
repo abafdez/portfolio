@@ -121,7 +121,7 @@ importers:
         version: 5.3.0
       '@mdsvex/plugin-external-links':
         specifier: 0.1.1
-        version: 0.1.1(mdsvex@1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))
+        version: 0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -147,8 +147,8 @@ importers:
         specifier: 1.66.0
         version: 1.66.0
       mdsvex:
-        specifier: 1.0.1
-        version: 1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
+        specifier: 1.1.0
+        version: 1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
       node:
         specifier: runtime:^22.18.0
         version: runtime:22.23.5
@@ -393,16 +393,16 @@ packages:
     peerDependencies:
       svelte: ^5
 
-  '@mdsvex/parse@1.0.0':
-    resolution: {integrity: sha512-Sry8euoZgvG+GSFsuvI1KhZXXIePe+WQwddXcQEkd4UKBvjx5KCtOHMam9Cwd+li3URRKs4LjvauCaXwz706MA==}
+  '@mdsvex/parse@1.1.0':
+    resolution: {integrity: sha512-WDzylNPcaGh5rNiSlwZdkVPLFEbmSXIhzZ1t58qY984jywM/Wy60UC0EOC7znyEBjErPV/aX5aEvKGXZAK8N/A==}
 
   '@mdsvex/plugin-external-links@0.1.1':
     resolution: {integrity: sha512-cShZSPS+9mLuHjbSNYyhTjU01vtCcze/ivIQkrBCyKVmgTGswBw6uJg9f/6+AsKbdZQOpbrhShT/N0l1bHkiMQ==}
     peerDependencies:
       mdsvex: ^1.0.0-next.2
 
-  '@mdsvex/render@1.0.0':
-    resolution: {integrity: sha512-lCAWapnbu5jUEsRjxv/vq7Y7MMri12WoNYyh54uLaiyIe1Zv3+kgbyXqSW1Sl35uQrYRORqUvcTu+4Wab59hiQ==}
+  '@mdsvex/render@1.1.0':
+    resolution: {integrity: sha512-h5pQ0LVa8DmJIsALzhz/VZojnAw9Hu9yjQihpN5gHQH785ypN8ZsJJM7fKeWdI8jdgh+nndPpxVA10Pu5pH3EA==}
     peerDependencies:
       svelte: ^5.7.0
     peerDependenciesMeta:
@@ -728,95 +728,92 @@ packages:
       '@types/react':
         optional: true
 
-  '@twinkleplop/annotation@0.1.9':
-    resolution: {integrity: sha512-qrk24NkTGsO5fwXKd6AM+7FCT21l0wPUa9R03iayDH6MF/csYpjaSz1SV/kLv4vqqbgWKJ3roUlJLcKEsoOgLA==}
+  '@twinkleplop/annotation@0.1.10':
+    resolution: {integrity: sha512-oJh5i/DGiio3t98e6059yuRom14XzdA8nYzFjvicWf8xCrGrq6Rs49ABg2UGF9oz+3c7gd5bQtnalKiKeZfLpQ==}
 
-  '@twinkleplop/bash@0.1.9':
-    resolution: {integrity: sha512-V39+90Z98j+JW56k3+YyktrgyS7ASIbKUifBlKUNJS2HRUXIXdGchgwU5BUW7yRspZCcywPBd38BITwY4eumtw==}
+  '@twinkleplop/bash@0.1.10':
+    resolution: {integrity: sha512-l07rw+wyWy91QpPWiKY/80S/uEQH/GsglexfJv0rdYxA93OImWu/hnx/sIJkFyGN2arsz58GiAw7U40jxHm53Q==}
 
-  '@twinkleplop/c@0.2.3':
-    resolution: {integrity: sha512-RbfM46LOmrjGqRS2Sl7FvE+7kYuewPP+AU4JvEdxz2wvWWKQXsEHG0+BkGWTOYblckpC2li8fmeXbHwqwVHELA==}
+  '@twinkleplop/c@0.2.4':
+    resolution: {integrity: sha512-51vh5DzfaUnYuTNxvmPIq5NvDmFkY/BVcDyF33VsPNiwVegMs84Se/8gkhbt/olgbzz58SpJwH2k4deRNr4eDQ==}
 
-  '@twinkleplop/core@0.3.2':
-    resolution: {integrity: sha512-K4sKQFqTSpEjFz4eCmJGQA6ivtZgpBKdZzu3AzKIP5jwstJWHPI5eWtJgfv6vTsxDVHr3WY02gXnwL3+Rzndhg==}
+  '@twinkleplop/core@0.4.1':
+    resolution: {integrity: sha512-NOErtBHmvj2HHQZut5auMTiPRNQO5/FO6IUtVunoRiaPV6bSmO+DYUPwo2AJck6NnaH9/iteD9uk8Pt1Liso8w==}
 
-  '@twinkleplop/core@0.4.0':
-    resolution: {integrity: sha512-wEalMFJK226IoHJ7Zuyrngjx5fTIwZw8mcRQ+xD/5b2f32L2OfEJHpMiHZaBHlUazbJyYzTLBbCKkRIaT+WNqw==}
+  '@twinkleplop/cpp@0.2.4':
+    resolution: {integrity: sha512-4Byuj/nzljBS3e5cTAnrBvMsnfoSy2OCFya2QzQo1FhBWpI6nyO79/1dCjdo9PVXfu+vTjtvepz4f3alSyB+FA==}
 
-  '@twinkleplop/cpp@0.2.3':
-    resolution: {integrity: sha512-J/coJAopb6C3JYTqPFVRtAhbdiXYrN8GxBjLDXWOIEISPwWKdRHa4R9BaC/bNQJyxpi6hkt7wiORk7cv1laCzw==}
+  '@twinkleplop/css@0.1.10':
+    resolution: {integrity: sha512-WKJ6jWbjoN6j9+ZMYR1HipkoQdxKf822NBeZIs8FlihN7moAo21oa80hW0MK0RB2/MuBs7AH40eG90BCVo7OzQ==}
 
-  '@twinkleplop/css@0.1.9':
-    resolution: {integrity: sha512-HUgei36rbYzSIs0m/UscoeM2UXYcqPOALzupwPGWULaVMa/l0ZZG1G1W6OH70e1k7NNJbKLvDWhyY+VobNlM4A==}
+  '@twinkleplop/diff@0.1.10':
+    resolution: {integrity: sha512-3QfEps3yWSHk+BkwWRSXsVjH6Anu8zh9+TCIw5z/3wU1v0azVbBxjcTTVlUjLsWPatqDXlJ7m3xYM43bweuGqg==}
 
-  '@twinkleplop/diff@0.1.9':
-    resolution: {integrity: sha512-H4OVXond4SKW6lkgKq4MX923NrZ8TZDuRndtz3WrZQmkDxeS9j6KRMpCAdMBVtO9BajU0cT/7GSqobKe5JYRcA==}
+  '@twinkleplop/dockerfile@0.2.4':
+    resolution: {integrity: sha512-Ub+XeqSJHKe1C3dgfaCMuI5C4Pz7d8r1h1e3XNq9a7xEZsZWDfJ27MkefHU7QivAUXPywEkcJk5dk9nFv8+8DQ==}
 
-  '@twinkleplop/dockerfile@0.2.3':
-    resolution: {integrity: sha512-KJIaNGDNwwKLi9JmN4KKLbZz8RvJ9gnmpS9LHJYlNLkrri4sGPxF1cvXbXmoNE2BBdA+xXPfV8YFqK/cFuNifQ==}
+  '@twinkleplop/dotenv@0.1.10':
+    resolution: {integrity: sha512-mqYUtuMlBtoPfrtMH2xy8FFQkEmqur1olSWFQitt919QWBBiIPu+xlA0vY2S70yFTWzyRmsN27LOddugNiWU6A==}
 
-  '@twinkleplop/dotenv@0.1.9':
-    resolution: {integrity: sha512-ubpMo/zhL6ohArE/zKpnmRv+DwHJZnSaU2n769OdMECAuPESosWQbkIKNSrkaoixD8mmIuyGiQBTN8hnHF2lyg==}
+  '@twinkleplop/go@0.1.10':
+    resolution: {integrity: sha512-6bI3IMgUiYqxq1KDCTGvt2sWKLFUOi2M1pvkdc2nA99PHM+n30Eei6GG2EjXSMLxgI2xJfMXkjElnEsIxyI/pA==}
 
-  '@twinkleplop/go@0.1.9':
-    resolution: {integrity: sha512-pU9Nn1/l2WQ7p19G6CRQBDL9frvHzDUjTsOYuxr8Rq921/aLJrzFFqa6AwetxVxbcILXiLToV+XLvGK3AiNfEQ==}
+  '@twinkleplop/graphql@0.2.4':
+    resolution: {integrity: sha512-KjamCthjFxBdPTeAhlVUcOO71QFLwLQuHa7aCI8b8rZk2lzepqQgdHWwplRmk0pRnqiKcwfYzHcaJO17UU/gmA==}
 
-  '@twinkleplop/graphql@0.2.3':
-    resolution: {integrity: sha512-woXm8LR/42m7iS3AEB9KsUNR0KmI/HUTVOiGN0H8KR1smsDaoL6WpTUraCLLZsyXkT/+3EuDJGCToajlLCI/+A==}
+  '@twinkleplop/html@0.1.10':
+    resolution: {integrity: sha512-lJcIkpptTyXZTgGBQG4zIb367RikwfZ6jboA0/TiJcDn8htMpS0AyvUbe7c4j4p2h8/jdrrUBMseHoyQx+EPsA==}
 
-  '@twinkleplop/html@0.1.9':
-    resolution: {integrity: sha512-036RLpx7po9o84m0L2Nl80Z3bcVDND8Pvu0eqsnqUXHNvgJ5IhN6QGB/qmoXVeYQMh1OSWnAKZHOHAVgIUmsLw==}
+  '@twinkleplop/http@0.1.10':
+    resolution: {integrity: sha512-kMM9+XNnwfDzpoYIo/Z/sFgbiR2sxtEboByhmCZkf80xt3JZC6vZ2D2TBV7Bp4qKFoIQBntZ3CQCysUkWxKETg==}
 
-  '@twinkleplop/http@0.1.9':
-    resolution: {integrity: sha512-1jxpk9c8jDYVSXeR9dHV6hNkBZ4X6Cw0Rw8keprnBKKa4QMYOvNVgemSEbvpf6lgjpommHA41md4C3xVs15DhQ==}
+  '@twinkleplop/ini@0.1.10':
+    resolution: {integrity: sha512-joyM8iXkem5mNwxNzLWk28dzv2n37+Rxuday4/3RR9eEzgh4/N3nPYU52iIW2xFgmy4y9cUnooFDRXSqxWAUnQ==}
 
-  '@twinkleplop/ini@0.1.9':
-    resolution: {integrity: sha512-a2dyonyrdZ3mtmwDl2oO3I6RtAiqRKgKqnUJHFIZCJniGcT96gn6ZZdyzNxiLmpVPyMHzjXPAJr44KFsESWNHA==}
+  '@twinkleplop/javascript@0.1.10':
+    resolution: {integrity: sha512-H9z7NuWdurIlWi2tIwfYq2WIBeHMx6fGdOCx3NRHCXJm/XltZJfb6t5bg+ZpaoqzAKSR0SSG9MOKwP8Prg7P8Q==}
 
-  '@twinkleplop/javascript@0.1.9':
-    resolution: {integrity: sha512-74oD1xa2oZcImiPPgCpByjDJg13/3xQvsmnnew8ik64s3QzgKTOwUDwQcwzTu5Onw18Wa8wGkxt66MZCkIH1Dw==}
+  '@twinkleplop/json@0.1.10':
+    resolution: {integrity: sha512-Ho7SPOy4JA6upxl5+I6Z1HD3czQXVLgO0MjdDohcC3BF/lvCtBFdlohqOLVG4VH57jVTO8Ncv/LqN+sg9nQOuA==}
 
-  '@twinkleplop/json@0.1.9':
-    resolution: {integrity: sha512-0CtoTvevrEkPXWi5DJiQ/xsXYxZvrCcZIFxI5RaWln0zF9jrg6ie/7kXgL9IS4n9RrlHSl/fQyaB/o7pJ9Dt7w==}
+  '@twinkleplop/jsonc@0.1.7':
+    resolution: {integrity: sha512-zZZ5Emvzm+JRNPbj2BVRzEaDc+AHv/0ksRme+GY6bSjEKU6rogjybYuSBJXUmW9mblMF6EgVsHJxms8HqSR1NA==}
 
-  '@twinkleplop/jsonc@0.1.6':
-    resolution: {integrity: sha512-2H6zBXSD0ymxYWpGny9Ug5AqTT85OTCKaDugfYW5SZqVfQwjOGIHvBsojJ9WUosO1EV9EZSHCTfpJ2K73vi3Yg==}
+  '@twinkleplop/markdown-core@0.3.1':
+    resolution: {integrity: sha512-xuMZCmx+HC5/yKKORt15YHNZChYhrgi1vSlui8x8JCUj86mq6p9amVGERP43ezDdhBUm9be2MzorD5i3GyyEMg==}
 
-  '@twinkleplop/markdown-core@0.2.2':
-    resolution: {integrity: sha512-PCQQFHGA4wRg3X4XGfiIv5z4ZePza8FHJEPWCiL19qkWnWHqR0JiDUnVmBIyc/YbxpCjhJjFe4r1JohWkJBZTQ==}
+  '@twinkleplop/markdown@0.2.4':
+    resolution: {integrity: sha512-INVYyFG6p0rT0MwqixJl/tKzAs1DdDaU2cJER9y4kUCCw8ucdleUBoS0dSjffn5cweoOBZkqEqKQ0yD+gYnpsA==}
 
-  '@twinkleplop/markdown@0.2.3':
-    resolution: {integrity: sha512-YOfOhzZKX1Q592HkhC9YBrepkMx4axG/GSquOWx2XGF0rIsOVDY2TJE+8JD5rck5Or5s1IWaCSf7Do6JUGDuBw==}
+  '@twinkleplop/powershell@0.2.4':
+    resolution: {integrity: sha512-akjpP5IIbaQHWkmVRs9lQfaIKXNBcwHi5BCBJjsyDGQiCdRB8db0vadZrJKMjUvv5Ck1Et5r1tyn5/QyjqCRhg==}
 
-  '@twinkleplop/powershell@0.2.3':
-    resolution: {integrity: sha512-WfyuJi877hq3+moKJqq+18j3OD05+loLIurg8Z1kDFDoLvPdXYhy0kjLuzs7keb7I2N/nJle0jBhQFMA74Rfrg==}
+  '@twinkleplop/python@0.1.10':
+    resolution: {integrity: sha512-LMn9Ihp2mO9hxYgbaDDOcbsf0P5QjzZq9SJOrMv+Rvzz1eUWm5vJu77XFhBXk7/idOUuJPQuv16jsmG4/V3Oxg==}
 
-  '@twinkleplop/python@0.1.9':
-    resolution: {integrity: sha512-htAAVDB1uVVWeg7WkdbNGBjzA7dWTGczrfg0pIV+s8dJBJnk+k0QhKxZS3Us44bVPVmVC57k9XgDZ1W6rOIdvA==}
+  '@twinkleplop/rust@0.1.10':
+    resolution: {integrity: sha512-kKj3FBJXQPxI22LIe1RGSoeLzVwd1z6UBUBaj2DZSp5W/oDS9av5FEGIETkvQSQYRJFSmCOa9BuSvht60FHeAA==}
 
-  '@twinkleplop/rust@0.1.9':
-    resolution: {integrity: sha512-wQgzq9Wqz5OxwgthsJLNib/g5stbqnQYn458RK5SItD3F4CUXSlgZHv5x93f6PpypKC5rjGiBhCV5lrEAtn+kQ==}
+  '@twinkleplop/shellsession@0.1.10':
+    resolution: {integrity: sha512-g6zJmrGY91YWF1Pp+klv7jXkLUJ2NSWQJANST9bPDyOdYQoNUWhYsQlDnyzhVgrGtUqjlCSnlI8U+PWPr9ERsw==}
 
-  '@twinkleplop/shellsession@0.1.9':
-    resolution: {integrity: sha512-G9Hk3fb5T4uh1LGcYmftzVnEAO+wCr5DyzKmhNu18c1zezSka8cYyy4eIdN3LqjT50aNJexsQ9dqC2aDfIH+7Q==}
+  '@twinkleplop/sql@0.1.10':
+    resolution: {integrity: sha512-AJs+Y42wB/8bTlEw7lGleqGLrQyG+zyWfuxkIBCn6+xxyvPH5nZAzhRbBFj1VmfKaHOilPhGw+KArnaSkwQeeg==}
 
-  '@twinkleplop/sql@0.1.9':
-    resolution: {integrity: sha512-ezPaFyPtmmJZEynKJGx2XpTvCUSw3qx8u5IidBTNL0bI3a1eUMr59Llc68uTMmmWzRsj9yG6YMtHW/IfA8TCQg==}
+  '@twinkleplop/svelte@0.1.10':
+    resolution: {integrity: sha512-b8Ecob+Wj3G//wcSHQGr1yNCchIO5bXKjv0uUBsKZaFQ37cXXDrg1GGaHoaK58jP/DteQa/CULEjrLkqD4uIHQ==}
 
-  '@twinkleplop/svelte@0.1.9':
-    resolution: {integrity: sha512-A3iYGH4jADtcqafY+TBeFVUoqWTluqaqK1zmBO6sE14HPi0Zv9BZgfD1qyPJItyrCHkE470d+T+3h5LHpttRuQ==}
+  '@twinkleplop/toml@0.1.10':
+    resolution: {integrity: sha512-2CCsbVgChGRngJwPimiTRq/Y5oRAr42umCbfJr5w7TKXobXVYHEjSXp2y95qOr4YzQFNJjnFTK3aklLD0dZp2w==}
 
-  '@twinkleplop/toml@0.1.9':
-    resolution: {integrity: sha512-DnCHSAknARo7jlXQKF2XoJ0SGVyMLAO0nRkOUHZ0OwrE2jnBdsfwxvavLW1nOzTDKP5Q3+qeN3FxaCmfaFv3/w==}
+  '@twinkleplop/tsx@0.1.10':
+    resolution: {integrity: sha512-EDAN/RRsYFtas6fD7MwZujpIzPWlkb4bEnSUsMraxysqgu61WE3gLKj/L+3NC/fWi2QjHFQa7b9KNNo5akY+cw==}
 
-  '@twinkleplop/tsx@0.1.9':
-    resolution: {integrity: sha512-LL70OujWaBi+f46gnxszTl2Q0qg2q2ySiQ6XL1cuOVRvqjX0VDE6OAaEve/XISb95hH9e05Py/TCOy+MW16V+Q==}
+  '@twinkleplop/typescript@0.1.10':
+    resolution: {integrity: sha512-B8nt+6mO2jOvoIquYb3QJpEnJIbDg4hQx3vNlD9HriVmQ7Re6qHoBx2Cn+OrRuGG3VMJlg73beYhfrjQKy+H7Q==}
 
-  '@twinkleplop/typescript@0.1.9':
-    resolution: {integrity: sha512-nHxilHpCgrlNIA6DDDhRGFr6TnvBNEMcHIvw06y0P7AG0lvdCvSCD0q4yPruqpB9G4TJ67UF2yeASimi+76Tig==}
-
-  '@twinkleplop/yaml@0.1.9':
-    resolution: {integrity: sha512-cRVZfMvIRky/pc68WMCQ42jp5+LYdyHfwu2wBKAgYdYSR0Cx/lRVfm09zOiU4H9uwEC/IAvaYa8RdozXeE/oMw==}
+  '@twinkleplop/yaml@0.1.10':
+    resolution: {integrity: sha512-5XbRZa9A+CDsm72e8hQRgocByIviVLzYCw+FVj028UPeOaAXUDJbDNyS/iMPnYVVcA1XgwVX0vL8h/BDRUFvEw==}
 
   '@tybys/wasm-util@0.10.5':
     resolution: {integrity: sha512-dOGOPxlaNV+G046mZzN+9C0dAcQZeSKcXiVaM0TYy/LM4ttTmgSBDxYfovcYI8Em3+eAbiAYpvWLOv8+ZVRJKA==}
@@ -1095,8 +1092,8 @@ packages:
   mdn-data@2.27.1:
     resolution: {integrity: sha512-9Yubnt3e8A0OKwxYSXyhLymGW4sCufcLG6VdiDdUGVkPhpqLxlvP5vl1983gQjJl3tqbrM731mjaZaP68AgosQ==}
 
-  mdsvex@1.0.1:
-    resolution: {integrity: sha512-A+27ORoQLmJ2YtxM7hrlMW4LFfPEwzbf/yq30C8EKE3sEE86TKD9FvFM9pRjWMRs49jEDEwoKFWtT9JBxRoM3w==}
+  mdsvex@1.1.0:
+    resolution: {integrity: sha512-RoKavy9WViuO5JaxlNWeeLsdMBgDQ7AFKLLmA0UoWLLkKjTi32C8bBwXlMPBoi8eT43Hss5V/ZA3txZMCULA3A==}
     peerDependencies:
       '@twinkleplop/twoslash': ^0.3.1
       '@twinkleplop/twoslash-svelte': ^0.3.1
@@ -1713,15 +1710,15 @@ snapshots:
     dependencies:
       svelte: 5.57.3
 
-  '@mdsvex/parse@1.0.0': {}
+  '@mdsvex/parse@1.1.0': {}
 
-  '@mdsvex/plugin-external-links@0.1.1(mdsvex@1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))':
+  '@mdsvex/plugin-external-links@0.1.1(mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)))':
     dependencies:
-      mdsvex: 1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
+      mdsvex: 1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1))
 
-  '@mdsvex/render@1.0.0(svelte@5.57.3)':
+  '@mdsvex/render@1.1.0(svelte@5.57.3)':
     dependencies:
-      '@mdsvex/parse': 1.0.0
+      '@mdsvex/parse': 1.1.0
     optionalDependencies:
       svelte: 5.57.3
 
@@ -1952,136 +1949,134 @@ snapshots:
       terra-draw: 1.40.0
       turndown: 7.2.5
 
-  '@twinkleplop/annotation@0.1.9':
+  '@twinkleplop/annotation@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/bash@0.1.9':
+  '@twinkleplop/bash@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/c@0.2.3':
+  '@twinkleplop/c@0.2.4':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/core@0.3.2': {}
+  '@twinkleplop/core@0.4.1': {}
 
-  '@twinkleplop/core@0.4.0': {}
-
-  '@twinkleplop/cpp@0.2.3':
+  '@twinkleplop/cpp@0.2.4':
     dependencies:
-      '@twinkleplop/c': 0.2.3
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/c': 0.2.4
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/css@0.1.9':
+  '@twinkleplop/css@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/diff@0.1.9':
+  '@twinkleplop/diff@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/dockerfile@0.2.3':
+  '@twinkleplop/dockerfile@0.2.4':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/dotenv@0.1.9':
+  '@twinkleplop/dotenv@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/go@0.1.9':
+  '@twinkleplop/go@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/graphql@0.2.3':
+  '@twinkleplop/graphql@0.2.4':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/html@0.1.9':
+  '@twinkleplop/html@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
-      '@twinkleplop/css': 0.1.9
-      '@twinkleplop/javascript': 0.1.9
+      '@twinkleplop/core': 0.4.1
+      '@twinkleplop/css': 0.1.10
+      '@twinkleplop/javascript': 0.1.10
 
-  '@twinkleplop/http@0.1.9':
+  '@twinkleplop/http@0.1.10':
     dependencies:
-      '@twinkleplop/bash': 0.1.9
-      '@twinkleplop/core': 0.4.0
-      '@twinkleplop/html': 0.1.9
-      '@twinkleplop/javascript': 0.1.9
-      '@twinkleplop/json': 0.1.9
+      '@twinkleplop/bash': 0.1.10
+      '@twinkleplop/core': 0.4.1
+      '@twinkleplop/html': 0.1.10
+      '@twinkleplop/javascript': 0.1.10
+      '@twinkleplop/json': 0.1.10
 
-  '@twinkleplop/ini@0.1.9':
+  '@twinkleplop/ini@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/javascript@0.1.9':
+  '@twinkleplop/javascript@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
-      '@twinkleplop/css': 0.1.9
-      '@twinkleplop/html': 0.1.9
+      '@twinkleplop/core': 0.4.1
+      '@twinkleplop/css': 0.1.10
+      '@twinkleplop/html': 0.1.10
 
-  '@twinkleplop/json@0.1.9':
+  '@twinkleplop/json@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/jsonc@0.1.6':
+  '@twinkleplop/jsonc@0.1.7':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/markdown-core@0.2.2':
+  '@twinkleplop/markdown-core@0.3.1':
     dependencies:
-      '@twinkleplop/core': 0.3.2
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/markdown@0.2.3':
+  '@twinkleplop/markdown@0.2.4':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/powershell@0.2.3':
+  '@twinkleplop/powershell@0.2.4':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/python@0.1.9':
+  '@twinkleplop/python@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/rust@0.1.9':
+  '@twinkleplop/rust@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/shellsession@0.1.9':
+  '@twinkleplop/shellsession@0.1.10':
     dependencies:
-      '@twinkleplop/bash': 0.1.9
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/bash': 0.1.10
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/sql@0.1.9':
+  '@twinkleplop/sql@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/svelte@0.1.9':
+  '@twinkleplop/svelte@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
-      '@twinkleplop/css': 0.1.9
-      '@twinkleplop/javascript': 0.1.9
+      '@twinkleplop/core': 0.4.1
+      '@twinkleplop/css': 0.1.10
+      '@twinkleplop/javascript': 0.1.10
 
-  '@twinkleplop/toml@0.1.9':
+  '@twinkleplop/toml@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
-  '@twinkleplop/tsx@0.1.9':
+  '@twinkleplop/tsx@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
-      '@twinkleplop/javascript': 0.1.9
-      '@twinkleplop/typescript': 0.1.9
+      '@twinkleplop/core': 0.4.1
+      '@twinkleplop/javascript': 0.1.10
+      '@twinkleplop/typescript': 0.1.10
 
-  '@twinkleplop/typescript@0.1.9':
+  '@twinkleplop/typescript@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
-      '@twinkleplop/javascript': 0.1.9
+      '@twinkleplop/core': 0.4.1
+      '@twinkleplop/javascript': 0.1.10
 
-  '@twinkleplop/yaml@0.1.9':
+  '@twinkleplop/yaml@0.1.10':
     dependencies:
-      '@twinkleplop/core': 0.4.0
+      '@twinkleplop/core': 0.4.1
 
   '@tybys/wasm-util@0.10.5':
     dependencies:
@@ -2296,40 +2291,40 @@ snapshots:
 
   mdn-data@2.27.1: {}
 
-  mdsvex@1.0.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)):
+  mdsvex@1.1.0(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(yaml@2.9.1)):
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@mdsvex/parse': 1.0.0
-      '@mdsvex/render': 1.0.0(svelte@5.57.3)
-      '@twinkleplop/annotation': 0.1.9
-      '@twinkleplop/bash': 0.1.9
-      '@twinkleplop/c': 0.2.3
-      '@twinkleplop/core': 0.3.2
-      '@twinkleplop/cpp': 0.2.3
-      '@twinkleplop/css': 0.1.9
-      '@twinkleplop/diff': 0.1.9
-      '@twinkleplop/dockerfile': 0.2.3
-      '@twinkleplop/dotenv': 0.1.9
-      '@twinkleplop/go': 0.1.9
-      '@twinkleplop/graphql': 0.2.3
-      '@twinkleplop/html': 0.1.9
-      '@twinkleplop/http': 0.1.9
-      '@twinkleplop/ini': 0.1.9
-      '@twinkleplop/javascript': 0.1.9
-      '@twinkleplop/json': 0.1.9
-      '@twinkleplop/jsonc': 0.1.6
-      '@twinkleplop/markdown': 0.2.3
-      '@twinkleplop/markdown-core': 0.2.2
-      '@twinkleplop/powershell': 0.2.3
-      '@twinkleplop/python': 0.1.9
-      '@twinkleplop/rust': 0.1.9
-      '@twinkleplop/shellsession': 0.1.9
-      '@twinkleplop/sql': 0.1.9
-      '@twinkleplop/svelte': 0.1.9
-      '@twinkleplop/toml': 0.1.9
-      '@twinkleplop/tsx': 0.1.9
-      '@twinkleplop/typescript': 0.1.9
-      '@twinkleplop/yaml': 0.1.9
+      '@mdsvex/parse': 1.1.0
+      '@mdsvex/render': 1.1.0(svelte@5.57.3)
+      '@twinkleplop/annotation': 0.1.10
+      '@twinkleplop/bash': 0.1.10
+      '@twinkleplop/c': 0.2.4
+      '@twinkleplop/core': 0.4.1
+      '@twinkleplop/cpp': 0.2.4
+      '@twinkleplop/css': 0.1.10
+      '@twinkleplop/diff': 0.1.10
+      '@twinkleplop/dockerfile': 0.2.4
+      '@twinkleplop/dotenv': 0.1.10
+      '@twinkleplop/go': 0.1.10
+      '@twinkleplop/graphql': 0.2.4
+      '@twinkleplop/html': 0.1.10
+      '@twinkleplop/http': 0.1.10
+      '@twinkleplop/ini': 0.1.10
+      '@twinkleplop/javascript': 0.1.10
+      '@twinkleplop/json': 0.1.10
+      '@twinkleplop/jsonc': 0.1.7
+      '@twinkleplop/markdown': 0.2.4
+      '@twinkleplop/markdown-core': 0.3.1
+      '@twinkleplop/powershell': 0.2.4
+      '@twinkleplop/python': 0.1.10
+      '@twinkleplop/rust': 0.1.10
+      '@twinkleplop/shellsession': 0.1.10
+      '@twinkleplop/sql': 0.1.10
+      '@twinkleplop/svelte': 0.1.10
+      '@twinkleplop/toml': 0.1.10
+      '@twinkleplop/tsx': 0.1.10
+      '@twinkleplop/typescript': 0.1.10
+      '@twinkleplop/yaml': 0.1.10
       es-module-lexer: 1.7.0
       temml: 0.14.0
     optionalDependencies:
