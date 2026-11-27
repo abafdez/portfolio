@@ -42,3 +42,12 @@ All seven have an `.es.md` with `reviewed: false`, no cover, and screenshots Cla
 - `2026-11-19-a-timeline-that-fills-as-you-read`: the Devlog timeline's three scroll-driven animations, the `view(50% 50%)` inset trick, the wipe's clip room for the dot. Screenshot Claude took. No cover, `.es.md` with `reviewed: false`, no links to drafts.
 - `2026-11-19-an-icon-picker-inside-sveltia-cms`: a Svelte field inside Sveltia's React, the Lucide names from the package's files through a virtual module. Screenshot Claude took (Sveltia's test backend). No cover, `.es.md` with `reviewed: false`.
 - `2026-11-19-site-settings-without-a-yaml-parser`: `content/site.yaml` as a singleton, the `?data` Vite plugin, the build-time checks, empty fields left out. No cover, `.es.md` with `reviewed: false`. **Publish after a real save from the CMS has worked** (the singleton with our `list` format).
+
+## The mdsvex switch, 2026-11-26 (branch `feat/mdsvex`)
+
+All four only make sense once `feat/mdsvex` is merged. Each has an `.es.md` with `reviewed: false`, no cover and no screenshots.
+
+- `2026-11-26-code-colours-as-classes`: twinkleplop instead of Shiki: classes instead of inline styles, synchronous languages, per-language rules (`data-lang`), the character-by-character comparison (86.9 %). No links to drafts.
+- `2026-11-26-back-to-mdsvex-measured`: why mdsvex again, the block-by-block comparison (158 of 158 in each language), PFM's dialect, parse plugins, links per language at run time, block files through plugin data, the enhanced-img clash, directives next. Links to the published svelte-markdown post only.
+- `2026-11-26-a-cms-preview-that-compiles-svelte`: the preview compiling mdsvex + Svelte in the browser, blob modules, the private runtime import, 72 of 72 identical, why braces are banned. No links to drafts.
+- `2026-11-26-a-glob-is-a-list-you-ship`: Lighthouse after the switch, the two leaks (a glob of every body, the YAML parser) and the numbers before and after. Links to `back-to-mdsvex-measured`: **publish together** (or after it).

@@ -68,6 +68,8 @@ Obsidian has more types than GitHub (`info`, `bug`, `quote`…). On GitHub those
 
 **Update (2026-11-11):** mdsvex and its old parser are gone, and with them the rehype plugin and the text-node joining. marked keeps `[!tip]` and the title in one text token, so my own pass over its tokens turns the blockquote into a `callout` token, and two small Svelte components draw it. Same syntax, same HTML, same rules.
 
+**Update (2026-11-26):** mdsvex is back (1.0). A parse plugin finds `[!type]` on the blockquote's first line, removes it, and marks the blockquote with its type and title; my blockquote component then draws the callout with the same two components. Same syntax, same HTML, one difference: a custom title keeps only its text, so markup in it shows as plain text.
+
 ## Links
 
 - [GitHub's alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)

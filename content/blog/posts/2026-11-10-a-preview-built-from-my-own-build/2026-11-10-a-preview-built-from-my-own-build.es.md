@@ -6,6 +6,8 @@ reviewed: false
 
 Mis artículos son archivos markdown, y ahora los edito en [Sveltia CMS](https://sveltiacms.app/en/docs). Su panel de vista previa dibuja el markdown mientras escribes, que es lo que debe hacer una vista previa. Pero dibujaba algo que no era mi sitio: sin estilos, mis callouts como citas normales y mis componentes en bloques de código como YAML.
 
+**Actualización (2026-11-26):** esta vista previa cambió una vez más. mdsvex 1.0 vuelve a compilar los artículos, así que no hay componente que montar hasta que un artículo está compilado: la vista previa ahora lo compila en el navegador, con mdsvex y el compilador de Svelte, igual que la construcción, y monta el resultado. [Cómo, y lo que costó](/devlog/2026-11-26-a-cms-preview-that-compiles).
+
 Me costó cuatro intentos arreglarlo, y cada uno me enseñó algo sobre de dónde sale de verdad el aspecto de mi sitio.
 
 ## Lo que tiene que reproducir una vista previa

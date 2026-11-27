@@ -3,26 +3,23 @@
 	// - /about: a page on this site. Gets the base path and the page's language
 	//   (/portfolio/es/about). Only one slash: //host is another site. The prerender
 	//   crawler checks these: a link to a missing page fails the build.
-	// - https://…: rel="external".
+	// - https://…: rel="external", from the external-links plugin (options.ts).
 	// - ./other-post or #a-heading: relative, so they already work under any base.
-	// sitePath(), not route(): route() reads the page's language from SvelteKit's page
-	// state, and this renders outside a page (render.server.ts).
+	// At run time, not when mdsvex compiles: one compiled body serves every language.
 	import type { Snippet } from 'svelte';
-	import { sitePath, type Locale } from '#lib/i18n/locales.ts';
+	import { sitePath } from '#lib/i18n/locales.ts';
+	import { markdownLocale } from './context.ts';
 
 	interface Props {
 		href: string;
-		title?: string | null;
-		locale: Locale;
+		title?: string;
+		rel?: string;
 		children?: Snippet;
 	}
+	let { href, title, rel, children }: Props = $props();
 
-	let { href, title, locale, children }: Props = $props();
-
-	let external = $derived(/^https?:\/\//.test(href));
+	const locale = markdownLocale();
 	let url = $derived(/^\/(?!\/)/.test(href) ? sitePath(href, locale) : href);
 </script>
 
-<a href={url} title={title ?? undefined} rel={external ? 'external' : undefined}
-	>{@render children?.()}</a
->
+<a href={url} {title} {rel}>{@render children?.()}</a>

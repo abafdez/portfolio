@@ -9,22 +9,22 @@ A design token is a named value, here a CSS custom property, that components use
 1. **Primitives**: the actual colours, named after what they are. `--ink-0` … `--ink-8` (blue-greys, the dark theme), `--paper-0/1/3` and `--pencil-1/2` (the light theme's warm white and graphite), `--green-dark` / `--green-bright` (the brand: a deep ink green for light, the bright phosphor green for dark), a dark and a bright step per syntax hue (`--violet-*`, `--blue-*`, `--amber-*`, `--teal-*`, `--red-*`), and the window lights.
 2. **Semantic tokens**: what a colour is _for_. Components only use these.
 
-| Token                                                            | Used for                                                                        |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `--brand`                                                        | Links, headings, accents, the active nav item, the scrollbar thumb, focus rings |
-| `--text-1`, `--text-2`                                           | Body text, muted text                                                           |
-| `--surface-1`, `--surface-2`, `--surface-3`                      | The page (and sheets), inner panels and code, borders and hover fills           |
-| `--error`                                                        | Form errors                                                                     |
-| `--grid-line`, `--grid-line-major`, `--grid-mark`, `--grid-size` | The blueprint grid behind the page                                              |
-| `--grid-spot-line`, `--grid-spot-line-major`, `--grid-spot-glow` | The grid lit up around the pointer                                              |
-| `--code-*`                                                       | Every colour in a highlighted code block (Shiki maps to these)                  |
-| `--callout-note` … `--callout-caution`                           | The five callout types                                                          |
-| `--icon-tone`                                                    | The lightness skill logos are drawn at (each keeps its own hue)                 |
-| `--window-minimize`, `--window-zoom`                             | The yellow and green title-bar lights                                           |
-| `--mascot-*`                                                     | The mascot's colours                                                            |
-| `--shadow-float`                                                 | The floating header, popovers, the footer panel                                 |
-| `--content-width`, `--reading-width`, `--header-space`           | Layout widths and the sticky header's height                                    |
-| `--font-body`, `--font-code`, `--font-heading`, `--font-label`   | The four font roles                                                             |
+| Token                                                            | Used for                                                                                          |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `--brand`                                                        | Links, headings, accents, the active nav item, the scrollbar thumb, focus rings                   |
+| `--text-1`, `--text-2`                                           | Body text, muted text                                                                             |
+| `--surface-1`, `--surface-2`, `--surface-3`                      | The page (and sheets), inner panels and code, borders and hover fills                             |
+| `--error`                                                        | Form errors                                                                                       |
+| `--grid-line`, `--grid-line-major`, `--grid-mark`, `--grid-size` | The blueprint grid behind the page                                                                |
+| `--grid-spot-line`, `--grid-spot-line-major`, `--grid-spot-glow` | The grid lit up around the pointer                                                                |
+| `--code-*`                                                       | Every colour in a highlighted code block (`global.css` maps twinkleplop's token classes to these) |
+| `--callout-note` … `--callout-caution`                           | The five callout types                                                                            |
+| `--icon-tone`                                                    | The lightness skill logos are drawn at (each keeps its own hue)                                   |
+| `--window-minimize`, `--window-zoom`                             | The yellow and green title-bar lights                                                             |
+| `--mascot-*`                                                     | The mascot's colours                                                                              |
+| `--shadow-float`                                                 | The floating header, popovers, the footer panel                                                   |
+| `--content-width`, `--reading-width`, `--header-space`           | Layout widths and the sticky header's height                                                      |
+| `--font-body`, `--font-code`, `--font-heading`, `--font-label`   | The four font roles                                                                               |
 
 To restyle the site, change semantic tokens. To change one colour everywhere, change its primitive.
 

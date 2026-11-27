@@ -31,21 +31,21 @@ Sveltia keeps the token in the browser's storage for `abafdez.github.io`, which 
 - `content/awesome/<slug>.yaml`: the Awesome lists, a folder collection (New makes a list, its file name from the English title), every text `{ en, es }`, an icon picked with the icon picker.
 - `content/site.yaml`: the site settings (name, tagline, role, hiring texts, contact email, profile links), a singleton ("Site settings" in the sidebar), read by `src/lib/site.ts`.
 
-The site renders them with [svelte-markdown](https://markdown.svelte.page) (marked's tokens drawn by Svelte components), on the server: `src/lib/markdown/` has the parsing (`parse.ts`: callouts, figures, checks), the renderers, Shiki and enhanced-img. HTML written in a post fails the build: every element comes from a renderer.
+The site compiles them with [mdsvex](https://mdsvex.pngwn.at) 1.0: each `.md` file is a Svelte component. `src/lib/markdown/` has our parse plugins (`plugins.ts`: callouts, figures, checks) and the components that replace elements (headings, code blocks, tables, links). HTML or `{ }` written in a post fails the build.
 
 ## The files
 
-| File                                                     | What it does                                                                                             | Sveltia API                                                                      |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `plugin.ts`                                              | A Vite plugin, dev only (`apply: 'serve'`): serves `index.html` at `/admin`, and two dev-server settings | –                                                                                |
-| `main.ts`                                                | Imports Sveltia from npm, registers everything below, then starts it with `config.yml`                   | `CMS_MANUAL_INIT`, `init({ config })`                                            |
-| `config.yml`                                             | Collections, fields, i18n, media folders                                                                 | config                                                                           |
-| `formats.ts` + `../content-files.ts`                     | How files are read and written                                                                           | `registerCustomFormat()`                                                         |
-| `components.ts`                                          | The code-block components as editor components                                                           | `registerEditorComponent()`                                                      |
-| `preview.ts`, `markdown.svelte.ts`, `preview.css`        | The preview pane                                                                                         | `registerPreviewTemplate()`, `registerPreviewStyle()`, `registerEventListener()` |
-| `focal.svelte.ts`, `Focal.svelte`                        | A field for the cover's focal point                                                                      | `registerFieldType()`                                                            |
-| `icon.svelte.ts`, `IconPicker.svelte`, `lucide-names.ts` | The icon picker (field type `lucide`), and the Vite plugin that lists Lucide's icon names                | `registerFieldType()`                                                            |
-| `covers.ts`                                              | The cover next to each entry, as a URL (a Vite glob): for the focal field and the preview's header       | –                                                                                |
+| File                                                                                        | What it does                                                                                             | Sveltia API                                                                      |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `plugin.ts`                                                                                 | A Vite plugin, dev only (`apply: 'serve'`): serves `index.html` at `/admin`, and two dev-server settings | –                                                                                |
+| `main.ts`                                                                                   | Imports Sveltia from npm, registers everything below, then starts it with `config.yml`                   | `CMS_MANUAL_INIT`, `init({ config })`                                            |
+| `config.yml`                                                                                | Collections, fields, i18n, media folders                                                                 | config                                                                           |
+| `formats.ts` + `../content-files.ts`                                                        | How files are read and written                                                                           | `registerCustomFormat()`                                                         |
+| `components.ts`                                                                             | The code-block components as editor components                                                           | `registerEditorComponent()`                                                      |
+| `preview.ts`, `mdsvex.svelte.ts`, `svelte-runtime.ts`, `PreviewImage.svelte`, `preview.css` | The preview pane                                                                                         | `registerPreviewTemplate()`, `registerPreviewStyle()`, `registerEventListener()` |
+| `focal.svelte.ts`, `Focal.svelte`                                                           | A field for the cover's focal point                                                                      | `registerFieldType()`                                                            |
+| `icon.svelte.ts`, `IconPicker.svelte`, `lucide-names.ts`                                    | The icon picker (field type `lucide`), and the Vite plugin that lists Lucide's icon names                | `registerFieldType()`                                                            |
+| `covers.ts`                                                                                 | The cover next to each entry, as a URL (a Vite glob): for the focal field and the preview's header       | –                                                                                |
 
 ## Loading it
 
@@ -83,18 +83,19 @@ They're edited in a dialog (`mode: 'dialog'`). A ` ````md ` example containing a
 
 ## The preview
 
-The site's markdown depends on its own code: callouts, code-block components, Shiki with its own theme, covers. Sveltia's default preview doesn't know them, so posts and dev-log entries get a preview template that runs that code (dev and hosted):
+The site's markdown depends on its own code: callouts, code-block components, highlighting coloured by our tokens, covers. Sveltia's default preview doesn't know them, so posts and dev-log entries get a preview template that runs that code (dev and hosted):
 
 ```text
-entry data (every change) → preview.ts → parse() + Shiki's languages
-                          → <Markdown> mounted live (markdown.svelte.ts) + header, in the preview frame
-                                         ↑
-                    the site's own src/lib/markdown/: the same code that renders the page
+entry data (every change) → preview.ts → compilePost() (mdsvex.svelte.ts)
+     markdown → mdsvex compile() → Svelte source → svelte/compiler → a module → mount()
+                    ↑ the build's own options (src/lib/markdown/options.ts) and replacements
 ```
 
-- `preview.ts` parses the body with the site's `parse()` about 150 ms after the typing pauses, loads the code's languages, and hands the tokens to `markdown.svelte.ts`. That mounts the site's own `Markdown.svelte` (svelte-markdown and our renderers) into the frame from a React component, with the props behind getters over a `$state.raw` value. The page and the preview are drawn by the same components: in the build they're rendered to HTML on the server, here they run in the browser.
-- `parse()` throws everything the build would stop on (HTML in the text, an unknown callout, a block with a wrong field, an image without alt text or from another site): the preview shows that error instead of the body.
-- `./` files go through `getAsset()` on every render, as a `Media` the renderers ask (`src/lib/markdown/media.ts`; the build's is `media.server.ts`). A picture is shown as it is: enhanced-img's copies only exist in the build.
+- A post is a Svelte component in the build (mdsvex), so `preview.ts` compiles the body in the browser the same way, about 150 ms after the typing pauses: `mdsvex/compile` with the build's options (`compileOptions`: heading ids, our parse plugins, external links) and highlighting (`create_highlight` over mdsvex's languages), then Svelte's compiler, then `mount()` into the frame from a React component. Each compile is a new component, mounted in place of the last.
+- The compiled module imports Svelte's runtime and our replacements by name (`'svelte/internal/client'`, `'preview:components'`). A browser can't resolve names, so only the imports at the top are rewritten to `blob:` modules that hand out this bundle's own copies: the same Svelte that mounts the post. Svelte forbids importing `svelte/internal/*` in `.svelte.ts` (it's private), so that import lives in `svelte-runtime.ts`.
+- The parse plugins throw everything the build would stop on (HTML or `{ }` in the text, an unknown callout): the preview shows that error instead of the body. Svelte code can't reach the preview (it would run in the CMS page, next to the GitHub token).
+- `./` images are drawn by `PreviewImage.svelte` (replacing `img` here only) from `getAsset()`, through a context backed by `$state.raw`: Sveltia answers with an empty URL while it reads a file. Links get the file's language through `markdown/context.ts`'s context.
+- About 490 kB gzip more than svelte-markdown's old preview (Svelte's compiler, mdsvex's compiler and its grammars), loaded only by the CMS; a warm compile takes a few milliseconds.
 - It also draws the post's header (date, reading time from the site's `readingTime()`, title, description, tags, and the cover: one just added, from `getAsset()`, or the saved one from `covers.ts`).
 - `registerPreviewStyle(css, { raw: true })` gives the frame the site's own CSS (`?inline` imports of the fonts, `tokens.css`, `global.css`, where the body's styles live) plus `preview.css`, a copy of `ArticleHeader.svelte`'s styles, which can't reach the frame.
 
@@ -149,7 +150,7 @@ Things we ran into, in case they're useful:
 - **Raw preview styles** are injected into a `blob:` document, where a root-relative `url(/…)` (the fonts) has nothing to resolve against; `preview.ts` makes them absolute.
 - **YAML anchors** in `config.yml` need a top-level key to live under, which produces a warning when Sveltia loads the file itself. An ignored prefix (like `x-`) would make that quiet. With `init({ config })` we parse it ourselves and drop the key.
 - **The npm build and a top-level `await`:** awaiting `import('@sveltia/cms')` at the top of a module script deadlocks with `DOMContentLoaded` (see "Loading it").
-- **A React effect must return a function or nothing.** `markdown.svelte.ts` handed new props to Svelte with `useEffect(() => update(props))`, and `update` returned the props, so React called that object as the effect's cleanup on the next keystroke: `l is not a function` in react-dom, and the preview stopped updating. `markdown.test.ts` renders it three times under a stand-in React that keeps that rule.
+- **A React effect must return a function or nothing.** The old preview body (`markdown.svelte.ts`, svelte-markdown's) handed new props to Svelte with `useEffect(() => update(props))`, and `update` returned the props, so React called that object as the effect's cleanup on the next keystroke: `l is not a function` in react-dom, and the preview stopped updating. `mdsvex.test.ts` renders today's (`mdsvexBody`) three times under a stand-in React that keeps that rule.
 - **The npm build and Vite's dependency optimizer:** pre-bundling moves its code away from its `assets/` folder; exclude it.
 
 And what worked well from the start: the local workflow with no server (also from WSL, choosing "Linux" in Chrome's folder picker), `multiple_files` translations with per-field `i18n`, entry-relative media, Save staying disabled until something changes, and custom formats and editor components being enough to fit an existing content layout without changing it.

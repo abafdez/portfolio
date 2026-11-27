@@ -2,7 +2,7 @@
 
 My personal site, built in the open as a learning project: [abafdez.github.io/portfolio](https://abafdez.github.io/portfolio/). A blog, a Devlog of how the site is made, Awesome lists, small browser tools, and a CV builder, in English and Spanish.
 
-SvelteKit 3 and Svelte 5, prerendered to static files with adapter-static and served by GitHub Pages. Plain modern CSS on design tokens (Open Props for scales), markdown rendered on the server with marked, svelte-markdown and Shiki, search with Pagefind, and Sveltia CMS at `/admin`.
+SvelteKit 3 and Svelte 5, prerendered to static files with adapter-static and served by GitHub Pages. Plain modern CSS on design tokens (Open Props for scales), markdown compiled to Svelte components by mdsvex (code highlighted by twinkleplop), search with Pagefind, and Sveltia CMS at `/admin`.
 
 ## Run it
 

@@ -1,14 +1,12 @@
 // The preview pane. Posts and Devlog entries are drawn in the browser, as you type, by
-// the site's own markdown code (src/lib/markdown/: parse.ts, then <Markdown> mounted live,
-// markdown.svelte.ts) with the site's CSS: it works the same in dev and in a hosted CMS.
+// the site's own markdown code with the site's CSS: it works the same in dev and in a
+// hosted CMS. The body is compiled by mdsvex and Svelte in the browser, as the build
+// compiles it (mdsvex.svelte.ts).
 import { localizePath, type Locale } from '#lib/i18n/locales.ts';
 import { readingTime } from '#lib/reading-time.ts';
 import { coverOf } from './covers.ts';
-import { parse } from '#lib/markdown/parse.ts';
-import { loadLanguages, type Highlighter } from '#lib/markdown/shiki.ts';
-import type { Media } from '#lib/markdown/media.ts';
-import type { Token } from 'marked';
-import { markdownBody } from './markdown.svelte.ts';
+import type { Component } from 'svelte';
+import { compilePost, mdsvexBody } from './mdsvex.svelte.ts';
 import tokens from '#lib/styles/tokens.css?inline';
 import global from '#lib/styles/global.css?inline';
 import fira from '@fontsource-variable/fira-code/index.css?inline';
@@ -69,33 +67,31 @@ const words = { en: 'min read', es: 'min de lectura' };
 
 export function articlePreview(React: ReactLike) {
 	const h = React.createElement;
-	const Body = markdownBody(React);
+	const Body = mdsvexBody(React);
 
 	return function ArticlePreview({ entry, getAsset }: Props) {
 		const locale = localeOf(entry);
 		const values = valuesOf(entry, locale);
 		const file = fileOf(entry, locale) || `new${locale === 'es' ? '.es' : ''}.md`;
 		const body = String(values.body ?? '');
-		const [ready, setReady] = React.useState<{ tokens: Token[]; highlighter: Highlighter } | null>(
-			null
-		);
+		const [ready, setReady] = React.useState<{ component: Component } | null>(null);
 		const [problem, setProblem] = React.useState('');
 
-		// Parsed again after each pause in the typing, with the code's languages loaded (the
-		// build does the same before rendering); the last good body stays meanwhile. parse()
-		// throws everything the build would stop on: that's shown instead of the post.
+		// Compiled again after each pause in the typing; the last good body stays meanwhile.
+		// The compile throws everything the build would stop on: that's shown instead.
 		React.useEffect(() => {
 			let stale = false;
-			const timer = setTimeout(async () => {
-				try {
-					const { tokens, languages } = parse(body, file);
-					const highlighter = await loadLanguages(languages);
-					if (stale) return;
-					setReady({ tokens, highlighter });
-					setProblem('');
-				} catch (error) {
-					if (!stale) setProblem((error as Error).message);
-				}
+			const timer = setTimeout(() => {
+				compilePost(body, file).then(
+					(component) => {
+						if (stale) return;
+						setReady({ component });
+						setProblem('');
+					},
+					(error: Error) => {
+						if (!stale) setProblem(error.message);
+					}
+				);
 			}, 150);
 			return () => {
 				stale = true;
@@ -107,7 +103,6 @@ export function articlePreview(React: ReactLike) {
 		// getAsset(). It answers with an empty URL while it reads a file, and the template is
 		// drawn again when it has it, so this is made again on every render.
 		const url = (path: string) => getAsset(path)?.url || '';
-		const media: Media = { picture: (_file, src) => url(src), url: (_file, src) => url(src) };
 		// A cover just added in the CMS (getAsset), or the one saved next to the entry.
 		const cover =
 			['./cover.avif', './cover.png', './cover.jpg', './cover.webp'].map(url).find(Boolean) ||
@@ -148,7 +143,9 @@ export function articlePreview(React: ReactLike) {
 						h(Body, {
 							className: 'prose',
 							'data-key-path': 'body',
-							props: { ...ready, file, locale, media }
+							component: ready.component,
+							asset: url,
+							locale
 						})
 		);
 	};

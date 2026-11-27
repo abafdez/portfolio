@@ -1,30 +1,33 @@
 <script lang="ts">
 	// ```video: a short screen recording. No sound, no autoplay, the reader presses play;
 	// why each attribute is in content/blog/posts/README.md. The same markup as
-	// blocks.ts's render(), which the CMS's editor components use.
-	import { videoType } from '#lib/blocks.ts';
-	import type { Media } from '../media.ts';
+	// blocks.ts's render(), which the CMS's editor components use. The blocks plugin
+	// (../blocks-plugin.ts) gives the fields as props, all strings; the files come from the
+	// page (context.ts).
+	import { videoType } from './values.ts';
+	import { markdownMedia } from '../context.ts';
 
 	interface Props {
 		src: string; // MP4 plays everywhere
 		webm?: string; // smaller; played first when the browser can
 		poster?: string;
-		width: number; // its space is kept before the file arrives: the page doesn't jump
-		height: number;
+		width: string; // its space is kept before the file arrives: the page doesn't jump
+		height: string;
 		caption?: string; // a video has no alt text: say what it shows
 		file: string;
-		media: Media;
 	}
 
-	let { src, webm, poster, width, height, caption, file, media }: Props = $props();
+	let { src, webm, poster, width, height, caption, file }: Props = $props();
+	const files = markdownMedia();
+	const media = $derived(files());
 
 	const sources = $derived([webm, src].filter((source) => source !== undefined));
 </script>
 
 {#snippet video()}
 	<video
-		{width}
-		{height}
+		width={Number(width)}
+		height={Number(height)}
 		controls
 		muted
 		playsinline

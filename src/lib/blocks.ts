@@ -9,15 +9,20 @@
 //   ```
 //
 // Anywhere else (Obsidian, GitHub, a plain editor) it's a readable block of YAML.
-// markdown/parse.ts reads every code block with readBlock() (a wrong field fails the
-// build there), and markdown/Code.svelte draws ours with their components
-// (markdown/blocks/; a test checks each block has one). The CMS makes its editor
+// The blocks plugin (markdown/blocks-plugin.ts) reads each of these fences with readBlock() (a
+// wrong field fails the build there) and draws it with its component (markdown/blocks/; a
+// test checks each block has one). The CMS makes its editor
 // components from the same fields (src/lib/cms/components.ts). Its own file so it can be
 // unit-tested (blocks.test.ts).
 import { parse } from 'yaml';
+import { youtubeId } from './markdown/blocks/values.ts';
 
-// What a field may hold. A file is a path next to the post (./clip.mp4): parse.ts lists it
-// and media.server.ts loads it, so a missing file fails the build.
+// The helpers the block components use live in values.ts (no YAML parser for the
+// browser); they're re-exported here for the rest.
+export { videoType, watchOnYoutube, youtubeId, youtubeUrl } from './markdown/blocks/values.ts';
+
+// What a field may hold. A file is a path next to the post (./clip.mp4): markdown/blocks-plugin.ts lists it
+// and markdown/media.ts loads it, so a missing file fails the build.
 // A youtube is a link to a video on youtube.com or youtu.be.
 type Kind = 'text' | 'file' | 'size' | 'youtube';
 type Field = { kind: Kind; required: boolean };
@@ -53,40 +58,6 @@ export const blocks: Record<string, { fields: Record<string, Field> }> = {
 		}
 	}
 };
-
-// The yt card's last line, in the file's language.
-export const watchOnYoutube = {
-	en: 'Watch on YouTube · opens in a new tab',
-	es: 'Ver en YouTube · se abre en una pestaña nueva'
-};
-
-// The video's id from any of YouTube's link shapes: youtube.com/watch?v=ID,
-// youtu.be/ID, youtube.com/shorts/ID, /embed/ID, /live/ID.
-export function youtubeId(src: string): string | undefined {
-	let url: URL;
-	try {
-		url = new URL(src);
-	} catch {
-		return;
-	}
-	const host = url.hostname.replace(/^(www|m)\./, '');
-	const id =
-		host === 'youtu.be'
-			? url.pathname.slice(1)
-			: host === 'youtube.com'
-				? (url.searchParams.get('v') ??
-					url.pathname.match(/^\/(?:shorts|embed|live)\/([^/]+)/)?.[1])
-				: undefined;
-	return id && /^[\w-]{11}$/.test(id) ? id : undefined;
-}
-
-// One link shape for every video, keeping a start time (?t=90) if the link had one.
-export function youtubeUrl(src: string) {
-	const url = new URL(`https://www.youtube.com/watch?v=${youtubeId(src)}`);
-	const start = new URL(src).searchParams.get('t');
-	if (start) url.searchParams.set('t', start);
-	return url.href;
-}
 
 // A ```name block's fields, checked, or undefined if name isn't one of ours. Fails the
 // build on fields the block doesn't have, on missing required ones, and on a value of
@@ -145,8 +116,4 @@ function check(kind: Kind, value: unknown): string | undefined {
 	if (kind === 'file' && !value.startsWith('./')) {
 		return `should be a file next to the post, starting with ./ (got "${value}")`;
 	}
-}
-
-export function videoType(file: string) {
-	return file.endsWith('.webm') ? 'video/webm' : 'video/mp4';
 }

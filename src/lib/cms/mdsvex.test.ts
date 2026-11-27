@@ -1,17 +1,22 @@
 import { describe, expect, test, vi } from 'vitest';
+import type { Media } from '#lib/markdown/media.ts';
 
-// mount() needs a DOM; here it only records the props it was given.
-const mounted: { props?: Record<string, unknown> } = {};
+// mount() needs a DOM; here it records what it was given, and unmount() what it removed.
+const log: { mounted: unknown[]; unmounted: unknown[]; context?: Map<symbol, unknown> } = {
+	mounted: [],
+	unmounted: []
+};
 vi.mock('svelte', async (original) => ({
 	...(await original<typeof import('svelte')>()),
-	mount: (_component: unknown, options: { props: Record<string, unknown> }) => {
-		mounted.props = options.props;
-		return {};
+	mount: (component: unknown, options: { context: Map<symbol, unknown> }) => {
+		log.mounted.push(component);
+		log.context = options.context;
+		return component;
 	},
-	unmount: () => {}
+	unmount: (app: unknown) => void log.unmounted.push(app)
 }));
 
-const { markdownBody } = await import('./markdown.svelte.ts');
+const { mdsvexBody } = await import('./mdsvex.svelte.ts');
 
 // A stand-in for React with its rule for effects: before an effect runs again, what it
 // returned last time is called, so it must be a function or nothing. Breaking that rule
@@ -46,16 +51,26 @@ function fakeReact() {
 	};
 }
 
-describe('markdownBody, the preview body in React', () => {
-	test('every change reaches the mounted component, and no effect breaks React', () => {
+describe('mdsvexBody, the preview body in React', () => {
+	test('a new compile is mounted in place of the last; new file URLs are not', () => {
 		const { React, render } = fakeReact();
-		const Body = markdownBody(React as never);
-		const props = (title: string) => ({ tokens: [title], file: 'a.md', locale: 'en' });
+		const Body = mdsvexBody(React as never);
+		const one = () => {};
+		const two = () => {};
+		const asset = (url: string) => (path: string) => `${url}/${path.slice(2)}`;
+
 		expect(() => {
-			render(Body, { props: props('One') });
-			render(Body, { props: props('Two') });
-			render(Body, { props: props('Three') });
+			render(Body, { component: one, asset: asset('/a'), locale: 'es' });
+			render(Body, { component: one, asset: asset('/b'), locale: 'es' });
+			render(Body, { component: two, asset: asset('/c'), locale: 'es' });
 		}).not.toThrow();
-		expect(mounted.props?.tokens).toEqual(['Three']);
+		expect(log.mounted).toEqual([one, two]);
+		expect(log.unmounted).toEqual([one]);
+
+		// The contexts the body's components read (markdown/context.ts): the file's
+		// language, and Sveltia's files, the latest URLs.
+		const [locale, media] = [...log.context!.values()] as [() => string, () => Media];
+		expect(locale()).toBe('es');
+		expect(media().url('x.md', './clip.mp4')).toBe('/c/clip.mp4');
 	});
 });

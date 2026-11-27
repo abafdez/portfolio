@@ -6,6 +6,8 @@ reviewed: false
 
 Mis artículos son archivos markdown. Hasta ahora, [mdsvex](./2026-10-31-markdown-with-mdsvex) convertía cada uno en un componente de Svelte al hacer el build, y una pila de plugins a su alrededor añadía lo que mi sitio necesita: callouts, componentes en bloques de código, Shiki, títulos enlazables, imágenes optimizadas. Funcionaba, pero había acumulado apaños: un plugin de Vite para ejecutarse antes que enhanced-img, un cambio de la sintaxis de Svelte 4 que mdsvex sigue escribiendo, expresiones regulares sobre su HTML para las imágenes y un segundo proceso, algo distinto, para la vista previa de mi CMS.
 
+**Actualización (2026-11-26):** dos semanas después volví a mdsvex, ya en la versión 1.0: quiero componentes y demos en vivo en los artículos, y svelte-markdown no me lo puede dar. El método de comparación de este artículo es lo que hizo seguro volver, y parte de lo que hay aquí sobrevivió (las reglas estrictas, mis componentes). [La historia de la vuelta](/devlog/2026-11-26-back-to-mdsvex).
+
 Así que probé [svelte-markdown](https://markdown.svelte.page): marked convierte el markdown en tokens y unos componentes de Svelte los dibujan, uno por cada tipo de elemento. Puedes darle tus propios componentes, y de eso se trata.
 
 ## Comparar antes de cambiar

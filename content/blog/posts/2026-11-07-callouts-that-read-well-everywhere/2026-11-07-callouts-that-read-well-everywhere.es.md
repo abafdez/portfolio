@@ -67,6 +67,8 @@ Obsidian tiene más tipos que GitHub (`info`, `bug`, `quote`…). En GitHub esos
 
 **Actualización (2026-11-11):** mdsvex y su parser antiguo ya no están, ni el plugin de rehype ni la unión de nodos de texto. marked deja `[!tip]` y el título en un solo token de texto, así que una pasada mía por sus tokens convierte la cita en un token `callout`, y dos componentes pequeños de Svelte lo dibujan. La misma sintaxis, el mismo HTML, las mismas reglas.
 
+**Actualización (2026-11-26):** mdsvex ha vuelto (1.0). Un plugin de análisis encuentra `[!type]` en la primera línea de la cita, lo quita y marca la cita con su tipo y su título; luego mi componente de cita dibuja el aviso con los mismos dos componentes. La misma sintaxis, el mismo HTML, y una diferencia: un título propio conserva solo su texto, así que el formato que lleve se ve como texto normal.
+
 ## Enlaces
 
 - [Las alerts de GitHub](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts)

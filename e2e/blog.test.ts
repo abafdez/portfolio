@@ -1,5 +1,6 @@
-// A blog post's body is HTML made on the server (src/lib/markdown/render.server.ts). Nothing in it is a Svelte component in the browser, so what JS
-// does there is added by hand (copy.ts): this checks it still happens.
+// A blog post's body is a component mdsvex compiles (src/lib/bodies.ts). Its code blocks'
+// copy buttons are wired by hand (markdown/copy.ts, delegated clicks on the body): this
+// checks it still happens, after client navigation too.
 import { expect, test } from '@playwright/test';
 
 // Two posts with code blocks, linked from the blog's list.

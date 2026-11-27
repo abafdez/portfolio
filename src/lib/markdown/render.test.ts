@@ -1,6 +1,20 @@
-import { describe, expect, test } from 'vitest';
-import { renderMarkdown } from './render.server';
-import type { Media } from './media';
+// A post's body from its markdown to HTML, the way the site makes it: each test writes a
+// markdown file, imports it (Vite's mdsvex plugin compiles it, with our options and
+// replacement components) and renders it with svelte/server, with the contexts a
+// [slug] page gives.
+import { afterAll, describe, expect, test } from 'vitest';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { render } from 'svelte/server';
+import type { Component } from 'svelte';
+import type { Locale } from '#lib/i18n/locales.ts';
+import { markdownContext } from './context.ts';
+import type { Media } from './media.ts';
+
+const dir = mkdtempSync(join(tmpdir(), 'markdown-'));
+afterAll(() => rmSync(dir, { recursive: true, force: true }));
+let count = 0;
 
 // Files as plain URLs: enhanced:img draws a plain <img> for a string.
 const media: Media = {
@@ -8,11 +22,20 @@ const media: Media = {
 	url: (_file, src) => `/files/${src.slice(2)}`
 };
 
-const file = '/content/blog/posts/x/x.md';
-const html = (markdown: string, path = file, locale: 'en' | 'es' = 'en') =>
-	renderMarkdown(markdown, path, locale, media);
+// file: the language of the file (.es.md is Spanish); page: the page's language.
+async function html(markdown: string, { file = 'en', page = 'en' } = {}) {
+	const path = join(dir, `post-${count++}${file === 'es' ? '.es' : ''}.md`);
+	writeFileSync(path, markdown);
+	const { default: Body } = (await import(/* @vite-ignore */ path)) as { default: Component };
+	const context = markdownContext(
+		() => page as Locale,
+		() => media
+	);
+	// Without Svelte's hydration markers.
+	return render(Body, { context }).body.replace(/<!--[^]*?-->/g, '');
+}
 
-describe('renderMarkdown', () => {
+describe('a body', () => {
 	test('headings get an id and link to themselves; repeats get -1', async () => {
 		expect(await html('## The base path\n\n## The base path')).toBe(
 			'<h2 id="the-base-path"><a href="#the-base-path">The base path</a></h2>' +
@@ -20,8 +43,8 @@ describe('renderMarkdown', () => {
 		);
 	});
 
-	test('the frontmatter is not part of the body', async () => {
-		expect(await html('---\ntitle: X\n---\n\nText.')).toBe('<p>Text.</p>');
+	test('the frontmatter and comments are not part of it', async () => {
+		expect(await html('---\ntitle: X\n---\n\n<!-- a note -->\n\nText.')).toBe('<p>Text.</p>');
 	});
 
 	test('code in a sentence keeps its backticks and entities as written', async () => {
@@ -33,104 +56,88 @@ describe('renderMarkdown', () => {
 	test('a code block is highlighted, with its language and a hidden copy button', async () => {
 		const out = await html('```ts\nconst a = 1;\n```');
 		expect(out).toMatch(
-			/^<figure class="code-block"><figcaption data-pagefind-ignore=""><span>ts<\/span>/
+			/^<figure class="code-block" data-lang="ts"><figcaption data-pagefind-ignore=""><span>ts<\/span>/
 		);
 		expect(out).toContain('<button type="button" hidden="" data-copy=""');
-		expect(out).toContain('<pre class="shiki tokens"');
+		expect(out).toContain('<code><span class="l"><span class="tok keyword">const</span>');
 		expect(out).not.toContain('tabindex');
-		expect(out).not.toContain('<!--'); // Svelte's hydration markers are gone
 	});
 
-	test('the button speaks the page language', async () => {
-		expect(await html('```ts\na\n```', file, 'es')).toContain('>copiar</button>');
+	test("the button speaks the page's language", async () => {
+		expect(await html('```ts\na\n```', { page: 'es' })).toContain('>copiar</button>');
 	});
 
-	test('a callout, with its title in the file language', async () => {
-		const out = await html('> [!tip] Use `pnpm`\n> Text.', '/content/blog/posts/x/x.es.md');
-		expect(out).toMatch(/^<aside class="callout" data-callout="tip"><p class="callout-title"><svg/);
-		expect(out).toContain(
-			'<span class="visually-hidden">Sugerencia: </span>Use <code>pnpm</code></span></p><p>Text.</p></aside>'
-		);
+	test("a callout, with its title in the file's language", async () => {
+		const out = await html('> [!tip]\n> Test the build.', { file: 'es' });
+		expect(out).toMatch(/^<aside class="callout" data-callout="tip"><p class="callout-title">/);
+		expect(out).toContain('<span>Sugerencia</span></p> <p>Test the build.</p></aside>');
 	});
 
-	test('a table scrolls in its own box, labelled in the file language', async () => {
-		const out = await html('| a |\n| - |\n| b |', '/content/blog/posts/x/x.es.md');
+	test('a custom title, read for the type too; its markup is plain text for now', async () => {
+		const out = await html('> [!WARNING] Not on *GitHub* Pages\n> Text.');
+		expect(out).toContain('data-callout="warning"');
+		expect(out).toContain('Not on GitHub Pages');
+		expect(out).toContain('<p>Text.</p>');
+	});
+
+	test('a plain blockquote stays one', async () => {
+		expect(await html('> Just a quote.')).toBe('<blockquote><p>Just a quote.</p></blockquote>');
+	});
+
+	test("a table scrolls in its own box, labelled in the file's language", async () => {
+		const out = await html('| a | b |\n| - | - |\n| 1 | 2 |', { file: 'es' });
 		expect(out).toMatch(
 			/^<div class="table-scroll" role="region" aria-label="Tabla" tabindex="0"><table>/
 		);
 	});
 
-	test('links: site paths get the base and the page language; https is external', async () => {
-		const out = await html('[A](/about) [B](https://svelte.dev) [C](#x)', file, 'es');
-		expect(out).toContain('<a href="/es/about">A</a>'); // no base path in tests
-		expect(out).toContain('<a href="https://svelte.dev" rel="external">B</a>');
-		expect(out).toContain('<a href="#x">C</a>');
-	});
-
-	test('an image with a caption is a figure; without, it stays inline', async () => {
-		expect(await html('![A diagram](./a.png "What it shows")')).toBe(
-			'<figure><img src="/files/a.png" alt="A diagram" loading="lazy"/> <figcaption>What it shows</figcaption></figure>'
-		);
-		expect(await html('![A diagram](./a.png)')).toBe(
-			'<p><img src="/files/a.png" alt="A diagram" loading="lazy"/></p>'
+	test("links: site paths get the page's language; https is external", async () => {
+		const out = await html('[A](/about) [B](https://svelte.dev) [C](#x)', { page: 'es' });
+		expect(out).toBe(
+			'<p><a href="/es/about">A</a> <a href="https://svelte.dev" rel="external">B</a>' +
+				' <a href="#x">C</a></p>'
 		);
 	});
+});
 
-	test('an image needs alt text', async () => {
-		await expect(html('![](./a.png)')).rejects.toThrow('x.md: ./a.png needs alt text');
-	});
-
-	test('a ```video block becomes the video', async () => {
+describe('our blocks', () => {
+	test('a ```video becomes the video: WebM first, then MP4, and a poster', async () => {
 		const out = await html(
-			'```video\nsrc: ./a.mp4\nwidth: 640\nheight: 360\ncaption: It plays\n```'
+			'```video\nsrc: ./clip.mp4\nwebm: ./clip.webm\nposter: ./clip.png\nwidth: 960\nheight: 540\n```'
 		);
 		expect(out).toBe(
-			'<figure><video width="640" height="360" controls="" muted="" playsinline="" preload="metadata">' +
-				'<source src="/files/a.mp4" type="video/mp4"/></video> <figcaption>It plays</figcaption></figure>'
+			'<video width="960" height="540" controls="" muted="" playsinline="" preload="metadata"' +
+				' poster="/files/clip.png"><source src="/files/clip.webm" type="video/webm"/>' +
+				'<source src="/files/clip.mp4" type="video/mp4"/></video>'
 		);
 	});
 
-	test('a ```yt block becomes a link card, in the file language', async () => {
+	test('its caption makes a figure, and block text is text, not markup', async () => {
 		const out = await html(
-			'```yt\nsrc: https://youtu.be/gd5uJ7Nlvvo\ntitle: A talk\n```',
-			'/content/blog/posts/x/x.es.md'
+			'```video\nsrc: ./clip.mp4\nwidth: 960\nheight: 540\ncaption: <b>Bold?</b>\n```'
 		);
-		expect(out).toContain('<a href="https://www.youtube.com/watch?v=gd5uJ7Nlvvo" target="_blank"');
+		expect(out).toMatch(/^<figure><video/);
+		expect(out).toContain('<figcaption>&lt;b>Bold?&lt;/b></figcaption></figure>');
+	});
+
+	test("a ```yt is a link card in the file's language: nothing from Google on the page", async () => {
+		const out = await html(
+			'```yt\nsrc: https://youtu.be/gd5uJ7Nlvvo?t=90\ntitle: Plain Text\nthumbnail: ./talk.jpg\ncaption: A talk.\n```',
+			{ file: 'es' }
+		);
 		expect(out).toContain(
-			'<span class="yt-where">Ver en YouTube · se abre en una pestaña nueva</span>'
+			'<a href="https://www.youtube.com/watch?v=gd5uJ7Nlvvo&amp;t=90" target="_blank" rel="external noopener noreferrer">'
 		);
-	});
-
-	test('a video: WebM first, then MP4, and a poster', async () => {
-		const out = await html(
-			'```video\nsrc: ./a.mp4\nwebm: ./a.webm\nposter: ./a.png\nwidth: 640\nheight: 360\n```'
-		);
-		expect(out).toContain('poster="/files/a.png"');
-		expect(out).toMatch(
-			/<source src="\/files\/a\.webm" type="video\/webm"\/>\s*<source src="\/files\/a\.mp4"/
-		);
-	});
-
-	test('block text is text, not markup', async () => {
-		const out = await html(
-			'```video\nsrc: ./a.mp4\nwidth: 1\nheight: 1\ncaption: "<b> & {x}"\n```'
-		);
-		expect(out).toContain('<figcaption>&lt;b> &amp; {x}</figcaption>');
-	});
-
-	test('a yt block: nothing from Google on the page, a decorative thumbnail, a caption', async () => {
-		const out = await html(
-			'```yt\nsrc: https://youtu.be/gd5uJ7Nlvvo?t=90\ntitle: T\nthumbnail: ./talk.jpg\ncaption: A talk.\n```'
-		);
-		expect(out).toContain('href="https://www.youtube.com/watch?v=gd5uJ7Nlvvo&amp;t=90"');
 		expect(out).toContain('<img src="/files/talk.jpg" alt="" loading="lazy"/>');
+		expect(out).toContain('<span class="yt-title">Plain Text</span>');
+		expect(out).toContain('Ver en YouTube · se abre en una pestaña nueva');
 		expect(out).toContain('<figcaption>A talk.</figcaption>');
-		expect(out).not.toMatch(/<iframe|<script|ytimg|youtube-nocookie/);
+		expect(out).not.toMatch(/ytimg|youtube\.com\/embed|<iframe/);
 	});
 
-	test('a wrong block field fails the build, naming the file', async () => {
-		await expect(html('```video\nsrc: ./a.mp4\n```')).rejects.toThrow(
-			/x\.md: the ```video block needs a "width"/
+	test('a wrong field fails the build, naming the file', async () => {
+		await expect(html('```video\nsrc: ./clip.mp4\nwidht: 960\nheight: 540\n```')).rejects.toThrow(
+			/post-\d+\.md: the ```video block has no "widht" field/
 		);
 	});
 });

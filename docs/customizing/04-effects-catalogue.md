@@ -130,7 +130,7 @@ Small hover effects are local to their components: the nav underline, the `.butt
 
 - **Cards** (`src/lib/components/TeaserCard.svelte`): a thumbnail is a cover (posts, projects), a tile with an icon (Awesome lists: `glyph`, a soft brand glow behind it) or a tile with a label. The whole card is a link (the title's `a::after` stretches over it; tags sit above with `z-index`); the layout follows the card's own width (a container query at 34rem: thumbnail beside or on top). Cards are morph sources (chapter 5).
 - **The tag column** (`TagCloud.svelte`, `TagColumns.svelte`): folded to a few rows with a `mask-image` fading the last row into a "+" button (only with JS); the hidden tags are `inert`; opening animates `max-block-size` to the measured height. Chips have the spotlight ring and a tint of their tag's hue (`src/lib/hue.ts`).
-- **Code blocks** (`src/lib/markdown/CodeBlock.svelte`, `copy.ts`): the copy button is in the HTML, `hidden`, and the `copyCode` attachment shows it only if the browser can copy.
+- **Code blocks** (`src/lib/markdown/Pre.svelte`, `copy.ts`): the copy button is in the HTML, `hidden`, and the `copyCode` attachment shows it only if the browser can copy.
 - **Callouts** (`> [!tip]`): no motion; colours from `--callout-*`.
 
 ---

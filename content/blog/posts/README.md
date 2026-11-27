@@ -11,7 +11,7 @@ Posts (drafts too), the Devlog and the Awesome lists can be edited in a CMS ([Sv
 - **The body** opens as markdown; the button at the end of the toolbar switches to rich text. Both keep callouts, HTML in backticks and the blocks below.
 - **` ```yt ` and ` ```video `** are in the Insert menu and filled in a dialog.
 - **Images**: the image button uploads next to the post and writes `![alt](./file.png)`; its Title field becomes the caption.
-- **The preview** is drawn in the browser as you type, by the site's own markdown components and CSS (`src/lib/markdown/`, the same code that renders the page): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img's optimised copies. Anything the build would refuse (HTML in the text, a block with a wrong field, an image without alt text) shows its error there instead. The Awesome list's preview is the page as last saved, in dev only.
+- **The preview** compiles the post in the browser as you type, the way the build does (mdsvex, then Svelte, with the site's own components and CSS from `src/lib/markdown/`): callouts, blocks, code and headings as on the page; pictures as they are, without enhanced-img's optimised copies. Anything the build would refuse (HTML or `{ }` in the text, an unknown callout, a block with a wrong field, an image without alt text) shows its error there instead. The Awesome list's preview is the page as last saved, in dev only.
 - **Publishing**: "Hidden on the site (draft)" is the `draft` field. Pick "Yes" for a draft, the empty option to publish. The Drafts button above the list shows only drafts.
 - **Signed in with GitHub** instead ("Sign In Using Access Token", a fine-grained token with Contents and Pull requests permissions on this repo), every change goes through a pull request (Sveltia's editorial workflow): a save commits to a `cms/<collection>/<slug>` branch, CI builds it, and "Publish" on the Workflow page merges it into `main` as one commit. "Save and Publish" skips the pull request, for a typo. Sveltia calls an unmerged pull request a "Draft" too: that one isn't on `main` at all, while a merged post with `draft: true` is on `main` but not on the site. Working with the local repository ignores the workflow and writes the files, as above.
 - **Cover focal point** is stored as `focus: x% y%`; the site doesn't use it yet.
@@ -200,7 +200,19 @@ reviewed: false
 
 **Always put an HTML tag in backticks** when you write about it: `` `<details>` ``, `` `<video>` ``, `` `<profile>` ``. **HTML outside backticks fails the build**, naming the post and the tag, whether it's a made-up tag like `<profile>` or a real one like `<aside>`: nothing written in a post reaches the page as raw markup. Every element on the page comes from the site's own components (the blocks above for what markdown can't say). The CMS preview shows the same error. A comment (`<!-- note to self -->`) is the one exception: it's dropped.
 
-`{` and `}` are plain text now, inside backticks or not. Frontmatter (`title`, `description`) is plain text too, so no backticks there: they'd show as they are.
+**Braces go in backticks too.** In mdsvex a `{ }` in a sentence is a Svelte expression (`{1 + 1}` would print `2`), so one outside backticks or a code block fails the build, naming the post. Posts are text, and the CMS preview runs what it compiles, in the page that holds the GitHub token. (Allowing some expressions is on the board to review later.) Frontmatter (`title`, `description`) is plain text, so no backticks there: they'd show as they are.
+
+## Markdown that reads a little differently
+
+Posts are compiled by mdsvex, which reads [Penguin-Flavoured Markdown](https://github.com/pngwn/MDsveX/blob/main/PFM.md): CommonMark with the ambiguous parts taken out. Most of a post reads as it does on GitHub and in Obsidian. The differences you can meet:
+
+- **`_italic_` and `**bold**`.** In mdsvex `*text*` is bold, and `**text**` is bold inside bold (it looks the same, on purpose). `pnpm content:format` rewrites `*text*` to `_text_`, so an italic an editor writes as `*text*` never reaches the site as bold; CI fails until the file is formatted.
+- **A bare address stays text.** Write `<https://example.com>` or `[text](https://example.com)`.
+- **A mark that never closes inside link or image text cancels the whole link or image** (an mdsvex bug): `[~/dir](…)` or `![a ~/x window](./x.png)` comes out as the raw text, because `~` starts a subscript (`*` and `_` do the same). Escape it: `\~` (GitHub and Obsidian show `~`). In a sentence a lone `~` is fine.
+- **Every line of a quote or callout starts with `>`.** A line without it ends the quote.
+- **A heading is `#` something.** A line of `===` or `---` under a title isn't one (`---` is a horizontal rule).
+- **Code is a fence of backticks.** Four spaces of indent and `~~~` fences are plain text.
+- **A line break inside a paragraph** is a backslash at the end of the line; two trailing spaces do nothing.
 
 ## Links
 

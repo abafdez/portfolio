@@ -7,6 +7,8 @@ description: My CMS showed a preview of something that wasn't my site. Four trie
 
 My posts are markdown files, and I edit them in [Sveltia CMS](https://sveltiacms.app/en/docs) now. Its preview pane draws the markdown as you type, which is what a preview should do. But it drew something that wasn't my site: no styles, my callouts as plain quotes, my code-block components as YAML.
 
+**Update (2026-11-26):** this preview changed once more. Posts are compiled by mdsvex 1.0 again, so there's no component to mount until a post is compiled: the preview now compiles it in the browser, with mdsvex and Svelte's compiler, the way the build does, and mounts the result. [How, and what it cost](/devlog/2026-11-26-a-cms-preview-that-compiles).
+
 It took four tries to fix, and each one taught me something about where my site's look actually comes from.
 
 ## What a preview has to reproduce

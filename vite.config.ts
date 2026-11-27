@@ -9,6 +9,9 @@ import { cms } from './src/lib/cms/plugin.ts'; // Sveltia CMS at /admin, dev onl
 import { drafts } from './src/lib/drafts.ts'; // leaves draft posts out of a build
 import { lucideNames } from './src/lib/cms/lucide-names.ts'; // the CMS icon picker's list
 import { yamlData } from './src/lib/yaml-data.ts'; // import x from '/content/x.yaml?data'
+import { mdsvex } from 'mdsvex'; // markdown files as Svelte components
+import type { Plugin } from 'vite';
+import { compileOptions } from './src/lib/markdown/options.ts';
 
 // base path for using github pages
 const base = process.argv.includes('dev') ? '' : (process.env.BASE_PATH ?? '');
@@ -17,8 +20,27 @@ if (base && (!base.startsWith('/') || base.endsWith('/'))) {
 	throw new Error(`BASE_PATH must look like '/portfolio'. Got: "${base}"`);
 }
 
-// Markdown (posts and Devlog entries) isn't compiled by Vite: each [slug] page renders its
-// file to HTML on the server with svelte-markdown (src/lib/markdown/render.server.ts).
+// Markdown (posts and Devlog entries) is compiled by mdsvex: each .md file becomes a
+// Svelte component (src/lib/markdown/ has our replacements and parse plugins), which the
+// [slug] pages load through src/lib/bodies.ts. content.ts still reads the frontmatter
+// with ?raw imports, which mdsvex leaves alone.
+
+// mdsvex's transform must run before enhanced-img's markup step. That step's transform has
+// order: 'pre', which Vite runs before every hook without an order, whatever a plugin's
+// enforce says (mdsvex's plugin has enforce: 'pre', its transform no order). So it got
+// the raw markdown of any post that shows <enhanced:img> in a code example, parsed it as
+// Svelte, and failed, or rewrote the example. With order: 'pre' on mdsvex's transform too,
+// mdsvex goes first (its enforce decides among 'pre' hooks, not the list below), and the
+// example reaches enhanced-img as escaped text. mdsvex has no option for this; reported
+// upstream (design/upstream-reports.md). Drop this once mdsvex sets the order itself.
+function mdsvexFirst(plugins: Plugin[]) {
+	for (const plugin of plugins) {
+		const hook = plugin.transform;
+		if (plugin.name !== 'mdsvex' || !hook) continue;
+		plugin.transform = { order: 'pre', handler: typeof hook === 'function' ? hook : hook.handler };
+	}
+	return plugins;
+}
 
 export default defineConfig({
 	plugins: [
@@ -26,6 +48,13 @@ export default defineConfig({
 		drafts(),
 		lucideNames(),
 		yamlData(),
+		mdsvexFirst(
+			mdsvex({
+				extensions: ['.md'],
+				...compileOptions,
+				components: '/src/lib/markdown/components.ts'
+			})
+		),
 		enhancedImages(),
 		sveltekit({
 			compilerOptions: {

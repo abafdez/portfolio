@@ -5,15 +5,15 @@
 //   > [!tip]                     > [!warning] Not on GitHub Pages
 //   > Text of the tip.           > Custom title, then the text.
 //
-// The types live here; markdown/parse.ts finds the callouts and markdown/Callout.svelte
-// and CalloutTitle.svelte draw them.
+// The types live here; a parse plugin finds the callouts (markdown/plugins.ts) and
+// markdown/Callout.svelte and CalloutTitle.svelte draw them.
 // One icon at a time from 'lucide' (each is a list of SVG elements), not its `icons`
 // object: that one holds every icon, and the CMS preview bundles this file.
 import { Info, Lightbulb, MessageSquareWarning, OctagonAlert, TriangleAlert } from 'lucide';
 
 // GitHub's five types. The title is the type as text, so it isn't told by colour
 // alone; the icon is a second hint for the eye. Obsidian has more types, but GitHub
-// would show those as plain blockquotes, so they fail the build instead (parse.ts).
+// would show those as plain blockquotes, so they fail the build instead (plugins.ts).
 // The title is in the file's language (<slug>.es.md is Spanish), in the words GitHub
 // uses in Spanish. It's written into the HTML at build time, so it can't come from the
 // UI messages, which follow the page.

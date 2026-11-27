@@ -70,9 +70,10 @@ A project that needs a route of its own (like `/projects/cv`) leaves out `tool` 
 Like ` ```video ` and ` ```yt `:
 
 1. Declare its fields in `blocks` in `src/lib/blocks.ts` (`required('text' | 'file' | 'size' | 'youtube')` or `optional(…)`). The build fails on unknown, missing or wrong fields.
-2. Write its renderer in `src/lib/markdown/blocks/` and add it to `components` in `blocks/index.ts` (a test checks every block has one).
-3. The CMS gets an editor component for it automatically (`src/lib/cms/components.ts` reads the same fields).
-4. Document it in `content/blog/posts/README.md`.
+2. Write its component in `src/lib/markdown/blocks/` and export it from `blocks/index.ts` under the block's name (a test checks every block has one). The blocks plugin (`src/lib/markdown/blocks-plugin.ts`) claims the fence by itself and passes the fields as props, all strings (turn sizes back into numbers). A `file` field's URL comes from `markdownMedia()` (`context.ts`), loaded by the page before it shows.
+3. Anything the component needs from `blocks.ts` goes in `blocks/values.ts` instead: `blocks.ts` imports a YAML parser that only the build and the CMS need, and importing from it would send that parser to the browser.
+4. The CMS gets an editor component for it automatically (`src/lib/cms/components.ts` reads the same fields).
+5. Document it in `content/blog/posts/README.md`.
 
 ## An Awesome list
 

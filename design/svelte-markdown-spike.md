@@ -1,5 +1,7 @@
 # Spike: svelte-markdown instead of mdsvex
 
+> **Superseded (2026-11-26):** the site went back to mdsvex 1.0 two weeks later. This file is the history of the svelte-markdown spike; the current setup is in [mdsvex-spike.md](mdsvex-spike.md).
+
 Branch `spike/svelte-markdown`, stacked on `spike/sveltia-cms` (it needs the CMS). Started 2026-11-11. **A spike: nothing here replaces mdsvex until Alfonso decides.** This file is the handoff for a new conversation: read it, then CLAUDE.md's Phase 11 bullet and `cms/README.md`.
 
 ## The question

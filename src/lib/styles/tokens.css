@@ -124,7 +124,7 @@
 	--mascot-blush: var(--pink-soft);
 	--mascot-shadow: color-mix(in oklab, var(--text-1) 15%, transparent);
 
-	/* Code blocks. Our Shiki theme (src/lib/code-theme.ts) colors every token with one
+	/* Code blocks. global.css colours every token class twinkleplop writes with one
 	   of these. All ≥ 5.3:1 on --surface-2 (the code block) in both themes. */
 	--code-background: var(--surface-2);
 	--code-foreground: var(--text-1);

@@ -11,6 +11,8 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { enhancedImages } from '@sveltejs/enhanced-img';
 import { lucideNames } from './lucide-names.ts';
 import { parse } from 'yaml';
+import OpenProps from 'open-props';
+import postcssJitProps from 'postcss-jit-props';
 
 const here = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 const base = process.env.BASE_PATH ?? '';
@@ -39,11 +41,20 @@ function hostedCovers(): Plugin {
 
 export default defineConfig({
 	root: here('.'),
-	// Only warnings and errors: the full report lists ~530 files (Shiki's languages,
-	// Sveltia's locales) and would bury the site's build in the CI log.
+	// Only warnings and errors: the full report lists hundreds of files (Sveltia's
+	// locales and lazy chunks) and would bury the site's build in the CI log.
 	logLevel: 'warn',
 	base: `${base}/admin/`,
 	publicDir: false,
+	// Like the site's config: Open Props' variables (--font-sans, --font-size-4…) are added
+	// to each stylesheet that uses them. Without it the preview's CSS (preview.ts imports
+	// tokens.css and global.css) named variables nobody defined, and the built CMS showed
+	// posts in Times at one size; dev looked right because it runs on the site's server.
+	css: {
+		postcss: {
+			plugins: [postcssJitProps(OpenProps)]
+		}
+	},
 	plugins: [
 		hostedCovers(),
 		lucideNames(), // virtual:lucide-names, for the icon picker

@@ -92,8 +92,8 @@ body {
 	}
 }
 
-/* What the build would refuse (parse.ts: HTML in the text, an unknown callout, a block
-   with a wrong field, an image without alt text). */
+/* What the build would refuse (the parse plugins: HTML or { } in the text, an unknown
+   callout, a block with a wrong field, an image without alt text). */
 .preview-error {
 	padding: var(--size-3);
 	border: var(--border-size-2) solid var(--error);

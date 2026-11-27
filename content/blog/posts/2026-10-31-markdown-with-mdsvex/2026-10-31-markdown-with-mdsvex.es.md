@@ -132,6 +132,8 @@ Se deja fuera cualquier id de ruta que contenga un `[`.
 
 **Actualización (2026-11-11):** el sitio ya no usa mdsvex. Los posts y las entradas se leen con marked y los dibuja [svelte-markdown](https://markdown.svelte.page) con mis propios componentes, en el servidor: cada página `[slug]` convierte su archivo en HTML en `+page.server.ts` y lo muestra con `{@html}`. El plugin de Vite, el cambio a `<script module>` y los chunks de componentes `.md` han desaparecido, así que el problema del orden de los plugins ya no existe. Las comillas tipográficas también: el texto se muestra tal como lo escribo.
 
+**Actualización (2026-11-26):** mdsvex ha vuelto, en su versión 1.0: reescrito, con su propio analizador, su resaltador y plugins. Sustituyó a svelte-markdown a las dos semanas, para que los artículos puedan tener componentes y demos en vivo. El problema del orden de los plugins volvió en pequeño: el paso de marcado de enhanced-img sigue ejecutándose antes que cualquier otro plugin y analizaba el markdown sin compilar de los artículos que mencionan `<enhanced:img>` en el código, así que durante un día un pequeño envoltorio hizo que se saltara los `.md`. Desde el 2026-11-27 la solución vuelve a ser la de este artículo: el transform de mdsvex recibe `order: 'pre'`, así que se ejecuta primero. Las comillas siguen rectas. La historia completa: [de vuelta a mdsvex](/devlog/2026-11-26-back-to-mdsvex).
+
 ## Enlaces
 
 - [Documentación de mdsvex](https://mdsvex.com/docs)

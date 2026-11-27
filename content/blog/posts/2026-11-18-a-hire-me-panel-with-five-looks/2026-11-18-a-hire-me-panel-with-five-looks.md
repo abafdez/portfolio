@@ -17,7 +17,7 @@ The panel is a popover, so Escape and a click outside close it, and focus goes b
 
 ## Five looks
 
-![The terminal look: a window with three lights, the photo, and typed lines: whoami, cat hire.txt, contact --linkedin](./terminal.png 'The terminal types itself while the photo comes into focus')
+![The terminal look: a window with three lights, my portrait, and typed lines: whoami, cat hire.txt, contact --linkedin](./terminal.png 'The terminal types itself while the photo comes into focus')
 
 1. **Terminal**: `$ whoami`, `$ cat hire.txt` and `$ contact --linkedin` type themselves in about two seconds, while the photo sharpens from big pixels. The pixels are a canvas: the photo drawn 6, 12, 24 and 48 pixels across, each blown up without smoothing. Screen readers get the finished text at once; the typing is hidden from them.
 2. **Spotlight**: the photo in a turning ring, a grid lit under the pointer, and numbers that count up.

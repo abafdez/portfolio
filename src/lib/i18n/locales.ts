@@ -89,8 +89,8 @@ export function localizePath(pathname: string, locale: Locale) {
 }
 
 // A path on this site in a language, with the base path: sitePath('/blog', 'es') is
-// '/portfolio/es/blog'. For code that renders outside a page (render.server.ts), where
-// route() can't read the page's language.
+// '/portfolio/es/blog'. For code that runs outside a SvelteKit page (markdown links,
+// which the CMS preview draws too), where route() can't read the page's language.
 export const sitePath = (path: string, locale: Locale) => localizePath(`${base}${path}`, locale);
 
 // Plurals: "1 post", "26 posts". Languages have different rules (some have forms for
